@@ -12,7 +12,9 @@
 /build
 
 #IDE
-.dea/
+.idea/
+.vscode/
+
 
 # misc
 .DS_Store
