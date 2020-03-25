@@ -1,15 +1,29 @@
-import React from 'react';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Redirect from "./Redirect";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-       Hello World
-      </header>
-    </div>
+    <BrowserRouter>
+      <div className="arbeidsgiver-permittering">
+        <Switch>
+          <Redirect>
+            <Route
+              path={"/korona-permittering"}
+              component={ComponentTempHolder}
+            />
+          </Redirect>
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
-}
+};
 
+const ComponentTempHolder = () => (
+  <header className="App-header">
+    infosider til Arbeidsgiver Permittering under arbeid
+  </header>
+);
 
 export default App;
