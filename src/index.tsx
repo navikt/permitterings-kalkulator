@@ -1,11 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import NavFrontendSpinner from "nav-frontend-spinner";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <Suspense fallback={<NavFrontendSpinner />}>
     <App />
-  </React.StrictMode>,
+  </Suspense>,
   document.getElementById("root")
 );
