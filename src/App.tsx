@@ -12,6 +12,7 @@ const App = () => {
             <Route
               path={"/korona-permittering"}
               component={ComponentTempHolder}
+              exact={true}
             />
           </Redirect>
         </Switch>
