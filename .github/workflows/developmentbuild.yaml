@@ -23,22 +23,21 @@ jobs:
         run: npm ci --no-optional
 
       - name: Bygg applikasjonen (npm run build)
-        run: npm run build
+        run: npm run build-prod
 
       - name: Sett variable
         id: variable
         run: |
           echo ::set-output name=branch::"$(echo ${GITHUB_REF#refs/heads/})"
 
-      -name: Bygg Docker-image
+      - name: Bygg Docker-image
         run: |
           docker build --tag $APP_IMAGE:$GITHUB_SHA .
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
           docker push $APP_IMAGE
 
-
       - name: Lukk gamle deployment-issues
-        uses: actions/github-script@0.5.0
+        uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -47,7 +46,7 @@ jobs:
               repo: context.repo.repo,
               state: 'open',
               title: 'Lukker utdatert deployment kommando',
-              body:  'goodby cruel world'
+              body:  'goodby cruel world',
               labels: ['deploy', '${{ steps.variable.outputs.branch }}']
             }).then(response => {
               response.data.forEach(issue => {
@@ -61,7 +60,7 @@ jobs:
             });
 
       - name: Ny deployment-issue
-        uses: actions/github-script@0.5.0
+        uses: actions/github-script@0.9.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
