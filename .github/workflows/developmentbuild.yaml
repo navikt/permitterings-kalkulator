@@ -46,7 +46,7 @@ jobs:
               repo: context.repo.repo,
               state: 'open',
               title: 'Lukker utdatert deployment kommando',
-              body:  'goodby cruel world'
+              body:  'goodby cruel world',
               labels: ['deploy', '${{ steps.variable.outputs.branch }}']
             }).then(response => {
               response.data.forEach(issue => {
