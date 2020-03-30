@@ -35,7 +35,7 @@ jobs:
         run: echo "::set-env name=COMMIT::$(git rev-parse HEAD)"
 
       - name: Sett miljøvariabel IMAGE
-        run: echo "::set-env name=NAIS_IMAGE::$APP_IMAGE:$COMMIT"
+        run: echo "::set-env name=IMAGE::$APP_IMAGE:$COMMIT"
 
       - name: Generere nais variabler
         run: |
@@ -54,7 +54,7 @@ jobs:
           PRINT_PAYLOAD: true
           VARS: nais/values.yaml
           REF: ${{ env.COMMIT }}
-          IMAGE: ${{ NAIS_IMAGE }}
+          IMAGE: ${{ env.IMAGE }}
 
       - name: Oppdater kommentar med deployment status ved ok
         if: success()
