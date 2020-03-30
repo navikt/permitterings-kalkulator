@@ -1,77 +1,88 @@
 {
-  "name": "arbeidsgiver-permittering",
-  "version": "0.1.0",
-  "private": true,
-  "homepage": "/arbeidsgiver-permittering",
-  "dependencies": {
-    "@craco/craco": "^5.6.4",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/jest": "^25.1.4",
-    "@types/node": "^12.12.31",
-    "classnames": "^2.2.6",
-    "craco-less": "^1.16.0",
-    "express": "^4.17.1",
-    "helmet": "^3.22.0",
-    "jsdom": "^16.2.2",
-    "nav-frontend-alertstriper": "^3.0.13",
-    "nav-frontend-alertstriper-style": "^2.0.11",
-    "nav-frontend-chevron": "^1.0.10",
-    "nav-frontend-chevron-style": "^0.3.5",
-    "nav-frontend-core": "^4.0.12",
-    "nav-frontend-ekspanderbartpanel": "^3.0.8",
-    "nav-frontend-ekspanderbartpanel-style": "^1.0.8",
-    "nav-frontend-hjelpetekst": "^2.0.26",
-    "nav-frontend-hjelpetekst-style": "^2.0.22",
-    "nav-frontend-ikoner-assets": "^2.0.1",
-    "nav-frontend-ikonknapper": "0.0.18",
-    "nav-frontend-js-utils": "^1.0.8",
-    "nav-frontend-knapper": "^2.0.1",
-    "nav-frontend-knapper-style": "^0.3.35",
-    "nav-frontend-spinner": "^2.0.2",
-    "nav-frontend-spinner-style": "^0.2.5",
-    "nav-frontend-tabs": "0.0.38",
-    "nav-frontend-tabs-style": "0.0.24",
-    "nav-frontend-tekstomrade": "^2.0.43",
-    "nav-frontend-typografi": "^2.0.18",
-    "nav-frontend-typografi-style": "^1.0.19",
-    "node-cache": "^5.1.0",
-    "prop-types": "^15.7.2",
-    "react": "^16.13.1",
-    "react-app-polyfill": "^1.0.6",
-    "react-dom": "^16.13.1",
-    "react-router": "^5.1.2",
-    "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.1",
-    "typescript": "^3.8.3"
-  },
-  "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "server": "node server.js",
-    "test": "react-scripts test"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "@types/react": "^16.9.25",
-    "@types/react-dom": "^16.9.5",
-    "@types/react-router": "^5.1.4",
-    "@types/react-router-dom": "^5.1.3",
-    "prettier": "^2.0.2"
-  }
+    "name": "arbeidsgiver-permittering",
+    "version": "0.1.0",
+    "private": true,
+    "homepage": "/arbeidsgiver-permittering",
+    "dependencies": {
+        "@craco/craco": "^5.6.4",
+        "@testing-library/jest-dom": "^4.2.4",
+        "@testing-library/react": "^9.3.2",
+        "@testing-library/user-event": "^7.1.2",
+        "@types/jest": "^25.1.4",
+        "@types/node": "^12.12.31",
+        "classnames": "^2.2.6",
+        "craco-less": "^1.16.0",
+        "cross-env": "^7.0.2",
+        "express": "^4.17.1",
+        "helmet": "^3.22.0",
+        "jsdom": "^16.2.2",
+        "nav-frontend-alertstriper": "^3.0.13",
+        "nav-frontend-alertstriper-style": "^2.0.11",
+        "nav-frontend-chevron": "^1.0.10",
+        "nav-frontend-chevron-style": "^0.3.5",
+        "nav-frontend-core": "^4.0.12",
+        "nav-frontend-ekspanderbartpanel": "^3.0.8",
+        "nav-frontend-ekspanderbartpanel-style": "^1.0.8",
+        "nav-frontend-hjelpetekst": "^2.0.26",
+        "nav-frontend-hjelpetekst-style": "^2.0.22",
+        "nav-frontend-ikoner-assets": "^2.0.1",
+        "nav-frontend-ikonknapper": "0.0.18",
+        "nav-frontend-js-utils": "^1.0.8",
+        "nav-frontend-knapper": "^2.0.1",
+        "nav-frontend-knapper-style": "^0.3.35",
+        "nav-frontend-spinner": "^2.0.2",
+        "nav-frontend-spinner-style": "^0.2.5",
+        "nav-frontend-tabs": "0.0.38",
+        "nav-frontend-tabs-style": "0.0.24",
+        "nav-frontend-tekstomrade": "^2.0.43",
+        "nav-frontend-typografi": "^2.0.18",
+        "nav-frontend-typografi-style": "^1.0.19",
+        "node-cache": "^5.1.0",
+        "prop-types": "^15.7.2",
+        "react": "^16.13.1",
+        "react-app-polyfill": "^1.0.6",
+        "react-dom": "^16.13.1",
+        "react-router": "^5.1.2",
+        "react-router-dom": "^5.1.2",
+        "react-scripts": "3.4.1",
+        "tslint": "^6.1.0",
+        "tslint-config-prettier": "^1.18.0",
+        "typescript": "^3.8.3"
+    },
+    "scripts": {
+        "start": "craco start",
+        "build": "craco build",
+        "build-prod": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
+        "server": "node server.js",
+        "test": "react-scripts test"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/react": "^16.9.25",
+        "@types/react-dom": "^16.9.5",
+        "@types/react-router": "^5.1.4",
+        "@types/react-router-dom": "^5.1.3",
+        "husky": "^4.2.3",
+        "prettier": "^2.0.2",
+        "pretty-quick": "^2.0.1"
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "pretty-quick --staged --pattern \"**/*.*(js|json|jsx|ts|tsx|css|scss|less)\""
+        }
+    }
 }
