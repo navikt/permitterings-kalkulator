@@ -10,7 +10,7 @@ spec:
   team: arbeidsgiver
   port: 3000
   ingresses:
-    - "{{{ingress}}}"
+    - {{ingress}}
   liveness:
     path: /person/personopplysninger/internal/isAlive
     initialDelay: 10
