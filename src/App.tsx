@@ -10,7 +10,7 @@ const App = () => {
         <Switch>
           <Redirect>
             <Route
-              path={"/korona-permittering"}
+              path={"/arbeidsgiver-permittering"}
               component={ComponentTempHolder}
               exact={true}
             />

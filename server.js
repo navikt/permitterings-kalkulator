@@ -13,6 +13,12 @@ server.get("/arbeidsgiver-permittering/internal/isReady", (req, res) =>
   res.sendStatus(200)
 );
 
+console.log('path.join(__dirname, "build")', path.join(__dirname, "build"));
+console.log(
+  'path.resolve(__dirname, "build", "index.html")',
+  path.resolve(__dirname, "build", "index.html")
+);
+
 server.use(
   "/arbeidsgiver-permittering",
   express.static(path.join(__dirname, "build"))
