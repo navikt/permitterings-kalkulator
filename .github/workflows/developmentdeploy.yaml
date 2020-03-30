@@ -1,0 +1,92 @@
+name: deploy branch to dev-sbs
+
+on:
+  repository_dispatch:
+    types: [deploy-command]
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
+
+jobs:
+  deploy-branch:
+    name: deploy branch to dev-sbs
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: kommenterer med /deploy name til action
+        uses: actions/github-scripts@0.9.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Deploy satt i gang: https://github.com/navikt/tiltaksgjennomforing/actions/runs/${{ github.run_id }}'
+            })
+
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.client_payload.slash_command.arg1 }}
+          fetch-depth: 0
+
+      - name: Sett miljøvariabel COMMIT
+        run: echo "::set-env name=COMMIT::$(git rev-parse HEAD)"
+
+      - name: Sett miljøvariabel IMAGE
+        run: echo "::set-env name=NAIS_IMAGE::$APP_IMAGE:$COMMIT"
+
+      - name: Generere nais variabler
+        run: |
+          cat > nais/values.yaml << EOF
+          ingresses:
+            - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
+          EOF
+
+      - name: deploy til dev-sbs
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          TEAM: arbeidsgiver
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-sbs
+          RESOURCE: nais/nais.yaml
+          PRINT_PAYLOAD: true
+          VARS: nais/values.yaml
+          REF: ${{ env.COMMIT }}
+          IMAGE: ${{ NAIS_IMAGE }}
+
+      - name: Oppdater kommentar med deployment status ved ok
+          if: success()
+          uses: actions/github-script@0.5.0
+          with:
+            github-token: ${{ secrets.GITHUB_TOKEN }}
+            script: |
+              github.issues.listForRepo({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: ['deploy', '${{ steps.variable.outputs.branch }}']
+              }).then(response => {
+                response.data.forEach(issue => {
+                  github.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: issue.number,
+                    name: 'development'
+                  });
+                });
+              });
+
+              github.issues.createComment({
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
+                body: 'Deploy av <b>${{ env.COMMIT }}</b> ok ✅'
+              });
+
+              github.issues.addLabels({
+                owner: context.issue.owner,
+                repo: context.issue.repo,
+                issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
+                labels: ['${{ steps.variable.outputs.branch }}']
+              });

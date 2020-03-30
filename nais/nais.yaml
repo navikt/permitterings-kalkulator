@@ -1,0 +1,19 @@
+apiVersion: "nais.io/v1alpha1"
+kinde: "Application"
+metadata:
+  name: arbeidsgiver-permittering
+  namespace: default
+  labels:
+    arbeidsgiver
+spec:
+  image: {{image}}
+  team: arbeidsgiver
+  port: 7331
+  ingresses:
+    - "{{{ingress}}}"
+  liveness:
+    path: /person/personopplysninger/internal/isAlive
+    initialDelay: 10
+  readiness:
+    path: /person/personopplysninger/internal/isReady
+    initialDelay: 10

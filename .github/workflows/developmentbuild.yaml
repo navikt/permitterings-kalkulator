@@ -1,0 +1,75 @@
+name: Bygg branch og lag deployment
+
+on:
+  push:
+    branches:
+      - '*'
+      - '!master'
+
+env:
+  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
+
+jobs:
+  bygg:
+    name: Bygg branch og generer deployment jobb
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Installer avhegigheter (npm ci)
+        run: npm ci --no-optional
+
+      - name: Bygg applikasjonen (npm run build)
+        run: npm run build
+
+      - name: Sett variable
+        id: variable
+        run: |
+          echo ::set-output name=branch::"$(echo ${GITHUB_REF#refs/heads/})"
+
+      -name: Bygg Docker-image
+        run: |
+          docker build --tag $APP_IMAGE:$GITHUB_SHA .
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          docker push $APP_IMAGE
+
+
+      - name: Lukk gamle deployment-issues
+        uses: actions/github-script@0.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              title: 'Lukker utdatert deployment kommando',
+              body:  'goodby cruel world'
+              labels: ['deploy', '${{ steps.variable.outputs.branch }}']
+            }).then(response => {
+              response.data.forEach(issue => {
+                github.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              });
+            });
+
+      - name: Ny deployment-issue
+        uses: actions/github-script@0.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: 'Bygg av ${{ steps.variable.outputs.branch }}',
+              body: 'Kommenter med \n\n>/deploy ${{ steps.variable.outputs.branch }}\n\n for å deploye til dev.\n\nCommit: ${{ github.sha }}',
+              labels: ['deploy', '${{ steps.variable.outputs.branch }}'],
+              assignees: ['${{ github.actor }}']
+            })
