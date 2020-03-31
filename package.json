@@ -30,6 +30,8 @@
         "nav-frontend-js-utils": "^1.0.8",
         "nav-frontend-knapper": "^2.0.1",
         "nav-frontend-knapper-style": "^0.3.35",
+        "nav-frontend-lenker": "^1.0.35",
+        "nav-frontend-lenker-style": "^0.2.26",
         "nav-frontend-spinner": "^2.0.2",
         "nav-frontend-spinner-style": "^0.2.5",
         "nav-frontend-tabs": "0.0.38",

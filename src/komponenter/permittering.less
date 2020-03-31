@@ -1,0 +1,49 @@
+.permittering {
+    background-color: #e6e6e6;
+
+    &__wrapper {
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    &__oversikt {
+        border-radius: 3px;
+        padding: 2rem 1.25rem 1.25rem 1.5rem;
+        background-color: white;
+    }
+
+    &__info-ark {
+        padding: 2rem 1rem 1rem 1rem;
+        background-color: white;
+    }
+
+    &__info-lenke {
+        padding: 1em 1rem 0 1rem;
+
+        .lenke {
+            text-decoration: none;
+        }
+    }
+
+    @media (min-width: 768px) {
+        &__wrapper {
+            margin-left: 3rem;
+        }
+
+        &__oversikt {
+            min-width: 20rem;
+            margin: 1rem 2rem 0 2rem;
+            min-height: 14rem;
+            max-height: 20rem;
+        }
+
+        &__info-ark {
+            background-color: white;
+            min-width: 35rem;
+            margin: 1rem 1rem 2rem 0;
+            min-height: 25rem;
+        }
+    }
+}
