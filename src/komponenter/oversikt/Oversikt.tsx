@@ -14,15 +14,15 @@ interface PermitteringsLenke {
 
 const lenker: PermitteringsLenke[] = [
     {
-        hopplenke: '#',
+        hopplenke: '#hvordanPermittere',
         lenketekst: 'Hvordan permittere ansatte?',
     },
     {
-        hopplenke: '#',
+        hopplenke: '#permitteringsperioden',
         lenketekst: 'I permitteringsperioden',
     },
     {
-        hopplenke: '#',
+        hopplenke: '#vanligSpr',
         lenketekst: 'Vanlige spørsmål',
     },
 ];
@@ -32,7 +32,7 @@ const Oversikt = (props: Props) => {
 
     return (
         <div className={cls.element('oversikt')}>
-            <Innholdstittel className={cls.element('oversikt-tittel')}>Oversikt:</Innholdstittel>
+            <Innholdstittel className={cls.element('oversikt-tittel')}>Innhold</Innholdstittel>
             {lenker.map((lenke) => {
                 return (
                     <Infolenke
