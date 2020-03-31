@@ -40,7 +40,7 @@ jobs:
       - name: Generere nais variabler
         run: |
           cat > nais/values.yaml << EOF
-          ingresses:
+          ingress:
             - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
           EOF
 

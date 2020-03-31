@@ -8,9 +8,9 @@ metadata:
 spec:
   image: {{image}}
   team: arbeidsgiver
-  port: 7331
+  port: 3000
   ingresses:
-    - "{{{ingress}}}"
+    - {{ingress}}
   liveness:
     path: /person/personopplysninger/internal/isAlive
     initialDelay: 10
