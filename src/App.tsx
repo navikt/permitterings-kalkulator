@@ -18,8 +18,4 @@ const App = () => {
     );
 };
 
-const ComponentTempHolder = () => (
-    <header className="App-header">infosider til Arbeidsgiver Permittering under arbeid</header>
-);
-
 export default App;

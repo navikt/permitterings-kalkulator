@@ -16,6 +16,7 @@
         "express": "^4.17.1",
         "helmet": "^3.22.0",
         "jsdom": "^16.2.2",
+        "lodash.throttle": "^4.1.1",
         "nav-frontend-alertstriper": "^3.0.13",
         "nav-frontend-alertstriper-style": "^2.0.11",
         "nav-frontend-chevron": "^1.0.10",

@@ -1,6 +1,7 @@
 import React from 'react';
 import BEMHelper from '../../utils/bem';
 import Infolenke from './Infolenke';
+import { Innholdstittel } from 'nav-frontend-typografi';
 
 interface Props {
     className: string;
@@ -31,6 +32,7 @@ const Oversikt = (props: Props) => {
 
     return (
         <div className={cls.element('oversikt')}>
+            <Innholdstittel className={cls.element('oversikt-tittel')}>Oversikt:</Innholdstittel>
             {lenker.map((lenke) => {
                 return (
                     <Infolenke
