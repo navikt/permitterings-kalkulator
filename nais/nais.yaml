@@ -4,7 +4,7 @@ metadata:
   name: arbeidsgiver-permittering
   namespace: default
   labels:
-    arbeidsgiver
+    team: arbeidsgiver
 spec:
   image: {{image}}
   team: arbeidsgiver
