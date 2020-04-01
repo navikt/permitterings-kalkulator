@@ -1,8 +1,8 @@
 import React from 'react';
-import './App.css';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Redirect from './Redirect';
 import Permittering from './komponenter/Permittering';
+import './assets/styling/dekorator-override.less';
 
 const App = () => {
     return (
