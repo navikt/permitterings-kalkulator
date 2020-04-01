@@ -56,6 +56,19 @@ jobs:
           REF: ${{ env.COMMIT }}
           IMAGE: ${{ env.IMAGE }}
 
+      - name: Oppdater kommentar med deployment status ved feil
+        if: failure()
+        uses: actions/github-script@0.5.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.createComment({
+              issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Deploy av <b>${{ env.COMMIT }}</b> feilet ❌'
+            })
+
       - name: Oppdater kommentar med deployment status ved ok
         if: success()
         uses: actions/github-script@0.5.0
@@ -65,14 +78,14 @@ jobs:
             github.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              labels: ['deploy', '${{ steps.variable.outputs.branch }}']
+              labels: ['deploy', 'dev-sbs']
             }).then(response => {
               response.data.forEach(issue => {
                 github.issues.removeLabel({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: issue.number,
-                  name: 'development'
+                  name: 'dev-sbs'
                   });
                 });
               });
@@ -88,5 +101,5 @@ jobs:
                 owner: context.issue.owner,
                 repo: context.issue.repo,
                 issue_number: ${{ github.event.client_payload.github.payload.issue.number }},
-                labels: ['${{ steps.variable.outputs.branch }}']
+                labels: ['dev-sbs']
               });
