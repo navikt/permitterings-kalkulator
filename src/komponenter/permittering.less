@@ -16,16 +16,14 @@ html {
         border-radius: 3px;
         padding: 2.5rem 1.25rem 1.25rem 1.5rem;
         background-color: white;
-    }
-
-    &__oversikt-tittel {
-        padding-left: 1rem;
+        width: 20.3rem;
     }
 
     &__info-ark {
         padding: 2rem 2.5rem 1rem 2.5rem;
         background-color: white;
-        max-width: 46rem;
+        max-width: 35rem;
+        border-radius: 3px;
     }
 
     &__info-ark-overskrift {
@@ -55,7 +53,15 @@ html {
     }
 
     &__info-lenke {
-        padding: 1em 1rem 0 1rem;
+        padding: 1em 1rem 0 0;
+
+        &--bold {
+            .lenke {
+                .typo-ingress {
+                    font-weight: 600;
+                }
+            }
+        }
 
         .lenke {
             display: flex;
@@ -66,17 +72,16 @@ html {
             &:hover {
                 text-decoration: underline;
             }
+
+            .typo-ingress {
+                white-space: nowrap;
+            }
         }
     }
 
     @media (min-width: 768px) {
-        &__wrapper {
-            margin-right: 5rem;
-        }
-
         &__oversikt {
-            min-width: 20rem;
-            margin: 1rem 5rem 0 2rem;
+            margin: 1rem 2.5rem 0 2rem;
             max-height: 16rem;
             position: sticky;
             top: 20rem;
@@ -84,9 +89,19 @@ html {
 
         &__info-ark {
             background-color: white;
-            min-width: 35rem;
+
             margin: 1rem 1rem 2rem 0;
             min-height: 25rem;
+        }
+    }
+
+    @media (min-width: 1400px) {
+        &__oversikt {
+            margin: 1rem 5rem 0 2rem;
+        }
+
+        &__wrapper {
+            margin-right: 5rem;
         }
     }
 }
