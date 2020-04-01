@@ -45,8 +45,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               state: 'open',
-              title: 'Lukker utdatert deployment kommando',
-              body:  'goodby cruel world',
               labels: ['deploy', '${{ steps.variable.outputs.branch }}']
             }).then(response => {
               response.data.forEach(issue => {
@@ -68,7 +66,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               title: 'Bygg av ${{ steps.variable.outputs.branch }}',
-              body: 'Kommenter med \n\n>/deploy ${{ steps.variable.outputs.branch }}\n\n for å deploye til dev.\n\nCommit: ${{ github.sha }}',
+              body: 'Kommenter med \n\n>/deploy ${{ steps.variable.outputs.branch }}\n\n for å deploye til dev-sbs.\n\nCommit: ${{ github.sha }}',
               labels: ['deploy', '${{ steps.variable.outputs.branch }}'],
               assignees: ['${{ github.actor }}']
             })
