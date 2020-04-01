@@ -1,0 +1,92 @@
+html {
+    scroll-behavior: smooth;
+}
+
+.permittering {
+    background-color: #e6e6e6;
+
+    &__wrapper {
+        margin-top: 3rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    &__oversikt {
+        border-radius: 3px;
+        padding: 2.5rem 1.25rem 1.25rem 1.5rem;
+        background-color: white;
+    }
+
+    &__oversikt-tittel {
+        padding-left: 1rem;
+    }
+
+    &__info-ark {
+        padding: 2rem 2.5rem 1rem 2.5rem;
+        background-color: white;
+        max-width: 46rem;
+    }
+
+    &__info-ark-overskrift {
+        padding-bottom: 1.5rem;
+    }
+
+    &__underOverskirft {
+        padding-bottom: 0.75rem;
+    }
+
+    &__blockmodifier {
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+
+        &:first-child {
+            padding-top: 0;
+        }
+    }
+
+    &__knapp-seksjon {
+        margin: 2rem 0 2rem 2rem;
+
+        .knapp {
+            text-transform: none;
+            width: 30%;
+        }
+    }
+
+    &__info-lenke {
+        padding: 1em 1rem 0 1rem;
+
+        .lenke {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @media (min-width: 768px) {
+        &__wrapper {
+            margin-right: 5rem;
+        }
+
+        &__oversikt {
+            min-width: 20rem;
+            margin: 1rem 5rem 0 2rem;
+            max-height: 16rem;
+            position: sticky;
+            top: 20rem;
+        }
+
+        &__info-ark {
+            background-color: white;
+            min-width: 35rem;
+            margin: 1rem 1rem 2rem 0;
+            min-height: 25rem;
+        }
+    }
+}

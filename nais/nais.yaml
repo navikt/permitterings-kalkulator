@@ -1,10 +1,10 @@
-apiVersion: "nais.io/v1alpha1"
-kinde: "Application"
+apiVersion: nais.io/v1alpha1
+kind: Application
 metadata:
   name: arbeidsgiver-permittering
   namespace: default
   labels:
-    arbeidsgiver
+    team: arbeidsgiver
 spec:
   image: {{image}}
   team: arbeidsgiver
@@ -12,8 +12,8 @@ spec:
   ingresses:
     - {{ingress}}
   liveness:
-    path: /person/personopplysninger/internal/isAlive
+    path: /arbeidsgiver-permittering/internal/isReady
     initialDelay: 10
   readiness:
-    path: /person/personopplysninger/internal/isReady
+    path: /arbeidsgiver-permittering/internal/isReady
     initialDelay: 10
