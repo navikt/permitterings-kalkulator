@@ -3,10 +3,10 @@ import BEMHelper from '../utils/bem';
 import Banner from './banner/Banner';
 import Oversikt from './oversikt/Oversikt';
 import Infoseksjon from './infoseksjon/Infoseksjon';
-import './permittering.less';
 import PermittereAnsatte from './info-ark/infoark-permittere-ansatte/PermittereAnsatte';
 import Ipermitteringsperioden from './info-ark/infoark-ipermitteringsperioden/Ipermitteringsperioden';
 import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsmal';
+import './permittering.less';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');

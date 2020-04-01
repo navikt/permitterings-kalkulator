@@ -65,6 +65,20 @@ const getMenu = () => {
 };
 
 const serveAppWithMenu = (app) => {
+    server.use(
+        '/arbeidsgiver-permittering/asset-manifest.json',
+        express.static(path.join(__dirname, 'build/asset-manifest.json'))
+    );
+    server.use('/arbeidsgiver-permittering/manifest.json', express.static(path.join(__dirname, 'build/manifest.json')));
+    server.use('/arbeidsgiver-permittering/favicon.ico', express.static(path.join(__dirname, 'build/favicon.ico')));
+    server.use(
+        '/arbeidsgiver-permittering/precache-manifest.*',
+        express.static(path.join(__dirname, 'build/precache-manifest.*'))
+    );
+    server.use(
+        '/arbeidsgiver-permittering/service-worker.js',
+        express.static(path.join(__dirname, 'build/service-worker.js'))
+    );
     server.use('/arbeidsgiver-permittering/static', express.static(path.join(__dirname, 'build/static')));
     server.use('/arbeidsgiver-permittering/index.css', express.static(path.join(__dirname, 'build/index.css')));
     server.get(['/arbeidsgiver-permittering/', '/arbeidsgiver-permittering/*'], (req, res) => {

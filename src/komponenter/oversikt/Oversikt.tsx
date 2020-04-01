@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import Infolenke from './Infolenke';
 import { Innholdstittel } from 'nav-frontend-typografi';
@@ -29,16 +29,38 @@ const lenker: PermitteringsLenke[] = [
 
 const Oversikt = (props: Props) => {
     const cls = BEMHelper(props.className);
+    const [sectionInFocus, setSectionInFocus] = useState<number>(0);
+
+    useEffect(() => {
+        window.addEventListener('scroll', () => setFocusIndex());
+        return () => {
+            window.removeEventListener('scroll', () => setFocusIndex());
+        };
+    }, []);
+
+    const scrollHeight = () => window.scrollY || window.pageYOffset;
+    const hoppLenkerScrollheight = () =>
+        lenker
+            .map((section) => document.getElementById(section.hopplenke.slice(1)))
+            .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
+
+    const setFocusIndex = () => {
+        hoppLenkerScrollheight().map((hoppLenkerScrollheight, index) => {
+            if (hoppLenkerScrollheight - 450 < scrollHeight()) {
+                setSectionInFocus(index);
+            }
+        });
+    };
 
     return (
         <div className={cls.element('oversikt')}>
             <Innholdstittel className={cls.element('oversikt-tittel')}>Innhold</Innholdstittel>
-            {lenker.map((lenke) => {
+            {lenker.map((lenke, index) => {
                 return (
                     <Infolenke
                         hopplenke={lenke.hopplenke}
                         lenketekst={lenke.lenketekst}
-                        className={props.className}
+                        className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
                         key={lenke.lenketekst}
                     />
                 );

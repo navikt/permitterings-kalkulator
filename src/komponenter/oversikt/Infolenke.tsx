@@ -10,12 +10,9 @@ interface Props {
     className: string;
 }
 
-// #0067C5
-
 const Infolenke = (props: Props) => {
-    const cls = BEMHelper(props.className);
     return (
-        <div className={cls.element('info-lenke')}>
+        <div className={props.className}>
             <Lenke href={props.hopplenke}>
                 <HoyreChevron />
                 <Ingress>{props.lenketekst}</Ingress>
