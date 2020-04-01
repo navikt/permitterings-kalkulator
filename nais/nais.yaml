@@ -1,10 +1,10 @@
-apiVersion: "nais.io/v1alpha1"
-kind: "Application"
+apiVersion: nais.io/v1alpha1
+kind: Application
 metadata:
   name: arbeidsgiver-permittering
   namespace: default
   labels:
-    arbeidsgiver
+    team: arbeidsgiver
 spec:
   image: {{image}}
   team: arbeidsgiver
