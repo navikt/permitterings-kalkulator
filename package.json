@@ -37,7 +37,7 @@
         "nav-frontend-tekstomrade": "^2.0.43",
         "nav-frontend-typografi": "^2.0.18",
         "nav-frontend-typografi-style": "^1.0.19",
-        "node-cache": "^5.1.0",
+        "node-cache": "4.2.0",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
         "react-app-polyfill": "^1.0.6",
