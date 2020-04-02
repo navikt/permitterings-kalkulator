@@ -16,6 +16,10 @@ html {
         flex-direction: column;
         justify-content: center;
         max-width: 1200px;
+
+        .ekspanderbartPanel {
+            max-width: 35rem;
+        }
     }
 
     &__oversikt {
@@ -97,6 +101,18 @@ html {
     &__video-frame {
         display: flex;
         justify-content: center;
+    }
+
+    &__lenke-modifier {
+        margin-bottom: 0.5rem;
+
+        .lenke {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     @media (min-width: 768px) {
