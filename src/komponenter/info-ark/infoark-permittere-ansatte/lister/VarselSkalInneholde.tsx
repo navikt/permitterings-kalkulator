@@ -22,7 +22,7 @@ const VarselSkalInneholde = () => {
                     <Normaltekst>Hvem som blir permittert</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Hel eller delvis permittering.</Normaltekst>
+                    <Normaltekst>Hel eller delvis permittering</Normaltekst>
                 </li>
             </ul>
         </div>
