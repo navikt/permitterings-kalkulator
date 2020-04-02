@@ -1,8 +1,7 @@
 import React from 'react';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import BEMHelper from '../../../../utils/bem';
 import { permitteringClassName } from '../../../Permittering';
-import Lenke from 'nav-frontend-lenker';
 
 const ItilleggBerVi = () => {
     const cls = BEMHelper(permitteringClassName);
