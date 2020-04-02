@@ -15,26 +15,28 @@ const Permittering = () => {
     return (
         <div className={permittering.className}>
             <Banner classname="banner" />
-            <div className={permittering.element('wrapper')}>
-                <Oversikt className={permittering.className} />
-                <div className={permittering.element('info-container')}>
-                    <Infoseksjon
-                        className={permittering.className}
-                        overskrift="Hvordan permittere ansatte?"
-                        id="hvordanPermittere"
-                    >
-                        <PermittereAnsatte className={permittering.className} />
-                    </Infoseksjon>
-                    <Infoseksjon
-                        className={permittering.className}
-                        overskrift="I permitteringsperioden"
-                        id="permitteringsperioden"
-                    >
-                        <Ipermitteringsperioden className={permittering.className} />
-                    </Infoseksjon>
-                    <Infoseksjon className={permittering.className} overskrift="Vanlige spørsmål" id="vanligSpr">
-                        <VanligeSporsmal className={permittering.className} />
-                    </Infoseksjon>
+            <div className={permittering.element('container')}>
+                <div className={permittering.element('wrapper')}>
+                    <Oversikt className={permittering.className} />
+                    <div className={permittering.element('info-container')}>
+                        <Infoseksjon
+                            className={permittering.className}
+                            overskrift="Hvordan permittere ansatte?"
+                            id="hvordanPermittere"
+                        >
+                            <PermittereAnsatte className={permittering.className} />
+                        </Infoseksjon>
+                        <Infoseksjon
+                            className={permittering.className}
+                            overskrift="I permitteringsperioden"
+                            id="permitteringsperioden"
+                        >
+                            <Ipermitteringsperioden className={permittering.className} />
+                        </Infoseksjon>
+                        <Infoseksjon className={permittering.className} overskrift="Vanlige spørsmål" id="vanligSpr">
+                            <VanligeSporsmal className={permittering.className} />
+                        </Infoseksjon>
+                    </div>
                 </div>
             </div>
         </div>
