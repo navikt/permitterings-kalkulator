@@ -4,6 +4,7 @@ import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
 import KanAnsattejobbe from './tekster/KanAnsattejobbe';
 import AvbrytePermitteringen from './tekster/AvbrytePermitteringen';
 import OppsigelseUnderPermittering from './tekster/OppsigelseUnderPermittering';
+import VarOppmerksom from './tekster/VarOppmerksom';
 
 interface Props {
     className: string;
@@ -16,6 +17,10 @@ const Ipermitteringsperioden = (props: Props) => {
             <Tekstseksjon tittel="Kan ansatte jobbe når de er permittert?">
                 <KanAnsattejobbe />
             </Tekstseksjon>
+            <Tekstseksjon>
+                <VarOppmerksom />
+            </Tekstseksjon>
+
             <Tekstseksjon tittel="Avbryte permitteringen">
                 <AvbrytePermitteringen />
             </Tekstseksjon>
