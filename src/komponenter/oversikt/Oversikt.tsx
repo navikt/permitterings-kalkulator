@@ -36,26 +36,28 @@ const Oversikt = (props: Props) => {
         setMobilpanelIsopen(!mobilpanelIsopen);
     };
 
-    useEffect(() => {
-        window.addEventListener('scroll', () => setFocusIndex());
-        return () => {
-            window.removeEventListener('scroll', () => setFocusIndex());
-        };
-    }, []);
-
     const scrollHeight = () => window.scrollY || window.pageYOffset;
     const hoppLenkerScrollheight = () =>
         lenker
             .map((section) => document.getElementById(section.hopplenke.slice(1)))
             .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
     // test
-    const setFocusIndex = () => {
-        hoppLenkerScrollheight().map((hoppLenkerScrollheight, index) => {
-            if (hoppLenkerScrollheight - 150 < scrollHeight()) {
-                setSectionInFocus(index);
-            }
-        });
-    };
+
+    useEffect(() => {
+        const setFocusIndex = () => {
+            return hoppLenkerScrollheight().map((hoppLenkerScrollheight, index) => {
+                if (hoppLenkerScrollheight - 150 < scrollHeight()) {
+                    return setSectionInFocus(index);
+                }
+                return null;
+            });
+        };
+
+        window.addEventListener('scroll', () => setFocusIndex(), { passive: true });
+        return () => {
+            window.removeEventListener('scroll', () => setFocusIndex());
+        };
+    }, []);
 
     return (
         <>
