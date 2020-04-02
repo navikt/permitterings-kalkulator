@@ -7,7 +7,7 @@ const DersomVarselInneholder = () => {
         <>
             <Tekstseksjon>
                 Dersom permitteringsvarselet inneholder denne informasjonen, vil dette som hovedregel være tilstrekkelig
-                for å kunne behandle søknad om dagpenger
+                for å kunne behandle søknad om dagpenger.
             </Tekstseksjon>
 
             <Tekstseksjon>
