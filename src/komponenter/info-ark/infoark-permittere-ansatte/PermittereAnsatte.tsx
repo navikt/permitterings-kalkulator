@@ -7,6 +7,8 @@ import Sendpermitteringsvarsel from './tekster/Sendpermitteringsvarsel';
 import VarselSkalInneholde from './lister/VarselSkalInneholde';
 import DersomVarselInneholder from './tekster/DersomVarselInneholder';
 import GiAnsatteBeskjed from './lister/GiAnsatteBeskjed';
+import ItilleggBerVi from './lister/ItilleggBerVi';
+import HuskArapportere from './tekster/HuskArapportere';
 
 interface Props {
     className: string;
@@ -32,8 +34,10 @@ const InfoarkPermittereAnsatte = (props: Props) => {
                 <Sendpermitteringsvarsel />
             </Tekstseksjon>
             <VarselSkalInneholde />
+            <ItilleggBerVi />
             <DersomVarselInneholder />
             <GiAnsatteBeskjed />
+            <HuskArapportere />
         </div>
     );
 };

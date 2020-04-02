@@ -54,7 +54,6 @@ const Oversikt = (props: Props) => {
 
     return (
         <div className={cls.element('oversikt')}>
-            <Innholdstittel className={cls.element('oversikt-tittel')}>Innhold</Innholdstittel>
             {lenker.map((lenke, index) => {
                 return (
                     <Infolenke
