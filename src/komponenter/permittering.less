@@ -5,11 +5,17 @@ html {
 .permittering {
     background-color: #e6e6e6;
 
+    &__container {
+        display: flex;
+        justify-content: center;
+    }
+
     &__wrapper {
         margin-top: 3rem;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
+        max-width: 1200px;
     }
 
     &__oversikt {
@@ -17,6 +23,10 @@ html {
         padding: 2.5rem 1.25rem 1.25rem 1.5rem;
         background-color: white;
         width: 20.3rem;
+    }
+
+    &__oversikt-mobil {
+        margin-bottom: 1rem;
     }
 
     &__info-ark {
@@ -75,12 +85,22 @@ html {
 
             .typo-ingress {
                 white-space: nowrap;
+
+                &:last-child,
+                &:first-child {
+                    white-space: initial;
+                }
             }
         }
     }
 
     @media (min-width: 768px) {
+        &__wrapper {
+            flex-direction: row;
+        }
+
         &__oversikt {
+            padding: 2.5rem 0.5rem 1.25rem 0.5rem;
             margin: 1rem 2.5rem 0 2rem;
             max-height: 16rem;
             position: sticky;
@@ -88,6 +108,7 @@ html {
         }
 
         &__info-ark {
+            padding: 2rem 1.5rem 1rem 1.5rem;
             background-color: white;
 
             margin: 1rem 1rem 2rem 0;
@@ -95,13 +116,19 @@ html {
         }
     }
 
-    @media (min-width: 1400px) {
+    @media (min-width: 1024px) {
+        &__wrapper {
+            margin-right: 5rem;
+        }
+
         &__oversikt {
+            padding: 2.5rem 1.25rem 1.25rem 1.5rem;
             margin: 1rem 5rem 0 2rem;
         }
 
-        &__wrapper {
-            margin-right: 5rem;
+        &__info-ark {
+            padding: 2rem 2.5rem 1rem 2.5rem;
+            margin: 1rem 1rem 2rem 0;
         }
     }
 }

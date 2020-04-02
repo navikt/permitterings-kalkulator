@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import Infolenke from './Infolenke';
-import { Innholdstittel } from 'nav-frontend-typografi';
+import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
 
 interface Props {
     className: string;
@@ -30,6 +30,11 @@ const lenker: PermitteringsLenke[] = [
 const Oversikt = (props: Props) => {
     const cls = BEMHelper(props.className);
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
+    const [mobilpanelIsopen, setMobilpanelIsopen] = useState<boolean>(false);
+
+    const setPanelView = () => {
+        setMobilpanelIsopen(!mobilpanelIsopen);
+    };
 
     useEffect(() => {
         window.addEventListener('scroll', () => setFocusIndex());
@@ -43,28 +48,50 @@ const Oversikt = (props: Props) => {
         lenker
             .map((section) => document.getElementById(section.hopplenke.slice(1)))
             .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
-
+    // test
     const setFocusIndex = () => {
         hoppLenkerScrollheight().map((hoppLenkerScrollheight, index) => {
-            if (hoppLenkerScrollheight - 450 < scrollHeight()) {
+            if (hoppLenkerScrollheight - 150 < scrollHeight()) {
                 setSectionInFocus(index);
             }
         });
     };
 
     return (
-        <div className={cls.element('oversikt')}>
-            {lenker.map((lenke, index) => {
-                return (
-                    <Infolenke
-                        hopplenke={lenke.hopplenke}
-                        lenketekst={lenke.lenketekst}
-                        className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
-                        key={lenke.lenketekst}
-                    />
-                );
-            })}
-        </div>
+        <>
+            <div className={cls.element('oversikt') + ' media-tablet-desktop'}>
+                {lenker.map((lenke, index) => {
+                    return (
+                        <Infolenke
+                            hopplenke={lenke.hopplenke}
+                            lenketekst={lenke.lenketekst}
+                            className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
+                            key={lenke.lenketekst}
+                            lenkeAction={setPanelView}
+                        />
+                    );
+                })}
+            </div>
+            <div className={cls.element('oversikt-mobil') + ' media-sm-mobil'}>
+                <EkspanderbartpanelBase
+                    tittel={lenker[sectionInFocus].lenketekst}
+                    apen={mobilpanelIsopen}
+                    onClick={() => setPanelView()}
+                >
+                    {lenker.map((lenke, index) => {
+                        return (
+                            <Infolenke
+                                hopplenke={lenke.hopplenke}
+                                lenketekst={lenke.lenketekst}
+                                className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
+                                key={lenke.lenketekst}
+                                lenkeAction={setPanelView}
+                            />
+                        );
+                    })}
+                </EkspanderbartpanelBase>
+            </div>
+        </>
     );
 };
 
