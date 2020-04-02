@@ -61,7 +61,7 @@ const Oversikt = (props: Props) => {
 
     return (
         <>
-            <div className={cls.element('oversikt') + ' media-tablet-desktop'}>
+            <div className={cls.element('oversikt') + ' media-lg-desktop'}>
                 {lenker.map((lenke, index) => {
                     return (
                         <Infolenke
@@ -74,7 +74,7 @@ const Oversikt = (props: Props) => {
                     );
                 })}
             </div>
-            <div className={cls.element('oversikt-mobil') + ' media-sm-mobil'}>
+            <div className={cls.element('oversikt-mobil') + ' media-mobil-tablet'}>
                 <EkspanderbartpanelBase
                     tittel={lenker[sectionInFocus].lenketekst}
                     apen={mobilpanelIsopen}
