@@ -5,6 +5,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 
 interface Tekstseksjon {
     tittel?: string;
+    id?: string;
 }
 
 const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
@@ -13,7 +14,9 @@ const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
         <>
             <div className={className.element('blockmodifier')}>
                 {props.tittel ? (
-                    <Undertittel className={className.element('underOverskirft')}>{props.tittel}</Undertittel>
+                    <Undertittel className={className.element('underOverskirft')} id={props.id}>
+                        {props.tittel}
+                    </Undertittel>
                 ) : null}
                 <Normaltekst>{props.children}</Normaltekst>
             </div>
