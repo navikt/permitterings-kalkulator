@@ -44,20 +44,6 @@ jobs:
       - name: Bygg (npm run build)
         run: npm run build
 
-      - name: Generere nais variabler for prod
-        run: |
-          cat > nais/prod-values.yaml << EOF
-          ingress:
-            - https://arbeidsgiver.nav.no/arbeidsgiver-permittering
-          EOF
-
-      - name: Generere nais variabler for dev
-        run: |
-          cat > nais/dev-values.yaml << EOF
-          ingress:
-            - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
-          EOF
-
       - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $IMAGE --tag $APP_IMAGE:latest .
@@ -75,6 +61,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: bygg
     steps:
+      - name: Generere nais variabler for dev
+        run: |
+          cat > nais/dev-values.yaml << EOF
+          ingress:
+            - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
+          EOF
+
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
@@ -95,6 +88,13 @@ jobs:
     runs-on: ubuntu-latest
     needs: bygg
     steps:
+      - name: Generere nais variabler for prod
+        run: |
+          cat > nais/prod-values.yaml << EOF
+          ingress:
+            - https://arbeidsgiver.nav.no/arbeidsgiver-permittering
+          EOF
+
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
