@@ -10,11 +10,11 @@ env:
   APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
   IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering:${{ github.sha }}
 
-  jobs:
-    bygg:
-      name: Bygg
-      runs-on: ubuntu-latest
-      steps:
+jobs:
+  bygg:
+    name: Bygg
+    runs-on: ubuntu-latest
+    steps:
       - name: Lukk deployment-issues
         uses: actions/github-script@0.5.0
         with:
