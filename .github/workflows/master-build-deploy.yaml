@@ -81,7 +81,7 @@ env:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-values.yaml
-          
+
 
   deploy-prod-sbs:
     name: Deploy til prod-sbs
@@ -96,7 +96,7 @@ env:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-sbs
-          RESOURCE: naiserator.yaml
+          RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/prod-values.yaml
 
