@@ -1,18 +1,34 @@
+# Arbeidsgiver-permittering ![nav.no logo](./src/assets/ikoner/navlogo.svg)
+
+Informasjonssider til https://nav.no rundt permittering for arbeidsgivere.
+
+Utviklingsmiljø: `https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering`
+
+produksjonsmiljø: `https://arbeidsgiver.nav.no/arbeidsgiver-permittering`
+<br /><br />
+
+Applikasjonen bygger på Node, React og Typescript.
 
 
-## Available Scripts
+For å komme i gang med applikasjonen, last ned repo 
+<br /><br />
 
-In the project directory, you can run:
+##### start med å installere avhengigheter `npm install`
 
-### `npm start`
+##### Kjøre opp utviklingserver med menylinje `npm start`
 
-Runs the app in the development mode.
-Open http://localhost:3000 to view it in the browser.
+##### Kjøre opp utviklingserver uten menylinje `npm run start-plain`
 
-### `npm test`
+##### Bygg av applikasjonen `npm run build`
 
+####  start av server `npm run server`
+<br />
 
-### `npm build`
+## Henvendelser
 
-Builds the app for production to the `build` folder.<br />
+Spørsmål knyttet til koden eller prosjektet kan rettes mot https://github.com/orgs/navikt/teams/arbeidsgiver
+
+## For NAV-ansatte
+
+Interne henvendelser kan sendes via Slack i kanalen #arbeidsgiver-general.
 
