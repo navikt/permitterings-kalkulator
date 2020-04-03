@@ -6,15 +6,14 @@ const OppsigelseUnderPermittering = () => {
     return (
         <>
             <Tekstseksjon tittel="Oppsigelse under permittering">
-                Dersom arbeidsgiver sier opp en arbeidstaker som er permittert, har arbeidsgiver som hovedregel
-                lønnsplikt i lovbestemt eller avtalt oppsigelsestid. Lønnsplikten inntrer den dagen den permitterte
-                mottar oppsigelsen fra arbeidsgiver.
+                Dersom du sier opp en ansatt som er permittert, må du som hovedregel utbetale lønn i oppsigelsestiden.
+                Dette gjelder fra den dagen den ansatte får oppsigelsen.
             </Tekstseksjon>
             <Tekstseksjon>
-                Arbeidstaker som selv sier opp mens vedkommende er permittert, har vanligvis ikke krav på lønn i
-                oppsigelsestid med mindre noe annet går fram av tariffavtale eller liknende. Dette må undersøkes i hvert
-                enkelt tilfelle. For permitterte som selv sier opp sin stilling, gjelder kortere oppsigelsesfrister enn
-                vanlig, se arbeidsmiljølovens bestemmelser{' '}
+                Hvis en permittert ansatt selv sier opp jobben sin, skal du vanligvis ikke utbetale lønn. Dette avhenger
+                av for eksempel hva som står i tariffavtalen eller andre avtaler mellom arbeidsgiver og ansatt, og må
+                undersøkes i hvert enkelt tilfelle. Oppsigelsestiden er kortere enn vanlig når en permittert ansatt sier
+                opp selv. Lenke til{' '}
                 <Lenke href="https://lovdata.no/nav/lov/2005-06-17-62/kap15">arbeidsmiljøloven § 15-3 nr. 9</Lenke>
             </Tekstseksjon>
         </>

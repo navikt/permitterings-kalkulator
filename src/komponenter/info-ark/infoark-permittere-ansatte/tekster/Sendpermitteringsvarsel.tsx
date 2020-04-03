@@ -1,5 +1,4 @@
 import React from 'react';
-import Lenke from 'nav-frontend-lenker';
 
 const Sendpermitteringsvarsel = () => {
     return (
@@ -9,8 +8,5 @@ const Sendpermitteringsvarsel = () => {
         </>
     );
 };
-
-// https://lovdata.no/nav/lov/2005-06-17-62/kap15
-// https://www.lo.no/hovedavtalen/#3991
 
 export default Sendpermitteringsvarsel;

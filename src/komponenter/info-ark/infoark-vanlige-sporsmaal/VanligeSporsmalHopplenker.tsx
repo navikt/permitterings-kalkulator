@@ -1,6 +1,6 @@
 import React from 'react';
 import Lenke from 'nav-frontend-lenker';
-import { Ingress } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { permitteringClassName } from '../../Permittering';
 import BEMHelper from '../../../utils/bem';
 
@@ -16,9 +16,9 @@ const VanligeSporsmalHopplenker = (props: Props) => {
                 {props.hopplenker.map((lenke) => {
                     return (
                         <div key={lenke.id} className={cls.element('lenke-modifier')}>
-                            <Ingress>
+                            <Normaltekst>
                                 <Lenke href={lenke.id}>{lenke.tittel}</Lenke>
-                            </Ingress>
+                            </Normaltekst>
                         </div>
                     );
                 })}

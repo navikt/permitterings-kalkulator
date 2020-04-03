@@ -6,7 +6,6 @@ import KanJegPermittereOmsorgspenger from './tekster/KanJegPermittereOmsorgspeng
 import SkalTilkallingsvikarene from './tekster/SkalTilkallingsvikarene';
 import HvordanSkalJegBeregne from './tekster/HvordanSkalJegBeregne';
 import HvordanSkalJegVareSikker from './tekster/HvordanSkalJegVareSikker';
-import HvorLangErArbeidsgiverperioden from './tekster/HvorLangErArbeidsgiverperioden';
 import JegHarAlleredeMattePermittere from './tekster/JegHarAlleredeMattePermittere';
 import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
 
@@ -28,20 +27,20 @@ export const teksjonsnavn = [
         id: '#skalTilkallingsvikarene',
     },
     {
-        tittel: 'Hvordan skal jeg beregne lønnspliktperioden når jeg permitterer gradert?',
+        tittel: 'Hvor lenge skal jeg betale lønn?',
         id: '#hvordanSkalJegBeregne',
     },
+
     {
-        tittel: 'Hvordan kan jeg være sikker på at permitteringen er gyldig, og at de ansatte får sine penger?',
-        id: '#hvordanKanJegVare',
-    },
-    {
-        tittel:
-            'Jeg har allerede måttet permittere flere ansatte og stått for regningen selv. Vil jeg få noen av disse pengene tilbake nå som arbeidgsgiverperioden er forkortet?',
+        tittel: 'Jeg har allerede betalt lønn i mer enn to dager, får jeg disse pengene tilbake?',
         id: '#jegHarAllerede',
     },
+    {
+        tittel: 'Hvordan kan jeg være sikker på at permitteringen er gyldig, og at de ansatte får pengene sine?',
+        id: '#hvordanKanJegVare',
+    },
 ];
-
+// te
 const VanligeSporsmal = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
@@ -60,12 +59,14 @@ const VanligeSporsmal = (props: Props) => {
             <Tekstseksjon tittel={teksjonsnavn[3].tittel} id={teksjonsnavn[3].id.slice(1)}>
                 <HvordanSkalJegBeregne />
             </Tekstseksjon>
-            <Tekstseksjon tittel={teksjonsnavn[4].tittel} id={teksjonsnavn[4].id.slice(1)}>
-                <HvordanSkalJegVareSikker />
+            <Tekstseksjon>
+                Skyldes permitteringen brann, ulykker eller naturomstendigheter, er det ingen lønnspliktperiode.
             </Tekstseksjon>
-            <HvorLangErArbeidsgiverperioden />
-            <Tekstseksjon tittel={teksjonsnavn[5].tittel} id={teksjonsnavn[5].id.slice(1)}>
+            <Tekstseksjon tittel={teksjonsnavn[4].tittel} id={teksjonsnavn[5].id.slice(1)}>
                 <JegHarAlleredeMattePermittere />
+            </Tekstseksjon>
+            <Tekstseksjon tittel={teksjonsnavn[5].tittel} id={teksjonsnavn[4].id.slice(1)}>
+                <HvordanSkalJegVareSikker />
             </Tekstseksjon>
         </div>
     );
