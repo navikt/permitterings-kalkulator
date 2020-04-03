@@ -7,12 +7,12 @@ const HuskArapportere = () => {
         <>
             <Tekstseksjon tittel="4. Husk å rapportere permittering til a-ordningen">
                 Du som arbeidsgiver har meldeplikt om permittering til a-ordningen. Permittering skal senest rapporteres
-                for den måneden som permitteringen ble iverksatt.
+                for den måneden permitteringen begynner.
             </Tekstseksjon>
             <Tekstseksjon>
-                Startdato på permitteringen skal være den dagen permitteringen iverksettes. Dette gjelder også dersom
-                den permitterte har ferie eller sykefravær eller er i permisjon. Gjenta startdatoen i hver a-melding så
-                lenge permitteringen varer.
+                Når du melder inn til a-ordningen er det viktig at du oppgir den startdatoen permitteringen faktiske
+                begynte. Dette gjelder også dersom den permitterte har ferie eller sykefravær eller er i permisjon.
+                Gjenta startdatoen i hver a-melding så lenge permitteringen varer.
             </Tekstseksjon>
             <Tekstseksjon>
                 Husk å bruke ny permitteringsID dersom den ansatte har vært permittert tidligere.{' '}

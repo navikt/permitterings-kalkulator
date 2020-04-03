@@ -8,7 +8,7 @@ const GiAnsatteBeskjed = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
         <div className={cls.element('blockmodifier')}>
-            <Undertittel>3. Gi ansatte beskjed om å:</Undertittel>
+            <Undertittel>3. Du bør oppfordre de ansatte om å gjøre dette:</Undertittel>
             <ul>
                 <li>
                     <Lenke href="https://arbeidssokerregistrering.nav.no/start">
@@ -16,10 +16,9 @@ const GiAnsatteBeskjed = () => {
                     </Lenke>
                 </li>
                 <li>
-                    <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">Søke om dagpenger</Lenke> (helst
-                    digitalt)
+                    <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">Søke om dagpenger</Lenke> Dette bør de
+                    helst gjøre digitalt.
                 </li>
-                <li>Sende inn permitteringsvarselet til NAV sammen med søknad om dagpenger</li>
             </ul>
         </div>
     );

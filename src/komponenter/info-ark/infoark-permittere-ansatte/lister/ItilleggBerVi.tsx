@@ -7,11 +7,19 @@ const ItilleggBerVi = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
         <div className={cls.element('blockmodifier')}>
-            <Normaltekst>I tillegg ber vi deg som arbeidsgiver oppgi følgende i varselet:</Normaltekst>
+            <Normaltekst>
+                For at vi skal kunne behandle søknaden om dagpenger må du i tillegg opplyse om dette i varselet:
+            </Normaltekst>
             <ul>
-                <li>Om det er enighet mellom partene på arbeidsplassen om permitteringen (JA/NEI)</li>
-                <li>Den permitteres stillingsstørrelse</li>
-                <li>Når den permitterte ble ansatt i bedriften</li>
+                <li>
+                    <Normaltekst>Du må opplyse om partene på arbeidsplassen er enige om permitteringen.</Normaltekst>
+                </li>
+                <li>
+                    <Normaltekst>Du må oppgi stillingsprosenten til den som permitteres.</Normaltekst>
+                </li>
+                <li>
+                    <Normaltekst>Du må oppgi når den permitterte ble ansatt i bedriften.</Normaltekst>
+                </li>
             </ul>
         </div>
     );
