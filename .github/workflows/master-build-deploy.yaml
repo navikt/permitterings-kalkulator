@@ -64,6 +64,12 @@ jobs:
           echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
           docker push $APP_IMAGE
 
+      - name: Sett miljøvariabel COMMIT
+        run: echo "::set-env name=COMMIT::$(git rev-parse HEAD)"
+
+      - name: Sett miljøvariabel IMAGE
+        run: echo "::set-env name=IMAGE_CURRENT::$APP_IMAGE:$COMMIT"
+
   deploy-dev-sbs:
     name: Deploy til dev-sbs
     runs-on: ubuntu-latest
@@ -80,6 +86,8 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-values.yaml
+          IMAGE: ${{ env.IMAGE_CURRENT }}
+          REF: ${{ env.COMMIT }}
 
 
   deploy-prod-sbs:
@@ -98,7 +106,8 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/prod-values.yaml
-
+          IMAGE: ${{ env.IMAGE_CURRENT }}
+          REF: ${{ env.COMMIT }}
 
 
 
