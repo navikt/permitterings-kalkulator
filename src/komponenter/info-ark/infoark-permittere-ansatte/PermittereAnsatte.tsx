@@ -40,13 +40,13 @@ const InfoarkPermittereAnsatte = (props: Props) => {
 
     return (
         <div className={cls.element('avsnitt')}>
-            <Tekstseksjon tittel="1.Arbeidsgivers meldeplikt til NAV">
+            <Tekstseksjon tittel="1. Arbeidsgivers meldeplikt til NAV">
                 <ArbeidsgiversMeldeplikt />
             </Tekstseksjon>
             <div className={cls.element('knapp-seksjon')}>
                 <KnappBase onClick={() => gatilSoknad()}>Meld ifra</KnappBase>
             </div>
-            <Tekstseksjon tittel="2.Send permitteringsvarsel til dine ansatte.">
+            <Tekstseksjon tittel="2. Send permitteringsvarsel til dine ansatte">
                 <Sendpermitteringsvarsel />
             </Tekstseksjon>
             <VarselSkalInneholde />

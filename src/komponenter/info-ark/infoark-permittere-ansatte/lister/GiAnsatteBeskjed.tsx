@@ -8,7 +8,7 @@ const GiAnsatteBeskjed = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
         <div className={cls.element('blockmodifier')}>
-            <Undertittel>3.Gi ansatte beskjed om å:</Undertittel>
+            <Undertittel>3. Gi ansatte beskjed om å:</Undertittel>
             <ul>
                 <li>
                     <Lenke href="https://arbeidssokerregistrering.nav.no/start">

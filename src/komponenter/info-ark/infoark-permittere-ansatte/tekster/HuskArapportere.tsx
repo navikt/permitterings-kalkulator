@@ -5,7 +5,7 @@ import Lenke from 'nav-frontend-lenker';
 const HuskArapportere = () => {
     return (
         <>
-            <Tekstseksjon tittel="4.Husk å rapportere permittering til a-ordningen">
+            <Tekstseksjon tittel="4. Husk å rapportere permittering til a-ordningen">
                 Du som arbeidsgiver har meldeplikt om permittering til a-ordningen. Permittering skal senest rapporteres
                 for den måneden som permitteringen ble iverksatt.
             </Tekstseksjon>
