@@ -44,12 +44,6 @@ jobs:
       - name: Bygg (npm run build)
         run: npm run build
 
-      - name: Bygg, tag og push Docker-image
-        run: |
-          docker build --tag $IMAGE --tag $APP_IMAGE:latest .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
-          docker push $APP_IMAGE
-
       - name: Generere nais variabler for prod
         run: |
           cat > nais/prod-values.yaml << EOF
@@ -63,6 +57,12 @@ jobs:
           ingress:
             - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
           EOF
+
+      - name: Bygg, tag og push Docker-image
+        run: |
+          docker build --tag $IMAGE --tag $APP_IMAGE:latest .
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          docker push $APP_IMAGE
 
   deploy-dev-sbs:
     name: Deploy til dev-sbs
