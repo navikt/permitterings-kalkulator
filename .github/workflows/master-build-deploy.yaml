@@ -56,14 +56,9 @@ jobs:
       - name: Sett miljøvariabel IMAGE
         run: echo "::set-env name=IMAGE_CURRENT::$APP_IMAGE:$COMMIT"
 
-  deploy-dev-sbs:
-    name: Deploy til dev-sbs
-    runs-on: ubuntu-latest
-    needs: bygg
-    steps:
       - name: Generere nais variabler for dev
         run: |
-          cat > nais/dev-values.yaml << EOF
+          cat > nais/valuesDev.yaml << EOF
           ingress:
             - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
           EOF
@@ -78,19 +73,13 @@ jobs:
           CLUSTER: dev-sbs
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/dev-values.yaml
+          VARS: nais/valuesDev.yaml
           IMAGE: ${{ env.IMAGE_CURRENT }}
           REF: ${{ env.COMMIT }}
 
-
-  deploy-prod-sbs:
-    name: Deploy til prod-sbs
-    runs-on: ubuntu-latest
-    needs: bygg
-    steps:
       - name: Generere nais variabler for prod
         run: |
-          cat > nais/prod-values.yaml << EOF
+          cat > nais/valuesProd.yaml << EOF
           ingress:
             - https://arbeidsgiver.nav.no/arbeidsgiver-permittering
           EOF
@@ -105,7 +94,7 @@ jobs:
           CLUSTER: prod-sbs
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/prod-values.yaml
+          VARS: nais/valuesProd.yaml
           IMAGE: ${{ env.IMAGE_CURRENT }}
           REF: ${{ env.COMMIT }}
 
