@@ -1,4 +1,4 @@
-name: Bygg og deploy master branch
+name: Bygg og deploy til master branch
 
 on:
   push:
@@ -6,7 +6,6 @@ on:
       - 'master'
 
 env:
-  GITHUB_TOKEN: ${{ secrets.GITGUB_TOKEN }}
   APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
   IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering:${{ github.sha }}
 
@@ -36,19 +35,22 @@ jobs:
               });
             });
 
-      - name: Sjekk ut koden
+      - name: Sjekk ut kode
         uses: actions/checkout@v2
 
       - name: Installer avhengigheter (npm ci)
         run: npm ci --no-optional
 
-      - name: Bygg (npm run build)
-        run: npm run build-prod
+      - name: Kjør tester (npm test)
+        run: npm test
 
-      - name: Bygg, tag og push docker image
+      - name: Bygg (npm run build)
+        run: npm run build
+
+      - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $IMAGE --tag $APP_IMAGE:latest .
-          echo $GITHUB_TOKEN | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
           docker push $APP_IMAGE
 
       - name: Generere nais variabler for prod
