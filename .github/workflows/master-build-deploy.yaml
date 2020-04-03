@@ -58,13 +58,10 @@ jobs:
 
       - name: Generere nais variabler for dev
         run: |
-          cat > nais/valuesDev.yaml << EOF
+          cat > nais/dev-env.yaml << EOF
           ingress:
             - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
           EOF
-
-      - name: Sjekk ut kode
-        uses: actions/checkout@v2
 
       - name: Deploy til dev-sbs
         uses: nais/deploy/actions/deploy@v1
@@ -73,19 +70,16 @@ jobs:
           CLUSTER: dev-sbs
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/valuesDev.yaml
+          VARS: nais/dev-env.yaml
           IMAGE: ${{ env.IMAGE_CURRENT }}
           REF: ${{ env.COMMIT }}
 
       - name: Generere nais variabler for prod
         run: |
-          cat > nais/valuesProd.yaml << EOF
+          cat > nais/prod-env.yaml << EOF
           ingress:
             - https://arbeidsgiver.nav.no/arbeidsgiver-permittering
           EOF
-
-      - name: Sjekk ut kode
-        uses: actions/checkout@v2
 
       - name: Deploy til prod-sbs
         uses: nais/deploy/actions/deploy@v1
@@ -94,7 +88,7 @@ jobs:
           CLUSTER: prod-sbs
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
-          VARS: nais/valuesProd.yaml
+          VARS: nais/prod-env.yaml
           IMAGE: ${{ env.IMAGE_CURRENT }}
           REF: ${{ env.COMMIT }}
 
