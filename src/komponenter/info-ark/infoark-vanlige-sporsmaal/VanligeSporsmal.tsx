@@ -8,7 +8,7 @@ import HvordanSkalJegBeregne from './tekster/HvordanSkalJegBeregne';
 import HvordanSkalJegVareSikker from './tekster/HvordanSkalJegVareSikker';
 import JegHarAlleredeMattePermittere from './tekster/JegHarAlleredeMattePermittere';
 import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
-import { Ingress, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 
 interface Props {
