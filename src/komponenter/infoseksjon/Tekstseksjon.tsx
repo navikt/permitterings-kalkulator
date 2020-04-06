@@ -6,13 +6,14 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 interface Tekstseksjon {
     tittel?: string;
     id?: string;
+    disableModifier?: boolean;
 }
 
 const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
     const className = BEMHelper(permitteringClassName);
     return (
         <>
-            <div className={className.element('blockmodifier')}>
+            <div className={className.element('blockmodifier', props.disableModifier ? 'none' : '')}>
                 {props.tittel ? (
                     <Undertittel className={className.element('underOverskirft')} id={props.id}>
                         {props.tittel}

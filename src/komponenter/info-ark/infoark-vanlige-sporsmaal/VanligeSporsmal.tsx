@@ -6,15 +6,16 @@ import KanJegPermittereOmsorgspenger from './tekster/KanJegPermittereOmsorgspeng
 import SkalTilkallingsvikarene from './tekster/SkalTilkallingsvikarene';
 import HvordanSkalJegBeregne from './tekster/HvordanSkalJegBeregne';
 import HvordanSkalJegVareSikker from './tekster/HvordanSkalJegVareSikker';
-import HvorLangErArbeidsgiverperioden from './tekster/HvorLangErArbeidsgiverperioden';
 import JegHarAlleredeMattePermittere from './tekster/JegHarAlleredeMattePermittere';
 import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     className: string;
 }
 
-export const teksjonsnavn = [
+export const tekstseksjonsSporsmal = [
     {
         tittel: 'Kan jeg permittere ansatte som er sykmeldt?',
         id: '#kanJegPermittere',
@@ -28,45 +29,69 @@ export const teksjonsnavn = [
         id: '#skalTilkallingsvikarene',
     },
     {
-        tittel: 'Hvordan skal jeg beregne lønnspliktperioden når jeg permitterer gradert?',
+        tittel: 'Hvor lenge skal jeg betale lønn?',
         id: '#hvordanSkalJegBeregne',
     },
+
     {
-        tittel: 'Hvordan kan jeg være sikker på at permitteringen er gyldig, og at de ansatte får sine penger?',
+        tittel: 'Jeg har allerede betalt lønn i mer enn to dager, får jeg disse pengene tilbake?',
+        id: '#jegHarAllerede',
+    },
+    {
+        tittel: 'Hvordan kan jeg være sikker på at permitteringen er gyldig, og at de ansatte får pengene sine?',
         id: '#hvordanKanJegVare',
     },
     {
-        tittel:
-            'Jeg har allerede måttet permittere flere ansatte og stått for regningen selv. Vil jeg få noen av disse pengene tilbake nå som arbeidgsgiverperioden er forkortet?',
-        id: '#jegHarAllerede',
+        tittel: 'Fant du ikke det du lette etter?',
+        id: '#fantDuIkke',
     },
 ];
+
+const tekstseksjonstittel = (radNummer: number): string | undefined => {
+    return tekstseksjonsSporsmal[radNummer].tittel;
+};
+
+const tekstseksjonsid = (radNummer: number): string | undefined => {
+    return tekstseksjonsSporsmal[radNummer].id.slice(1);
+};
 
 const VanligeSporsmal = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
         <div className={cls.element('avsnitt')}>
-            <VanligeSporsmalHopplenker hopplenker={teksjonsnavn} />
-            {console.log('test', teksjonsnavn[3].id.slice(1))}
-            <Tekstseksjon tittel={teksjonsnavn[0].tittel} id={teksjonsnavn[0].id.slice(1)}>
+            <VanligeSporsmalHopplenker hopplenker={tekstseksjonsSporsmal} />
+            <Tekstseksjon tittel={tekstseksjonstittel(0)} id={tekstseksjonsid(0)}>
                 <KanJegPermittere />
             </Tekstseksjon>
-            <Tekstseksjon tittel={teksjonsnavn[1].tittel} id={teksjonsnavn[1].id.slice(1)}>
+            <Tekstseksjon tittel={tekstseksjonstittel(1)} id={tekstseksjonsid(1)}>
                 <KanJegPermittereOmsorgspenger />
             </Tekstseksjon>
-            <Tekstseksjon tittel={teksjonsnavn[2].tittel} id={teksjonsnavn[2].id.slice(1)}>
+            <Tekstseksjon tittel={tekstseksjonstittel(2)} id={tekstseksjonsid(2)}>
                 <SkalTilkallingsvikarene />
             </Tekstseksjon>
-            <Tekstseksjon tittel={teksjonsnavn[3].tittel} id={teksjonsnavn[3].id.slice(1)}>
+            <Tekstseksjon tittel={tekstseksjonstittel(3)} id={tekstseksjonsid(3)}>
                 <HvordanSkalJegBeregne />
             </Tekstseksjon>
-            <Tekstseksjon tittel={teksjonsnavn[4].tittel} id={teksjonsnavn[4].id.slice(1)}>
-                <HvordanSkalJegVareSikker />
+            <Tekstseksjon>
+                Skyldes permitteringen brann, ulykker eller naturomstendigheter, er det ingen lønnspliktperiode. Les mer
+                om frister{' '}
+                <Lenke href="https://lovdata.no/dokument/NL/lov/2005-06-17-62/KAPITTEL_17#%C2%A715-3">
+                    i Arbeidsmiljøloven
+                </Lenke>
             </Tekstseksjon>
-            <HvorLangErArbeidsgiverperioden />
-            <Tekstseksjon tittel={teksjonsnavn[5].tittel} id={teksjonsnavn[5].id.slice(1)}>
+            <Tekstseksjon tittel={tekstseksjonstittel(4)} id={tekstseksjonsid(4)}>
                 <JegHarAlleredeMattePermittere />
             </Tekstseksjon>
+            <Tekstseksjon tittel={tekstseksjonstittel(5)} id={tekstseksjonsid(5)}>
+                <HvordanSkalJegVareSikker />
+            </Tekstseksjon>
+
+            <Undertittel id={tekstseksjonsid(6)}>{tekstseksjonstittel(6)}</Undertittel>
+            <Normaltekst>
+                <Lenke href="https://www.nav.no/person/kontakt-oss/chat/arbeidsgiver">
+                    Chat med NAV om permittering
+                </Lenke>
+            </Normaltekst>
         </div>
     );
 };

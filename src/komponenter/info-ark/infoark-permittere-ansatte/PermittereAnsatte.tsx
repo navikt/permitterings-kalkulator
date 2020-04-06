@@ -9,6 +9,8 @@ import DersomVarselInneholder from './tekster/DersomVarselInneholder';
 import GiAnsatteBeskjed from './lister/GiAnsatteBeskjed';
 import ItilleggBerVi from './lister/ItilleggBerVi';
 import HuskArapportere from './tekster/HuskArapportere';
+import { Normaltekst } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     className: string;
@@ -40,15 +42,23 @@ const InfoarkPermittereAnsatte = (props: Props) => {
 
     return (
         <div className={cls.element('avsnitt')}>
-            <Tekstseksjon tittel="1. Arbeidsgivers meldeplikt til NAV">
+            <Tekstseksjon tittel="1. Meld fra til NAV">
                 <ArbeidsgiversMeldeplikt />
             </Tekstseksjon>
             <div className={cls.element('knapp-seksjon')}>
                 <KnappBase onClick={() => gatilSoknad()}>Meld ifra</KnappBase>
             </div>
-            <Tekstseksjon tittel="2. Send permitteringsvarsel til dine ansatte">
+            <Tekstseksjon tittel="2. Send permitteringsvarsel">
                 <Sendpermitteringsvarsel />
             </Tekstseksjon>
+            <Normaltekst>
+                Du kan lese mer om permittering og frister i{' '}
+                <Lenke href="https://www.lo.no/hovedavtalen/#3991">Hovedavtalen LO NHO</Lenke>{' '}
+            </Normaltekst>
+            <Normaltekst>
+                og <Lenke href="https://lovdata.no/nav/lov/2005-06-17-62/kap15">arbeidsmiljøloven</Lenke> .
+            </Normaltekst>
+
             <VarselSkalInneholde />
             <ItilleggBerVi />
             <DersomVarselInneholder />

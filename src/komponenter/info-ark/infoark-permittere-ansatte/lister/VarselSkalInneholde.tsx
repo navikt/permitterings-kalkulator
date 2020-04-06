@@ -7,22 +7,22 @@ const VarselSkalInneholde = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
         <div className={cls.element('blockmodifier')}>
-            <Normaltekst>Varselet skal inneholde:</Normaltekst>
+            <Normaltekst>Varselet må inneholde disse opplysningene:</Normaltekst>
             <ul>
                 <li>
-                    <Normaltekst>Informasjon om permitteringens årsak</Normaltekst>
+                    <Normaltekst>Fortell hvorfor du permitterer ansatte.</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Varslingdato</Normaltekst>
+                    <Normaltekst>Datoen når du har varslet om permitteringen.</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Dato for iverksettelse og permitteringens lengde</Normaltekst>
+                    <Normaltekst>Datoen når permitteringen starter og hvor lenge den vil vare.</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Hvem som blir permittert</Normaltekst>
+                    <Normaltekst>Navnet på den som blir permittert.</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Hel eller delvis permittering</Normaltekst>
+                    <Normaltekst>Om den ansatte permitteres helt eller delvis.</Normaltekst>
                 </li>
             </ul>
         </div>

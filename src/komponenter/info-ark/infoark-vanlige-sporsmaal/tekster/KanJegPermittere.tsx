@@ -3,9 +3,9 @@ import React from 'react';
 const KanJegPermittere = () => {
     return (
         <>
-            Ja, du kan permittere arbeidstakere selv om de er sykmeldte. Arbeidsgivers ansvar for utbetaling av lønn,
-            opphører ved iverksetting av permitteringen, selv om arbeidsgiverperioden for sykepenger ikke er utløpt. NAV
-            overtar utbetalingen av sykepengene, dersom den ansatte fortsatt har krav på det.
+            Ja, du kan permittere arbeidstakere selv om de er sykmeldte. Selv om arbeidsgiverperioden ikke er over,
+            opphører ansvaret for lønnsutbetalingene den dagen permitteringen begynner. Da overtar NAV ansvaret og
+            sørger for utbetalingen av sykepengene dersom den ansatte har rett til dette.
         </>
     );
 };

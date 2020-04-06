@@ -4,12 +4,11 @@ import Lenke from 'nav-frontend-lenker';
 const SkalTilkallingsvikarene = () => {
     return (
         <>
-            Tilkallingshjelp og frilansere med avtale om konkret arbeid, kan permitteres fra denne arbeidsplikten. De må
-            i tilfelle få permitteringsvarsel på vanlig måte. Hvis det ikke var gjort avtale om konkret arbeid, vil det
-            ikke være aktuelt å permittere. I et slikt tilfelle vil de ikke ha rett til dagpenger under permittering,
-            men kan ha rett til{' '}
+            Ja, du må sende ut permitteringsvarsel på vanlig måte til tillkallingshjelp og frilansere du har konkrete
+            arbeidsavtaler med. Dersom du ikke har slike avtaler med tilkallingshjelp og frilansere, skal du ikke sende
+            ut varsel. Da har de ikke rett til dagpenger fordi de er permittert, men de kan ha rett til{' '}
             <Lenke href="https://www.nav.no/no/person/arbeid/dagpenger-ved-arbeidsloshet-og-permittering/dagpenger">
-                dagpenger etter vanlige regler
+                dagpenger på ordinær måte
             </Lenke>
             .
         </>
