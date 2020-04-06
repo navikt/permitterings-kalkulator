@@ -8,7 +8,7 @@ import HvordanSkalJegBeregne from './tekster/HvordanSkalJegBeregne';
 import HvordanSkalJegVareSikker from './tekster/HvordanSkalJegVareSikker';
 import JegHarAlleredeMattePermittere from './tekster/JegHarAlleredeMattePermittere';
 import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 
 interface Props {
@@ -85,9 +85,9 @@ const VanligeSporsmal = (props: Props) => {
             <Tekstseksjon tittel={tekstseksjonstittel(5)} id={tekstseksjonsid(5)}>
                 <HvordanSkalJegVareSikker />
             </Tekstseksjon>
-            <Normaltekst id={tekstseksjonsid(6)}>
-                {tekstseksjonstittel(6)}
-                <br />
+
+            <Undertittel id={tekstseksjonsid(6)}>{tekstseksjonstittel(6)}</Undertittel>
+            <Normaltekst>
                 <Lenke href="https://www.nav.no/person/kontakt-oss/chat/arbeidsgiver">
                     Chat med NAV om permittering
                 </Lenke>

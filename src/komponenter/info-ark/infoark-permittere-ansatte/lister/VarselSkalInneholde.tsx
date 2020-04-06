@@ -22,7 +22,7 @@ const VarselSkalInneholde = () => {
                     <Normaltekst>Navnet på den som blir permittert.</Normaltekst>
                 </li>
                 <li>
-                    <Normaltekst>Om den ansatte permitteres helt eler delvis.</Normaltekst>
+                    <Normaltekst>Om den ansatte permitteres helt eller delvis.</Normaltekst>
                 </li>
             </ul>
         </div>
