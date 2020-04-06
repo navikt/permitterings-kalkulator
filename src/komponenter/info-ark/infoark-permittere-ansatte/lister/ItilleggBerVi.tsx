@@ -6,9 +6,9 @@ import { permitteringClassName } from '../../../Permittering';
 const ItilleggBerVi = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
-        <div className={cls.element('blockmodifier')}>
+        <div className={cls.element('blockmodifier', 'none')}>
             <Normaltekst>
-                For at vi skal kunne behandle søknaden om dagpenger må du i tillegg opplyse om dette i varselet:
+                For at vi skal kunne behandle søknaden om dagpenger må du i tillegg opplyse dette i varselet:
             </Normaltekst>
             <ul>
                 <li>

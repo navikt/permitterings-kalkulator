@@ -9,7 +9,7 @@ const HuskArapportere = () => {
                 Du som arbeidsgiver har meldeplikt om permittering til a-ordningen. Permittering skal senest rapporteres
                 for den måneden permitteringen begynner.
             </Tekstseksjon>
-            <Tekstseksjon>
+            <Tekstseksjon disableModifier={true}>
                 Når du melder inn til a-ordningen er det viktig at du oppgir den startdatoen permitteringen faktiske
                 begynte. Dette gjelder også dersom den permitterte har ferie eller sykefravær eller er i permisjon.
                 Gjenta startdatoen i hver a-melding så lenge permitteringen varer.

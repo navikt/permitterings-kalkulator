@@ -52,15 +52,11 @@ const InfoarkPermittereAnsatte = (props: Props) => {
                 <Sendpermitteringsvarsel />
             </Tekstseksjon>
             <Normaltekst>
-                Du kan lese mer om,{' '}
-                <Lenke href="https://www.lo.no/hovedavtalen/#3991">lenke her til hovedavtalen LO NHO</Lenke>{' '}
+                Du kan lese mer om permittering og frister i{' '}
+                <Lenke href="https://www.lo.no/hovedavtalen/#3991">Hovedavtalen LO NHO</Lenke>{' '}
             </Normaltekst>
             <Normaltekst>
-                og{' '}
-                <Lenke href="https://lovdata.no/nav/lov/2005-06-17-62/kap15">
-                    lenke til arbeidsmiljøloven paragraf
-                </Lenke>{' '}
-                .
+                og <Lenke href="https://lovdata.no/nav/lov/2005-06-17-62/kap15">arbeidsmiljøloven</Lenke> .
             </Normaltekst>
 
             <VarselSkalInneholde />
