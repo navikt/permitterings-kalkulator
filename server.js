@@ -79,6 +79,10 @@ const serveAppWithMenu = (app) => {
         '/arbeidsgiver-permittering/service-worker.js',
         express.static(path.join(__dirname, 'build/service-worker.js'))
     );
+    server.use(
+        '/arbeidsgiver-permittering/permittering.nav.illustrasjon.png',
+        express.static(path.join(__dirname, 'build/permittering.nav.illustrasjon.png'))
+    );
     server.use('/arbeidsgiver-permittering/static', express.static(path.join(__dirname, 'build/static')));
     server.use('/arbeidsgiver-permittering/index.css', express.static(path.join(__dirname, 'build/index.css')));
     server.get(['/arbeidsgiver-permittering/', '/arbeidsgiver-permittering/*'], (req, res) => {
