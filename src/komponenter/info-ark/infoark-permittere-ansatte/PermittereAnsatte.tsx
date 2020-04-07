@@ -9,8 +9,8 @@ import DersomVarselInneholder from './tekster/DersomVarselInneholder';
 import GiAnsatteBeskjed from './lister/GiAnsatteBeskjed';
 import ItilleggBerVi from './lister/ItilleggBerVi';
 import HuskArapportere from './tekster/HuskArapportere';
-import { Normaltekst } from 'nav-frontend-typografi';
-import Lenke from 'nav-frontend-lenker';
+import InfoLenker from './tekster/InfoLenker';
+import { gaTilSkjema, videoBlirSpilt } from '../../../utils/amplitudeUtils';
 
 interface Props {
     className: string;
@@ -22,11 +22,17 @@ const InfoarkPermittereAnsatte = (props: Props) => {
     const tabletSize = 380;
     const mobilSize = 280;
 
-    const setSize = () => (window.innerWidth > 1024 ? desktopSize : window.innerWidth > 768 ? tabletSize : mobilSize);
+    const setSize = () =>
+        window.innerWidth > 1024
+            ? desktopSize
+            : window.innerWidth > 768
+            ? tabletSize
+            : mobilSize;
 
     const [videoview, setVideoview] = useState<number>(setSize);
 
     const gatilSoknad = () => {
+        gaTilSkjema();
         window.location.href =
             'https://www.nav.no/soknader/nb/bedrift/permitteringer-oppsigelser-og-konkurs/masseoppsigelser';
     };
@@ -51,14 +57,7 @@ const InfoarkPermittereAnsatte = (props: Props) => {
             <Tekstseksjon tittel="2. Send permitteringsvarsel">
                 <Sendpermitteringsvarsel />
             </Tekstseksjon>
-            <Normaltekst>
-                Du kan lese mer om permittering og frister i{' '}
-                <Lenke href="https://www.lo.no/hovedavtalen/#3991">Hovedavtalen LO NHO</Lenke>{' '}
-            </Normaltekst>
-            <Normaltekst>
-                og <Lenke href="https://lovdata.no/nav/lov/2005-06-17-62/kap15">arbeidsmiljøloven</Lenke> .
-            </Normaltekst>
-
+            <InfoLenker />
             <VarselSkalInneholde />
             <ItilleggBerVi />
             <DersomVarselInneholder />
@@ -73,6 +72,7 @@ const InfoarkPermittereAnsatte = (props: Props) => {
                     allow="autoplay; fullscreen"
                     allowFullScreen
                     title="Permitteringsvideo for arbeidsgivere"
+                    onTimeUpdate={videoBlirSpilt}
                 />
             </div>
         </div>
