@@ -8,7 +8,7 @@ export const skrivTilMalingBesokerSide = () => {
     amplitude.logEvent(defaultkey.concat('-brukerbesokersiden'));
 };
 
-export const menyValg = (key: string) => {
+export const skrivTilMalingMenyValg = (key: string) => {
     const jsonsection = 'menyvalg';
     amplitudevalues.map((value: any) => {
         if (value[jsonsection][key]) {

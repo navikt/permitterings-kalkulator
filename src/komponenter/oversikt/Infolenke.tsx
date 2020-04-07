@@ -2,7 +2,7 @@ import React from 'react';
 import Lenke from 'nav-frontend-lenker';
 import Ingress from 'nav-frontend-typografi/lib/ingress';
 import { HoyreChevron } from 'nav-frontend-chevron';
-import { menyValg } from '../../utils/amplitudeUtils';
+import { skrivTilMalingMenyValg } from '../../utils/amplitudeUtils';
 
 interface Props {
     hopplenke: string;
@@ -17,7 +17,7 @@ const Infolenke = (props: Props) => {
             <Lenke
                 href={props.hopplenke}
                 onClick={() => {
-                    menyValg(props.hopplenke);
+                    skrivTilMalingMenyValg(props.hopplenke);
                     props.lenkeAction();
                 }}
             >
