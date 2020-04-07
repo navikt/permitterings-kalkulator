@@ -4,7 +4,7 @@ import amplitudevalues from './amplitudevalues.json';
 const miljo = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const defaultkey = '#arbeidsgiver-permittering-'.concat(miljo);
 
-export const besokerSide = () => {
+export const skrivTilMalingBesokerSide = () => {
     amplitude.logEvent(defaultkey.concat('-brukerbesokersiden'));
 };
 
@@ -23,15 +23,15 @@ export const menyValg = (key: string) => {
     });
 };
 
-export const gaTilSkjema = () => {
+export const skrivTilMalingBesokerSideGaTilSkjema = () => {
     amplitude.logEvent(defaultkey.concat('-gaTilsoknadSkjema'));
 };
 
-export const fantDuIkkeDetDuLetteEtter = () => {
+export const skrivTilMalingFantDuIkkeDetDuLetteEtter = () => {
     amplitude.logEvent(defaultkey.concat('-brukerFantIkke'));
 };
 
-export const videoBlirSpilt = (event: any) => {
+export const skrivTilMalingVideoBlirSpilt = (event: any) => {
     const attributeName = 'amplitude-tracked';
     const played = event.target.currentTime / event.target.duration;
     const amplitudeTracked = event.target.getAttribute(attributeName);

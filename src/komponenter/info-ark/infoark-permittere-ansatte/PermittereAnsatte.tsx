@@ -10,7 +10,10 @@ import GiAnsatteBeskjed from './lister/GiAnsatteBeskjed';
 import ItilleggBerVi from './lister/ItilleggBerVi';
 import HuskArapportere from './tekster/HuskArapportere';
 import InfoLenker from './tekster/InfoLenker';
-import { gaTilSkjema, videoBlirSpilt } from '../../../utils/amplitudeUtils';
+import {
+    skrivTilMalingBesokerSideGaTilSkjema,
+    skrivTilMalingVideoBlirSpilt,
+} from '../../../utils/amplitudeUtils';
 
 interface Props {
     className: string;
@@ -32,7 +35,7 @@ const InfoarkPermittereAnsatte = (props: Props) => {
     const [videoview, setVideoview] = useState<number>(setSize);
 
     const gatilSoknad = () => {
-        gaTilSkjema();
+        skrivTilMalingBesokerSideGaTilSkjema();
         window.location.href =
             'https://www.nav.no/soknader/nb/bedrift/permitteringer-oppsigelser-og-konkurs/masseoppsigelser';
     };
@@ -72,7 +75,7 @@ const InfoarkPermittereAnsatte = (props: Props) => {
                     allow="autoplay; fullscreen"
                     allowFullScreen
                     title="Permitteringsvideo for arbeidsgivere"
-                    onTimeUpdate={videoBlirSpilt}
+                    onTimeUpdate={skrivTilMalingVideoBlirSpilt}
                 />
             </div>
         </div>

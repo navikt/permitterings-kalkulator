@@ -3,10 +3,10 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Redirect from './Redirect';
 import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
-import { besokerSide } from './utils/amplitudeUtils';
+import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
 
 const App = () => {
-    useEffect(besokerSide);
+    useEffect(skrivTilMalingBesokerSide);
     return (
         <BrowserRouter>
             <div className="arbeidsgiver-permittering">

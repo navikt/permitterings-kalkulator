@@ -11,7 +11,7 @@ import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { tekstseksjonsSporsmal } from './tekstSporsmalOgSvar';
-import { fantDuIkkeDetDuLetteEtter } from '../../../utils/amplitudeUtils';
+import { skrivTilMalingFantDuIkkeDetDuLetteEtter } from '../../../utils/amplitudeUtils';
 
 interface Props {
     className: string;
@@ -30,7 +30,7 @@ const brukerFantIkkeSvar = (
     url: string
 ) => {
     event.preventDefault();
-    fantDuIkkeDetDuLetteEtter();
+    skrivTilMalingFantDuIkkeDetDuLetteEtter();
     window.location.href = url;
 };
 
