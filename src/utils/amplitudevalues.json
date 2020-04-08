@@ -1,11 +1,9 @@
 [
     {
-        "menyvalg": [
-            {
-                "#hvordanPermittere": "-hvordan-permittere",
-                "#permitteringsperioden": "-ipermitterings-perioden",
-                "#vanligSpr": "-vanlige-sporsmal"
-            }
-        ]
+        "menyvalg": {
+            "#hvordanPermittere": "-hvordan-permittere",
+            "#permitteringsperioden": "-ipermitterings-perioden",
+            "#vanligSpr": "-vanlige-sporsmal"
+        }
     }
 ]
