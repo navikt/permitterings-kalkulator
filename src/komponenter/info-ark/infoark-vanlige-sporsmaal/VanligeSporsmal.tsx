@@ -12,6 +12,7 @@ import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
 import { tekstseksjonsSporsmal } from './tekstSporsmalOgSvar';
 import { skrivTilMalingFantDuIkkeDetDuLetteEtter } from '../../../utils/amplitudeUtils';
+import SkyldesPermitteringBrann from './tekster/SkyldesPermitteringBrann';
 
 interface Props {
     className: string;
@@ -64,11 +65,7 @@ const VanligeSporsmal = (props: Props) => {
                 <HvordanSkalJegBeregne />
             </Tekstseksjon>
             <Tekstseksjon>
-                Skyldes permitteringen brann, ulykker eller naturomstendigheter,
-                er det ingen lønnspliktperiode. Les mer om frister{' '}
-                <Lenke href="https://lovdata.no/dokument/NL/lov/2005-06-17-62/KAPITTEL_17#%C2%A715-3">
-                    i Arbeidsmiljøloven
-                </Lenke>
+                <SkyldesPermitteringBrann />
             </Tekstseksjon>
             <Tekstseksjon
                 tittel={tekstseksjonstittel(4)}
