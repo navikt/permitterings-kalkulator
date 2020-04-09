@@ -23,6 +23,8 @@ html {
     }
 
     &__oversikt {
+        box-shadow: 0 0.9px 1.7px rgba(0, 0, 0, 0.032),
+            0 3.1px 5.8px rgba(0, 0, 0, 0.06), 0 14px 26px rgba(0, 0, 0, 0.13);
         border-radius: 3px;
         padding: 2.5rem 1.25rem 1.25rem 1.5rem;
         background-color: white;
@@ -33,10 +35,17 @@ html {
         margin-bottom: 1rem;
     }
 
+    &__info-container {
+        max-width: 35rem;
+    }
+
+    &__sist-oppdatert {
+        padding-bottom: 0.5rem;
+    }
+
     &__info-ark {
         padding: 2rem 2.5rem 1rem 2.5rem;
         background-color: white;
-        max-width: 35rem;
         border-radius: 3px;
         margin: 1.5rem 0 3.5rem 0;
 
@@ -67,11 +76,11 @@ html {
     }
 
     &__knapp-seksjon {
-        margin: 2rem 0 2rem 2rem;
+        margin: 1.25rem 0 1.25rem 1.25rem;
 
         .knapp {
             text-transform: none;
-            width: 30%;
+            width: 45%;
         }
     }
 
@@ -93,7 +102,10 @@ html {
             text-decoration: none;
 
             &:hover {
-                text-decoration: underline;
+                //text-decoration: underline;
+                p {
+                    box-shadow: 0px 2px 0 0 #0067c5;
+                }
             }
 
             .typo-ingress {
@@ -145,7 +157,7 @@ html {
 
         &__oversikt {
             padding: 2.5rem 1.25rem 1.25rem 1.5rem;
-            margin: 1rem 5rem 0 2rem;
+            margin: 4.25rem 5rem 0 2rem;
         }
 
         &__info-ark {
