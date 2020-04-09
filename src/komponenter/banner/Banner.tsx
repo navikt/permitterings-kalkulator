@@ -13,7 +13,9 @@ const Banner = (props: Props) => {
         <>
             <div className={cls.className}>
                 <div className={cls.element('tekst')}>
-                    <Sidetittel>Permittering som følge av koronavirus</Sidetittel>
+                    <Sidetittel>
+                        Permittere ansatte som følge av koronavirus
+                    </Sidetittel>
                 </div>
                 <div className={cls.element('bunnlinje')} />
             </div>
