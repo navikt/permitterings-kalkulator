@@ -31,6 +31,10 @@ export const skrivTilMalingFantDuIkkeDetDuLetteEtter = () => {
     amplitude.logEvent(defaultkey.concat('-brukerFantIkke'));
 };
 
+export const skrivTilMalingBrukerTrykketPaSporsmal = (hopplenke: string) => {
+    amplitude.logEvent(defaultkey.concat('-').concat(hopplenke));
+};
+
 export const skrivTilMalingVideoBlirSpilt = (event: any) => {
     const attributeName = 'amplitude-tracked';
     const played = event.target.currentTime / event.target.duration;
