@@ -22,6 +22,7 @@ const VanligeSporsmalHopplenker = (props: Props) => {
                         >
                             <Normaltekst>
                                 <Lenke
+                                    id={lenke.id}
                                     href={lenke.id}
                                     onClick={() =>
                                         skrivTilMalingBrukerTrykketPaSporsmal(

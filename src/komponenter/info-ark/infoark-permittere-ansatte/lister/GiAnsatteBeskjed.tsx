@@ -8,7 +8,9 @@ const GiAnsatteBeskjed = () => {
     const cls = BEMHelper(permitteringClassName);
     return (
         <div className={cls.element('blockmodifier')}>
-            <Undertittel>3. Du bør oppfordre de ansatte om å gjøre dette:</Undertittel>
+            <Undertittel role="heading">
+                3. Du bør oppfordre de ansatte om å gjøre dette:
+            </Undertittel>
             <ul>
                 <li>
                     <Lenke href="https://arbeidssokerregistrering.nav.no/start">
@@ -16,8 +18,10 @@ const GiAnsatteBeskjed = () => {
                     </Lenke>
                 </li>
                 <li>
-                    <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">Søke om dagpenger</Lenke> Dette bør de
-                    helst gjøre digitalt.
+                    <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">
+                        Søke om dagpenger
+                    </Lenke>{' '}
+                    Dette bør de helst gjøre digitalt.
                 </li>
             </ul>
         </div>

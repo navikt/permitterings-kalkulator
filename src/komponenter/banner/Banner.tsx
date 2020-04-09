@@ -11,7 +11,11 @@ const Banner = (props: Props) => {
     const cls = BEMHelper(props.classname);
     return (
         <>
-            <div className={cls.className}>
+            <div
+                className={cls.className}
+                role="banner"
+                aria-roledescription="site banner"
+            >
                 <div className={cls.element('tekst')}>
                     <Sidetittel>
                         Permittere ansatte som følge av koronavirus
