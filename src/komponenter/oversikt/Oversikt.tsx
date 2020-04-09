@@ -39,21 +39,27 @@ const Oversikt = (props: Props) => {
     const scrollHeight = () => window.scrollY || window.pageYOffset;
     const hoppLenkerScrollheight = () =>
         lenker
-            .map((section) => document.getElementById(section.hopplenke.slice(1)))
+            .map((section) =>
+                document.getElementById(section.hopplenke.slice(1))
+            )
             .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
     // test
 
     useEffect(() => {
         const setFocusIndex = () => {
-            return hoppLenkerScrollheight().map((hoppLenkerScrollheight, index) => {
-                if (hoppLenkerScrollheight - 150 < scrollHeight()) {
-                    return setSectionInFocus(index);
+            return hoppLenkerScrollheight().map(
+                (hoppLenkerScrollheight, index) => {
+                    if (hoppLenkerScrollheight - 150 < scrollHeight()) {
+                        return setSectionInFocus(index);
+                    }
+                    return null;
                 }
-                return null;
-            });
+            );
         };
 
-        window.addEventListener('scroll', () => setFocusIndex(), { passive: true });
+        window.addEventListener('scroll', () => setFocusIndex(), {
+            passive: true,
+        });
         return () => {
             window.removeEventListener('scroll', () => setFocusIndex());
         };
@@ -61,33 +67,48 @@ const Oversikt = (props: Props) => {
 
     return (
         <>
-            <div className={cls.element('oversikt') + ' media-lg-desktop'}>
+            <div
+                className={cls.element('oversikt') + ' media-lg-desktop'}
+                role="navigation"
+            >
                 {lenker.map((lenke, index) => {
                     return (
                         <Infolenke
                             hopplenke={lenke.hopplenke}
                             lenketekst={lenke.lenketekst}
-                            className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
+                            className={cls.element(
+                                'info-lenke',
+                                sectionInFocus === index ? 'bold' : ''
+                            )}
                             key={lenke.lenketekst}
                             lenkeAction={setPanelView}
                         />
                     );
                 })}
             </div>
-            <div className={cls.element('oversikt-mobil') + ' media-mobil-tablet'}>
+            <div
+                className={
+                    cls.element('oversikt-mobil') + ' media-mobil-tablet'
+                }
+            >
                 <EkspanderbartpanelBase
                     tittel={lenker[sectionInFocus].lenketekst}
                     apen={mobilpanelIsopen}
                     onClick={() => setPanelView()}
+                    aria-expanded={sectionInFocus ? 'true' : 'false'}
                 >
                     {lenker.map((lenke, index) => {
                         return (
                             <Infolenke
                                 hopplenke={lenke.hopplenke}
                                 lenketekst={lenke.lenketekst}
-                                className={cls.element('info-lenke', sectionInFocus === index ? 'bold' : '')}
+                                className={cls.element(
+                                    'info-lenke',
+                                    sectionInFocus === index ? 'bold' : ''
+                                )}
                                 key={lenke.lenketekst}
                                 lenkeAction={setPanelView}
+                                isHidden={!sectionInFocus}
                             />
                         );
                     })}

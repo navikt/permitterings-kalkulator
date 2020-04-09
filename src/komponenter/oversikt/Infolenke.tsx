@@ -9,6 +9,7 @@ interface Props {
     lenketekst: string;
     className: string;
     lenkeAction: () => void;
+    isHidden?: boolean;
 }
 
 const Infolenke = (props: Props) => {
@@ -20,6 +21,8 @@ const Infolenke = (props: Props) => {
                     skrivTilMalingMenyValg(props.hopplenke);
                     props.lenkeAction();
                 }}
+                aria-labelledby={props.hopplenke}
+                aria-hidden={props.isHidden ? 'false' : 'true'}
             >
                 <HoyreChevron />
                 <Ingress>{props.lenketekst}</Ingress>

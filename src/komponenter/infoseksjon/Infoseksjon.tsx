@@ -12,8 +12,18 @@ const Infoseksjon: FunctionComponent<Props> = (props) => {
     const cls = BEMHelper(props.className);
 
     return (
-        <section className={cls.element('info-ark')} id={props.id}>
-            <Innholdstittel className={cls.element('info-ark-overskrift')}>{props.overskrift}</Innholdstittel>
+        <section
+            className={cls.element('info-ark')}
+            id={props.id}
+            role="document"
+        >
+            <Innholdstittel
+                className={cls.element('info-ark-overskrift')}
+                role="heading"
+                aria-level={1}
+            >
+                {props.overskrift}
+            </Innholdstittel>
             {props.children}
         </section>
     );

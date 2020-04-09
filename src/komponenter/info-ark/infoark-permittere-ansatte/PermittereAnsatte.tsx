@@ -55,7 +55,12 @@ const InfoarkPermittereAnsatte = (props: Props) => {
                 <ArbeidsgiversMeldeplikt />
             </Tekstseksjon>
             <div className={cls.element('knapp-seksjon')}>
-                <KnappBase onClick={() => gatilSoknad()}>Meld ifra</KnappBase>
+                <KnappBase
+                    aria-label="Gå til søknaden"
+                    onClick={() => gatilSoknad()}
+                >
+                    Meld ifra
+                </KnappBase>
             </div>
             <Tekstseksjon tittel="2. Send permitteringsvarsel">
                 <Sendpermitteringsvarsel />
@@ -68,6 +73,7 @@ const InfoarkPermittereAnsatte = (props: Props) => {
             <HuskArapportere />
             <div className={cls.element('video-frame')}>
                 <iframe
+                    aria-label="video hvordan for arbeidsgivere rundt permittering"
                     src="https://player.vimeo.com/video/398208025"
                     width={videoview}
                     height="360"
