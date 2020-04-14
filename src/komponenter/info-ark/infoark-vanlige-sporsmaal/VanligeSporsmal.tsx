@@ -13,6 +13,7 @@ import Lenke from 'nav-frontend-lenker';
 import { tekstseksjonsSporsmal } from './tekstSporsmalOgSvar';
 import { skrivTilMalingFantDuIkkeDetDuLetteEtter } from '../../../utils/amplitudeUtils';
 import SkyldesPermitteringBrann from './tekster/SkyldesPermitteringBrann';
+import KanJegPermitterePunkter from './lister/KanJegPermitterePunkter';
 
 interface Props {
     className: string;
@@ -46,6 +47,7 @@ const VanligeSporsmal = (props: Props) => {
             >
                 <KanJegPermittere />
             </Tekstseksjon>
+            <KanJegPermitterePunkter />
             <Tekstseksjon
                 tittel={tekstseksjonstittel(1)}
                 id={tekstseksjonsid(1)}
