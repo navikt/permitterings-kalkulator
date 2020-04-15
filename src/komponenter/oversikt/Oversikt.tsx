@@ -47,14 +47,12 @@ const Oversikt = (props: Props) => {
 
     useEffect(() => {
         const setFocusIndex = () => {
-            return hoppLenkerScrollheight().map(
-                (hoppLenkerScrollheight, index) => {
-                    if (hoppLenkerScrollheight - 150 < scrollHeight()) {
-                        return setSectionInFocus(index);
-                    }
-                    return null;
+            return hoppLenkerScrollheight().map((scrollheight, index) => {
+                if (scrollheight - 150 < scrollHeight()) {
+                    return setSectionInFocus(index);
                 }
-            );
+                return null;
+            });
         };
 
         window.addEventListener('scroll', () => setFocusIndex(), {
