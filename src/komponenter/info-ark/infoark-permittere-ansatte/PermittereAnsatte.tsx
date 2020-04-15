@@ -19,7 +19,7 @@ interface Props {
     className: string;
 }
 
-const InfoarkPermittereAnsatte = (props: Props) => {
+const PermittereAnsatte = (props: Props) => {
     const cls = BEMHelper(props.className);
     const desktopSize = 480;
     const tabletSize = 380;
@@ -88,4 +88,4 @@ const InfoarkPermittereAnsatte = (props: Props) => {
     );
 };
 
-export default InfoarkPermittereAnsatte;
+export default PermittereAnsatte;
