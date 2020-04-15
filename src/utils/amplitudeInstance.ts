@@ -6,8 +6,8 @@ const getApiKey = () => {
         : '55477baea93c5227d8c0f6b813653615';
 };
 
-const instance = amplitude.getInstance();
-instance.init(getApiKey(), '', {
+const amplitudeInstance = amplitude.getInstance();
+amplitudeInstance.init(getApiKey(), '', {
     apiEndpoint: 'amplitude.nav.no/collect',
     saveEvents: false,
     includeUtm: true,
@@ -15,4 +15,4 @@ instance.init(getApiKey(), '', {
     includeReferrer: true,
 });
 
-export default instance;
+export default amplitudeInstance;
