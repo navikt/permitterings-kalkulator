@@ -57,7 +57,11 @@
     -->
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
         <div id="scripts"><%=htmlWebpackPlugin.options.scripts %></div>
-        <div id="megamenuResources" role="navigation">
+        <div
+            id="megamenuResources"
+            role="navigation"
+            aria-labelledby="megamenuResources"
+        >
             <%=htmlWebpackPlugin.options.megamenuResources %>
         </div>
         <div id="styles"><%=htmlWebpackPlugin.options.styles %></div>
@@ -74,12 +78,20 @@
         <title>Arbeidsgiver permittering</title>
     </head>
     <body>
-        <div id="headerWithmenu" role="navigation">
+        <div
+            id="headerWithmenu"
+            role="navigation"
+            aria-labelledby="headerWithmenu"
+        >
             <%=htmlWebpackPlugin.options.headerWithmenu %>
         </div>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root" role="main"></div>
-        <div id="footerWithmenu" role="navigation">
+        <div
+            id="footerWithmenu"
+            role="navigation"
+            aria-labelledby="footerWithmenu"
+        >
             <%=htmlWebpackPlugin.options.footerWithmenu %>
         </div>
         <!--

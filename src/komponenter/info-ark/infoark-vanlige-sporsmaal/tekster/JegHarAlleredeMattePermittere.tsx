@@ -1,11 +1,18 @@
 import React from 'react';
+import Lenke from 'nav-frontend-lenker';
 
 const JegHarAlleredeMattePermittere = () => {
     return (
         <>
-            Hvis du har utbetalt lønn for mer enn 2 dager arbeidsgiverperiode før 20. mars, etter tidligere regler, vil
-            ikke disse refunderes. Lønn utover 2 dager arbeidsgiverperiode fra 20. mars som er forskuttert fra
-            arbeidsgiver, kan bli refundert fra NAV. De nærmere regler og rutiner for dette er foreløpig ikke avklart.
+            Hvis du har utbetalt lønn utover de 2 dagene med arbeidsgiverperiode
+            før 20. mars, etter tidligere regler, vil ikke disse refunderes.
+            Lønn du har utbetalt utover de 2 dagene etter 20.mars, kan du få
+            refundert av NAV. Du får ikke refusjon for permitteringer som blir
+            iverksatt 20. april eller senere. NAV jobber med løsning for å søke
+            om refusjon. Les mer om{' '}
+            <Lenke href="https://lovdata.no/dokument/SF/forskrift/2020-04-08-757">
+                refusjon av lønn.
+            </Lenke>
         </>
     );
 };
