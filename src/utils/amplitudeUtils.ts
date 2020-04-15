@@ -10,16 +10,15 @@ export const skrivTilMalingBesokerSide = () => {
 
 export const skrivTilMalingMenyValg = (key: string) => {
     const jsonsection = 'menyvalg';
-    amplitudevalues.map((value: any) => {
+    amplitudevalues.forEach((value: any) => {
         if (value[jsonsection][key]) {
-            return amplitude.logEvent(
+            amplitude.logEvent(
                 defaultkey
                     .concat('-')
                     .concat(jsonsection)
                     .concat(value[jsonsection][key])
             );
         }
-        return null;
     });
 };
 
