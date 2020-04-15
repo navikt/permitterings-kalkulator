@@ -1,4 +1,4 @@
-import amplitude from './amplitude';
+import amplitude from './amplitudeInstance';
 import amplitudevalues from './amplitudevalues.json';
 
 const miljo = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
