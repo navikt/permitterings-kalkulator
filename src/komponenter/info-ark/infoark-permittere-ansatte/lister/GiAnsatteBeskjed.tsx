@@ -1,5 +1,5 @@
 import React from 'react';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import BEMHelper from '../../../../utils/bem';
 import { permitteringClassName } from '../../../Permittering';
 import Lenke from 'nav-frontend-lenker';
@@ -13,15 +13,19 @@ const GiAnsatteBeskjed = () => {
             </Undertittel>
             <ul>
                 <li>
-                    <Lenke href="https://arbeidssokerregistrering.nav.no/start">
-                        Registrer seg som arbeidssøker hos NAV
-                    </Lenke>
+                    <Normaltekst>
+                        <Lenke href="https://arbeidssokerregistrering.nav.no/start">
+                            Registrer seg som arbeidssøker hos NAV
+                        </Lenke>
+                    </Normaltekst>
                 </li>
                 <li>
-                    <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">
-                        Søke om dagpenger
-                    </Lenke>{' '}
-                    Dette bør de helst gjøre digitalt.
+                    <Normaltekst>
+                        <Lenke href="https://www.nav.no/arbeid/dagpenger/permittert">
+                            Søke om dagpenger
+                        </Lenke>{' '}
+                        Dette bør de helst gjøre digitalt.
+                    </Normaltekst>
                 </li>
             </ul>
         </div>

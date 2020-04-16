@@ -1,8 +1,8 @@
 import React from 'react';
-import Lenke from 'nav-frontend-lenker';
 import { Normaltekst } from 'nav-frontend-typografi';
+import Lenke from 'nav-frontend-lenker';
 
-const HvordanSkalJegBeregne = () => {
+const HvorLengeSkalJegBetaleLonn = () => {
     return (
         <>
             <Normaltekst>
@@ -12,12 +12,18 @@ const HvordanSkalJegBeregne = () => {
                 flere dager før denne datoen slipper å utbetale mer lønn. Se
                 hvordan du beregner perioden i{' '}
                 <Lenke href="https://lovdata.no/nav/rundskriv/v1-04-00">
-                    rundskrivet om lønnsplikt
+                    rundskrivet om lønnsplikt.
                 </Lenke>
-                .
+            </Normaltekst>
+            <Normaltekst className="textair">
+                Skyldes permitteringen brann, ulykker eller naturomstendigheter,
+                er det ingen lønnspliktperiode. Les mer om frister i
+                <Lenke href="https://lovdata.no/dokument/NL/lov/2005-06-17-62/KAPITTEL_17#%C2%A715-3">
+                    Arbeidsmiljøloven
+                </Lenke>
             </Normaltekst>
         </>
     );
 };
 
-export default HvordanSkalJegBeregne;
+export default HvorLengeSkalJegBetaleLonn;
