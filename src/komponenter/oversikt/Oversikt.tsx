@@ -22,6 +22,10 @@ const lenker: PermitteringsLenke[] = [
         lenketekst: 'I permitteringsperioden',
     },
     {
+        hopplenke: '#narSkalJegUtbetaleLonn',
+        lenketekst: 'Når skal jeg utbetale lønn?',
+    },
+    {
         hopplenke: '#vanligSpr',
         lenketekst: 'Vanlige spørsmål',
     },

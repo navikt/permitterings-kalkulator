@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import BEMHelper from '../../utils/bem';
 import { permitteringClassName } from '../Permittering';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Undertittel } from 'nav-frontend-typografi';
 
 interface Tekstseksjon {
     tittel?: string;
@@ -30,7 +30,7 @@ const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
                         {props.tittel}
                     </Undertittel>
                 ) : null}
-                <Normaltekst>{props.children}</Normaltekst>
+                <>{props.children}</>
             </div>
         </>
     );

@@ -8,6 +8,7 @@ import Ipermitteringsperioden from './info-ark/infoark-ipermitteringsperioden/Ip
 import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsmal';
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
+import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
@@ -37,6 +38,15 @@ const Permittering = () => {
                             id="permitteringsperioden"
                         >
                             <Ipermitteringsperioden
+                                className={permittering.className}
+                            />
+                        </Infoseksjon>
+                        <Infoseksjon
+                            className={permittering.className}
+                            overskrift="Når skal jeg utbetale lønn?"
+                            id="narSkalJegUtbetaleLonn"
+                        >
+                            <NarSkalJegUtbetaleLonn
                                 className={permittering.className}
                             />
                         </Infoseksjon>
