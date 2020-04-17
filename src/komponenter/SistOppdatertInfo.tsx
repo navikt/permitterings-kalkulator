@@ -13,7 +13,7 @@ const SistOppdatertInfo = (props: Props) => {
             <Normaltekst className={cls.element('sist-oppdatert')}>
                 <i>
                     Denne siden blir løpende oppdatert, sist oppdatert
-                    16.04.2020 16:30
+                    17.04.2020 14:00
                 </i>
             </Normaltekst>
         </>
