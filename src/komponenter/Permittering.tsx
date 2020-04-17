@@ -34,19 +34,19 @@ const Permittering = () => {
                         </Infoseksjon>
                         <Infoseksjon
                             className={permittering.className}
-                            overskrift="I permitteringsperioden"
-                            id="permitteringsperioden"
+                            overskrift="Når skal jeg utbetale lønn?"
+                            id="narSkalJegUtbetaleLonn"
                         >
-                            <Ipermitteringsperioden
+                            <NarSkalJegUtbetaleLonn
                                 className={permittering.className}
                             />
                         </Infoseksjon>
                         <Infoseksjon
                             className={permittering.className}
-                            overskrift="Når skal jeg utbetale lønn?"
-                            id="narSkalJegUtbetaleLonn"
+                            overskrift="I permitteringsperioden"
+                            id="permitteringsperioden"
                         >
-                            <NarSkalJegUtbetaleLonn
+                            <Ipermitteringsperioden
                                 className={permittering.className}
                             />
                         </Infoseksjon>
