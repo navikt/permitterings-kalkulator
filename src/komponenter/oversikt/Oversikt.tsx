@@ -18,12 +18,12 @@ const lenker: PermitteringsLenke[] = [
         lenketekst: 'Hvordan permittere ansatte?',
     },
     {
-        hopplenke: '#permitteringsperioden',
-        lenketekst: 'I permitteringsperioden',
-    },
-    {
         hopplenke: '#narSkalJegUtbetaleLonn',
         lenketekst: 'Når skal jeg utbetale lønn?',
+    },
+    {
+        hopplenke: '#permitteringsperioden',
+        lenketekst: 'I permitteringsperioden',
     },
     {
         hopplenke: '#vanligSpr',

@@ -16,10 +16,10 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
             <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
                 <HvorLengeSkalJegBetaleLonn />
             </Tekstseksjon>
-            <Tekstseksjon tittel="Du må ikke forskuttere lønn">
+            <Tekstseksjon tittel="Du må ikke forskuttere lønn for permitteringer som starter fra 20.april">
                 <DuMaIkkeForskuttereLonn />
             </Tekstseksjon>
-            <Tekstseksjon tittel="Tilbakebetaling av utbetalt lønn etter 2. permitteringsdag">
+            <Tekstseksjon tittel="Refusjon av utbetalt lønn etter 2. permitteringsdag">
                 <TilbakebetalingAvUtbetaltLonn />
             </Tekstseksjon>
         </div>
