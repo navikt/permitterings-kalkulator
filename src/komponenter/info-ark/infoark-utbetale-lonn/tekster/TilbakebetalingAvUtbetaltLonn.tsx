@@ -16,8 +16,8 @@ const TilbakebetalingAvUtbetaltLonn = () => {
                 Vi dekker ikke lønn som er høyere enn seks ganger grunnbeløpet.
                 Er den ansatte delvis permittert, for eksempel 50 prosent, får
                 du dekket 50 prosent av lønnsutgiftene dine. Du må søke senest
-                31 oktober 2020 dersom du vil ha refundert lønn du har utbetalt
-                til permitterte fra 20 mars. Vi jobber med en søknad og kommer
+                31. oktober 2020 dersom du vil ha refundert lønn du har utbetalt
+                til permitterte fra 20. mars. Vi jobber med en søknad og kommer
                 med mer informasjon når den er klar.
             </Normaltekst>
         </>
