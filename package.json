@@ -10,6 +10,7 @@
         "@testing-library/user-event": "^7.1.2",
         "@types/amplitude-js": "^5.8.0",
         "@types/jest": "^25.1.4",
+        "@types/lodash.throttle": "^4.1.6",
         "@types/node": "^12.12.31",
         "amplitude-js": "^5.11.0",
         "classnames": "^2.2.6",

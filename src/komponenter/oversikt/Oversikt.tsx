@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import Infolenke from './Infolenke';
 import { EkspanderbartpanelBase } from 'nav-frontend-ekspanderbartpanel';
+import throttle from 'lodash.throttle';
 
 interface Props {
     className: string;
@@ -47,7 +48,6 @@ const Oversikt = (props: Props) => {
                 document.getElementById(section.hopplenke.slice(1))
             )
             .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
-    // test
 
     useEffect(() => {
         const setFocusIndex = () => {
@@ -59,7 +59,8 @@ const Oversikt = (props: Props) => {
             });
         };
 
-        window.addEventListener('scroll', () => setFocusIndex(), {
+        const throttleScrollevent = throttle(() => setFocusIndex(), 50);
+        window.addEventListener('scroll', throttleScrollevent, {
             passive: true,
         });
         return () => {

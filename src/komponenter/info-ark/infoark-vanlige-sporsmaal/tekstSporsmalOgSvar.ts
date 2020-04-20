@@ -18,6 +18,10 @@ export const tekstseksjonsSporsmal: TekstSporsmalOgSvar[] = [
         id: '#hvordanKanJegVare',
     },
     {
+        tittel: 'Kan også tilkallingsvikarer permitteres?',
+        id: '#KanOgsaTilkallingsvikarerPermitteres',
+    },
+    {
         tittel: 'Fant du ikke det du lette etter?',
         id: '#fantDuIkke',
     },
