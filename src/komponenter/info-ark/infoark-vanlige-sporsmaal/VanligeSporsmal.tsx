@@ -8,6 +8,7 @@ import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
 import { tekstseksjonsSporsmal } from './tekstSporsmalOgSvar';
 import KanJegPermitterePunkter from './lister/KanJegPermitterePunkter';
 import FantDuIkkeSvar from './tekster/FantDuIkkeSvar';
+import KanOgsaTilkallingsvikarerPermitteres from './tekster/KanOgsaTilkallingsvikarerPermitteres';
 
 interface Props {
     className: string;
@@ -45,10 +46,15 @@ const VanligeSporsmal = (props: Props) => {
             >
                 <HvordanSkalJegVareSikker />
             </Tekstseksjon>
-
             <Tekstseksjon
                 tittel={tekstseksjonstittel(3)}
                 id={tekstseksjonsid(3)}
+            >
+                <KanOgsaTilkallingsvikarerPermitteres />
+            </Tekstseksjon>
+            <Tekstseksjon
+                tittel={tekstseksjonstittel(4)}
+                id={tekstseksjonsid(4)}
             >
                 <FantDuIkkeSvar />
             </Tekstseksjon>
