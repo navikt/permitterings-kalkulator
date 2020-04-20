@@ -48,7 +48,6 @@ const Oversikt = (props: Props) => {
                 document.getElementById(section.hopplenke.slice(1))
             )
             .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
-    // test
 
     useEffect(() => {
         const setFocusIndex = () => {
