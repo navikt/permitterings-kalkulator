@@ -17,10 +17,11 @@ const HvorLengeSkalJegBetaleLonn = () => {
             </Normaltekst>
             <Normaltekst className="textair">
                 Skyldes permitteringen brann, ulykker eller naturomstendigheter,
-                er det ingen lønnspliktperiode. Les mer om frister i
+                er det ingen lønnspliktperiode. Les mer om frister i{' '}
                 <Lenke href="https://lovdata.no/dokument/NL/lov/2005-06-17-62/KAPITTEL_17#%C2%A715-3">
                     Arbeidsmiljøloven
                 </Lenke>
+                .
             </Normaltekst>
         </>
     );
