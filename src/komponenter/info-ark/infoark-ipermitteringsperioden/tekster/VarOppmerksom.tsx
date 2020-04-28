@@ -5,10 +5,13 @@ const VarOppmerksom = () => {
     return (
         <>
             <Normaltekst>
-                Varer arbeidsoppdraget lengre enn seks uker, må du som
-                arbeidsgiver gi nytt varsel og betale lønn for den første
-                permitteringtiden en gang til. Er arbeidstakeren permittert fra
-                en fiskeforedlings- eller fiskeoljebedrift gjelder egne regler.
+                Hvis den ansatte er tilbake i full stilling i mer enn 6 uker
+                sammenhengende, vil permitteringen regnes som avbrutt. Hvis du
+                skal permittere ansatte på nytt, må du sende nytt
+                permitteringsvarsel og betale lønn for de første dagene av
+                permitteringen. <br />
+                Er arbeidstakeren permittert fra en fiskeforedlings- eller
+                fiskeoljebedrift gjelder egne regler.
             </Normaltekst>
         </>
     );
