@@ -8,7 +8,7 @@ const HvordanSkalJegVareSikker = () => {
             <Normaltekst>
                 Du kan permittere dersom virksomheten din reduseres eller
                 stanses i en periode . Dette går fram av{' '}
-                <Lenke href="https://miro.com/app/board/o9J_kuvJ70c=/?moveToWidget=3074457347504500019&cot=4">
+                <Lenke href="https://www.lo.no/hovedavtalen/#3989">
                     Hovedavtalen LO NHO
                 </Lenke>
                 . Vi tar stilling til om permitteringen gir rett til dagpenger
