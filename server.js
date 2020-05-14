@@ -14,7 +14,7 @@ const { JSDOM } = jsdom;
 const prop = 'innerHTML';
 const url =
     process.env.DECORATOR_EXTERNAL_URL ||
-    'https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4/no/';
 
 const htmlinsert = [
     { inject: 'styles', from: 'styles' },
@@ -27,18 +27,24 @@ const htmlinsert = [
 // Cache init
 const mainCacheKey = 'tiltak-withMenu';
 const backupCacheKey = 'tiltak-withMenuBackup';
-const mainCache = new NodeCache({ stdTTL: 10000, checkperiod: 10020 });
+const mainCache = new NodeCache({ stdTTL: 10000, checkperiod: 100 });
 const backupCache = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 
-server.get('/arbeidsgiver-permittering/internal/isAlive', (req, res) => res.sendStatus(200));
-server.get('/arbeidsgiver-permittering/internal/isReady', (req, res) => res.sendStatus(200));
+server.get('/arbeidsgiver-permittering/internal/isAlive', (req, res) =>
+    res.sendStatus(200)
+);
+server.get('/arbeidsgiver-permittering/internal/isReady', (req, res) =>
+    res.sendStatus(200)
+);
 
 const injectMenuIntoHtml = (menu) => {
     fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, html) {
         if (!err) {
             const { document } = new JSDOM(html).window;
             htmlinsert.forEach((element) => {
-                document.getElementById(element.inject)[prop] = menu.getElementById(element.from)[prop];
+                document.getElementById(element.inject)[
+                    prop
+                ] = menu.getElementById(element.from)[prop];
             });
             const output = document.documentElement.innerHTML;
             mainCache.set(mainCacheKey, output, 10000);
@@ -69,8 +75,14 @@ const serveAppWithMenu = (app) => {
         '/arbeidsgiver-permittering/asset-manifest.json',
         express.static(path.join(__dirname, 'build/asset-manifest.json'))
     );
-    server.use('/arbeidsgiver-permittering/manifest.json', express.static(path.join(__dirname, 'build/manifest.json')));
-    server.use('/arbeidsgiver-permittering/favicon.ico', express.static(path.join(__dirname, 'build/favicon.ico')));
+    server.use(
+        '/arbeidsgiver-permittering/manifest.json',
+        express.static(path.join(__dirname, 'build/manifest.json'))
+    );
+    server.use(
+        '/arbeidsgiver-permittering/favicon.ico',
+        express.static(path.join(__dirname, 'build/favicon.ico'))
+    );
     server.use(
         '/arbeidsgiver-permittering/precache-manifest.*',
         express.static(path.join(__dirname, 'build/precache-manifest.*'))
@@ -81,13 +93,24 @@ const serveAppWithMenu = (app) => {
     );
     server.use(
         '/arbeidsgiver-permittering/permittering.nav.illustrasjon.png',
-        express.static(path.join(__dirname, 'build/permittering.nav.illustrasjon.png'))
+        express.static(
+            path.join(__dirname, 'build/permittering.nav.illustrasjon.png')
+        )
     );
-    server.use('/arbeidsgiver-permittering/static', express.static(path.join(__dirname, 'build/static')));
-    server.use('/arbeidsgiver-permittering/index.css', express.static(path.join(__dirname, 'build/index.css')));
-    server.get(['/arbeidsgiver-permittering/', '/arbeidsgiver-permittering/*'], (req, res) => {
-        res.send(app);
-    });
+    server.use(
+        '/arbeidsgiver-permittering/static',
+        express.static(path.join(__dirname, 'build/static'))
+    );
+    server.use(
+        '/arbeidsgiver-permittering/index.css',
+        express.static(path.join(__dirname, 'build/index.css'))
+    );
+    server.get(
+        ['/arbeidsgiver-permittering/', '/arbeidsgiver-permittering/*'],
+        (req, res) => {
+            res.send(app);
+        }
+    );
     setServerPort();
 };
 
@@ -99,7 +122,10 @@ const setServerPort = () => {
 };
 
 const serveAppWithOutMenu = () => {
-    server.use('/arbeidsgiver-permittering', express.static(path.join(__dirname, 'build')));
+    server.use(
+        '/arbeidsgiver-permittering',
+        express.static(path.join(__dirname, 'build'))
+    );
     server.get('/arbeidsgiver-permittering/*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
     });
@@ -123,7 +149,9 @@ const checkBackupCache = () => {
             serveAppWithMenu(response);
         } else {
             console.log('failed to fetch menu');
-            console.log('cache store empty, serving app with out menu fragments');
+            console.log(
+                'cache store empty, serving app with out menu fragments'
+            );
             serveAppWithOutMenu();
         }
     });
