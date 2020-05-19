@@ -2,10 +2,8 @@ import React from 'react';
 import BEMHelper from '../../../utils/bem';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
 import HvorLengeSkalJegBetaleLonn from './tekster/HvorLengeSkalJegBetaleLonn';
-import DuMaIkkeForskuttereLonn from './tekster/DuMaIkkeForskuttereLonn';
-import TilbakebetalingAvUtbetaltLonn from './tekster/TilbakebetalingAvUtbetaltLonn';
 import UtbetaleLonnIllustrasjon from './Hvor-lenge-skal-jeg-betale/UtbetaleLonnIllustrasjon';
-import { Normaltekst, UndertekstBold, Element } from 'nav-frontend-typografi';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
 
 interface Props {
     className: string;
