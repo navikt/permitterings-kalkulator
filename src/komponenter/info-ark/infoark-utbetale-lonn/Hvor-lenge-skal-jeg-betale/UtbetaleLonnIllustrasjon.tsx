@@ -29,11 +29,10 @@ const utbetalingSteg: Steg[] = [
     },
     {
         svg: <GrattTrinnLonnskompensasjon />,
-        tittel: 'Lønnskompensasjon fra NAV',
+        tittel: 'Lønnskompensasjon fra NAV til arbeidstaker',
         tekst: [
             'NAV betaler lønn opp til 6G for dagene 3 - 20 til arbeidstaker.',
-            'NAV utvikler en løsning der arbeidsgiver gir opplysninger om arbeidsforholder itl NAV. Dette innebærer at arbeidstaker ikke trenger søke om lønnskompensasjon. Løsningen er ventet å være klar i midten av juni.',
-            'Har du allerede betalt lønn? Refusjon av utbetalt lønn etter 2. Permitteringsdag',
+            'NAV utvikler en løsning der arbeidsgiver gir opplysninger om arbeidsforholdet til NAV. Dette innebærer at arbeidstaker ikke trenger søke om lønnskompensasjon. Løsningen er ventet å være klar i midten av juni.',
         ],
     },
     {

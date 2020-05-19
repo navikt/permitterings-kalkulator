@@ -5,7 +5,7 @@ import HvorLengeSkalJegBetaleLonn from './tekster/HvorLengeSkalJegBetaleLonn';
 import DuMaIkkeForskuttereLonn from './tekster/DuMaIkkeForskuttereLonn';
 import TilbakebetalingAvUtbetaltLonn from './tekster/TilbakebetalingAvUtbetaltLonn';
 import UtbetaleLonnIllustrasjon from './Hvor-lenge-skal-jeg-betale/UtbetaleLonnIllustrasjon';
-import { Normaltekst, UndertekstBold } from 'nav-frontend-typografi';
+import { Normaltekst, UndertekstBold, Element } from 'nav-frontend-typografi';
 
 interface Props {
     className: string;
@@ -18,6 +18,9 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
             <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
                 <UtbetaleLonnIllustrasjon />
             </Tekstseksjon>
+            <Tekstseksjon tittel="Permitteringen starter">
+                <HvorLengeSkalJegBetaleLonn />
+            </Tekstseksjon>
             <Tekstseksjon tittel="Lønnskompensasjon  fra NAV til arbeidstaker">
                 <Normaltekst>
                     NAV jobber med en løsning der arbeidsgiver gir informasjon
@@ -29,9 +32,9 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                 </Normaltekst>
             </Tekstseksjon>
             <Tekstseksjon>
-                <UndertekstBold>
+                <Element>
                     Du skal ikke forskuttere lønn for permitteringer
-                </UndertekstBold>
+                </Element>
                 <Normaltekst>
                     Du skal ikke forskuttere lønn til ansatte for dag 3-20 for
                     permitteringer som startet 20. april eller senere. NAV
@@ -42,9 +45,9 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                 </Normaltekst>
             </Tekstseksjon>
             <Tekstseksjon>
-                <UndertekstBold>
+                <Element>
                     Refusjon av utbetalt lønn etter 2.permitteringsdag
-                </UndertekstBold>
+                </Element>
                 <Normaltekst>
                     Du skal kun betale lønn de to første dagene etter at
                     permitteringen har begynt. Har du forskuttert lønn til
@@ -63,16 +66,6 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                     Vi jobber med en søknad og kommer med mer informasjon når
                     den er klar.
                 </Normaltekst>
-            </Tekstseksjon>
-
-            <Tekstseksjon tittel="Permitteringen starter">
-                <HvorLengeSkalJegBetaleLonn />
-            </Tekstseksjon>
-            <Tekstseksjon tittel="Du må ikke forskuttere lønn for permitteringer som starter fra 20.april">
-                <DuMaIkkeForskuttereLonn />
-            </Tekstseksjon>
-            <Tekstseksjon tittel="Refusjon av utbetalt lønn etter 2. permitteringsdag">
-                <TilbakebetalingAvUtbetaltLonn />
             </Tekstseksjon>
         </div>
     );
