@@ -1,4 +1,5 @@
 FROM navikt/node-express:12.2.0-alpine
+ENV NODE_ENV production
 
 RUN npm config set unsafe-perm true
 RUN npm install -g helmet@3.21.3
