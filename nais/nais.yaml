@@ -17,3 +17,5 @@ spec:
   readiness:
     path: /arbeidsgiver-permittering/internal/isReady
     initialDelay: 10
+  vault:
+    enabled: true
