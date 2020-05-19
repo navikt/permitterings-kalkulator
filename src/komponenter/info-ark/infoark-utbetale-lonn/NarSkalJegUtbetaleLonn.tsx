@@ -42,10 +42,7 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                     lønnskompensasjon direkte til arbeidstaker.
                 </Normaltekst>
             </Tekstseksjon>
-            <Tekstseksjon>
-                <Element>
-                    Refusjon av utbetalt lønn etter 2.permitteringsdag
-                </Element>
+            <Tekstseksjon tittel="Refusjon av utbetalt lønn etter 2.permitteringsdag">
                 <Normaltekst>
                     Du skal kun betale lønn de to første dagene etter at
                     permitteringen har begynt. Har du forskuttert lønn til
@@ -55,6 +52,7 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                     ble permittert etter denne datoen vil få lønnskompensasjon
                     direkte fra NAV.
                 </Normaltekst>
+                <br />
                 <Normaltekst>
                     Vi dekker ikke lønn som er høyere enn seks ganger
                     grunnbeløpet. Er den ansatte delvis permittert, for eksempel
