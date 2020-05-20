@@ -19,3 +19,4 @@ spec:
     initialDelay: 10
   vault:
     enabled: true
+  webproxy: true
