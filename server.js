@@ -105,6 +105,7 @@ const checkbackupCacheInnhold = (res, fetchError) => {
         res.send(cacheBackupInnhold);
         console.log('cacheBackupInnhold', cacheBackupInnhold);
     } else {
+        console.log('process env ', process.env);
         console.log('fetchError', fetchError);
         res.send(fetchError);
     }
