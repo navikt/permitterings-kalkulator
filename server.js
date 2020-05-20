@@ -19,12 +19,6 @@ const sanityClient = require('@sanity/client');
 const server = express();
 server.use(helmet());
 
-// console log for sjekk i kubectl at jeg faar ut verdiene
-console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-console.log('process.env.SANITY_PROJECT_ID ', process.env.SANITY_PROJECT_ID);
-console.log('process.env.SANITY_DATASET ', process.env.SANITY_DATASET);
-console.log('process.env.SANITY_TOKEN ', process.env.SANITY_TOKEN);
-
 const BASE_URL = '/arbeidsgiver-permittering';
 const { JSDOM } = jsdom;
 const prop = 'innerHTML';
@@ -108,15 +102,7 @@ const checkbackupCacheInnhold = (res, fetchError) => {
     if (cacheBackupInnhold) {
         mainCacheInnhold.set(mainCacheInnholdKey, cacheBackupInnhold);
         res.send(cacheBackupInnhold);
-        console.log('cacheBackupInnhold', cacheBackupInnhold);
     } else {
-        console.log('process.env.NODE_ENV', process.env.NODE_ENV);
-        console.log(
-            'process.env.SANITY_PROJECT_ID ',
-            process.env.SANITY_PROJECT_ID
-        );
-        console.log('process.env.SANITY_DATASET ', process.env.SANITY_DATASET);
-        console.log('process.env.SANITY_TOKEN ', process.env.SANITY_TOKEN);
         console.log('fetchError', fetchError);
         res.send(fetchError);
     }
@@ -129,7 +115,6 @@ const fetchInnhold = (res) => {
         .then((result) => {
             mainCacheInnhold.set(mainCacheInnholdKey, result);
             backupCacheInnhold.set(backupCacheInnholdKey, result);
-            console.log('result', result);
             res.send(result);
         })
         .catch((error) => {

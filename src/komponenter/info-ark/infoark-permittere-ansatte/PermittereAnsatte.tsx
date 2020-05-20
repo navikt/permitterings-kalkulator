@@ -2,21 +2,16 @@ import React, { useEffect, useState } from 'react';
 import BEMHelper from '../../../utils/bem';
 import KnappBase from 'nav-frontend-knapper';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import ArbeidsgiversMeldeplikt from './tekster/ArbeidsgiversMeldeplikt';
-import Sendpermitteringsvarsel from './tekster/Sendpermitteringsvarsel';
-import VarselSkalInneholde from './lister/VarselSkalInneholde';
-import DersomVarselInneholder from './tekster/DersomVarselInneholder';
-import GiAnsatteBeskjed from './lister/GiAnsatteBeskjed';
-import ItilleggBerVi from './lister/ItilleggBerVi';
-import HuskArapportere from './tekster/HuskArapportere';
-import InfoLenker from './tekster/InfoLenker';
 import {
     skrivTilMalingBesokerSideGaTilSkjema,
     skrivTilMalingVideoBlirSpilt,
 } from '../../../utils/amplitudeUtils';
+import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
+import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
 
 interface Props {
     className: string;
+    content: SanityBlockTypes[];
 }
 
 const PermittereAnsatte = (props: Props) => {
@@ -40,6 +35,19 @@ const PermittereAnsatte = (props: Props) => {
             'https://www.nav.no/soknader/nb/bedrift/permitteringer-oppsigelser-og-konkurs/masseoppsigelser';
     };
 
+    const leggTilSoknadInngang = (index: number): React.ReactNode | null => {
+        return index === 0 ? (
+            <div className={cls.element('knapp-seksjon')}>
+                <KnappBase
+                    aria-label="Gå til søknaden"
+                    onClick={() => gatilSoknad()}
+                >
+                    Meld ifra
+                </KnappBase>
+            </div>
+        ) : null;
+    };
+
     useEffect(() => {
         const handleresize = () => {
             return setVideoview(setSize());
@@ -51,26 +59,20 @@ const PermittereAnsatte = (props: Props) => {
 
     return (
         <div className={cls.element('avsnitt')}>
-            <Tekstseksjon tittel="1. Meld fra til NAV">
-                <ArbeidsgiversMeldeplikt />
-            </Tekstseksjon>
-            <div className={cls.element('knapp-seksjon')}>
-                <KnappBase
-                    aria-label="Gå til søknaden"
-                    onClick={() => gatilSoknad()}
-                >
-                    Meld ifra
-                </KnappBase>
-            </div>
-            <Tekstseksjon tittel="2. Send permitteringsvarsel">
-                <Sendpermitteringsvarsel />
-            </Tekstseksjon>
-            <InfoLenker />
-            <VarselSkalInneholde />
-            <ItilleggBerVi />
-            <DersomVarselInneholder />
-            <GiAnsatteBeskjed />
-            <HuskArapportere />
+            {props.content.length > 0
+                ? props.content.map(
+                      (element: SanityBlockTypes, index: number) => {
+                          return (
+                              <div key={index}>
+                                  <Tekstseksjon tittel={element.title}>
+                                      <SanityBlocktype content={element} />
+                                  </Tekstseksjon>
+                                  {leggTilSoknadInngang(index)}
+                              </div>
+                          );
+                      }
+                  )
+                : null}
             <div className={cls.element('video-frame')}>
                 <iframe
                     aria-label="video hvordan for arbeidsgivere rundt permittering"

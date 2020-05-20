@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import BEMHelper from '../utils/bem';
 import Banner from './banner/Banner';
 import Oversikt from './oversikt/Oversikt';
@@ -9,11 +9,60 @@ import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsma
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
+import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
+import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
+import { SanityBlockTypes } from '../sanity-blocks/sanityTypes';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
 
 const Permittering = () => {
+    const [hvordanPermittere, setHvordanPermittere] = useState<
+        [] | SanityBlockTypes[]
+    >([]);
+    const [narSkalJegUtbetale, setNarSkalJegUtbetale] = useState<
+        [] | SanityBlockTypes[]
+    >([]);
+    const [iPermitteringsperioden, setIpermitteringsperioden] = useState<
+        [] | SanityBlockTypes[]
+    >([]);
+    const [vanligeSpr, setVanligeSpr] = useState<[] | SanityBlockTypes[]>([]);
+
+    const writeToHook = (item: SanityBlockTypes) => {
+        switch (item._type) {
+            case 'hvordan-permittere-ansatte':
+                return setHvordanPermittere((hvordanPermittere) => [
+                    ...hvordanPermittere,
+                    item,
+                ]);
+            case 'i-permitteringsperioden':
+                return setIpermitteringsperioden((iPermitteringsperioden) => [
+                    ...iPermitteringsperioden,
+                    item,
+                ]);
+            case 'nar-skal-jeg-utbetale-lonn':
+                return setNarSkalJegUtbetale((narSkalJegUtbetale) => [
+                    ...narSkalJegUtbetale,
+                    item,
+                ]);
+            case 'vanlige-sporsmal':
+                return setVanligeSpr((vanligeSpr) => [...vanligeSpr, item]);
+        }
+    };
+
+    useEffect(() => {
+        const url = isProduction();
+        fetchsanityJSON(url)
+            .then((res) => {
+                console.log(res);
+                res.forEach((item: SanityBlockTypes) => {
+                    writeToHook(item);
+                });
+            })
+            .catch((err) => console.warn(err));
+        skrivTilMalingBesokerSide();
+    }, []);
+
     return (
         <div className={permittering.className}>
             <Banner classname="banner" />
@@ -30,6 +79,7 @@ const Permittering = () => {
                         >
                             <PermittereAnsatte
                                 className={permittering.className}
+                                content={hvordanPermittere}
                             />
                         </Infoseksjon>
                         <Infoseksjon
@@ -39,6 +89,7 @@ const Permittering = () => {
                         >
                             <NarSkalJegUtbetaleLonn
                                 className={permittering.className}
+                                content={narSkalJegUtbetale}
                             />
                         </Infoseksjon>
                         <Infoseksjon
@@ -48,6 +99,7 @@ const Permittering = () => {
                         >
                             <Ipermitteringsperioden
                                 className={permittering.className}
+                                content={iPermitteringsperioden}
                             />
                         </Infoseksjon>
                         <Infoseksjon
@@ -57,6 +109,7 @@ const Permittering = () => {
                         >
                             <VanligeSporsmal
                                 className={permittering.className}
+                                content={vanligeSpr}
                             />
                         </Infoseksjon>
                     </div>

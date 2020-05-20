@@ -1,30 +1,18 @@
 import React from 'react';
 import BEMHelper from '../../../utils/bem';
-import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import KanAnsattejobbe from './tekster/KanAnsattejobbe';
-import AvbrytePermitteringen from './tekster/AvbrytePermitteringen';
-import OppsigelseUnderPermittering from './tekster/OppsigelseUnderPermittering';
-import VarOppmerksom from './tekster/VarOppmerksom';
+import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
+import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
 
 interface Props {
     className: string;
+    content: SanityBlockTypes[];
 }
 
 const Ipermitteringsperioden = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
         <div className={cls.element('avsnitt')}>
-            <Tekstseksjon tittel="Kan ansatte jobbe når de er permittert?">
-                <KanAnsattejobbe />
-            </Tekstseksjon>
-            <Tekstseksjon>
-                <VarOppmerksom />
-            </Tekstseksjon>
-
-            <Tekstseksjon tittel="Avbryte permitteringen">
-                <AvbrytePermitteringen />
-            </Tekstseksjon>
-            <OppsigelseUnderPermittering />
+            <SanityInnhold textdocument={props.content} />
         </div>
     );
 };
