@@ -5,6 +5,7 @@
     "homepage": "/arbeidsgiver-permittering",
     "dependencies": {
         "@craco/craco": "^5.6.4",
+        "@sanity/client": "^1.149.13",
         "@testing-library/jest-dom": "^4.2.4",
         "@testing-library/react": "^9.3.2",
         "@testing-library/user-event": "^7.1.2",
@@ -14,8 +15,10 @@
         "@types/node": "^12.12.31",
         "amplitude-js": "^5.11.0",
         "classnames": "^2.2.6",
+        "console-stamp": "^0.2.9",
         "craco-less": "^1.16.0",
         "cross-env": "^7.0.2",
+        "dotenv": "^8.2.0",
         "express": "^4.17.1",
         "helmet": "^3.22.0",
         "jsdom": "^16.2.2",
@@ -58,11 +61,13 @@
         "typescript": "^3.8.3"
     },
     "scripts": {
-        "start": "cross-env ENABLE_EXTERNAL_MENU=true craco start",
+        "start": "npm-run-all -p -r start-with-menu dev-server",
+        "start-with-menu": "cross-env ENABLE_EXTERNAL_MENU=true craco start ",
         "start-plain": "craco start",
         "build": "craco build",
         "build-prod": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
         "server": "node server.js",
+        "dev-server": "cross-env PORT=3001 node server.js",
         "test": "react-scripts test"
     },
     "eslintConfig": {
