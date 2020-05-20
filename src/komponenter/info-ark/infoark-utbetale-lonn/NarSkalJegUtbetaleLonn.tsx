@@ -25,7 +25,7 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                     til NAV om hvem som skal ha lønnskompesasjon og hvor mye de
                     skal ha. Dette innebærer at arbeidstaker ikke trenger å søke
                     om lønnskompensasjon. Løsningen er ventet å være klar i
-                    midten av juni. Vi kommer med mer informasjon når det er
+                    midten av juni. Vi kommer med mer informasjon når den er
                     klar.
                 </Normaltekst>
             </Tekstseksjon>
