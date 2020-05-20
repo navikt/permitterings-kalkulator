@@ -29,9 +29,9 @@ const BASE_URL = '/arbeidsgiver-permittering';
 const { JSDOM } = jsdom;
 const prop = 'innerHTML';
 const client = sanityClient({
-    projectId: process.env.SANITY_PROJECT_ID,
-    dataset: process.env.SANITY_DATASET,
-    token: process.env.SANITY_TOKEN,
+    projectId: trim(process.env.SANITY_PROJECT_ID),
+    dataset: trim(process.env.SANITY_DATASET),
+    token: trim(process.env.SANITY_TOKEN),
     useCdn: false,
 });
 
