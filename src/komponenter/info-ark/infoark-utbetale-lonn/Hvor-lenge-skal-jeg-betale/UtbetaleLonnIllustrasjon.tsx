@@ -47,16 +47,20 @@ const UtbetaleLonnIllustrasjon = () => {
     return (
         <>
             <div className={cls.className}>
-                {utbetalingSteg.map((element: Steg) => (
-                    <div className={cls.element('rad')}>
+                {utbetalingSteg.map((element: Steg, index: number) => (
+                    <div className={cls.element('rad')} key={index}>
                         <div className={cls.element('svg')}>{element.svg}</div>
                         <div className={cls.element('txt-col')}>
                             <Undertittel className={cls.element('tittel')}>
                                 {element.tittel}
                             </Undertittel>
-                            {element.tekst.map((element: string) => (
-                                <Normaltekst>{element}</Normaltekst>
-                            ))}
+                            {element.tekst.map(
+                                (element: string, index: number) => (
+                                    <Normaltekst key={index}>
+                                        {element}
+                                    </Normaltekst>
+                                )
+                            )}
                         </div>
                     </div>
                 ))}
