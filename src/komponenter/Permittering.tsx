@@ -54,7 +54,6 @@ const Permittering = () => {
         const url = isProduction();
         fetchsanityJSON(url)
             .then((res) => {
-                console.log(res);
                 res.forEach((item: SanityBlockTypes) => {
                     writeToHook(item);
                 });

@@ -20,8 +20,13 @@ export enum TypoStyle {
 }
 
 export type TextBlock = {
-    node: { style: TypoStyle };
-    children: React.ReactElement[];
+    node: {
+        markDefs: [];
+        _key: string;
+        _type: string;
+        style: TypoStyle;
+    };
+    children: React.ReactElement[] | string[];
 };
 
 const typoComponents = {
@@ -34,14 +39,35 @@ const typoComponents = {
     [TypoStyle.Normal]: Normaltekst,
 };
 
+interface T {
+    props: TextBlock;
+}
+
+const Whitespace = (innhold: T): React.ReactElement => {
+    return (
+        <>
+            {blockSerializer(innhold.props)}
+            <br />
+        </>
+    );
+};
+
 const blockSerializer = (block: TextBlock) => {
     const TypoComponent =
         typoComponents[block.node.style] || typoComponents[TypoStyle.Normal];
     return <TypoComponent>{block.children}</TypoComponent>;
 };
 
+const serializeCheck = (block: TextBlock) => {
+    return block.children[block.children.length - 1] !== '' ? (
+        blockSerializer(block)
+    ) : (
+        <Whitespace props={block} />
+    );
+};
+
 export const serializers = {
     types: {
-        block: blockSerializer,
+        block: serializeCheck,
     },
 };

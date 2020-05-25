@@ -36,7 +36,10 @@ const mainCacheInnholdKey = 'permittering-innhold';
 const backupCacheInnholdKey = 'permittering-innholdBackup';
 const mainCacheMeny = new NodeCache({ stdTTL: 900, checkperiod: 90 });
 const backupCacheMeny = new NodeCache({ stdTTL: 0, checkperiod: 0 });
-const mainCacheInnhold = new NodeCache({ stdTTL: 600, checkperiod: 60 });
+const mainCacheInnhold = new NodeCache({
+    stdTTL: parseInt(process.env.SANITY_CACHE_TTL),
+    checkperiod: parseInt(process.env.SANITY_CACHE_CHECK),
+});
 const backupCacheInnhold = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 
 //server response to pipeline
