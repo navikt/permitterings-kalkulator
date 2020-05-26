@@ -4,9 +4,10 @@ import { Normaltekst } from 'nav-frontend-typografi';
 import { permitteringClassName } from '../../Permittering';
 import BEMHelper from '../../../utils/bem';
 import { skrivTilMalingBrukerTrykketPaSporsmal } from '../../../utils/amplitudeUtils';
+import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 
 interface Props {
-    hopplenker: { tittel: string; id: string }[];
+    content: SanityBlockTypes[];
 }
 
 const VanligeSporsmalHopplenker = (props: Props) => {
@@ -14,23 +15,25 @@ const VanligeSporsmalHopplenker = (props: Props) => {
     return (
         <>
             <div>
-                {props.hopplenker.map((lenke) => {
+                {props.content.map((lenke) => {
                     return (
                         <div
-                            key={lenke.id}
+                            key={lenke._id}
                             className={cls.element('lenke-modifier')}
                         >
                             <Normaltekst>
                                 <Lenke
-                                    id={lenke.id}
-                                    href={lenke.id}
+                                    id={lenke.title
+                                        .concat('Id:')
+                                        .concat(lenke._id)}
+                                    href={'#'.concat(lenke._id)}
                                     onClick={() =>
                                         skrivTilMalingBrukerTrykketPaSporsmal(
-                                            lenke.id.slice(1)
+                                            lenke.title
                                         )
                                     }
                                 >
-                                    {lenke.tittel}
+                                    {lenke.title}
                                 </Lenke>
                             </Normaltekst>
                         </div>
