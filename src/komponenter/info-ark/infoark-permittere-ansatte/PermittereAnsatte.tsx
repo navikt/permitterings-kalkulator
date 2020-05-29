@@ -14,6 +14,13 @@ interface Props {
     content: SanityBlockTypes[];
 }
 
+const id = [
+    'meld-fra-til-nav',
+    'send-permitteringsvarsel',
+    'Du-bor-oppfordre-de-ansatte',
+    'Aordningen',
+];
+
 const PermittereAnsatte = (props: Props) => {
     const cls = BEMHelper(props.className);
     const desktopSize = 480;
@@ -64,7 +71,10 @@ const PermittereAnsatte = (props: Props) => {
                       (element: SanityBlockTypes, index: number) => {
                           return (
                               <div key={index}>
-                                  <Tekstseksjon tittel={element.title}>
+                                  <Tekstseksjon
+                                      tittel={element.title}
+                                      id={id[index]}
+                                  >
                                       <SanityBlocktype content={element} />
                                   </Tekstseksjon>
                                   {leggTilSoknadInngang(index)}
