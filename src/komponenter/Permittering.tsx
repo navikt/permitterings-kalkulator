@@ -12,6 +12,7 @@ import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegU
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
 import { SanityBlockTypes } from '../sanity-blocks/sanityTypes';
+import { scrollIntoView } from '../utils/scrollIntoView';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
@@ -60,6 +61,7 @@ const Permittering = () => {
             })
             .catch((err) => console.warn(err));
         skrivTilMalingBesokerSide();
+        scrollIntoView();
     }, []);
 
     return (
