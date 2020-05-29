@@ -23,18 +23,9 @@ const id = [
 
 const PermittereAnsatte = (props: Props) => {
     const cls = BEMHelper(props.className);
-    const desktopSize = 480;
-    const tabletSize = 380;
-    const mobilSize = 280;
 
-    const setSize = () =>
-        window.innerWidth > 1024
-            ? desktopSize
-            : window.innerWidth > 768
-            ? tabletSize
-            : mobilSize;
-
-    const [videoview, setVideoview] = useState<number>(setSize);
+    const setSize = () => '100%';
+    const [videoview, setVideoview] = useState<string>(setSize);
 
     const gatilSoknad = () => {
         skrivTilMalingBesokerSideGaTilSkjema();
