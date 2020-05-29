@@ -13,7 +13,7 @@ function checkOnreadyStatechange() {
 }
 
 export function scrollIntoView() {
-    document.readyState == 'complete' ? delay() : checkOnreadyStatechange();
+    document.readyState === 'complete' ? delay() : checkOnreadyStatechange();
 }
 
 function checkUrlHash(hash: string) {
