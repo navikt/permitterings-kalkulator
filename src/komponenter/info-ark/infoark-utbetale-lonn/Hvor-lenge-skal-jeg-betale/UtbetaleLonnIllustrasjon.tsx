@@ -32,7 +32,7 @@ const utbetalingSteg: Steg[] = [
         tittel: 'Lønnskompensasjon fra NAV til arbeidstaker',
         tekst: [
             'NAV betaler lønn opp til 6G for dagene 3 - 20 til arbeidstaker.',
-            'NAV utvikler en løsning der arbeidsgiver gir opplysninger om arbeidsforholdet til NAV. Dette innebærer at arbeidstaker ikke trenger søke om lønnskompensasjon. Løsningen er ventet å være klar i midten av juni.',
+            'Arbeidstaker trenger ikke søke om lønnskompensasjon. Den blir utløst av informasjonen som arbeidsgiver melder inn via løsning for lønnskompensasjon og refusjon.',
         ],
     },
     {
