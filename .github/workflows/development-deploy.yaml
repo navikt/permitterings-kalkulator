@@ -5,7 +5,7 @@ on:
     types: [deploy-command]
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
+  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/z
 
 jobs:
   deploy-branch:

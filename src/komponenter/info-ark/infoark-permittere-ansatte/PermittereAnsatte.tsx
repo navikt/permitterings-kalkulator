@@ -8,6 +8,7 @@ import {
 } from '../../../utils/amplitudeUtils';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
+import Infoseksjon from '../../infoseksjon/Infoseksjon';
 
 interface Props {
     className: string;
@@ -56,38 +57,44 @@ const PermittereAnsatte = (props: Props) => {
     }, []);
 
     return (
-        <div className={cls.element('avsnitt')}>
-            {props.content.length > 0
-                ? props.content.map(
-                      (element: SanityBlockTypes, index: number) => {
-                          return (
-                              <div key={index}>
-                                  <Tekstseksjon
-                                      tittel={element.title}
-                                      id={id[index]}
-                                  >
-                                      <SanityBlocktype content={element} />
-                                  </Tekstseksjon>
-                                  {leggTilSoknadInngang(index)}
-                              </div>
-                          );
-                      }
-                  )
-                : null}
-            <div className={cls.element('video-frame')}>
-                <iframe
-                    aria-label="video hvordan for arbeidsgivere rundt permittering"
-                    src="https://player.vimeo.com/video/398208025"
-                    width={videoview}
-                    height="360"
-                    frameBorder="0"
-                    allow="autoplay; fullscreen"
-                    allowFullScreen
-                    title="Permitteringsvideo for arbeidsgivere"
-                    onTimeUpdate={skrivTilMalingVideoBlirSpilt}
-                />
+        <Infoseksjon
+            className={props.className}
+            overskrift="Hvordan permittere ansatte?"
+            id="hvordanPermittere"
+        >
+            <div className={cls.element('avsnitt')}>
+                {props.content.length > 0
+                    ? props.content.map(
+                          (element: SanityBlockTypes, index: number) => {
+                              return (
+                                  <div key={index}>
+                                      <Tekstseksjon
+                                          tittel={element.title}
+                                          id={id[index]}
+                                      >
+                                          <SanityBlocktype content={element} />
+                                      </Tekstseksjon>
+                                      {leggTilSoknadInngang(index)}
+                                  </div>
+                              );
+                          }
+                      )
+                    : null}
+                <div className={cls.element('video-frame')}>
+                    <iframe
+                        aria-label="video hvordan for arbeidsgivere rundt permittering"
+                        src="https://player.vimeo.com/video/398208025"
+                        width={videoview}
+                        height="360"
+                        frameBorder="0"
+                        allow="autoplay; fullscreen"
+                        allowFullScreen
+                        title="Permitteringsvideo for arbeidsgivere"
+                        onTimeUpdate={skrivTilMalingVideoBlirSpilt}
+                    />
+                </div>
             </div>
-        </div>
+        </Infoseksjon>
     );
 };
 

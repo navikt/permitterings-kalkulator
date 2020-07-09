@@ -3,6 +3,7 @@ import BEMHelper from '../../../utils/bem';
 import VanligeSporsmalHopplenker from './VanligeSporsmalHopplenker';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
+import Infoseksjon from '../../infoseksjon/Infoseksjon';
 
 interface Props {
     className: string;
@@ -12,10 +13,16 @@ interface Props {
 const VanligeSporsmal = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
-        <div className={cls.element('avsnitt')}>
-            <VanligeSporsmalHopplenker content={props.content} />
-            <SanityInnhold textdocument={props.content} />
-        </div>
+        <Infoseksjon
+            className={props.className}
+            overskrift="Vanlige spørsmål"
+            id="vanligSpr"
+        >
+            <div className={cls.element('avsnitt')}>
+                <VanligeSporsmalHopplenker content={props.content} />
+                <SanityInnhold textdocument={props.content} />
+            </div>
+        </Infoseksjon>
     );
 };
 
