@@ -37,27 +37,16 @@ const Context = (props: Props) => {
     };
 
     useEffect(() => {
-        const writeToHook = (item: SanityBlockTypes) => {
+        const skrivfraSanity = (item: SanityBlockTypes) => {
             switch (item._type) {
                 case 'hvordan-permittere-ansatte':
-                    return setHvordanPermittere((hvordanPermittere) => [
-                        ...hvordanPermittere,
-                        item,
-                    ]);
+                    return setHvordanPermittere((data) => [...data, item]);
                 case 'i-permitteringsperioden':
-                    return setIpermitteringsperioden(
-                        (iPermitteringsperioden) => [
-                            ...iPermitteringsperioden,
-                            item,
-                        ]
-                    );
+                    return setIpermitteringsperioden((data) => [...data, item]);
                 case 'nar-skal-jeg-utbetale-lonn':
-                    return setNarSkalJegUtbetale((narSkalJegUtbetale) => [
-                        ...narSkalJegUtbetale,
-                        item,
-                    ]);
+                    return setNarSkalJegUtbetale((data) => [...data, item]);
                 case 'vanlige-sporsmal':
-                    return setVanligeSpr((vanligeSpr) => [...vanligeSpr, item]);
+                    return setVanligeSpr((data) => [...data, item]);
             }
         };
 
@@ -65,7 +54,7 @@ const Context = (props: Props) => {
         fetchsanityJSON(url)
             .then((res) => {
                 res.forEach((item: SanityBlockTypes) => {
-                    writeToHook(item);
+                    skrivfraSanity(item);
                 });
             })
             .catch((err) => console.warn(err));
