@@ -4,6 +4,7 @@ import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
 import UtbetaleLonnIllustrasjon from './Hvor-lenge-skal-jeg-betale/UtbetaleLonnIllustrasjon';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
+import Infoseksjon from '../../infoseksjon/Infoseksjon';
 
 interface Props {
     className: string;
@@ -13,12 +14,18 @@ interface Props {
 const NarSkalJegUtbetaleLonn = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
-        <div className={cls.element('avsnitt', 'topmodifier')}>
-            <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
-                <UtbetaleLonnIllustrasjon />
-            </Tekstseksjon>
-            <SanityInnhold textdocument={props.content} />
-        </div>
+        <Infoseksjon
+            className={props.className}
+            overskrift="Når skal jeg utbetale lønn?"
+            id="narSkalJegUtbetaleLonn"
+        >
+            <div className={cls.element('avsnitt', 'topmodifier')}>
+                <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
+                    <UtbetaleLonnIllustrasjon />
+                </Tekstseksjon>
+                <SanityInnhold textdocument={props.content} />
+            </div>
+        </Infoseksjon>
     );
 };
 

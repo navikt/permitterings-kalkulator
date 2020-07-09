@@ -4,6 +4,7 @@ import Redirect from './Redirect';
 import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
 import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
+import Context from './komponenter/Context';
 
 const App = () => {
     useEffect(skrivTilMalingBesokerSide);
@@ -11,13 +12,15 @@ const App = () => {
         <BrowserRouter>
             <div className="arbeidsgiver-permittering">
                 <Switch>
-                    <Redirect>
-                        <Route
-                            path={'/arbeidsgiver-permittering'}
-                            component={Permittering}
-                            exact={true}
-                        />
-                    </Redirect>
+                    <Context>
+                        <Redirect>
+                            <Route
+                                path={'/arbeidsgiver-permittering'}
+                                component={Permittering}
+                                exact={true}
+                            />
+                        </Redirect>
+                    </Context>
                 </Switch>
             </div>
         </BrowserRouter>
