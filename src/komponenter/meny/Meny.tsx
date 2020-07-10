@@ -37,7 +37,7 @@ const lenker: PermitteringsLenke[] = [
     },
 ];
 
-const Oversikt = () => {
+const Meny = () => {
     const cls = BEMHelper('meny');
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
@@ -149,4 +149,4 @@ const Oversikt = () => {
     );
 };
 
-export default Oversikt;
+export default Meny;
