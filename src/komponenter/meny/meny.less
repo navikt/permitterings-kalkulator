@@ -1,0 +1,85 @@
+@componentShadow: 0 0.9px 1.7px rgba(0, 0, 0, 0.032),
+    0 3.1px 5.8px rgba(0, 0, 0, 0.06), 0 14px 26px rgba(0, 0, 0, 0.13);
+
+.meny {
+    position: fixed;
+    top: 2rem;
+    right: 0;
+    left: 0;
+    z-index: 950;
+
+    &__wrapper {
+        z-index: 950;
+        position: relative;
+    }
+
+    &__container {
+        z-index: 950;
+        background-color: white;
+        max-width: 16.5rem;
+        max-height: 19.625rem;
+        border-radius: 4px;
+        position: absolute;
+        right: 12.5rem;
+        transition: ease-in-out 0.4s;
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: @componentShadow;
+
+        &--closed {
+            transform: scale(0);
+            opacity: 0;
+        }
+    }
+
+    .menyknapp {
+        position: absolute;
+        right: 22.5%;
+        top: 0;
+        z-index: 951;
+    }
+
+    &__content {
+        padding: 1rem;
+        max-width: 75%;
+    }
+
+    &__lenke {
+        padding-top: 0.75rem;
+
+        &--bold {
+            font-weight: 600;
+        }
+
+        .lenke {
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    @media (min-width: 1024px) {
+        position: sticky;
+        top: 23.75rem;
+        height: fit-content;
+        max-height: 18.75rem;
+        margin-top: 0;
+        padding-right: 2rem;
+
+        &__container {
+            padding: 1rem;
+
+            &--closed {
+                transform: scale(1);
+                opacity: 1;
+                position: unset;
+            }
+        }
+
+        &__content {
+            max-width: unset;
+        }
+    }
+}
