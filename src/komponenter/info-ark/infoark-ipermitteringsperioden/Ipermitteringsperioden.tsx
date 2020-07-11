@@ -7,6 +7,8 @@ import Infoseksjon from '../../infoseksjon/Infoseksjon';
 interface Props {
     className: string;
     content: SanityBlockTypes[];
+    overskrift: string;
+    id: string;
 }
 
 const Ipermitteringsperioden = (props: Props) => {
@@ -14,8 +16,8 @@ const Ipermitteringsperioden = (props: Props) => {
     return (
         <Infoseksjon
             className={props.className}
-            overskrift="I permitteringsperioden"
-            id="permitteringsperioden"
+            overskrift={props.overskrift}
+            id={props.id}
         >
             <div className={cls.element('avsnitt')}>
                 <SanityInnhold textdocument={props.content} />

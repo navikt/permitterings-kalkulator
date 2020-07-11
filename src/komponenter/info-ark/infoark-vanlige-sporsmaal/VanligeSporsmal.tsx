@@ -8,6 +8,8 @@ import Infoseksjon from '../../infoseksjon/Infoseksjon';
 interface Props {
     className: string;
     content: SanityBlockTypes[];
+    overskrift: string;
+    id: string;
 }
 
 const VanligeSporsmal = (props: Props) => {
@@ -15,8 +17,8 @@ const VanligeSporsmal = (props: Props) => {
     return (
         <Infoseksjon
             className={props.className}
-            overskrift="Vanlige spørsmål"
-            id="vanligSpr"
+            overskrift={props.overskrift}
+            id={props.id}
         >
             <div className={cls.element('avsnitt')}>
                 <VanligeSporsmalHopplenker content={props.content} />
