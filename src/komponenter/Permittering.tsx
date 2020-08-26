@@ -16,6 +16,7 @@ const permittering = BEMHelper('permittering');
 const Permittering = () => {
     const {
         hvordanPermittere,
+        narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale,
         iPermitteringsperioden,
         vanligeSpr,
@@ -38,6 +39,7 @@ const Permittering = () => {
                         />
                         <NarSkalJegUtbetaleLonn
                             className={permittering.className}
+                            illustrasjon={narSkalJegUtbetaleIllustrasjon}
                             content={narSkalJegUtbetale}
                             overskrift="Når skal jeg utbetale lønn?"
                             id="narSkalJegUtbetaleLonn"
