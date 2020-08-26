@@ -50,10 +50,11 @@ server.get('/arbeidsgiver-permittering/internal/isReady', (req, res) =>
     res.sendStatus(200)
 );
 
-const sanityQueryTypes = () => [
+const sanityQueryKeys = () => [
     'hvordan-permittere-ansatte',
-    'i-permitteringsperioden',
+    'nar-skal-jeg-utbetale-lonn-illustrasjon',
     'nar-skal-jeg-utbetale-lonn',
+    'i-permitteringsperioden',
     'vanlige-sporsmal',
 ];
 
@@ -65,16 +66,25 @@ const htmlinsert = () => [
     { inject: 'megamenuResources', from: 'megamenu-resources' },
 ];
 
+const sendDataObj = (json) => ({
+    data: json,
+    env: [process.env.SANITY_PROJECT_ID, process.env.SANITY_DATASET],
+});
+
 const url = () =>
     process.env.DECORATOR_EXTERNAL_URL ||
     'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4/no/';
 
-const querySanity = () =>
-    `*[_type == '${sanityQueryTypes()[0]}' || _type == '${
-        sanityQueryTypes()[1]
-    }' || _type == '${sanityQueryTypes()[2]}' || _type == '${
-        sanityQueryTypes()[3]
-    }'] | order(_type, priority)`;
+const sanityQuery = () =>
+    sanityQueryKeys()
+        .map((queryfragment, index) => {
+            return index === 0
+                ? `*[_type == '${queryfragment}' ||`
+                : index === sanityQueryKeys().length - 1
+                ? `_type == '${queryfragment}'] | order(_type, priority)`
+                : `_type == '${queryfragment}' ||`;
+        })
+        .join(' ');
 
 const setHeaders = (responsheader) => {
     responsheader.setHeader('Access-Control-Allow-Origin', '*');
@@ -112,13 +122,13 @@ const checkbackupCacheInnhold = (res, fetchError) => {
 };
 
 const fetchInnhold = (res) => {
-    const query = querySanity();
+    const query = sanityQuery();
     client
         .fetch(query)
         .then((result) => {
             mainCacheInnhold.set(mainCacheInnholdKey, result);
             backupCacheInnhold.set(backupCacheInnholdKey, result);
-            res.send(result);
+            res.send(sendDataObj(result));
         })
         .catch((error) => {
             checkbackupCacheInnhold(res, error);
@@ -129,7 +139,7 @@ const fetchInnhold = (res) => {
 server.get(`${BASE_URL}/innhold/`, (req, res) => {
     setHeaders(res);
     const cacheInnhold = mainCacheInnhold.get(mainCacheInnholdKey);
-    cacheInnhold ? res.send(cacheInnhold) : fetchInnhold(res);
+    cacheInnhold ? res.send(sendDataObj(cacheInnhold)) : fetchInnhold(res);
 });
 
 const injectMenuIntoHtml = (menu) => {

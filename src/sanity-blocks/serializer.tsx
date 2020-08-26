@@ -58,6 +58,24 @@ const blockSerializer = (block: TextBlock) => {
     return <TypoComponent>{block.children}</TypoComponent>;
 };
 
+const imageSerializer = (props: any) => (
+    <img src={sanityImageLink(props.node.asset._ref)} alt={'illustrasjon'} />
+);
+
+export let env = ['', ''];
+export const setEnv = (item: string[]) => (env = item);
+
+export const sanityImageLink = (imageId: string) => {
+    const imageFragments = imageId.split('-');
+    return `https://cdn.sanity.io/images/${env[0]}/${
+        env[1]
+    }/${imageFragments[1]
+        .concat('-')
+        .concat(imageFragments[2])
+        .concat('.')
+        .concat(imageFragments[3])}`;
+};
+
 const serializeCheck = (block: TextBlock) => {
     return block.children[block.children.length - 1] !== '' ? (
         blockSerializer(block)
@@ -69,5 +87,6 @@ const serializeCheck = (block: TextBlock) => {
 export const serializers = {
     types: {
         block: serializeCheck,
+        image: imageSerializer,
     },
 };
