@@ -54,6 +54,7 @@ const sanityQueryKeys = () => [
     'hvordan-permittere-ansatte',
     'nar-skal-jeg-utbetale-lonn-illustrasjon',
     'nar-skal-jeg-utbetale-lonn',
+    'nar-skal-jeg-utbetale-lonn-etter-31-aug',
     'i-permitteringsperioden',
     'vanlige-sporsmal',
 ];

@@ -18,6 +18,7 @@ interface ContextTypes {
     hvordanPermittere: [] | SanityBlockTypes[];
     narSkalJegUtbetaleIllustrasjon: null | NarSkalJegUtbetaleIllustration;
     narSkalJegUtbetale: [] | SanityBlockTypes[];
+    narSkalJegUtbetaleEtter31aug: [] | SanityBlockTypes[];
     iPermitteringsperioden: [] | SanityBlockTypes[];
     vanligeSpr: [] | SanityBlockTypes[];
 }
@@ -35,6 +36,10 @@ const Context = (props: Props) => {
         narSkalJegUtbetaleIllustrasjon,
         setNarSkalJegUtbetaleIllustrasjon,
     ] = useState<null | NarSkalJegUtbetaleIllustration>(null);
+    const [
+        narSkalJegUtbetaleEtter31aug,
+        SetNarSkalJegUtbetaleEtter31aug,
+    ] = useState<[] | SanityBlockTypes[]>([]);
     const [iPermitteringsperioden, setIpermitteringsperioden] = useState<
         [] | SanityBlockTypes[]
     >([]);
@@ -44,6 +49,7 @@ const Context = (props: Props) => {
         hvordanPermittere: hvordanPermittere,
         narSkalJegUtbetaleIllustrasjon: narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale: narSkalJegUtbetale,
+        narSkalJegUtbetaleEtter31aug: narSkalJegUtbetaleEtter31aug,
         iPermitteringsperioden: iPermitteringsperioden,
         vanligeSpr: vanligeSpr,
     };
@@ -75,6 +81,11 @@ const Context = (props: Props) => {
                     return setNarSkalJegUtbetaleIllustrasjon(
                         item as NarSkalJegUtbetaleIllustration
                     );
+                case 'nar-skal-jeg-utbetale-lonn-etter-31-aug':
+                    return SetNarSkalJegUtbetaleEtter31aug((data) => [
+                        ...data,
+                        item as SanityBlockTypes,
+                    ]);
             }
         };
 

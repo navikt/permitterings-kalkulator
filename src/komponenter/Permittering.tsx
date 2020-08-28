@@ -18,6 +18,7 @@ const Permittering = () => {
         hvordanPermittere,
         narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale,
+        narSkalJegUtbetaleEtter31aug,
         iPermitteringsperioden,
         vanligeSpr,
     } = useContext(PermitteringContext);
@@ -26,7 +27,10 @@ const Permittering = () => {
         <div className={permittering.className}>
             <Banner classname="banner" />
             <div className={permittering.element('container')}>
-                <div className={permittering.element('wrapper')}>
+                <div
+                    className={permittering.element('wrapper')}
+                    id={permittering.element('wrapper')}
+                >
                     <Meny />
                     <div className={permittering.element('info-container')}>
                         <SistOppdatertInfo className={permitteringClassName} />
@@ -41,6 +45,7 @@ const Permittering = () => {
                             className={permittering.className}
                             illustrasjon={narSkalJegUtbetaleIllustrasjon}
                             content={narSkalJegUtbetale}
+                            contentEtter={narSkalJegUtbetaleEtter31aug}
                             overskrift="Når skal jeg utbetale lønn?"
                             id="narSkalJegUtbetaleLonn"
                         />
