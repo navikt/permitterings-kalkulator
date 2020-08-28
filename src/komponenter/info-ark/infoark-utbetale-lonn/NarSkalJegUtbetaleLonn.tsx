@@ -14,6 +14,7 @@ interface Props {
     className: string;
     illustrasjon: NarSkalJegUtbetaleIllustration | null;
     content: SanityBlockTypes[];
+    contentEtter: SanityBlockTypes[];
     overskrift: string;
     id: string;
 }
@@ -60,7 +61,11 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                         situasjon={situasjon}
                     />
                 </Tekstseksjon>
-                <SanityInnhold textdocument={props.content} />
+                {situasjon === 'before' ? (
+                    <SanityInnhold textdocument={props.content} />
+                ) : (
+                    <SanityInnhold textdocument={props.contentEtter} />
+                )}
             </div>
         </Infoseksjon>
     );
