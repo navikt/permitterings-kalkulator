@@ -74,7 +74,7 @@ const sendDataObj = (json) => ({
 
 const url = () =>
     process.env.DECORATOR_EXTERNAL_URL ||
-    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=no';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb';
 
 const sanityQuery = () =>
     sanityQueryKeys()
