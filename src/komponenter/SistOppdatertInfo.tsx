@@ -11,13 +11,21 @@ interface Props {
 
 const SistOppdatertInfo = (props: Props) => {
     const cls = BEMHelper(props.className);
-    const tid = props.content
-        ? moment(props.content.publishedAt).format('DD.MM.YYYY, kk:mm:ss')
-        : '';
+
+    const getSistOppdatert = (sistOppdatert: SistOppdatert | null): string => {
+        if (sistOppdatert) {
+            const tid = moment(sistOppdatert.publishedAt).format(
+                'DD.MM.YYYY, kk:mm:ss'
+            );
+            return sistOppdatert.title.concat(tid);
+        }
+        return '';
+    };
+
     return (
         <>
             <Normaltekst className={cls.element('sist-oppdatert')}>
-                <i>Denne siden blir løpende oppdatert, sist oppdatert {tid}</i>
+                <i>{getSistOppdatert(props.content)}</i>
             </Normaltekst>
         </>
     );
