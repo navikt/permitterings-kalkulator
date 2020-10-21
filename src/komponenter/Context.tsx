@@ -100,7 +100,6 @@ const Context = (props: Props) => {
         const url = isProduction();
         fetchsanityJSON(url)
             .then((res) => {
-                console.log('innholdet til sanity client', res);
                 setEnv(res.env);
                 res.data.forEach((item: SanityBlockTypes) => {
                     skrivfraSanity(item);
