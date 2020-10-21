@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     SanityBlockTypes,
     NarSkalJegUtbetaleIllustration,
+    SistOppdatert,
 } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
@@ -15,8 +16,9 @@ interface Props {
 type DocumentTypes = SanityBlockTypes | NarSkalJegUtbetaleIllustration;
 
 interface ContextTypes {
+    sistOppdatert: SistOppdatert | null;
     hvordanPermittere: [] | SanityBlockTypes[];
-    narSkalJegUtbetaleIllustrasjon: null | NarSkalJegUtbetaleIllustration;
+    narSkalJegUtbetaleIllustrasjon: NarSkalJegUtbetaleIllustration | null;
     narSkalJegUtbetale: [] | SanityBlockTypes[];
     narSkalJegUtbetaleEtter31aug: [] | SanityBlockTypes[];
     iPermitteringsperioden: [] | SanityBlockTypes[];
@@ -26,6 +28,9 @@ interface ContextTypes {
 export const PermitteringContext = React.createContext({} as ContextTypes);
 
 const Context = (props: Props) => {
+    const [sistOppdatert, setSistOppdatert] = useState<SistOppdatert | null>(
+        null
+    );
     const [hvordanPermittere, setHvordanPermittere] = useState<
         [] | SanityBlockTypes[]
     >([]);
@@ -46,6 +51,7 @@ const Context = (props: Props) => {
     const [vanligeSpr, setVanligeSpr] = useState<[] | SanityBlockTypes[]>([]);
 
     const contextdata: ContextTypes = {
+        sistOppdatert: sistOppdatert,
         hvordanPermittere: hvordanPermittere,
         narSkalJegUtbetaleIllustrasjon: narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale: narSkalJegUtbetale,
@@ -57,6 +63,8 @@ const Context = (props: Props) => {
     useEffect(() => {
         const skrivfraSanity = (item: DocumentTypes) => {
             switch (item._type) {
+                case 'sist-oppdatert':
+                    return setSistOppdatert(item as SistOppdatert);
                 case 'hvordan-permittere-ansatte':
                     return setHvordanPermittere((data) => [
                         ...data,

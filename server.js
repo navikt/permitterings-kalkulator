@@ -51,6 +51,7 @@ server.get('/arbeidsgiver-permittering/internal/isReady', (req, res) =>
 );
 
 const sanityQueryKeys = () => [
+    'sist-oppdatert',
     'hvordan-permittere-ansatte',
     'nar-skal-jeg-utbetale-lonn-illustrasjon',
     'nar-skal-jeg-utbetale-lonn',

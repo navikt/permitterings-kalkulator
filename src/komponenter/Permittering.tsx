@@ -15,6 +15,7 @@ const permittering = BEMHelper('permittering');
 
 const Permittering = () => {
     const {
+        sistOppdatert,
         hvordanPermittere,
         narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale,
@@ -33,7 +34,10 @@ const Permittering = () => {
                 >
                     <Meny />
                     <div className={permittering.element('info-container')}>
-                        <SistOppdatertInfo className={permitteringClassName} />
+                        <SistOppdatertInfo
+                            className={permitteringClassName}
+                            content={sistOppdatert}
+                        />
 
                         <PermittereAnsatte
                             className={permittering.className}

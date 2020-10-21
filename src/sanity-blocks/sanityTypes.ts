@@ -11,6 +11,16 @@ export interface SanityBlockTypes {
     _updatedAt: string;
 }
 
+export interface SistOppdatert {
+    publishedAt: string;
+    title: string;
+    _createdAt: string;
+    _id: string;
+    _rev: string;
+    _type: string;
+    _updatedAt: string;
+}
+
 export interface NarSkalJegUtbetaleIllustration {
     illustrationAfter: Illustrasjon[];
     illustrationBefore: Illustrasjon[];
