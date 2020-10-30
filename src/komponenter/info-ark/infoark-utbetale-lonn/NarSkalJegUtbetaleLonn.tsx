@@ -7,7 +7,6 @@ import {
 } from '../../../sanity-blocks/sanityTypes';
 import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
 import Infoseksjon from '../../infoseksjon/Infoseksjon';
-import NarSkalJegUtbetaleIllustrasjon from '../../illustrasjon/NarSkalJegUtbetaleIllustrasjon';
 import { RadioPanelGruppe } from 'nav-frontend-skjema';
 
 interface Props {
@@ -24,7 +23,7 @@ export type Situasjon = 'before' | 'after';
 const NarSkalJegUtbetaleLonn = (props: Props) => {
     const cls = BEMHelper(props.className);
 
-    const [situasjon, setSituasjon] = useState<Situasjon>('before');
+    const [situasjon, setSituasjon] = useState<Situasjon>('after');
     const toggleSituasjon = () =>
         setSituasjon(situasjon === 'before' ? 'after' : 'before');
 
@@ -56,10 +55,6 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                             onChange={toggleSituasjon}
                         />
                     </div>
-                    <NarSkalJegUtbetaleIllustrasjon
-                        innhold={props.illustrasjon}
-                        situasjon={situasjon}
-                    />
                 </Tekstseksjon>
                 {situasjon === 'before' ? (
                     <SanityInnhold textdocument={props.content} />
