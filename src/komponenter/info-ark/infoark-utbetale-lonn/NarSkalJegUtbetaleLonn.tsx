@@ -33,8 +33,8 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
             overskrift={props.overskrift}
             id={props.id}
         >
-            <div className={cls.element('avsnitt', 'topmodifier')}>
-                <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
+            <div className={cls.element('avsnitt')}>
+                <Tekstseksjon>
                     <div className={cls.element('radiogruppe')}>
                         <RadioPanelGruppe
                             name="test"
