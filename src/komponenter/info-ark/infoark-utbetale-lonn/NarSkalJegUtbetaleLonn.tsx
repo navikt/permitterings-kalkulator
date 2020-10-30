@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React /*useState*/ from 'react';
 /*import BEMHelper from '../../../utils/bem';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';*/
 import {
@@ -24,7 +24,7 @@ export type Situasjon = 'before' | 'after';
 const NarSkalJegUtbetaleLonn = (props: Props) => {
     // const cls = BEMHelper(props.className);
 
-    const [situasjon, setSituasjon] = useState<Situasjon>('before');
+    //    const [situasjon, setSituasjon] = useState<Situasjon>('before');
     /*const toggleSituasjon = () =>
         setSituasjon(situasjon === 'before' ? 'after' : 'before');*/
 
