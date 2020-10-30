@@ -1,14 +1,13 @@
-import React /*useState*/ from 'react';
-/*import BEMHelper from '../../../utils/bem';
-import Tekstseksjon from '../../infoseksjon/Tekstseksjon';*/
+import React, { useState } from 'react';
+import BEMHelper from '../../../utils/bem';
+import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
 import {
     SanityBlockTypes,
     NarSkalJegUtbetaleIllustration,
 } from '../../../sanity-blocks/sanityTypes';
 import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
 import Infoseksjon from '../../infoseksjon/Infoseksjon';
-/*import NarSkalJegUtbetaleIllustrasjon from '../../illustrasjon/NarSkalJegUtbetaleIllustrasjon';
-import { RadioPanelGruppe } from 'nav-frontend-skjema';*/
+import { RadioPanelGruppe } from 'nav-frontend-skjema';
 
 interface Props {
     className: string;
@@ -22,11 +21,11 @@ interface Props {
 export type Situasjon = 'before' | 'after';
 
 const NarSkalJegUtbetaleLonn = (props: Props) => {
-    // const cls = BEMHelper(props.className);
+    const cls = BEMHelper(props.className);
 
-    //    const [situasjon, setSituasjon] = useState<Situasjon>('before');
-    /*const toggleSituasjon = () =>
-        setSituasjon(situasjon === 'before' ? 'after' : 'before');*/
+    const [situasjon, setSituasjon] = useState<Situasjon>('after');
+    const toggleSituasjon = () =>
+        setSituasjon(situasjon === 'before' ? 'after' : 'before');
 
     return (
         <Infoseksjon
@@ -34,8 +33,6 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
             overskrift={props.overskrift}
             id={props.id}
         >
-            <SanityInnhold textdocument={props.content} />
-            {/*
             <div className={cls.element('avsnitt', 'topmodifier')}>
                 <Tekstseksjon tittel="Hvor lenge skal jeg betale lønn?">
                     <div className={cls.element('radiogruppe')}>
@@ -58,17 +55,13 @@ const NarSkalJegUtbetaleLonn = (props: Props) => {
                             onChange={toggleSituasjon}
                         />
                     </div>
-                    <NarSkalJegUtbetaleIllustrasjon
-                        innhold={props.illustrasjon}
-                        situasjon={situasjon}
-                    />
                 </Tekstseksjon>
                 {situasjon === 'before' ? (
                     <SanityInnhold textdocument={props.content} />
                 ) : (
                     <SanityInnhold textdocument={props.contentEtter} />
                 )}
-            </div>*/}
+            </div>
         </Infoseksjon>
     );
 };
