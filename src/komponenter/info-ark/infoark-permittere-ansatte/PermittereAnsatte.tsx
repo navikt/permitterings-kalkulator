@@ -1,11 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import BEMHelper from '../../../utils/bem';
 import KnappBase from 'nav-frontend-knapper';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import {
-    skrivTilMalingBesokerSideGaTilSkjema,
-    skrivTilMalingVideoBlirSpilt,
-} from '../../../utils/amplitudeUtils';
+import { skrivTilMalingBesokerSideGaTilSkjema } from '../../../utils/amplitudeUtils';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
 import Infoseksjon from '../../infoseksjon/Infoseksjon';
@@ -27,9 +24,6 @@ const id = [
 const PermittereAnsatte = (props: Props) => {
     const cls = BEMHelper(props.className);
 
-    const setSize = () => '100%';
-    const [videoview, setVideoview] = useState<string>(setSize);
-
     const gatilSoknad = () => {
         skrivTilMalingBesokerSideGaTilSkjema();
         window.location.href =
@@ -48,15 +42,6 @@ const PermittereAnsatte = (props: Props) => {
             </div>
         ) : null;
     };
-
-    useEffect(() => {
-        const handleresize = () => {
-            return setVideoview(setSize());
-        };
-
-        window.addEventListener('resize', handleresize);
-        return () => window.removeEventListener('resize', handleresize);
-    }, []);
 
     return (
         <Infoseksjon
