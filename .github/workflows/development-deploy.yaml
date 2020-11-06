@@ -32,10 +32,10 @@ jobs:
           fetch-depth: 0
 
       - name: Sett miljøvariabel COMMIT
-        run: echo "::set-env name=COMMIT::$(git rev-parse HEAD)"
+        run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
       - name: Sett miljøvariabel IMAGE
-        run: echo "::set-env name=IMAGE::$APP_IMAGE:$COMMIT"
+        run: echo "IMAGE=$APP_IMAGE:$COMMIT" >> $GITHUB_ENV
 
       - name: Generere nais variabler
         run: |
