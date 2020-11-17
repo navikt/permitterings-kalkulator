@@ -23,14 +23,11 @@ export const calcWithPosition = () => {
 };
 
 export const getContainerHeight = (): number => {
-    if (!isDesktop()) {
-        const htmlcontainer = document.getElementById(
-            'hvordanPermittere'
-        ) as HTMLDivElement;
-        if (htmlcontainer) {
-            console.log('htmlcontainer.offsetTop', htmlcontainer.offsetTop);
-            return htmlcontainer.offsetTop;
-        }
+    const htmlcontainer = document.getElementById(
+        'hvordanPermittere'
+    ) as HTMLDivElement;
+    if (!isDesktop() && htmlcontainer) {
+        return htmlcontainer.offsetTop;
     }
-    return 44;
+    return 46;
 };
