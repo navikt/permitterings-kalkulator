@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
-import throttle from 'lodash.throttle';
+import debounce from 'lodash.debounce';
 import Menyknapp from './menyknapp/Menyknapp';
 import { Undertittel } from 'nav-frontend-typografi';
 import Lenke from 'nav-frontend-lenker';
@@ -80,7 +80,7 @@ const Meny = () => {
                   })
                 : null;
         };
-        const throttleScrollevent = throttle(() => setFocusIndex(), 75);
+        const throttleScrollevent = debounce(() => setFocusIndex(), 20);
         const dispatchmobilevent = () =>
             !isDesktop() ? setHeightPosition(setScroll()) : null;
 
