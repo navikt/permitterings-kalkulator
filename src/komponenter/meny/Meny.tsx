@@ -8,7 +8,7 @@ import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
 import './meny.less';
 import {
     calcWithPosition,
-    initmenuPosition,
+    getContainerHeight,
     isDesktop,
     setScroll,
 } from '../../utils/menu-utils';
@@ -39,11 +39,9 @@ const lenker: PermitteringsLenke[] = [
 
 const Meny = () => {
     const cls = BEMHelper('meny');
-    const [sectionInFocus, setSectionInFocus] = useState<number>(0);
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
-    const [buttonStyling, setButtonStyling] = useState<number>(
-        initmenuPosition()
-    );
+    const [sectionInFocus, setSectionInFocus] = useState<number>(0);
+    const [heightPosition, setHeightPosition] = useState<number>(0);
     const [widthPosition, SetWidthPosition] = useState<number>(
         calcWithPosition()
     );
@@ -51,6 +49,8 @@ const Meny = () => {
     const toggleButton = () => setViewmobilMenu(!viewmobilMenu);
 
     useEffect(() => {
+        setHeightPosition(getContainerHeight());
+
         const scrollHeight = () => window.scrollY || window.pageYOffset;
         const hoppLenkerScrollheight = () =>
             lenker
@@ -73,7 +73,7 @@ const Meny = () => {
         };
         const throttleScrollevent = throttle(() => setFocusIndex(), 75);
         const dispatchmobilevent = () =>
-            isDesktop() ? setButtonStyling(setScroll()) : null;
+            !isDesktop() ? setHeightPosition(setScroll()) : null;
 
         window.onscroll = function () {
             throttleScrollevent();
@@ -81,21 +81,22 @@ const Meny = () => {
         };
 
         window.addEventListener('resize', () => {
-            setButtonStyling(initmenuPosition());
+            setHeightPosition(getContainerHeight());
             SetWidthPosition(calcWithPosition());
         });
         return () =>
             window.removeEventListener('resize', () => {
-                setButtonStyling(initmenuPosition());
+                setHeightPosition(getContainerHeight());
                 SetWidthPosition(calcWithPosition());
             });
     }, []);
 
     return (
         <>
+            {console.log('pos', heightPosition)}
             <div
                 className={cls.className}
-                style={{ marginTop: `${buttonStyling}px` }}
+                style={{ marginTop: `${heightPosition}px` }}
             >
                 <div className={cls.element('wrapper')}>
                     <Menyknapp

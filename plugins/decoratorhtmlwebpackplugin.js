@@ -3,7 +3,7 @@ const request = require('request');
 
 const { JSDOM } = jsdom;
 const url =
-    'https://appres.nav.no/common-html/v4/navno?header-withmenu=true&styles=true&scripts=true&footer-withmenu=true';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Permittere ansatte som følge av koronavirus"}]';
 const htmlinsert = [
     { inject: 'styles', from: 'styles' },
     { inject: 'scripts', from: 'scripts' },
@@ -28,7 +28,9 @@ const decoratorHtmlWebpackPlugin = (enablemenu = false) => {
 
 const addElements = (plugin, documentisfetched, document = {}) => {
     htmlinsert.forEach((element) => {
-        plugin.options[element.inject] = documentisfetched ? getElement(document, element.from) : '';
+        plugin.options[element.inject] = documentisfetched
+            ? getElement(document, element.from)
+            : '';
     });
 };
 
