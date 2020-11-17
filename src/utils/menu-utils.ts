@@ -32,5 +32,5 @@ export const getContainerHeight = (): number => {
             return htmlcontainer.offsetTop;
         }
     }
-    return 0;
+    return 44;
 };
