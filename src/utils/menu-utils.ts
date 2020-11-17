@@ -28,7 +28,6 @@ export const getContainerHeight = (): number => {
         'hvordanPermittere'
     ) as HTMLDivElement;
     if (!isDesktop() && htmlcontainer) {
-        console.log(htmlcontainer.offsetTop);
         return htmlcontainer.offsetTop;
     }
     return HEADERDIFF;
