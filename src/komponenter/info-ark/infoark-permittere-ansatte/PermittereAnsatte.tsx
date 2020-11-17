@@ -2,7 +2,10 @@ import React from 'react';
 import BEMHelper from '../../../utils/bem';
 import KnappBase from 'nav-frontend-knapper';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import { skrivTilMalingBesokerSideGaTilSkjema } from '../../../utils/amplitudeUtils';
+import {
+    skrivTilMalingBesokerSideGaTilSkjema,
+    skrivTilMalingVideoBlirSpilt,
+} from '../../../utils/amplitudeUtils';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
 import Infoseksjon from '../../infoseksjon/Infoseksjon';
@@ -67,6 +70,23 @@ const PermittereAnsatte = (props: Props) => {
                           }
                       )
                     : null}
+                <div className={cls.element('video-frame')}>
+                    <iframe
+                        aria-label="video"
+                        aria-labelledby="Permittering - informasjonsvideo for arbeidsgivere"
+                        src="https://player.vimeo.com/video/398208025"
+                        style={{
+                            borderRadius: '4px',
+                        }}
+                        width="100%"
+                        height="260"
+                        frameBorder="0"
+                        allow="autoplay; fullscreen"
+                        allowFullScreen
+                        title="Permitteringsvideo for arbeidsgivere"
+                        onTimeUpdate={skrivTilMalingVideoBlirSpilt}
+                    />
+                </div>
             </div>
         </Infoseksjon>
     );
