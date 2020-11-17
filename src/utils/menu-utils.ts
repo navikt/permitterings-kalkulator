@@ -1,5 +1,6 @@
 const CONTAINER_WIDTH = 560;
 const STICKYHEADER_HEIGHT = 100;
+const HEADERDIFF = 46;
 
 export const isDesktop = () => window.innerWidth > 1024;
 
@@ -29,5 +30,5 @@ export const getContainerHeight = (): number => {
     if (!isDesktop() && htmlcontainer) {
         return htmlcontainer.offsetTop;
     }
-    return 46;
+    return HEADERDIFF;
 };
