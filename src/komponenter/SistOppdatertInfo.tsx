@@ -24,7 +24,10 @@ const SistOppdatertInfo = (props: Props) => {
 
     return (
         <>
-            <Normaltekst className={cls.element('sist-oppdatert')}>
+            <Normaltekst
+                className={cls.element('sist-oppdatert')}
+                id="sist-oppdatert"
+            >
                 <i>{getSistOppdatert(props.content)}</i>
             </Normaltekst>
         </>

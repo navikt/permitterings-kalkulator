@@ -93,7 +93,6 @@ const Meny = () => {
 
     return (
         <>
-            {console.log('pos', heightPosition)}
             <div
                 className={cls.className}
                 style={{ marginTop: `${heightPosition}px` }}
