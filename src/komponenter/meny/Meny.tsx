@@ -41,7 +41,9 @@ const Meny = () => {
     const cls = BEMHelper('meny');
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
-    const [heightPosition, setHeightPosition] = useState<number>(0);
+    const [heightPosition, setHeightPosition] = useState<number>(
+        !isDesktop() ? 434 : 0
+    );
     const [widthPosition, SetWidthPosition] = useState<number>(
         calcWithPosition()
     );
@@ -49,8 +51,6 @@ const Meny = () => {
     const toggleButton = () => setViewmobilMenu(!viewmobilMenu);
 
     useEffect(() => {
-        setHeightPosition(getContainerHeight());
-
         const scrollHeight = () => window.scrollY || window.pageYOffset;
         const hoppLenkerScrollheight = () =>
             lenker
@@ -93,6 +93,7 @@ const Meny = () => {
 
     return (
         <>
+            {console.log('heightPosition', heightPosition)}
             <div
                 className={cls.className}
                 style={{ marginTop: `${heightPosition}px` }}
