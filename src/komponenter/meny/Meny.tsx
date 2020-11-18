@@ -7,10 +7,10 @@ import Lenke from 'nav-frontend-lenker';
 import Normaltekst from 'nav-frontend-typografi/lib/normaltekst';
 import './meny.less';
 import {
-    calcWithPosition,
+    adjustMenuHeight,
+    calcMenuWidthPosition,
     getContainerHeight,
-    isDesktop,
-    setScroll,
+    windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
 
 interface PermitteringsLenke {
@@ -44,7 +44,7 @@ const Meny = () => {
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
     const [heightPosition, setHeightPosition] = useState<number>(0);
     const [widthPosition, SetWidthPosition] = useState<number>(
-        calcWithPosition()
+        calcMenuWidthPosition()
     );
 
     const toggleButton = () => setViewmobilMenu(!viewmobilMenu);
@@ -80,23 +80,31 @@ const Meny = () => {
                   })
                 : null;
         };
-        const throttleScrollevent = debounce(() => setFocusIndex(), 20);
-        const dispatchmobilevent = () =>
-            !isDesktop() ? setHeightPosition(setScroll()) : null;
+        const throttleSetFocusOnMenuLinkevent = debounce(
+            () => setFocusIndex(),
+            20
+        );
+
+        const setMenuHeightPosition = () => {
+            if (!windowWidthIsDesktopSize()) {
+                return setHeightPosition(adjustMenuHeight());
+            }
+            return null;
+        };
 
         window.onscroll = function () {
-            throttleScrollevent();
-            dispatchmobilevent();
+            throttleSetFocusOnMenuLinkevent();
+            setMenuHeightPosition();
         };
 
         window.addEventListener('resize', () => {
             setHeightPosition(getContainerHeight());
-            SetWidthPosition(calcWithPosition());
+            SetWidthPosition(calcMenuWidthPosition());
         });
         return () =>
             window.removeEventListener('resize', () => {
                 setHeightPosition(getContainerHeight());
-                SetWidthPosition(calcWithPosition());
+                SetWidthPosition(calcMenuWidthPosition());
             });
     }, []);
 
