@@ -10,6 +10,7 @@ import {
     adjustMenuHeight,
     calcMenuWidthPosition,
     getContainerHeight,
+    getDesktopContainerOffsetTopDiff,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
 
@@ -39,6 +40,9 @@ const lenker: PermitteringsLenke[] = [
 
 const Meny = () => {
     const cls = BEMHelper('meny');
+    const [appDisplayMobileMenu, setAppDisplayMobileMenu] = useState<boolean>(
+        !windowWidthIsDesktopSize()
+    );
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
     const [documentIsReady, setDocumentIsReady] = useState<boolean>(false);
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
@@ -82,14 +86,14 @@ const Meny = () => {
         };
         const throttleSetFocusOnMenuLinkevent = debounce(
             () => setFocusIndex(),
-            20
+            50
         );
 
         const setMenuHeightPosition = () => {
             if (!windowWidthIsDesktopSize()) {
                 return setHeightPosition(adjustMenuHeight());
             }
-            return null;
+            return getDesktopContainerOffsetTopDiff();
         };
 
         window.onscroll = function () {
@@ -97,16 +101,21 @@ const Meny = () => {
             setMenuHeightPosition();
         };
 
-        window.addEventListener('resize', () => {
-            setHeightPosition(getContainerHeight());
+        const recalibrateMenuPosition = () => {
+            if (appDisplayMobileMenu === windowWidthIsDesktopSize()) {
+                setAppDisplayMobileMenu(!windowWidthIsDesktopSize());
+                !windowWidthIsDesktopSize()
+                    ? setHeightPosition(adjustMenuHeight())
+                    : setHeightPosition(getDesktopContainerOffsetTopDiff());
+            }
             SetWidthPosition(calcMenuWidthPosition());
-        });
+        };
+
+        window.addEventListener('resize', recalibrateMenuPosition);
+
         return () =>
-            window.removeEventListener('resize', () => {
-                setHeightPosition(getContainerHeight());
-                SetWidthPosition(calcMenuWidthPosition());
-            });
-    }, []);
+            window.removeEventListener('resize', recalibrateMenuPosition);
+    }, [appDisplayMobileMenu]);
 
     return (
         <>

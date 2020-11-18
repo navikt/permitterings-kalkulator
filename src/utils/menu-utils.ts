@@ -2,7 +2,7 @@ const CONTAINER_WIDTH = 560;
 const STICKYHEADER_HEIGHT = 100;
 const HEADERDIFF = 46;
 
-export const windowWidthIsDesktopSize = () => window.innerWidth > 1024;
+export const windowWidthIsDesktopSize = (): boolean => window.innerWidth > 1024;
 
 const getMainContainer = (): HTMLDivElement | null =>
     document.getElementById('hvordanPermittere') as HTMLDivElement;
@@ -23,7 +23,7 @@ export const adjustMenuHeight = () => {
 
 export const calcMenuWidthPosition = () => {
     if (!windowWidthIsDesktopSize()) {
-        calcMobileMenuWidthPosition();
+        return calcMobileMenuWidthPosition();
     }
     return 0; //desktop is 0.
 };
@@ -56,6 +56,6 @@ const getMobileContainerHeight = (): number => {
     return 0;
 };
 
-const getDesktopContainerOffsetTopDiff = (): number => {
+export const getDesktopContainerOffsetTopDiff = (): number => {
     return HEADERDIFF;
 };
