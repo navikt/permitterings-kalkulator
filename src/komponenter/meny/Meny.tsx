@@ -77,7 +77,7 @@ const Meny = () => {
         const setFocusIndex = () => {
             return lenker.length === 4
                 ? hoppLenkerScrollheight().map((scrollheight, index) => {
-                      if (scrollheight - 250 < scrollHeight()) {
+                      if (scrollheight - 450 < scrollHeight()) {
                           return setSectionInFocus(index);
                       }
                       return null;
