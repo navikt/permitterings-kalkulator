@@ -15,8 +15,9 @@ const Kalkulator = () => {
     const forstePermitteringsDag = new Date();
     const tomorrow = new Date(forstePermitteringsDag)
     tomorrow.setDate(tomorrow.getDate() + 6)
-    const dager = antalldagerGått(forstePermitteringsDag,tomorrow)
     console.log(antallUkerRundetOpp(24));
+
+    const kjentDatoTil = datoTil ? datoTil : '';
 
     return (
         <div className={'kalkulator-bakgrunn'}>
@@ -35,6 +36,7 @@ const Kalkulator = () => {
                     />
                     <div className="skjema-innhold__dato-velger-til">
                         <Datovelger
+                            value={kjentDatoTil}
                             onChange={event => {
                                 //context.endreSkjemaVerdi('sluttDato', event.currentTarget.value);
                                 setDatoTil(event.currentTarget.value);
@@ -50,6 +52,7 @@ const Kalkulator = () => {
                         />
                     </div>
                 </div>
+                <div>Antall uker permittert er {antallUkerRundetOpp(antalldagerGått(datoFra, datoTil))}</div>
                 <div className={'kalkulator__topp'}>
                 <div className={'kalkulator__venstre-kolonne'}>
                     <Input label="Mitt skjemafelt:" />
