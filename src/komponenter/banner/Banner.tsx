@@ -10,7 +10,6 @@ interface Props {
 const Banner = (props: Props) => {
     const cls = BEMHelper(props.classname);
     return (
-        <>
             <div
                 className={cls.className}
                 role="banner"
@@ -23,7 +22,6 @@ const Banner = (props: Props) => {
                 </div>
                 <div className={cls.element('bunnlinje')} />
             </div>
-        </>
     );
 };
 
