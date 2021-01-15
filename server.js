@@ -75,7 +75,7 @@ const sendDataObj = (json) => ({
 
 const url = () =>
     process.env.DECORATOR_EXTERNAL_URL ||
-    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Permittere ansatte som følge av koronavirus"}]';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Permittere ansatte"}]';
 
 const sanityQuery = () =>
     sanityQueryKeys()
