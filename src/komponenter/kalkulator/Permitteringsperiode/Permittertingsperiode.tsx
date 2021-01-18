@@ -1,18 +1,29 @@
-import React, { useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import '../kalkulator.less';
+import './Permitteringsperiode.less';
 
 import { antalldagerGått, datoErFørMars } from '../utregninger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Datovelger from '../../Datovelger/Datovelger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
+import RadioKnappMedMenInputpopUp from './radioKnappOgInput';
+import { PermitteringsperiodeInfo } from '../kalkulator';
 
+interface Props {
+    info: PermitteringsperiodeInfo;
+    indeks: number;
+    allePermitteringer: PermitteringsperiodeInfo[];
+    setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
+}
 
-const Permitteringsperiode = () => {
-    const [datoFra, setDatoFra] = useState<Date | undefined>(undefined);
-    const [datoTil, setDatoTil] = useState<Date | undefined>(undefined);
+const Permitteringsperiode: FunctionComponent<Props> = props => {
+    const [datoFra, setDatoFra] = useState<Date | undefined>(props.info.datoFra);
+    const [datoTil, setDatoTil] = useState<Date | undefined>(props.info.datoTil);
     const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
     const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
+
+    const indeks =
 
     useEffect(() => {
         if (erLøpendePermittering) {
@@ -30,12 +41,20 @@ const Permitteringsperiode = () => {
                 setAgp2Start(beregnetDato)
             }
         }
-    }, [datoFra, datoTil, erLøpendePermittering]);
+        const info: PermitteringsperiodeInfo = {
+            datoFra:datoFra,
+            datoTil:datoTil,
+            antallDagerPErmisjonOgFerie: 0,
+            antallDagerSykmeldt:0,
+        }
+        props.allePermitteringer[props.indeks] = info;
+    }, [datoFra, datoTil, erLøpendePermittering, props.allePermitteringer]);
+    console.log(props.allePermitteringer[0])
 
     const tekst = 'dager permittert: '+ antallDagerBrukt +
         'Arbeidsgiverperiode 2 starter: ' + skrivOmDato(agp2Start);
 
-    return (<>
+    return (<div className={'permitteringsperiode'}>
                 <div className={'kalkulator__datovelgere'}>
                     <Datovelger
                         value={datoFra}
@@ -63,8 +82,14 @@ const Permitteringsperiode = () => {
                         />
                     </div>
                 </div>
-                <div>{tekst} </div>
-        </>
+            <RadioKnappMedMenInputpopUp
+                spørsmål={"Har den ansatte vært 100 % sykmeldt i denne perioden?"}
+            />
+            <RadioKnappMedMenInputpopUp
+                spørsmål={"Har den ansatte hatt fravær i forbindelse med andre permisjoner eller tatt ut ferie i denne perioden?"}
+            />
+            <div>{tekst} </div>
+        </div>
     );
 };
 
