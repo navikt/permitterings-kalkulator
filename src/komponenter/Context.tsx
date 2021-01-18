@@ -1,9 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-    SanityBlockTypes,
-    NarSkalJegUtbetaleIllustration,
-    SistOppdatert,
-} from '../sanity-blocks/sanityTypes';
+import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
 import { scrollIntoView } from '../utils/scrollIntoView';
@@ -13,14 +9,12 @@ interface Props {
     children: React.ReactNode;
 }
 
-type DocumentTypes = SanityBlockTypes | NarSkalJegUtbetaleIllustration;
+type DocumentTypes = SanityBlockTypes;
 
 interface ContextTypes {
     sistOppdatert: SistOppdatert | null;
     hvordanPermittere: [] | SanityBlockTypes[];
-    narSkalJegUtbetaleIllustrasjon: NarSkalJegUtbetaleIllustration | null;
     narSkalJegUtbetale: [] | SanityBlockTypes[];
-    narSkalJegUtbetaleEtter31aug: [] | SanityBlockTypes[];
     iPermitteringsperioden: [] | SanityBlockTypes[];
     vanligeSpr: [] | SanityBlockTypes[];
 }
@@ -37,14 +31,6 @@ const Context = (props: Props) => {
     const [narSkalJegUtbetale, setNarSkalJegUtbetale] = useState<
         [] | SanityBlockTypes[]
     >([]);
-    const [
-        narSkalJegUtbetaleIllustrasjon,
-        setNarSkalJegUtbetaleIllustrasjon,
-    ] = useState<null | NarSkalJegUtbetaleIllustration>(null);
-    const [
-        narSkalJegUtbetaleEtter31aug,
-        SetNarSkalJegUtbetaleEtter31aug,
-    ] = useState<[] | SanityBlockTypes[]>([]);
     const [iPermitteringsperioden, setIpermitteringsperioden] = useState<
         [] | SanityBlockTypes[]
     >([]);
@@ -53,9 +39,7 @@ const Context = (props: Props) => {
     const contextdata: ContextTypes = {
         sistOppdatert: sistOppdatert,
         hvordanPermittere: hvordanPermittere,
-        narSkalJegUtbetaleIllustrasjon: narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale: narSkalJegUtbetale,
-        narSkalJegUtbetaleEtter31aug: narSkalJegUtbetaleEtter31aug,
         iPermitteringsperioden: iPermitteringsperioden,
         vanligeSpr: vanligeSpr,
     };
@@ -82,15 +66,6 @@ const Context = (props: Props) => {
                     ]);
                 case 'vanlige-sporsmal':
                     return setVanligeSpr((data) => [
-                        ...data,
-                        item as SanityBlockTypes,
-                    ]);
-                case 'nar-skal-jeg-utbetale-lonn-illustrasjon':
-                    return setNarSkalJegUtbetaleIllustrasjon(
-                        item as NarSkalJegUtbetaleIllustration
-                    );
-                case 'nar-skal-jeg-utbetale-lonn-etter-31-aug':
-                    return SetNarSkalJegUtbetaleEtter31aug((data) => [
                         ...data,
                         item as SanityBlockTypes,
                     ]);
