@@ -8,27 +8,29 @@ import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 
 const Permitteringsperiode = () => {
-    const [datoFra, setDatoFra] = useState(new Date());
-    const [datoTil, setDatoTil] = useState(undefined);
+    const [datoFra, setDatoFra] = useState<Date | undefined>(undefined);
+    const [datoTil, setDatoTil] = useState<Date | undefined>(undefined);
     const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
     const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
 
-    const kjentDatoTil = datoTil ? datoTil : '';
-
     useEffect(() => {
-        const antallDagerGått = antalldagerGått(datoFra, datoTil)
-        setAntallDagerBrukt(antallDagerGått);
-        const beregnetDato = new Date(datoFra)
-        beregnetDato.setDate(beregnetDato.getDate() + 210);
-        if (datoErFørMars(beregnetDato)) {
-            setAgp2Start(new Date('2021-03-01'))
+        if (erLøpendePermittering) {
+            setDatoTil(undefined)
         }
-        else {
-            setAgp2Start(beregnetDato)
+        if (datoFra) {
+            const antallDagerGått = antalldagerGått(datoFra, datoTil)
+            setAntallDagerBrukt(antallDagerGått);
+            const beregnetDato = new Date(datoFra)
+            beregnetDato.setDate(beregnetDato.getDate() + 210);
+            if (datoErFørMars(beregnetDato)) {
+                setAgp2Start(new Date('2021-03-01'))
+            }
+            else {
+                setAgp2Start(beregnetDato)
+            }
         }
-
-    }, [datoFra, datoTil]);
+    }, [datoFra, datoTil, erLøpendePermittering]);
 
     const tekst = 'dager permittert: '+ antallDagerBrukt +
         'Arbeidsgiverperiode 2 starter: ' + skrivOmDato(agp2Start);
@@ -36,7 +38,7 @@ const Permitteringsperiode = () => {
     return (<>
                 <div className={'kalkulator__datovelgere'}>
                     <Datovelger
-                        value={datoFra.toDateString()}
+                        value={datoFra}
                         onChange={event => {
                             setDatoFra(event.currentTarget.value);
                         }}
@@ -45,7 +47,7 @@ const Permitteringsperiode = () => {
                     />
                     <div className="skjema-innhold__dato-velger-til">
                         <Datovelger
-                            value={kjentDatoTil}
+                            value={datoTil}
                             onChange={event => {
                                 setDatoTil(event.currentTarget.value);
                             }}

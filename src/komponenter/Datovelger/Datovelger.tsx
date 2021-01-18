@@ -18,7 +18,7 @@ import './Datovelger.less';
 
 interface Props {
     overtekst: string;
-    value?: string;
+    value?: Date | undefined;
     onChange: (event: any) => void;
     disabled?: boolean;
     skalVareEtter?: Date;
