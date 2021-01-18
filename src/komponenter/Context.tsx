@@ -50,25 +50,13 @@ const Context = (props: Props) => {
                 case 'sist-oppdatert':
                     return setSistOppdatert(item as SistOppdatert);
                 case 'hvordan-permittere-ansatte':
-                    return setHvordanPermittere((data) => [
-                        ...data,
-                        item as SanityBlockTypes,
-                    ]);
+                    return setHvordanPermittere((data) => [...data, item]);
                 case 'i-permitteringsperioden':
-                    return setIpermitteringsperioden((data) => [
-                        ...data,
-                        item as SanityBlockTypes,
-                    ]);
+                    return setIpermitteringsperioden((data) => [...data, item]);
                 case 'nar-skal-jeg-utbetale-lonn':
-                    return setNarSkalJegUtbetale((data) => [
-                        ...data,
-                        item as SanityBlockTypes,
-                    ]);
+                    return setNarSkalJegUtbetale((data) => [...data, item]);
                 case 'vanlige-sporsmal':
-                    return setVanligeSpr((data) => [
-                        ...data,
-                        item as SanityBlockTypes,
-                    ]);
+                    return setVanligeSpr((data) => [...data, item]);
             }
         };
 
