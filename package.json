@@ -95,6 +95,7 @@
     },
     "devDependencies": {
         "@types/react": "^16.9.25",
+        "@types/react-collapse": "^5.0.0",
         "@types/react-dom": "^16.9.5",
         "@types/react-router": "^5.1.4",
         "@types/react-router-dom": "^5.1.3",
