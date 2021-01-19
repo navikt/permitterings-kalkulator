@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import { PermitteringsperiodeInfo } from '../../kalkulator';
@@ -8,17 +8,22 @@ import { antalldagerGått } from '../../utregninger';
 interface UtregningAvEnkelPeriodeProps {
     indeks: number
     info: PermitteringsperiodeInfo;
+    listeMedPermitteringsinfo: PermitteringsperiodeInfo[]
 }
 
 const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = props => {
+    const [antall, setAntall] = useState(0)
+
+    useEffect(() => {
+        const antallDagerGått = props.info.datoFra ? antalldagerGått(props.info.datoFra, props.info.datoTil) : 0;
+        const svar = antallDagerGått - props.info.antallDagerPErmisjonOgFerie - props.info.antallDagerSykmeldt;
+        setAntall(svar)
+    }, [props.info, props.listeMedPermitteringsinfo]);
 
 
-
-    const antallDagerGått = props.info.datoFra ? antalldagerGått(props.info.datoFra, props.info.datoTil) : 0;
-    const svar = antallDagerGått - props.info.antallDagerPErmisjonOgFerie - props.info.antallDagerSykmeldt;
 
     return (
-        <>
+        <div className={'utregningskolonne__enkel-utregning-container'}>
             <Element>
                 {props.indeks+1 +'. permitteringsperiode'}
             </Element>
@@ -34,7 +39,7 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
                     permisjoner:
                 </Undertekst>
                 <Undertekst>
-                    totalt antall dager:
+                    totalt:
                 </Undertekst>
 
             </div>
@@ -52,11 +57,11 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
                 </div>
                 <div className={'utregningskolonne__ledd '}>
                     <Undertekst>=</Undertekst>
-                    <Undertekst className={'utregningskolonne__svar'}>{svar}</Undertekst>
+                    <Undertekst className={'utregningskolonne__svar'}>{antall}</Undertekst>
                 </div>
             </div>
         </div>
-        </>
+        </div>
     );
 };
 

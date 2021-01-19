@@ -1,5 +1,7 @@
 
 //returner antall dager fom startdato tom sluttdato
+import { PermitteringsperiodeInfo } from './kalkulator';
+
 export const antalldagerGått = (fra: Date, til?: Date) => {
     const tilDato = til ? til : new Date()
     const msGatt = tilDato.getTime() - fra.getTime();
@@ -14,4 +16,15 @@ export const antallUkerRundetOpp = (antallDager: number) => {
 export const datoErFørMars = (dato: Date) => {
     const førsteMars = new Date('2021-03-01')
     return dato.getTime()<førsteMars.getTime()
+}
+
+export const regnUtTotalAntallDager = (listeMedPermitteringsInfo: PermitteringsperiodeInfo[]): number => {
+    let antallDagerAllePerioder = 0;
+        listeMedPermitteringsInfo.forEach(informasjon => {
+        if (informasjon.datoFra) {
+            const dager = antalldagerGått(informasjon.datoFra, informasjon.datoTil) - informasjon.antallDagerSykmeldt - informasjon.antallDagerPErmisjonOgFerie;
+            antallDagerAllePerioder += dager;
+        }
+    })
+    return antallDagerAllePerioder;
 }

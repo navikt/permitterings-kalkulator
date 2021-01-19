@@ -29,6 +29,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         props.setAllePermitteringer(kopiAvInfo);
     }
 
+
     return (<div className={'permitteringsperiode'}>
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
             <Element>Fyll inn fra første dag etter lønnsplikt</Element>
@@ -38,7 +39,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                         onChange={event => {
                             setDatoFra(event.currentTarget.value);
                             const kopiAvInfo = [...props.allePermitteringer]
-                            kopiAvInfo[props.indeks].datoTil = event.currentTarget.value;
+                            kopiAvInfo[props.indeks].datoFra = event.currentTarget.value;
                             props.setAllePermitteringer(kopiAvInfo);
                         }}
                         skalVareFoer={datoTil}

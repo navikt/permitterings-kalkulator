@@ -38,7 +38,6 @@ const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
         const kopiAvInfo: PermitteringsperiodeInfo[] = [...props.allePermitteringer]
         if (props.type === 'SYKMELDING') {
             kopiAvInfo[props.indeks].antallDagerSykmeldt = parseInt(value)
-            console.log('dette skjer')
         }
         else {
             kopiAvInfo[props.indeks].antallDagerPErmisjonOgFerie = parseInt(value)
