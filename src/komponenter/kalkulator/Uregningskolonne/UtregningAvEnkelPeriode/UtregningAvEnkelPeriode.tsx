@@ -12,8 +12,10 @@ interface UtregningAvEnkelPeriodeProps {
 
 const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = props => {
 
+
+
     const antallDagerGått = props.info.datoFra ? antalldagerGått(props.info.datoFra, props.info.datoTil) : 0;
-    const svar = antallDagerGått - props.info.antallDagerPErmisjonOgFerie - props.info.antallDagerPErmisjonOgFerie;
+    const svar = antallDagerGått - props.info.antallDagerPErmisjonOgFerie - props.info.antallDagerSykmeldt;
 
     return (
         <>

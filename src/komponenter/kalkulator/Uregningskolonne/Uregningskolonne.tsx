@@ -1,7 +1,6 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import '../kalkulator.less';
 
-import { Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';

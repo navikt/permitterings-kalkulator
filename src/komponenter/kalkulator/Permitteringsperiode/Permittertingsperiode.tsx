@@ -1,8 +1,7 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import { antalldagerGått, datoErFørMars } from '../utregninger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Datovelger from '../../Datovelger/Datovelger';
 import RadioKnappMedMenInputpopUp from './radioKnappOgInput';
@@ -20,37 +19,11 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const [datoFra, setDatoFra] = useState<Date | undefined>(props.info.datoFra);
     const [datoTil, setDatoTil] = useState<Date | undefined>(props.info.datoTil);
     const [erLøpendePermittering, setErLøpendePermittering] = useState(true)
-    const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
-    const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
 
-    const knappElement = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        if (erLøpendePermittering) {
-            setDatoTil(undefined)
-        }
-        if (datoFra) {
-            const antallDagerGått = antalldagerGått(datoFra, datoTil)
-            setAntallDagerBrukt(antallDagerGått);
-            const beregnetDato = new Date(datoFra)
-            beregnetDato.setDate(beregnetDato.getDate() + 210);
-            if (datoErFørMars(beregnetDato)) {
-                setAgp2Start(new Date('2021-03-01'))
-            }
-            else {
-                setAgp2Start(beregnetDato)
-            }
-        }
-        const info: PermitteringsperiodeInfo = {
-            datoFra:datoFra,
-            datoTil:datoTil,
-            antallDagerPErmisjonOgFerie: 0,
-            antallDagerSykmeldt:0,
-        }
-        props.allePermitteringer[props.indeks] = info;
-    }, [datoFra, datoTil, erLøpendePermittering, props.allePermitteringer]);
+    //const knappElement = useRef<HTMLDivElement>(null)
 
     const setTilDatoOgOppdaterListe = (dato?: Date) => {
+        setDatoTil(dato);
         const kopiAvInfo = [...props.allePermitteringer]
         kopiAvInfo[props.indeks].datoTil = dato;
         props.setAllePermitteringer(kopiAvInfo);
@@ -95,12 +68,17 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                     </div>
                 </div>
             <RadioKnappMedMenInputpopUp
-                permitteringsid={props.indeks}
-                spørsmål={"Har den ansatte vært 100 % sykmeldt i denne perioden?"}
+                allePermitteringer={props.allePermitteringer}
+                type={'SYKMELDING'}
+                indeks={props.indeks}
+                setAllePermitteringer={props.setAllePermitteringer}
+
             />
             <RadioKnappMedMenInputpopUp
-                permitteringsid={props.indeks}
-                spørsmål={"Har den ansatte hatt fravær i forbindelse med andre permisjoner eller tatt ut ferie i denne perioden?"}
+                allePermitteringer={props.allePermitteringer}
+                type={'PERMISJONOGFERIE'}
+                setAllePermitteringer={props.setAllePermitteringer}
+                indeks={props.indeks}
             />
         </div>
     );

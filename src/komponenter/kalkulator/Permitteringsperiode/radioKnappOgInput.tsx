@@ -1,39 +1,54 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import '../kalkulator.less';
-import { Input, Radio, RadioPanelGruppe } from 'nav-frontend-skjema';
+import { Input, RadioPanelGruppe } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { antalldagerGått, datoErFørMars } from '../utregninger';
+import { PermitteringsperiodeInfo } from '../kalkulator';
 
 
 interface Props {
-    spørsmål: string
-    permitteringsid: number
+    indeks: number
+    setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
+    type: string
+    allePermitteringer: PermitteringsperiodeInfo[];
 }
 
 const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
     const [svar, setSvar] = useState('');
 
+    const spørsmål = props.type === 'SYKMELDING'?
+        "Har den ansatte vært 100 % sykmeldt i denne perioden?"
+        :
+        "Har den ansatte hatt fravær i forbindelse med andre permisjoner eller tatt ut ferie i denne perioden?"
+
+
     const radios = [
         {
             label: 'Ja',
             value: 'Ja',
-            id: props.spørsmål+'-Ja-'+props.permitteringsid,
+            id: props.type+'-Ja-'+props.indeks,
         },
         {
             label: 'Nei',
             value: 'Nei',
-            id: props.spørsmål+'-Nei-'+props.permitteringsid,
+            id: props.type+'-Nei-'+props.indeks,
         },
     ];
 
-    useEffect(() => {
-
-    }, []);
-
+    const oppdaterInfoOgListe = (value: string) => {
+        const kopiAvInfo: PermitteringsperiodeInfo[] = [...props.allePermitteringer]
+        if (props.type === 'SYKMELDING') {
+            kopiAvInfo[props.indeks].antallDagerSykmeldt = parseInt(value)
+            console.log('dette skjer')
+        }
+        else {
+            kopiAvInfo[props.indeks].antallDagerPErmisjonOgFerie = parseInt(value)
+        }
+        props.setAllePermitteringer(kopiAvInfo);
+    }
 
     return (
         <div className={'permitteringsperiode__radioknapper-med-pop-up'}>
-            <Normaltekst>{props.spørsmål}</Normaltekst>
+            <Normaltekst>{spørsmål}</Normaltekst>
             <div >
                 <RadioPanelGruppe
                     className={'permitteringsperiode__radioknapper'}
@@ -47,7 +62,11 @@ const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
                 />
             </div>
             <>
-            { svar === 'Ja' && <Input label={'skriv inn antall dager'}></Input>}
+            { svar === 'Ja' &&
+            <Input label={'skriv inn antall dager'} onChange={(event) =>
+                oppdaterInfoOgListe(event.target.value)
+            }>
+            </Input>}
             </>
         </div>
     );
