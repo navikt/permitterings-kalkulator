@@ -8,6 +8,7 @@ import Datovelger from '../../Datovelger/Datovelger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import RadioKnappMedMenInputpopUp from './radioKnappOgInput';
 import { PermitteringsperiodeInfo } from '../kalkulator';
+import { Element, Undertittel } from 'nav-frontend-typografi';
 
 interface Props {
     info: PermitteringsperiodeInfo;
@@ -22,8 +23,6 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
     const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
-
-    const indeks =
 
     useEffect(() => {
         if (erLøpendePermittering) {
@@ -49,12 +48,13 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         }
         props.allePermitteringer[props.indeks] = info;
     }, [datoFra, datoTil, erLøpendePermittering, props.allePermitteringer]);
-    console.log(props.allePermitteringer[0])
 
     const tekst = 'dager permittert: '+ antallDagerBrukt +
         'Arbeidsgiverperiode 2 starter: ' + skrivOmDato(agp2Start);
 
     return (<div className={'permitteringsperiode'}>
+            <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
+            <Element>Fyll inn fra første dag etter lønnsplikt</Element>
                 <div className={'kalkulator__datovelgere'}>
                     <Datovelger
                         value={datoFra}
@@ -83,12 +83,13 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                     </div>
                 </div>
             <RadioKnappMedMenInputpopUp
+                permitteringsid={props.indeks}
                 spørsmål={"Har den ansatte vært 100 % sykmeldt i denne perioden?"}
             />
             <RadioKnappMedMenInputpopUp
+                permitteringsid={props.indeks}
                 spørsmål={"Har den ansatte hatt fravær i forbindelse med andre permisjoner eller tatt ut ferie i denne perioden?"}
             />
-            <div>{tekst} </div>
         </div>
     );
 };

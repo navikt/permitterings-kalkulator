@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
-import { antalldagerGått, datoErFørMars } from './utregninger';
+import { Knapp } from 'nav-frontend-knapper';
 
 export interface PermitteringsperiodeInfo {
     datoFra: Date|undefined,
@@ -37,16 +37,24 @@ const Kalkulator = () => {
         );
     })
 
-    console.log(permitteringer[0]);
+    const leggTilNyPermitteringsperiode = () => {
+        const nyPeriode = {...defaulPermitteringsobjekt};
+        const permitteringerKopi = [...permitteringer]
+        permitteringerKopi.push(nyPeriode)
+        setPermitteringer(permitteringerKopi)
+    }
+
+    console.log("rendrer", permitteringsobjekter)
 
     return (
         <div className={'kalkulator-bakgrunn'}>
             <Banner classname={'banner'} />
             <div className={'kalkulator-container'}>
-                <Undertittel>Beregning av arbeidsgiverperiode 2 </Undertittel>
-                <div className={'kalkulator__datovelgere'}>
+                <Systemtittel>Beregning av arbeidsgiverperiode 2 </Systemtittel>
+                <div className={'kalkulator__permitteringsobjekter'}>
                     {permitteringsobjekter}
                 </div>
+                <Knapp onClick={()=>leggTilNyPermitteringsperiode()}>legg til ny permitteringsperiode</Knapp>
             </div>
         </div>
     );

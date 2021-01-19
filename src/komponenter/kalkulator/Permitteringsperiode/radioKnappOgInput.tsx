@@ -7,6 +7,7 @@ import { antalldagerGått, datoErFørMars } from '../utregninger';
 
 interface Props {
     spørsmål: string
+    permitteringsid: number
 }
 
 const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
@@ -16,12 +17,12 @@ const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
         {
             label: 'Ja',
             value: 'Ja',
-            id: props.spørsmål+'-Ja',
+            id: props.spørsmål+'-Ja-'+props.permitteringsid,
         },
         {
             label: 'Nei',
             value: 'Nei',
-            id: props.spørsmål+'-Nei',
+            id: props.spørsmål+'-Nei-'+props.permitteringsid,
         },
     ];
 
