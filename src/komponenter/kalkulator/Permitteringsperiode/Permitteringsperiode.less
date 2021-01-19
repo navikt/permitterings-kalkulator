@@ -1,10 +1,13 @@
 .permitteringsperiode {
-  display: flex;
-  flex-direction: column;
+  display: flow;
   margin-top: 2rem;
 
   &__undertittel {
     margin-bottom: 1rem;
+  }
+
+  .inputPanelGruppe .inputPanel:not(:last-child) {
+    margin-bottom: 0;
   }
 
   .inputPanel--checked {
@@ -69,6 +72,7 @@
     position: initial;
     display: flex;
     flex-direction: row;
+    margin-bottom: 1rem;
 
     .inputPanel {
       background-color: white;
@@ -85,7 +89,7 @@
   &__radioknapper-med-pop-up {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    margin: 1rem 0 2rem;
   }
 
 }

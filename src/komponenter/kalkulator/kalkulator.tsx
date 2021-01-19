@@ -54,7 +54,7 @@ const Kalkulator = () => {
                 <div className={'kalkulator__permitteringsobjekter'}>
                     {permitteringsobjekter}
                 </div>
-                <Knapp onClick={()=>leggTilNyPermitteringsperiode()}>legg til ny permitteringsperiode</Knapp>
+                <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>legg til ny permitteringsperiode</Knapp>
             </div>
         </div>
     );

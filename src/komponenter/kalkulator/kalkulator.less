@@ -1,3 +1,5 @@
+@import '~nav-frontend-core/less/_variabler';
+
 .kalkulator-bakgrunn {
   display:flex;
   flex-direction: column;
@@ -26,8 +28,19 @@
 
   &__datovelgere {
     display: flex;
+    flex-wrap: wrap;
     margin: 0.5rem 0 1rem
+  }
+
+  &__legg-til-knapp {
+    width: 20rem;
   }
 
 }
 
+@media (max-width: @screen-sm-min) {
+  .kalkulator-container {
+    width: 90%;
+  }
+
+}
