@@ -44,17 +44,20 @@ const Kalkulator = () => {
         setPermitteringer(permitteringerKopi)
     }
 
-    console.log("rendrer", permitteringsobjekter)
-
     return (
         <div className={'kalkulator-bakgrunn'}>
             <Banner classname={'banner'} />
-            <div className={'kalkulator-container'}>
-                <Systemtittel>Beregning av arbeidsgiverperiode 2 </Systemtittel>
-                <div className={'kalkulator__permitteringsobjekter'}>
-                    {permitteringsobjekter}
+            <div className={'kalkulator'}>
+                <div className={'kalkulator__utfyllingskolonne'}>
+                    <Systemtittel>Beregning av arbeidsgiverperiode 2 </Systemtittel>
+                    <div className={'kalkulator__permitteringsobjekter'}>
+                        {permitteringsobjekter}
+                    </div>
+                    <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>
                 </div>
-                <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>legg til ny permitteringsperiode</Knapp>
+                <div className={'kalkulator__utregningskolonne'}>
+                    hello hello
+                </div>
             </div>
         </div>
     );

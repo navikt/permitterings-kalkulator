@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
@@ -9,6 +9,7 @@ import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import RadioKnappMedMenInputpopUp from './radioKnappOgInput';
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import { Element, Undertittel } from 'nav-frontend-typografi';
+import { scrollIntoView } from '../../../utils/scrollIntoView';
 
 interface Props {
     info: PermitteringsperiodeInfo;
@@ -23,6 +24,8 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
     const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
+
+    const knappElement = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (erLøpendePermittering) {
@@ -49,8 +52,12 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         props.allePermitteringer[props.indeks] = info;
     }, [datoFra, datoTil, erLøpendePermittering, props.allePermitteringer]);
 
-    const tekst = 'dager permittert: '+ antallDagerBrukt +
-        'Arbeidsgiverperiode 2 starter: ' + skrivOmDato(agp2Start);
+    /*useEffect(() => {
+        if (props.allePermitteringer.length === props.indeks)
+        knappElement.current?.scrollIntoView(true);
+    }, []);
+
+     */
 
     return (<div className={'permitteringsperiode'}>
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
