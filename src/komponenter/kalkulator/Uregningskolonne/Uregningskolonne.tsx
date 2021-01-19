@@ -4,7 +4,8 @@ import { Element } from 'nav-frontend-typografi';
 
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
-import { regnUtTotalAntallDager } from '../utregninger';
+import { regnUtDatoAGP2, regnUtTotalAntallDager } from '../utregninger';
+import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface UtregningskolonneProps  {
     listeMedPermitteringsinfo: PermitteringsperiodeInfo[]
@@ -25,16 +26,18 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
         );
     })
 
+    const antallDager = regnUtTotalAntallDager(props.listeMedPermitteringsinfo)
+
     return (
         <div className={'utregningskolonne'}>
             {enkeltUtregninger}
             <div className={'utregningskolonne__total-alle-perioder'}>
                 <Element>totalt antall dager</Element>
                 <Element className={'utregningskolonne__svar'}>
-                    {regnUtTotalAntallDager(props.listeMedPermitteringsinfo)}
+                    {antallDager}
                 </Element>
-
             </div>
+            {antallDager>0 && <Element>Arbeidsgiverperiode 2 starter: {skrivOmDato(regnUtDatoAGP2(antallDager))}</Element>}
         </div>
     );
 };

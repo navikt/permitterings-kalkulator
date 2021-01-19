@@ -7,6 +7,8 @@ import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
 import { Knapp } from 'nav-frontend-knapper';
 import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 
+export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
+
 export interface PermitteringsperiodeInfo {
     datoFra: Date|undefined,
     datoTil: Date|undefined,

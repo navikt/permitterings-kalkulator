@@ -1,6 +1,6 @@
 
 //returner antall dager fom startdato tom sluttdato
-import { PermitteringsperiodeInfo } from './kalkulator';
+import { ARBEIDSGIVERPERIODE2DATO, PermitteringsperiodeInfo } from './kalkulator';
 
 export const antalldagerGått = (fra: Date, til?: Date) => {
     const tilDato = til ? til : new Date()
@@ -27,4 +27,15 @@ export const regnUtTotalAntallDager = (listeMedPermitteringsInfo: Permitteringsp
         }
     })
     return antallDagerAllePerioder;
+}
+
+export const regnUtDatoAGP2 = (dagerBrukt: number) => {
+    const dagerIgjen = 210 - dagerBrukt;
+    const dagenDato = new Date();
+    const beregnetAGP2 = new Date(dagenDato);
+    beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen)
+    if (dagerIgjen>0) {
+        return beregnetAGP2
+    }
+    return ARBEIDSGIVERPERIODE2DATO
 }
