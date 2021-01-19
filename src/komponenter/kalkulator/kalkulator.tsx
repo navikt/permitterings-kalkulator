@@ -5,6 +5,7 @@ import Banner from '../banner/Banner';
 import { Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
 import { Knapp } from 'nav-frontend-knapper';
+import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 
 export interface PermitteringsperiodeInfo {
     datoFra: Date|undefined,
@@ -22,14 +23,7 @@ const defaulPermitteringsobjekt: PermitteringsperiodeInfo = {
 
 
 const Kalkulator = () => {
-    const [permitteringer, setPermitteringer] = useState<PermitteringsperiodeInfo[]>([])
-
-    useEffect(() => {
-        const initialPermittering = {
-            ...defaulPermitteringsobjekt
-        }
-        setPermitteringer([initialPermittering])
-    }, []);
+    const [permitteringer, setPermitteringer] = useState<PermitteringsperiodeInfo[]>([{...defaulPermitteringsobjekt}])
 
     const permitteringsobjekter = permitteringer.map((info, indeks) => {
         return (
@@ -55,8 +49,8 @@ const Kalkulator = () => {
                     </div>
                     <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>
                 </div>
-                <div className={'kalkulator__utregningskolonne'}>
-                    hello hello
+                <div className={'kalkulator__utregningskolonne'} >
+                   <Utregningskolonne listeMedPermitteringsinfo={permitteringer}/>
                 </div>
             </div>
         </div>

@@ -5,11 +5,9 @@ import './Permitteringsperiode.less';
 import { antalldagerGått, datoErFørMars } from '../utregninger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Datovelger from '../../Datovelger/Datovelger';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import RadioKnappMedMenInputpopUp from './radioKnappOgInput';
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-import { scrollIntoView } from '../../../utils/scrollIntoView';
 
 interface Props {
     info: PermitteringsperiodeInfo;
@@ -21,7 +19,7 @@ interface Props {
 const Permitteringsperiode: FunctionComponent<Props> = props => {
     const [datoFra, setDatoFra] = useState<Date | undefined>(props.info.datoFra);
     const [datoTil, setDatoTil] = useState<Date | undefined>(props.info.datoTil);
-    const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
+    const [erLøpendePermittering, setErLøpendePermittering] = useState(true)
     const [antallDagerBrukt, setAntallDagerBrukt] = useState(0);
     const [agp2Start, setAgp2Start] = useState<Date | undefined>(undefined);
 
@@ -52,12 +50,11 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         props.allePermitteringer[props.indeks] = info;
     }, [datoFra, datoTil, erLøpendePermittering, props.allePermitteringer]);
 
-    /*useEffect(() => {
-        if (props.allePermitteringer.length === props.indeks)
-        knappElement.current?.scrollIntoView(true);
-    }, []);
-
-     */
+    const setTilDatoOgOppdaterListe = (dato?: Date) => {
+        const kopiAvInfo = [...props.allePermitteringer]
+        kopiAvInfo[props.indeks].datoTil = dato;
+        props.setAllePermitteringer(kopiAvInfo);
+    }
 
     return (<div className={'permitteringsperiode'}>
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
@@ -67,6 +64,9 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                         value={datoFra}
                         onChange={event => {
                             setDatoFra(event.currentTarget.value);
+                            const kopiAvInfo = [...props.allePermitteringer]
+                            kopiAvInfo[props.indeks].datoTil = event.currentTarget.value;
+                            props.setAllePermitteringer(kopiAvInfo);
                         }}
                         skalVareFoer={datoTil}
                         overtekst="Fra:"
@@ -75,7 +75,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                         <Datovelger
                             value={datoTil}
                             onChange={event => {
-                                setDatoTil(event.currentTarget.value);
+                                setTilDatoOgOppdaterListe(event.currentTarget.value);
                             }}
                             disabled={erLøpendePermittering}
                             overtekst="Til:"
@@ -84,8 +84,13 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                         <Checkbox
                             label="Permittertingen er løpende"
                             checked={erLøpendePermittering}
-                            onChange={() =>setErLøpendePermittering(!erLøpendePermittering) }
-
+                            onChange={() => {
+                                const oppdaterterLøpendePermittering = !erLøpendePermittering
+                                if (oppdaterterLøpendePermittering === true) {
+                                    setTilDatoOgOppdaterListe(undefined)
+                                }
+                                setErLøpendePermittering(oppdaterterLøpendePermittering)
+                            } }
                         />
                     </div>
                 </div>
