@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
@@ -19,8 +19,13 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const [datoFra, setDatoFra] = useState<Date | undefined>(props.info.datoFra);
     const [datoTil, setDatoTil] = useState<Date | undefined>(props.info.datoTil);
     const [erLøpendePermittering, setErLøpendePermittering] = useState(true)
+    const ref = useRef<HTMLDivElement>(null)
 
-    //const knappElement = useRef<HTMLDivElement>(null)
+    useEffect(() => {
+        if (props.allePermitteringer.length> props.indeks && props.indeks>0) {
+            ref.current?.scrollIntoView({ block: "end"})
+        }
+    }, [props.info, props.allePermitteringer]);
 
     const setTilDatoOgOppdaterListe = (dato?: Date) => {
         setDatoTil(dato);
@@ -30,7 +35,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     }
 
 
-    return (<div className={'permitteringsperiode'}>
+    return (<div className={'permitteringsperiode'} ref={ref}>
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
             <Element>Fyll inn fra første dag etter lønnsplikt</Element>
                 <div className={'kalkulator__datovelgere'}>
