@@ -55,7 +55,19 @@
 
 @media (max-width: @screen-sm-min) {
   .kalkulator {
-    width: 90%;
+    width: 100%;
+    flex-direction: column;
+    max-width: none;
+
+    &__utregningskolonne {
+      width: 100%
+    }
+
+    &__utfyllingskolonne {
+      width: 90%;
+      align-self: center;
+    }
+
   }
 
 }
