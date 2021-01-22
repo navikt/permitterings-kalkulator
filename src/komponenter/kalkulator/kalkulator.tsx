@@ -39,7 +39,13 @@ const Kalkulator = () => {
     })
 
     const leggTilNyPermitteringsperiode = () => {
-        const nyPeriode = {...defaulPermitteringsobjekt};
+        const nyPeriode: PermitteringsperiodeInfo = {
+            permitteringsIntervall: {
+                datoFra: undefined,
+                datoTil: undefined
+            },
+            andreFraværsIntervall: []
+        }
         const permitteringerKopi = [...permitteringer]
         permitteringerKopi.push(nyPeriode)
         setPermitteringer(permitteringerKopi)
@@ -50,7 +56,7 @@ const Kalkulator = () => {
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>Beregning av arbeidsgiverperiode 2 </Systemtittel>
+                    <Systemtittel>Beregning av arbeidsgiverperiode II </Systemtittel>
                     <div className={'kalkulator__permitteringsobjekter'}>
                         {permitteringsobjekter}
                     </div>

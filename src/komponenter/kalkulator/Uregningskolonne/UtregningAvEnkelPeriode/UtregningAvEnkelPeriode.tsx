@@ -23,8 +23,6 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
         setAntall(svar)
     }, [props.info, props.listeMedPermitteringsinfo]);
 
-    console.log(props.listeMedPermitteringsinfo)
-
     return (
         <div className={'utregningskolonne__enkel-utregning-container'}>
             <Element>

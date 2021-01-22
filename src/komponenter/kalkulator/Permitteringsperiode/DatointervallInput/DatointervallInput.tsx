@@ -11,14 +11,19 @@ interface Props {
 }
 
 const DatoIntervallInput:FunctionComponent<Props> = props => {
-    const datoFra = props.indeksFraværsperioderIPermitteringsperiode ?
+    const indeksFraVærsperiode = props.indeksFraværsperioderIPermitteringsperiode ?
+        props.indeksFraværsperioderIPermitteringsperiode :
+        0
+
+    const erFraværsintervall = props.type === 'FRAVÆRSINTERVALL'
+    const datoFra = erFraværsintervall ?
         props.allePermitteringer[props.indeksPermitteringsperioder].
-            andreFraværsIntervall[props.indeksFraværsperioderIPermitteringsperiode].datoFra :
+            andreFraværsIntervall[indeksFraVærsperiode].datoFra :
         props.allePermitteringer[props.indeksPermitteringsperioder].permitteringsIntervall.datoFra
 
-    const datoTil = props.indeksFraværsperioderIPermitteringsperiode ?
+    const datoTil = erFraværsintervall ?
         props.allePermitteringer[props.indeksPermitteringsperioder].
-            andreFraværsIntervall[props.indeksFraværsperioderIPermitteringsperiode].datoTil :
+            andreFraværsIntervall[indeksFraVærsperiode].datoTil :
         props.allePermitteringer[props.indeksPermitteringsperioder].permitteringsIntervall.datoTil
 
     const oppdaterPermitteringsListe = ( typeIntervall: string, fra?: Date, til?: Date) => {
@@ -33,15 +38,17 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     const oppdaterFraVærsDatoer = (fra?: Date, til?: Date) => {
         const kopiAvPermitterinsperioder = [...props.allePermitteringer];
         if (fra) {
+            const indeks = props.indeksFraværsperioderIPermitteringsperiode ?
+                props.indeksFraværsperioderIPermitteringsperiode :
+                0
             kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].
-                andreFraværsIntervall[props.indeksPermitteringsperioder].
+                andreFraværsIntervall[indeks].
                 datoFra = fra;
         }
         else {
             kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].
-                andreFraværsIntervall[props.indeksPermitteringsperioder].
+                andreFraværsIntervall[props.indeksFraværsperioderIPermitteringsperiode!!].
                 datoTil = til;
-
         }
         props.setAllePermitteringer(kopiAvPermitterinsperioder)
     }

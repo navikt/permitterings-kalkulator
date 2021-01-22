@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import '../kalkulator.less';
 import { Input, RadioPanelGruppe } from 'nav-frontend-skjema';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import Permitteringsperiode from './Permittertingsperiode';
 import DatoIntervallInput from './DatointervallInput/DatointervallInput';
@@ -56,6 +56,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
 
     return (
         <div className={'permitteringsperiode__radioknapper-med-pop-up'}>
+            <Element>Andre fraværsperioder</Element>
             {fraVærsperiodeElementer}
             <RadioPanelGruppe onChange={(event, value) => leggTilNyFraVærsPeriode(value)} radios={radios} name={'Har du hatt annet fravær grunnet permisjoner eller 100 % sykmelding?'}/>
         </div>
