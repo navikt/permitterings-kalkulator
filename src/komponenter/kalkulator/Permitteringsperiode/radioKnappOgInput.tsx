@@ -15,10 +15,27 @@ interface Props {
 }
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
-    const [svar, setSvar] = useState('');
+    const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
 
-    const leggTilNyFraVærsPeriode = () => {
+    const radios = [
+        {
+            label: 'Ja',
+            value: 'Ja',
+            id: props.type+'-Ja-'+props.indeks,
+        },
+        {
+            label: 'Nei',
+            value: 'Nei',
+            id: props.type+'-Nei-'+props.indeks,
+        },
+    ];
 
+    const leggTilNyFraVærsPeriode = (svar: string) => {
+        if (svar === 'Ja') {
+            setAntallFraværsperioder(antallFraværsperioder+1);
+            const kopiAvAllPermitteringsInfo = [...props.allePermitteringer]
+            kopiAvAllPermitteringsInfo[props.indeks].andreFraværsIntervall.push({datoFra: undefined, datoTil: undefined})
+        }
     }
 
     const fraVærsperiodeElementer = props.allePermitteringer[props.indeks].andreFraværsIntervall
@@ -37,39 +54,10 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
 
     })
 
-
-
-    const radios = [
-        {
-            label: 'Ja',
-            value: 'Ja',
-            id: props.type+'-Ja-'+props.indeks,
-        },
-        {
-            label: 'Nei',
-            value: 'Nei',
-            id: props.type+'-Nei-'+props.indeks,
-        },
-    ];
-
-
-
-    /*const oppdaterInfoOgListe = (value: string) => {
-        const kopiAvInfo: PermitteringsperiodeInfo[] = [...props.allePermitteringer]
-        if (props.type === 'SYKMELDING') {
-            kopiAvInfo[props.indeks].antallDagerSykmeldt = parseInt(value)
-        }
-        else {
-            kopiAvInfo[props.indeks].antallDagerPErmisjonOgFerie = parseInt(value)
-        }
-        props.setAllePermitteringer(kopiAvInfo);
-    }
-
-     */
-
     return (
         <div className={'permitteringsperiode__radioknapper-med-pop-up'}>
             {fraVærsperiodeElementer}
+            <RadioPanelGruppe onChange={(event, value) => leggTilNyFraVærsPeriode(value)} radios={radios} name={'Har du hatt annet fravær grunnet permisjoner eller 100 % sykmelding?'}/>
         </div>
     );
 };

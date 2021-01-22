@@ -26,7 +26,7 @@ export interface PermitteringsperiodeInfo {
 
 const defaulPermitteringsobjekt: PermitteringsperiodeInfo = {
     permitteringsIntervall: tomtDatoIntervall,
-    andreFraværsIntervall: [tomtDatoIntervall]
+    andreFraværsIntervall: []
 }
 
 const Kalkulator = () => {

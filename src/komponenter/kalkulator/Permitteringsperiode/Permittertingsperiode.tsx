@@ -52,12 +52,6 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                 setAllePermitteringer={props.setAllePermitteringer}
 
             />
-            <LeggtilFraværsperiode
-                allePermitteringer={props.allePermitteringer}
-                type={'PERMISJONOGFERIE'}
-                setAllePermitteringer={props.setAllePermitteringer}
-                indeks={props.indeks}
-            />
         </div>
     );
 };
