@@ -9,20 +9,25 @@ import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
+interface DatoIntervall {
+    datoFra: Date | undefined
+    datoTil: Date | undefined
+}
+
+const tomtDatoIntervall: DatoIntervall = {
+    datoFra: undefined,
+    datoTil: undefined
+}
+
 export interface PermitteringsperiodeInfo {
-    datoFra: Date|undefined,
-    datoTil: Date|undefined,
-    antallDagerSykmeldt: number,
-    antallDagerPErmisjonOgFerie: number,
+    permitteringsIntervall: DatoIntervall;
+    andreFraværsIntervall: DatoIntervall[];
 }
 
 const defaulPermitteringsobjekt: PermitteringsperiodeInfo = {
-    datoTil: undefined,
-    datoFra: undefined,
-    antallDagerSykmeldt: 0,
-    antallDagerPErmisjonOgFerie: 0
+    permitteringsIntervall: tomtDatoIntervall,
+    andreFraværsIntervall: [tomtDatoIntervall]
 }
-
 
 const Kalkulator = () => {
     const [permitteringer, setPermitteringer] = useState<PermitteringsperiodeInfo[]>([{...defaulPermitteringsobjekt}])

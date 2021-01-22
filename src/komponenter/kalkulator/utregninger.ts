@@ -19,14 +19,15 @@ export const datoErFørMars = (dato: Date) => {
 }
 
 export const regnUtTotalAntallDager = (listeMedPermitteringsInfo: PermitteringsperiodeInfo[]): number => {
-    let antallDagerAllePerioder = 0;
+    let antallDagerBruktSummert = 0;
         listeMedPermitteringsInfo.forEach(informasjon => {
-        if (informasjon.datoFra) {
-            const dager = antalldagerGått(informasjon.datoFra, informasjon.datoTil) - informasjon.antallDagerSykmeldt - informasjon.antallDagerPErmisjonOgFerie;
-            antallDagerAllePerioder += dager;
-        }
+            if (informasjon.permitteringsIntervall.datoFra) {
+                const sumDager = antalldagerGått(informasjon.permitteringsIntervall.datoFra, informasjon.permitteringsIntervall.datoTil)
+                - summerAlleFraværeperioder(informasjon)
+                antallDagerBruktSummert += sumDager
+            }
     })
-    return antallDagerAllePerioder;
+    return antallDagerBruktSummert
 }
 
 export const regnUtDatoAGP2 = (dagerBrukt: number) => {
@@ -38,4 +39,14 @@ export const regnUtDatoAGP2 = (dagerBrukt: number) => {
         return beregnetAGP2
     }
     return ARBEIDSGIVERPERIODE2DATO
+}
+
+export const summerAlleFraværeperioder = (permitteringsinfo: PermitteringsperiodeInfo) => {
+    let antall = 0;
+    permitteringsinfo.andreFraværsIntervall.forEach(fraværsIntervall => {
+        if (fraværsIntervall.datoFra) {
+            antall += antalldagerGått(fraværsIntervall.datoFra, fraværsIntervall.datoTil)
+        }
+    })
+    return antall
 }

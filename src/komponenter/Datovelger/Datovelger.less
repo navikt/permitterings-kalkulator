@@ -3,7 +3,10 @@
 .datofelt {
     margin: 0 2rem 0.5rem 0;
     position: relative;
-    width: 10rem;
+
+    .skjemaelement__input {
+        width: 9.5rem;
+    }
 
 
     &__input-container {
@@ -22,17 +25,14 @@
         border: 1px solid @navGra60;
     }
 
-    &__input {
-        width: 10rem;
-    }
-
     &__knapp {
         position: absolute;
-        background-color: transparent;
+        background-color: white;
         height: 2.5rem;
         width: 2.5rem;
         border: 1px solid @navBlaDarken40;
-        right: 0;
+        left:7rem;
+
 
         &:focus {
             outline: none;
@@ -47,11 +47,5 @@
 }
 
 @media (min-width: @screen-sm) {
-    .datofelt {
-        width: 15rem;
 
-        &__input {
-            width: 15rem;
-        }
-    }
 }

@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import { PermitteringsperiodeInfo } from '../../kalkulator';
-import { antalldagerGått } from '../../utregninger';
+import { antalldagerGått, summerAlleFraværeperioder } from '../../utregninger';
 import { scrollIntoView } from '../../../../utils/scrollIntoView';
 
 
@@ -17,8 +17,9 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const antallDagerGått = props.info.datoFra ? antalldagerGått(props.info.datoFra, props.info.datoTil) : 0;
-        const svar = antallDagerGått - props.info.antallDagerPErmisjonOgFerie - props.info.antallDagerSykmeldt;
+        const antallDagerGått = props.info.permitteringsIntervall.datoFra ?
+            antalldagerGått(props.info.permitteringsIntervall.datoFra, props.info.permitteringsIntervall.datoTil) : 0;
+        const svar = antallDagerGått - summerAlleFraværeperioder(props.info);
         setAntall(svar)
     }, [props.info, props.listeMedPermitteringsinfo]);
 
@@ -33,10 +34,7 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
                     permittert:
                 </Undertekst>
                 <Undertekst>
-                    sykmeldt:
-                </Undertekst>
-                <Undertekst>
-                    permisjoner:
+                    annet fravær:
                 </Undertekst>
                 <Undertekst>
                     totalt:
@@ -45,16 +43,12 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
             </div>
             <div className={'utregningskolonne__enkelperiode-utregning'}>
                 <Undertekst>
-                    {props.info.datoFra ? antalldagerGått(props.info.datoFra, props.info.datoTil) : 0}
+                    {props.info.permitteringsIntervall.datoFra ? antalldagerGått(props.info.permitteringsIntervall.datoFra, props.info.permitteringsIntervall.datoTil) : 0}
                 </Undertekst>
                 <div className={'utregningskolonne__ledd'}>
                     <Undertekst>-</Undertekst>
-                    <Undertekst>{props.info.antallDagerSykmeldt}</Undertekst>
+                    <Undertekst>{summerAlleFraværeperioder(props.info)}</Undertekst>
                  </div>
-                <div className={'utregningskolonne__ledd'}>
-                    <Undertekst>-</Undertekst>
-                    <Undertekst>{props.info.antallDagerPErmisjonOgFerie}</Undertekst>
-                </div>
                 <div className={'utregningskolonne__ledd '}>
                     <Undertekst>=</Undertekst>
                     <Undertekst className={'utregningskolonne__svar'}>{antall}</Undertekst>

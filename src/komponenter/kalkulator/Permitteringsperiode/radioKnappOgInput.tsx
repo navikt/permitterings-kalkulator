@@ -3,22 +3,40 @@ import '../kalkulator.less';
 import { Input, RadioPanelGruppe } from 'nav-frontend-skjema';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringsperiodeInfo } from '../kalkulator';
+import Permitteringsperiode from './Permittertingsperiode';
+import DatoIntervallInput from './DatointervallInput/DatointervallInput';
 
 
 interface Props {
     indeks: number
     setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
-    type: string
     allePermitteringer: PermitteringsperiodeInfo[];
+    type:string
 }
 
-const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
+const Fraværsperioder:FunctionComponent<Props> = props => {
     const [svar, setSvar] = useState('');
 
-    const spørsmål = props.type === 'SYKMELDING'?
-        "Har den ansatte vært 100 % sykmeldt i denne perioden?"
-        :
-        "Har den ansatte hatt fravær i forbindelse med andre permisjoner eller tatt ut ferie i denne perioden?"
+    const leggTilNyFraVærsPeriode = () => {
+
+    }
+
+    const fraVærsperiodeElementer = props.allePermitteringer[props.indeks].andreFraværsIntervall
+        .map ( (fraværsintervall, sublisteindeks) => {
+        return (
+            <DatoIntervallInput
+                setAllePermitteringer={props.setAllePermitteringer}
+                allePermitteringer={props.allePermitteringer}
+                indeksPermitteringsperioder={props.indeks}
+                indeksFraværsperioderIPermitteringsperiode={sublisteindeks}
+                type={'FRAVÆRSINTERVALL'}
+
+            />
+
+        );
+
+    })
+
 
 
     const radios = [
@@ -34,7 +52,9 @@ const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
         },
     ];
 
-    const oppdaterInfoOgListe = (value: string) => {
+
+
+    /*const oppdaterInfoOgListe = (value: string) => {
         const kopiAvInfo: PermitteringsperiodeInfo[] = [...props.allePermitteringer]
         if (props.type === 'SYKMELDING') {
             kopiAvInfo[props.indeks].antallDagerSykmeldt = parseInt(value)
@@ -45,30 +65,13 @@ const RadioKnappMedMenInputpopUp:FunctionComponent<Props> = props => {
         props.setAllePermitteringer(kopiAvInfo);
     }
 
+     */
+
     return (
         <div className={'permitteringsperiode__radioknapper-med-pop-up'}>
-            <Normaltekst>{spørsmål}</Normaltekst>
-            <div >
-                <RadioPanelGruppe
-                    className={'permitteringsperiode__radioknapper'}
-                    name="samplename"
-                    legend=""
-                    radios={radios}
-                    checked={svar}
-                    onChange={(event, value) => {
-                        setSvar(value)
-                    }}
-                />
-            </div>
-            <>
-            { svar === 'Ja' &&
-            <Input label={'skriv inn antall dager'} onChange={(event) =>
-                oppdaterInfoOgListe(event.target.value)
-            }>
-            </Input>}
-            </>
+            {fraVærsperiodeElementer}
         </div>
     );
 };
 
-export default RadioKnappMedMenInputpopUp;
+export default Fraværsperioder;
