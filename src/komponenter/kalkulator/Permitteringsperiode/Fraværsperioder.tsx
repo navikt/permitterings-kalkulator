@@ -2,15 +2,15 @@ import React, { FunctionComponent, useState } from 'react';
 import '../kalkulator.less';
 import { Input, RadioPanelGruppe } from 'nav-frontend-skjema';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { PermitteringsperiodeInfo } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../kalkulator';
 import Permitteringsperiode from './Permittertingsperiode';
 import DatoIntervallInput from './DatointervallInput/DatointervallInput';
 
 
 interface Props {
     indeks: number
-    setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
-    allePermitteringer: PermitteringsperiodeInfo[];
+    setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     type:string
 }
 
@@ -33,19 +33,18 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     const leggTilNyFraVærsPeriode = (svar: string) => {
         if (svar === 'Ja') {
             setAntallFraværsperioder(antallFraværsperioder+1);
-            const kopiAvAllPermitteringsInfo = [...props.allePermitteringer]
-            kopiAvAllPermitteringsInfo[props.indeks].andreFraværsIntervall.push({datoFra: undefined, datoTil: undefined})
+            const kopiAvAllPermitteringsInfo = {...props.allePermitteringerOgFraværesPerioder}
+            kopiAvAllPermitteringsInfo.andreFraværsperioder.push({datoFra: undefined, datoTil: undefined})
         }
     }
 
-    const fraVærsperiodeElementer = props.allePermitteringer[props.indeks].andreFraværsIntervall
-        .map ( (fraværsintervall, sublisteindeks) => {
+    const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
+        .map ( (fraværsintervall, indeks) => {
         return (
             <DatoIntervallInput
-                setAllePermitteringer={props.setAllePermitteringer}
-                allePermitteringer={props.allePermitteringer}
-                indeksPermitteringsperioder={props.indeks}
-                indeksFraværsperioderIPermitteringsperiode={sublisteindeks}
+                setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
+                allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
+                indeksFraværsperioder={indeks}
                 type={'FRAVÆRSINTERVALL'}
 
             />

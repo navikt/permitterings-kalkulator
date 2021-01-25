@@ -9,14 +9,9 @@ import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
-interface DatoIntervall {
+export interface DatoIntervall {
     datoFra: Date | undefined
     datoTil: Date | undefined
-}
-
-const tomtDatoIntervall: DatoIntervall = {
-    datoFra: undefined,
-    datoTil: undefined
 }
 
 export interface PermitteringsperiodeInfo {
@@ -24,31 +19,29 @@ export interface PermitteringsperiodeInfo {
     andreFraværsIntervall: DatoIntervall[];
 }
 
-const defaulPermitteringsobjekt: PermitteringsperiodeInfo = {
-    permitteringsIntervall: tomtDatoIntervall,
-    andreFraværsIntervall: []
+export interface AllePermitteringerOgFraværesPerioder {
+    permitteringer: DatoIntervall[],
+    andreFraværsperioder: DatoIntervall[];
 }
 
 const Kalkulator = () => {
-    const [permitteringer, setPermitteringer] = useState<PermitteringsperiodeInfo[]>([{...defaulPermitteringsobjekt}])
+    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: undefined}], andreFraværsperioder: []})
 
-    const permitteringsobjekter = permitteringer.map((info, indeks) => {
+    const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
-            <Permitteringsperiode indeks={indeks} allePermitteringer={permitteringer} info={info} setAllePermitteringer={setPermitteringer} />
+            <Permitteringsperiode indeks={indeks} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} info={permitteringsperiode} setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} />
         );
     })
 
     const leggTilNyPermitteringsperiode = () => {
-        const nyPeriode: PermitteringsperiodeInfo = {
-            permitteringsIntervall: {
+        const nyPeriode: DatoIntervall = {
                 datoFra: undefined,
                 datoTil: undefined
-            },
-            andreFraværsIntervall: []
-        }
-        const permitteringerKopi = [...permitteringer]
-        permitteringerKopi.push(nyPeriode)
-        setPermitteringer(permitteringerKopi)
+            }
+
+        const kopiAvPermitterinsperioder = {...allePermitteringerOgFraværesPerioder};
+        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode)
+        setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
 
     return (
@@ -62,12 +55,15 @@ const Kalkulator = () => {
                     </div>
                     <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>
                 </div>
-                <div className={'kalkulator__utregningskolonne'} >
-                   <Utregningskolonne listeMedPermitteringsinfo={permitteringer}/>
-                </div>
             </div>
         </div>
     );
 };
 
 export default Kalkulator;
+
+/*<div className={'kalkulator__utregningskolonne'} >
+                   <Utregningskolonne listeMedPermitteringsinfo={permitteringer}/>
+                </div>
+
+ */

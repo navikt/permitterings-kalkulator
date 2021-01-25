@@ -2,16 +2,15 @@ import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import LeggtilFraværsperiode from './Fraværsperioder';
-import { PermitteringsperiodeInfo } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall, PermitteringsperiodeInfo } from '../kalkulator';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import DatoIntervallInput from './DatointervallInput/DatointervallInput';
 
 interface Props {
-    info: PermitteringsperiodeInfo;
+    info: DatoIntervall;
     indeks: number;
-    allePermitteringer: PermitteringsperiodeInfo[];
-    setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = props => {
@@ -19,10 +18,10 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        if (props.allePermitteringer.length> props.indeks && props.indeks>0) {
+        if (props.allePermitteringerOgFraværesPerioder.permitteringer.length> props.indeks && props.indeks>0) {
             ref.current?.scrollIntoView({ block: "end"})
         }
-    }, [props.info, props.allePermitteringer]);
+    }, [props.info, props.allePermitteringerOgFraværesPerioder]);
 
     /*const setTilDatoOgOppdaterListe = (dato?: Date) => {
         setDatoTil(dato);
@@ -39,17 +38,10 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
             <Element>Fyll inn fra første dag etter lønnsplikt</Element>
                 <DatoIntervallInput
                     indeksPermitteringsperioder={props.indeks}
-                    allePermitteringer={props.allePermitteringer}
-                    setAllePermitteringer={props.setAllePermitteringer}
+                    allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
+                    setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
                     type={'PERMITTERINGSINTERVALL'}
                 />
-            <LeggtilFraværsperiode
-                allePermitteringer={props.allePermitteringer}
-                type={'SYKMELDING'}
-                indeks={props.indeks}
-                setAllePermitteringer={props.setAllePermitteringer}
-
-            />
         </div>
     );
 };

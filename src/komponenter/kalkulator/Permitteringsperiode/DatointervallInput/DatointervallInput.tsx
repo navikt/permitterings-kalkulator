@@ -1,91 +1,87 @@
-import React, { FunctionComponent } from 'react';
-import { PermitteringsperiodeInfo } from '../../kalkulator';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall, PermitteringsperiodeInfo } from '../../kalkulator';
 import Datovelger from '../../../Datovelger/Datovelger';
 
 interface Props {
-    indeksPermitteringsperioder: number
-    indeksFraværsperioderIPermitteringsperiode?: number
-    setAllePermitteringer: (permitteringer: PermitteringsperiodeInfo[]) => void;
+    indeksPermitteringsperioder?: number
+    indeksFraværsperioder?: number
+    setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     type: string
-    allePermitteringer: PermitteringsperiodeInfo[];
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const DatoIntervallInput:FunctionComponent<Props> = props => {
-    const indeksFraVærsperiode = props.indeksFraværsperioderIPermitteringsperiode ?
-        props.indeksFraværsperioderIPermitteringsperiode :
-        0
+    const [indeks, setIndeks] = useState(0)
+    const [datoIntervall, setDatoIntervall] = useState<DatoIntervall>({datoFra:undefined, datoTil: undefined})
 
-    const erFraværsintervall = props.type === 'FRAVÆRSINTERVALL'
-    const datoFra = erFraværsintervall ?
-        props.allePermitteringer[props.indeksPermitteringsperioder].
-            andreFraværsIntervall[indeksFraVærsperiode].datoFra :
-        props.allePermitteringer[props.indeksPermitteringsperioder].permitteringsIntervall.datoFra
-
-    const datoTil = erFraværsintervall ?
-        props.allePermitteringer[props.indeksPermitteringsperioder].
-            andreFraværsIntervall[indeksFraVærsperiode].datoTil :
-        props.allePermitteringer[props.indeksPermitteringsperioder].permitteringsIntervall.datoTil
+    useEffect(() => {
+        if (props.type === 'FRAVÆRSINTERVALL') {
+            const indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
+            setIndeks(indeks)
+            setDatoIntervall(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks])
+        }
+        else {
+            setIndeks(props.indeksPermitteringsperioder!!)
+            setDatoIntervall(props.allePermitteringerOgFraværesPerioder.permitteringer[indeks])
+        }
+    }, [props.indeksFraværsperioder, props.indeksPermitteringsperioder, indeks]);
 
     const oppdaterPermitteringsListe = ( typeIntervall: string, fra?: Date, til?: Date) => {
         if (typeIntervall === 'PERMITTERINGSINTERVALL') {
-            oppdaterPermitteringsDatoer(fra, til);
+            oppdaterPermitteringsdatoer(fra, til);
         }
         else {
-            oppdaterFraVærsDatoer(fra, til)
+            oppdaterFraværsdatoer(fra, til)
         }
     }
 
-    const oppdaterFraVærsDatoer = (fra?: Date, til?: Date) => {
-        const kopiAvPermitterinsperioder = [...props.allePermitteringer];
+    const oppdaterFraværsdatoer = (fra?: Date, til?: Date) => {
+        const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
         if (fra) {
-            const indeks = props.indeksFraværsperioderIPermitteringsperiode ?
-                props.indeksFraværsperioderIPermitteringsperiode :
-                0
-            kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].
-                andreFraværsIntervall[indeks].
-                datoFra = fra;
+            kopiAvPermitterinsperioder.andreFraværsperioder[props.indeksFraværsperioder!!].datoFra = fra
         }
         else {
-            kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].
-                andreFraværsIntervall[props.indeksFraværsperioderIPermitteringsperiode!!].
-                datoTil = til;
+            kopiAvPermitterinsperioder.andreFraværsperioder[props.indeksFraværsperioder!!].datoTil = til
         }
-        props.setAllePermitteringer(kopiAvPermitterinsperioder)
+        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
 
-    const oppdaterPermitteringsDatoer = (fra?: Date, til?: Date) => {
-        const kopiAvPermitterinsperioder = [...props.allePermitteringer];
+    const oppdaterPermitteringsdatoer = (fra?: Date, til?: Date) => {
+        const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
+            permitteringer: [...props.allePermitteringerOgFraværesPerioder.permitteringer],
+            andreFraværsperioder: [...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder]
+
+        };
         if (fra) {
-            kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].permitteringsIntervall.
-                datoFra = fra
+            kopiAvPermitterinsperioder.permitteringer[props.indeksPermitteringsperioder!!].datoFra = fra
         }
         else {
-            kopiAvPermitterinsperioder[props.indeksPermitteringsperioder].permitteringsIntervall.
-                datoTil = til;
-
+            kopiAvPermitterinsperioder.permitteringer[props.indeksPermitteringsperioder!!].datoTil = til
         }
-        props.setAllePermitteringer(kopiAvPermitterinsperioder)
+        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
+
+    console.log(props.allePermitteringerOgFraværesPerioder);
 
     return (
         <div className={'kalkulator__datovelgere'}>
             <Datovelger
-                value={datoFra}
+                value={datoIntervall.datoFra}
                 onChange={event => {
                     oppdaterPermitteringsListe(props.type, event.currentTarget.value)
                 }}
-                skalVareFoer={datoTil}
+                skalVareFoer={datoIntervall.datoTil}
                 overtekst="Fra:"
             />
             <div className="skjema-innhold__dato-velger-til">
                 <Datovelger
-                    value={datoTil}
+                    value={datoIntervall.datoTil}
                     onChange={event => {
                         oppdaterPermitteringsListe(props.type, undefined ,event.currentTarget.value)
                     }}
                     disabled={false}
                     overtekst="Til:"
-                    skalVareEtter={datoFra}
+                    skalVareEtter={datoIntervall.datoFra}
                 />
 
             </div>

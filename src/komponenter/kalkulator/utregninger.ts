@@ -1,6 +1,6 @@
 
 //returner antall dager fom startdato tom sluttdato
-import { ARBEIDSGIVERPERIODE2DATO, PermitteringsperiodeInfo } from './kalkulator';
+import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall, PermitteringsperiodeInfo } from './kalkulator';
 
 export const antalldagerGått = (fra: Date, til?: Date) => {
     const tilDato = til ? til : new Date()
@@ -49,4 +49,31 @@ export const summerAlleFraværeperioder = (permitteringsinfo: Permitteringsperio
         }
     })
     return antall
+}
+
+export const inngårIPermitteringsperiode = (permitteringsintervall: DatoIntervall, fraværsintervall: DatoIntervall) => {
+    const helefraVærsperiodenInngår = (fraværsintervall.datoFra!!.getTime > permitteringsintervall.datoFra!!.getTime)
+            && (fraværsintervall.datoTil!!.getTime() <permitteringsintervall.datoTil!!.getTime())
+
+    const fraværIHelePerioden = (fraværsintervall.datoFra!!.getTime()<permitteringsintervall.datoFra!!.getTime()) &&
+        fraværsintervall.datoTil!!.getTime()>permitteringsintervall.datoTil!!.getTime();
+
+    const sisteDelInngår = (fraværsintervall.datoFra!!.getTime() > permitteringsintervall.datoFra!!.getTime()) &&
+        fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoTil!!.getTime()
+
+    const førsteDelInngår = (fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoFra!!.getTime()) &&
+        fraværsintervall.datoTil!!.getTime() > fraværsintervall.datoFra!!.getTime();
+
+    switch(true) {
+        case helefraVærsperiodenInngår:
+            return antalldagerGått(fraværsintervall.datoFra!!, fraværsintervall.datoTil)
+        case fraværIHelePerioden:
+            return antalldagerGått(permitteringsintervall.datoFra!!, permitteringsintervall.datoTil)
+        case sisteDelInngår:
+            return antalldagerGått(fraværsintervall.datoFra!!, permitteringsintervall.datoTil)
+        case førsteDelInngår:
+            return antalldagerGått(permitteringsintervall.datoFra!!, fraværsintervall.datoTil)
+        default:
+        return 0
+    }
 }
