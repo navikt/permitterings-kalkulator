@@ -2,9 +2,7 @@ import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import { Checkbox } from 'nav-frontend-skjema';
-import Datovelger from '../../Datovelger/Datovelger';
-import LeggtilFraværsperiode from './radioKnappOgInput';
+import LeggtilFraværsperiode from './Fraværsperioder';
 import { PermitteringsperiodeInfo } from '../kalkulator';
 import { Element, Undertittel } from 'nav-frontend-typografi';
 import DatoIntervallInput from './DatointervallInput/DatointervallInput';
