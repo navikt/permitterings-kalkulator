@@ -52,30 +52,33 @@ export const summerAlleFraværeperioder = (permitteringsinfo: Permitteringsperio
 }
 
 export const inngårIPermitteringsperiode = (permitteringsintervall: DatoIntervall, fraværsintervall: DatoIntervall) => {
-    const helefraVærsperiodenInngår = (fraværsintervall.datoFra!!.getTime > permitteringsintervall.datoFra!!.getTime)
-            && (fraværsintervall.datoTil!!.getTime() <permitteringsintervall.datoTil!!.getTime())
+    if (permitteringsintervall.datoFra && permitteringsintervall.datoTil && fraværsintervall.datoFra && fraværsintervall.datoTil) {
+        const helefraVærsperiodenInngår = (fraværsintervall.datoFra!!.getTime() >= permitteringsintervall.datoFra!!.getTime())
+            && (fraværsintervall.datoTil!!.getTime() <= permitteringsintervall.datoTil!!.getTime())
 
-    const fraværIHelePerioden = (fraværsintervall.datoFra!!.getTime()<permitteringsintervall.datoFra!!.getTime()) &&
-        fraværsintervall.datoTil!!.getTime()>permitteringsintervall.datoTil!!.getTime();
+        const fraværIHelePerioden = (fraværsintervall.datoFra!!.getTime()<permitteringsintervall.datoFra!!.getTime()) &&
+            fraværsintervall.datoTil!!.getTime()>permitteringsintervall.datoTil!!.getTime();
 
-    const sisteDelInngår = (fraværsintervall.datoFra!!.getTime() > permitteringsintervall.datoFra!!.getTime()) &&
-        fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoTil!!.getTime()
+        const sisteDelInngår = (fraværsintervall.datoFra!!.getTime() > permitteringsintervall.datoFra!!.getTime()) &&
+            fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoTil!!.getTime()
 
-    const førsteDelInngår = (fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoFra!!.getTime()) &&
-        fraværsintervall.datoTil!!.getTime() > fraværsintervall.datoFra!!.getTime();
+        const førsteDelInngår = (fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoFra!!.getTime()) &&
+            fraværsintervall.datoTil!!.getTime() > permitteringsintervall.datoFra!!.getTime();
 
-    switch(true) {
-        case helefraVærsperiodenInngår:
-            return antalldagerGått(fraværsintervall.datoFra!!, fraværsintervall.datoTil)
-        case fraværIHelePerioden:
-            return antalldagerGått(permitteringsintervall.datoFra!!, permitteringsintervall.datoTil)
-        case sisteDelInngår:
-            return antalldagerGått(fraværsintervall.datoFra!!, permitteringsintervall.datoTil)
-        case førsteDelInngår:
-            return antalldagerGått(permitteringsintervall.datoFra!!, fraværsintervall.datoTil)
-        default:
-        return 0
+        switch(true) {
+            case helefraVærsperiodenInngår:
+                return antalldagerGått(fraværsintervall.datoFra!!, fraværsintervall.datoTil)
+            case fraværIHelePerioden:
+                return antalldagerGått(permitteringsintervall.datoFra!!, permitteringsintervall.datoTil)
+            case sisteDelInngår:
+                return antalldagerGått(fraværsintervall.datoFra!!, permitteringsintervall.datoTil)
+            case førsteDelInngår:
+                return antalldagerGått(permitteringsintervall.datoFra!!, fraværsintervall.datoTil)
+            default:
+                return 0
+        }
     }
+    return 0;
 }
 
 export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: DatoIntervall, fraværsperioder: DatoIntervall[]) => {

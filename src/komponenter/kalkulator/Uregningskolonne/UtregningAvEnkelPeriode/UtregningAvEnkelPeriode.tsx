@@ -22,8 +22,9 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
             antalldagerGått(props.permitteringsperiode.datoFra!!, props.permitteringsperiode.datoTil) : 0;
         const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(props.permitteringsperiode, props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
         const svar = antallDagerGått - fraværIPerioden;
-        const totalAntall = props.dagerTilsammen + svar;
+        const totalAntall = props.dagerTilsammen + svar - antall;
         props.setDagerTilsammen(totalAntall)
+        setAntall(svar)
     }, [props.allePermitteringerOgFraværesPerioder, props.permitteringsperiode]);
 
     return (

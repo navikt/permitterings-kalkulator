@@ -1,5 +1,10 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall, PermitteringsperiodeInfo } from '../../kalkulator';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    ARBEIDSGIVERPERIODE2DATO,
+    DatoIntervall,
+    PermitteringsperiodeInfo,
+} from '../../kalkulator';
 import Datovelger from '../../../Datovelger/Datovelger';
 
 interface Props {
@@ -60,8 +65,6 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
         }
         props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
-
-    console.log(props.allePermitteringerOgFraværesPerioder);
 
     return (
         <div className={'kalkulator__datovelgere'}>

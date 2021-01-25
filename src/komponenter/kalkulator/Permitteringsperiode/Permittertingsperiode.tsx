@@ -23,16 +23,6 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         }
     }, [props.info, props.allePermitteringerOgFraværesPerioder]);
 
-    /*const setTilDatoOgOppdaterListe = (dato?: Date) => {
-        setDatoTil(dato);
-        const kopiAvInfo = [...props.allePermitteringer]
-        kopiAvInfo[props.indeks].datoTil = dato;
-        props.setAllePermitteringer(kopiAvInfo);
-    }
-
-     */
-
-
     return (<div className={'permitteringsperiode'} ref={ref}>
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
             <Element>Fyll inn fra første dag etter lønnsplikt</Element>

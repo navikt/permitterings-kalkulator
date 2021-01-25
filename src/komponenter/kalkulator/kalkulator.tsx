@@ -26,7 +26,7 @@ export interface AllePermitteringerOgFraværesPerioder {
 }
 
 const Kalkulator = () => {
-    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: undefined}], andreFraværsperioder: []})
+    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: ARBEIDSGIVERPERIODE2DATO}], andreFraværsperioder: []})
 
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
@@ -37,7 +37,7 @@ const Kalkulator = () => {
     const leggTilNyPermitteringsperiode = () => {
         const nyPeriode: DatoIntervall = {
                 datoFra: undefined,
-                datoTil: undefined
+                datoTil: ARBEIDSGIVERPERIODE2DATO
             }
 
         const kopiAvPermitterinsperioder = {...allePermitteringerOgFraværesPerioder};
