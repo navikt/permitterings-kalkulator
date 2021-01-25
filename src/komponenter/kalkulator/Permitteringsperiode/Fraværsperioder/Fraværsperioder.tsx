@@ -3,7 +3,7 @@ import './Fraværsperioder.less';
 import { RadioPanelGruppe } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../../kalkulator';
-import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
+import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 
 
 interface Props {
@@ -13,6 +13,7 @@ interface Props {
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
     const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
+    const [erLøpendeFraværsperiode, setErLøpendeFravæesperiode] = useState(true)
 
     const radios = [
         {
@@ -43,6 +44,8 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}
                 type={'FRAVÆRSINTERVALL'}
+                erLøpende={erLøpendeFraværsperiode}
+                setErLøpende={setErLøpendeFravæesperiode}
 
             />
 

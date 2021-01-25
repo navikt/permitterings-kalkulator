@@ -4,7 +4,7 @@ import './Permitteringsperiode.less';
 
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall, PermitteringsperiodeInfo } from '../kalkulator';
 import { Element, Undertittel } from 'nav-frontend-typografi';
-import DatoIntervallInput from './DatointervallInput/DatointervallInput';
+import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 
 interface Props {
     info: DatoIntervall;
@@ -27,6 +27,8 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
             <Undertittel className={'permitteringsperiode__undertittel'}>{props.indeks+1 +'. permitteringsperiode'}</Undertittel>
             <Element>Fyll inn fra første dag etter lønnsplikt</Element>
                 <DatoIntervallInput
+                    erLøpende={erLøpendePermittering}
+                    setErLøpende={setErLøpendePermittering}
                     indeksPermitteringsperioder={props.indeks}
                     allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                     setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}

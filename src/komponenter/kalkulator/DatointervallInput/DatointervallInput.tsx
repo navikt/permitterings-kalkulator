@@ -4,8 +4,9 @@ import {
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
     PermitteringsperiodeInfo,
-} from '../../kalkulator';
-import Datovelger from '../../../Datovelger/Datovelger';
+} from '../kalkulator';
+import Datovelger from '../../Datovelger/Datovelger';
+import { Checkbox } from 'nav-frontend-skjema';
 
 interface Props {
     indeksPermitteringsperioder?: number
@@ -13,6 +14,8 @@ interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     type: string
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    erLøpende: boolean;
+    setErLøpende: (erLøpende: boolean) => void
 }
 
 const DatoIntervallInput:FunctionComponent<Props> = props => {
@@ -55,7 +58,6 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
         const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
             permitteringer: [...props.allePermitteringerOgFraværesPerioder.permitteringer],
             andreFraværsperioder: [...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder]
-
         };
         if (fra) {
             kopiAvPermitterinsperioder.permitteringer[props.indeksPermitteringsperioder!!].datoFra = fra
@@ -88,22 +90,22 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 />
 
             </div>
+            <Checkbox
+                label="Permittertingen er løpende"
+                checked={props.erLøpende}
+                onChange={() => {
+                    const oppdaterterLøpendePermittering = !props.erLøpende
+                    if (oppdaterterLøpendePermittering === true) {
+                        oppdaterPermitteringsdatoer(undefined, new Date())
+                    }
+                    props.setErLøpende(oppdaterterLøpendePermittering)
+                } }
+            />
         </div>
     );
 };
 
 export default DatoIntervallInput;
 
-/*<Checkbox
-    label="Permittertingen er løpende"
-    checked={erLøpendePermittering}
-    onChange={() => {
-        const oppdaterterLøpendePermittering = !erLøpendePermittering
-        if (oppdaterterLøpendePermittering === true) {
-            setTilDatoOgOppdaterListe(undefined)
-        }
-        setErLøpendePermittering(oppdaterterLøpendePermittering)
-    } }
-/>
 
- */
+
