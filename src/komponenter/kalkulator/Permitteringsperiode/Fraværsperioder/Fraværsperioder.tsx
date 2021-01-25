@@ -1,17 +1,14 @@
 import React, { FunctionComponent, useState } from 'react';
-import '../kalkulator.less';
-import { Input, RadioPanelGruppe } from 'nav-frontend-skjema';
-import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../kalkulator';
-import Permitteringsperiode from './Permittertingsperiode';
-import DatoIntervallInput from './DatointervallInput/DatointervallInput';
+import './Fraværsperioder.less';
+import { RadioPanelGruppe } from 'nav-frontend-skjema';
+import { Element } from 'nav-frontend-typografi';
+import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../../kalkulator';
+import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 
 
 interface Props {
-    indeks: number
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    type:string
 }
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
@@ -21,12 +18,12 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         {
             label: 'Ja',
             value: 'Ja',
-            id: props.type+'-Ja-'+props.indeks,
+            id: '-Ja'
         },
         {
             label: 'Nei',
             value: 'Nei',
-            id: props.type+'-Nei-'+props.indeks,
+            id: '-Nei'
         },
     ];
 
@@ -54,7 +51,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     })
 
     return (
-        <div className={'permitteringsperiode__radioknapper-med-pop-up'}>
+        <div className={'fraværsperioder__radioknapper-med-pop-up'}>
             <Element>Andre fraværsperioder</Element>
             {fraVærsperiodeElementer}
             <RadioPanelGruppe onChange={(event, value) => leggTilNyFraVærsPeriode(value)} radios={radios} name={'Har du hatt annet fravær grunnet permisjoner eller 100 % sykmelding?'}/>

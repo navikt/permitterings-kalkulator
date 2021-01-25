@@ -77,3 +77,9 @@ export const inngårIPermitteringsperiode = (permitteringsintervall: DatoInterva
         return 0
     }
 }
+
+export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: DatoIntervall, fraværsperioder: DatoIntervall[]) => {
+    let antallFraværsdagerIPeriode = 0;
+    fraværsperioder.forEach(periode => antallFraværsdagerIPeriode+=inngårIPermitteringsperiode(permitteringsperiode,periode))
+    return antallFraværsdagerIPeriode
+}

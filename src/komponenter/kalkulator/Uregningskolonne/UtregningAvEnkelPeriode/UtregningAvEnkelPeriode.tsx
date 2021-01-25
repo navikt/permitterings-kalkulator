@@ -1,15 +1,16 @@
 import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
-import { PermitteringsperiodeInfo } from '../../kalkulator';
-import { antalldagerGått, summerAlleFraværeperioder } from '../../utregninger';
-import { scrollIntoView } from '../../../../utils/scrollIntoView';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../kalkulator';
+import { antalldagerGått, summerAlleFraværeperioder, summerFraværsdagerIPermitteringsperiode } from '../../utregninger';
 
 
 interface UtregningAvEnkelPeriodeProps {
     indeks: number
-    info: PermitteringsperiodeInfo;
-    listeMedPermitteringsinfo: PermitteringsperiodeInfo[]
+    permitteringsperiode: DatoIntervall;
+    setDagerTilsammen: (dager: number) => void;
+    dagerTilsammen: number
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = props => {
@@ -17,11 +18,13 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
-        const antallDagerGått = props.info.permitteringsIntervall.datoFra ?
-            antalldagerGått(props.info.permitteringsIntervall.datoFra, props.info.permitteringsIntervall.datoTil) : 0;
-        const svar = antallDagerGått - summerAlleFraværeperioder(props.info);
-        setAntall(svar)
-    }, [props.info, props.listeMedPermitteringsinfo]);
+        const antallDagerGått = props.permitteringsperiode.datoFra ?
+            antalldagerGått(props.permitteringsperiode.datoFra!!, props.permitteringsperiode.datoTil) : 0;
+        const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(props.permitteringsperiode, props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+        const svar = antallDagerGått - fraværIPerioden;
+        const totalAntall = props.dagerTilsammen + svar;
+        props.setDagerTilsammen(totalAntall)
+    }, [props.allePermitteringerOgFraværesPerioder, props.permitteringsperiode]);
 
     return (
         <div className={'utregningskolonne__enkel-utregning-container'}>
@@ -43,11 +46,11 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
             </div>
             <div className={'utregningskolonne__enkelperiode-utregning'}>
                 <Undertekst>
-                    {props.info.permitteringsIntervall.datoFra ? antalldagerGått(props.info.permitteringsIntervall.datoFra, props.info.permitteringsIntervall.datoTil) : 0}
+                    {props.permitteringsperiode.datoFra ? antalldagerGått(props.permitteringsperiode.datoFra, props.permitteringsperiode.datoTil) : 0}
                 </Undertekst>
                 <div className={'utregningskolonne__ledd'}>
                     <Undertekst>-</Undertekst>
-                    <Undertekst>{summerAlleFraværeperioder(props.info)}</Undertekst>
+                    <Undertekst>{summerFraværsdagerIPermitteringsperiode(props.permitteringsperiode, props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)}</Undertekst>
                  </div>
                 <div className={'utregningskolonne__ledd '}>
                     <Undertekst>=</Undertekst>

@@ -6,6 +6,7 @@ import { Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
 import { Knapp } from 'nav-frontend-knapper';
 import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
+import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
@@ -54,7 +55,11 @@ const Kalkulator = () => {
                         {permitteringsobjekter}
                     </div>
                     <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>
+                    <Fraværsperioder setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />
                 </div>
+                <div className={'kalkulator__utregningskolonne'} >
+                <Utregningskolonne allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
+            </div>
             </div>
         </div>
     );

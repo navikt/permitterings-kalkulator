@@ -1,32 +1,32 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import './Utregningskolonne.less';
 import { Element } from 'nav-frontend-typografi';
 
-import { PermitteringsperiodeInfo } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import { regnUtDatoAGP2, regnUtTotalAntallDager } from '../utregninger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface UtregningskolonneProps  {
-    listeMedPermitteringsinfo: PermitteringsperiodeInfo[]
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
+    const [dagerTilsammen, setDagerTilsammen] = useState(0)
 
-
-
-    const enkeltUtregninger = props.listeMedPermitteringsinfo.map( (enkeltutregning, index) => {
+    const enkeltUtregninger = props.allePermitteringerOgFraværesPerioder.permitteringer.map( (permitteringsperiode, indeks) => {
         return (
             <UtregningAvEnkelPeriode
-                info={enkeltutregning}
-                indeks={index}
-                listeMedPermitteringsinfo={props.listeMedPermitteringsinfo}
+                dagerTilsammen={dagerTilsammen}
+                permitteringsperiode={permitteringsperiode}
+                indeks={indeks}
+                allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
+                setDagerTilsammen = {setDagerTilsammen}
             />
 
         );
     })
 
-    const antallDager = regnUtTotalAntallDager(props.listeMedPermitteringsinfo)
 
     return (
         <div className={'utregningskolonne'}>
@@ -34,10 +34,10 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
             <div className={'utregningskolonne__total-alle-perioder'}>
                 <Element>totalt antall dager</Element>
                 <Element className={'utregningskolonne__svar'}>
-                    {antallDager}
+                    {dagerTilsammen}
                 </Element>
             </div>
-            {antallDager>0 && <Element>Arbeidsgiverperiode 2 starter: {skrivOmDato(regnUtDatoAGP2(antallDager))}</Element>}
+            {dagerTilsammen>0 && <Element>Arbeidsgiverperiode 2 starter: {skrivOmDato(regnUtDatoAGP2(dagerTilsammen))}</Element>}
         </div>
     );
 };
