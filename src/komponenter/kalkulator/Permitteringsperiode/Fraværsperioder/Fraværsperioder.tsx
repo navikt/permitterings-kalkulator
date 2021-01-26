@@ -1,9 +1,10 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { RadioPanelGruppe } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Ingress } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
+import { Knapp } from 'nav-frontend-knapper';
 
 
 interface Props {
@@ -28,12 +29,10 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         },
     ];
 
-    const leggTilNyFraVærsPeriode = (svar: string) => {
-        if (svar === 'Ja') {
-            setAntallFraværsperioder(antallFraværsperioder+1);
-            const kopiAvAllPermitteringsInfo = {...props.allePermitteringerOgFraværesPerioder}
-            kopiAvAllPermitteringsInfo.andreFraværsperioder.push({datoFra: undefined, datoTil: undefined})
-        }
+    const leggTilNyFraVærsPeriode = () => {
+        setAntallFraværsperioder(antallFraværsperioder+1);
+        const kopiAvAllPermitteringsInfo = {...props.allePermitteringerOgFraværesPerioder}
+        kopiAvAllPermitteringsInfo.andreFraværsperioder.push({datoFra: undefined, datoTil: undefined})
     }
 
     const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
@@ -54,10 +53,10 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     })
 
     return (
-        <div className={'fraværsperioder__radioknapper-med-pop-up'}>
-            <Element>Andre fraværsperioder</Element>
+        <div className={'kalkulator__fraværsperioder'}>
+            <Ingress>Har den ansatte hatt annet fraværs i disse periodene?</Ingress>
             {fraVærsperiodeElementer}
-            <RadioPanelGruppe onChange={(event, value) => leggTilNyFraVærsPeriode(value)} radios={radios} name={'Har du hatt annet fravær grunnet permisjoner eller 100 % sykmelding?'}/>
+            <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyFraVærsPeriode()}>+ legg til ny fraværsperiode</Knapp>
         </div>
     );
 };

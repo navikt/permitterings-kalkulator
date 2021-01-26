@@ -15,7 +15,7 @@
 .kalkulator {
   display: flex;
   padding: 3rem 0 3rem;
-  width: 60rem;
+  width: 63rem;
   max-width: 90%;
 
   &__utfyllingskolonne {
@@ -24,13 +24,14 @@
     background-color: white;
     width:64%;
     border-radius: 3px;
-    padding: 3rem;
+    padding: 2rem;
     margin-right: 1rem;
   }
 
   &__permitteringsobjekter {
     display:flex;
     flex-direction: column;
+    border-bottom: 2px solid @navGra20;
   }
 
   &__datovelgere {
@@ -41,6 +42,7 @@
 
   &__legg-til-knapp {
     width: 20rem;
+    margin-bottom: 1.5rem;
   }
 
   &__utregningskolonne {
@@ -58,6 +60,10 @@
     width: 100%;
     flex-direction: column;
     max-width: none;
+
+    .knapp--standard {
+      border:none;
+    }
 
     &__utregningskolonne {
       width: 100%

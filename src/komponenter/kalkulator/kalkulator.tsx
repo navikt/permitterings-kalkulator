@@ -34,27 +34,15 @@ const Kalkulator = () => {
         );
     })
 
-    const leggTilNyPermitteringsperiode = () => {
-        const nyPeriode: DatoIntervall = {
-                datoFra: undefined,
-                datoTil: ARBEIDSGIVERPERIODE2DATO
-            }
-
-        const kopiAvPermitterinsperioder = {...allePermitteringerOgFraværesPerioder};
-        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode)
-        setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
-    }
-
     return (
         <div className={'kalkulator-bakgrunn'}>
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>Beregning av arbeidsgiverperiode II </Systemtittel>
+                    <Systemtittel>Når treffer arbeidsgiver 2 dine ansatte?</Systemtittel>
                     <div className={'kalkulator__permitteringsobjekter'}>
                         {permitteringsobjekter}
                     </div>
-                    <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>
                     <Fraværsperioder setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >

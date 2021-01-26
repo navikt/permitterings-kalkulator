@@ -1,4 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import './DatointervallInput.less';
 import {
     AllePermitteringerOgFraværesPerioder,
     ARBEIDSGIVERPERIODE2DATO,
@@ -21,6 +22,10 @@ interface Props {
 const DatoIntervallInput:FunctionComponent<Props> = props => {
     const [indeks, setIndeks] = useState(0)
     const [datoIntervall, setDatoIntervall] = useState<DatoIntervall>({datoFra:undefined, datoTil: undefined})
+
+    const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
+        'Permitteringen er fortsatt aktiv'
+
 
     useEffect(() => {
         if (props.type === 'FRAVÆRSINTERVALL') {
@@ -88,10 +93,9 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                     overtekst="Til:"
                     skalVareEtter={datoIntervall.datoFra}
                 />
-
             </div>
             <Checkbox
-                label="Permittertingen er løpende"
+                label={checkbokstekst}
                 checked={props.erLøpende}
                 onChange={() => {
                     const oppdaterterLøpendePermittering = !props.erLøpende
