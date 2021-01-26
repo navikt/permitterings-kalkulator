@@ -26,7 +26,7 @@ export interface AllePermitteringerOgFraværesPerioder {
 }
 
 const Kalkulator = () => {
-    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: ARBEIDSGIVERPERIODE2DATO}], andreFraværsperioder: []})
+    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: undefined}], andreFraværsperioder: []})
     const [enPermitteringAlleredeLøpende, setEnPermitteringAlleredeLøpende] = useState(false)
     const [etFraværAlleredeLøpende, setFraværAlleredeFraværLøpende] = useState(false)
 
@@ -47,7 +47,7 @@ const Kalkulator = () => {
             setBeskjedOverlappendeFravær('')
         }
 
-    },[allePermitteringerOgFraværesPerioder] );
+    },[allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær, beskjedOverlappendePermittering] );
 
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
@@ -71,7 +71,9 @@ const Kalkulator = () => {
                         {permitteringsobjekter}
                         <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendePermittering}</Element>
                     </div>
-                    <Fraværsperioder etFraværAlleredeLøpende={etFraværAlleredeLøpende} setFraværAlleredeLøpende={setFraværAlleredeFraværLøpende}
+                    <Fraværsperioder
+                        etFraværAlleredeLøpende={etFraværAlleredeLøpende}
+                        setFraværAlleredeLøpende={setFraværAlleredeFraværLøpende}
                         setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder}
                         allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}
                     />

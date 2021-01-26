@@ -1,10 +1,9 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
 import {
     AllePermitteringerOgFraværesPerioder,
-    ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall
 } from '../kalkulator';
 
@@ -21,7 +20,6 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = props => {
-    const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
@@ -33,7 +31,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
     const leggTilNyPermitteringsperiode = () => {
         const nyPeriode: DatoIntervall = {
             datoFra: undefined,
-            datoTil: ARBEIDSGIVERPERIODE2DATO
+            datoTil: undefined
         }
 
         const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
@@ -45,8 +43,6 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                 <DatoIntervallInput
                     setEnPeriodeAlleredeLøpende={props.setEnPermitteringAlleredeLøpende}
                     enPeriodeAlleredeLøpende={props.enPermitteringAlleredeLøpende}
-                    erLøpende={erLøpendePermittering}
-                    setErLøpende={setErLøpendePermittering}
                     indeksPermitteringsperioder={props.indeks}
                     allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                     setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}

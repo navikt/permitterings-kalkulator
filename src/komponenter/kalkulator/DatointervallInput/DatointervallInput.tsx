@@ -15,8 +15,6 @@ interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     type: string
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    erLøpende: boolean;
-    setErLøpende: (erLøpende: boolean) => void
     setEnPeriodeAlleredeLøpende: (finnesløpendePermitterintb: boolean) => void
     enPeriodeAlleredeLøpende: boolean
 }
@@ -25,6 +23,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     const [indeks, setIndeks] = useState(0)
     const [datoIntervall, setDatoIntervall] = useState<DatoIntervall>({datoFra:undefined, datoTil: undefined})
     const [feilMelding, setFeilmelding] = useState('')
+    const [erLøpende, setErLøpende] = useState(false)
 
     const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
         'Permitteringen er fortsatt aktiv'
@@ -41,6 +40,13 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
             setDatoIntervall(props.allePermitteringerOgFraværesPerioder.permitteringer[indeks])
         }
     }, [props.indeksFraværsperioder, props.indeksPermitteringsperioder, indeks, props.allePermitteringerOgFraværesPerioder, props.type]);
+
+    useEffect(() => {
+        if (!props.enPeriodeAlleredeLøpende) {
+            setFeilmelding('')
+        }
+
+    }, [props.enPeriodeAlleredeLøpende]);
 
     const oppdaterPermitteringsListe = ( typeIntervall: string, fra?: Date, til?: Date) => {
         if (typeIntervall === 'PERMITTERINGSINTERVALL') {
@@ -92,7 +98,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                     onChange={event => {
                         oppdaterPermitteringsListe(props.type, undefined ,event.currentTarget.value)
                     }}
-                    disabled={props.erLøpende}
+                    disabled={erLøpende}
                     overtekst="Siste dag"
                     skalVareEtter={datoIntervall.datoFra}
                 />
@@ -100,23 +106,23 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
 
             <Checkbox
                 label={checkbokstekst}
-                checked={props.erLøpende}
+                checked={erLøpende}
                 onChange={() => {
-                    const nyStatus = !props.erLøpende
+                    const nyStatus = !erLøpende
                     if (nyStatus && props.enPeriodeAlleredeLøpende) {
                         setFeilmelding('Kun en periode kan være løpende')
                     }
                     else if (!nyStatus && props.enPeriodeAlleredeLøpende) {
                         props.setEnPeriodeAlleredeLøpende(false);
-                        props.setErLøpende(nyStatus)
+                        setErLøpende(nyStatus)
                         setFeilmelding('');
                     }
                     else {
                         if (nyStatus) {
                             props.setEnPeriodeAlleredeLøpende(true)
-                            oppdaterPermitteringsdatoer(undefined, ARBEIDSGIVERPERIODE2DATO);
+                            oppdaterPermitteringsListe(props.type, undefined, ARBEIDSGIVERPERIODE2DATO);
                         }
-                        props.setErLøpende(nyStatus)
+                        setErLøpende(nyStatus)
                     }
                 }
                 }

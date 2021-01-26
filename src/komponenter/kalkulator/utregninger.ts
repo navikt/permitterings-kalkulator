@@ -21,7 +21,7 @@ export const datoErFørMars = (dato: Date) => {
 export const regnUtTotalAntallDager = (listeMedPermitteringsInfo: PermitteringsperiodeInfo[]): number => {
     let antallDagerBruktSummert = 0;
         listeMedPermitteringsInfo.forEach(informasjon => {
-            if (informasjon.permitteringsIntervall.datoFra) {
+            if (informasjon.permitteringsIntervall.datoFra && informasjon) {
                 const sumDager = antalldagerGått(informasjon.permitteringsIntervall.datoFra, informasjon.permitteringsIntervall.datoTil)
                 - summerAlleFraværeperioder(informasjon)
                 antallDagerBruktSummert += sumDager

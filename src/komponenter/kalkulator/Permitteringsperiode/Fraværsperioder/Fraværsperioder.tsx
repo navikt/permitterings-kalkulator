@@ -15,7 +15,6 @@ interface Props {
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
     const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
-    const [erLøpendeFraværsperiode, setErLøpendeFravæesperiode] = useState(false)
 
     const leggTilNyFraVærsPeriode = () => {
         setAntallFraværsperioder(antallFraværsperioder+1);
@@ -33,9 +32,6 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}
                 type={'FRAVÆRSINTERVALL'}
-                erLøpende={erLøpendeFraværsperiode}
-                setErLøpende={setErLøpendeFravæesperiode}
-
             />
 
         );
