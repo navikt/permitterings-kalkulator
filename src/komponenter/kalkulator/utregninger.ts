@@ -86,3 +86,17 @@ export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: D
     fraværsperioder.forEach(periode => antallFraværsdagerIPeriode+=inngårIPermitteringsperiode(permitteringsperiode,periode))
     return antallFraværsdagerIPeriode
 }
+
+export const finnUtOmDefinnesOverlappendePerioder = (perioder: DatoIntervall[]) => {
+    let finnesOverLapp = false;
+    perioder.forEach(periode => {
+        perioder.forEach(periode2 => {
+            if (periode.datoFra && periode2.datoFra && (periode !== periode2)) {
+                if (inngårIPermitteringsperiode(periode, periode2) > 0) {
+                    finnesOverLapp = true;
+                }
+            }
+        })
+    })
+    return finnesOverLapp
+}

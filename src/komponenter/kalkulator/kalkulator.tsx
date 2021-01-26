@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Element, Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
 import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
+import { finnUtOmDefinnesOverlappendePerioder } from './utregninger';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
@@ -29,6 +30,25 @@ const Kalkulator = () => {
     const [enPermitteringAlleredeLøpende, setEnPermitteringAlleredeLøpende] = useState(false)
     const [etFraværAlleredeLøpende, setFraværAlleredeFraværLøpende] = useState(false)
 
+    const [beskjedOverlappendePermittering,setBeskjedOverlappendePermittering] = useState('');
+    const [beskjedOverlappendeFravær,setBeskjedOverlappendeFravær] = useState('');
+
+    useEffect(() => {
+        if (finnUtOmDefinnesOverlappendePerioder(allePermitteringerOgFraværesPerioder.permitteringer)) {
+            setBeskjedOverlappendePermittering('Du kan ikke ha overlappende permitteringsperioder')
+        }
+        else {
+            setBeskjedOverlappendePermittering('')
+        }
+        if (finnUtOmDefinnesOverlappendePerioder(allePermitteringerOgFraværesPerioder.andreFraværsperioder)) {
+            setBeskjedOverlappendePermittering('Du kan ikke ha overlappende fraværsperioder')
+        }
+        else {
+            setBeskjedOverlappendeFravær('')
+        }
+
+    },[allePermitteringerOgFraværesPerioder] );
+
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
             <Permitteringsperiode enPermitteringAlleredeLøpende={enPermitteringAlleredeLøpende} indeks={indeks}
@@ -49,8 +69,13 @@ const Kalkulator = () => {
                         <Ingress>Legg inn dato fra første permittering</Ingress>
                         <Normaltekst>Fra første dag etter lønnsplikt</Normaltekst>
                         {permitteringsobjekter}
+                        <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendePermittering}</Element>
                     </div>
-                    <Fraværsperioder etFraværAlleredeLøpende={etFraværAlleredeLøpende} setFraværAlleredeLøpende={setFraværAlleredeFraværLøpende} setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />
+                    <Fraværsperioder etFraværAlleredeLøpende={etFraværAlleredeLøpende} setFraværAlleredeLøpende={setFraværAlleredeFraværLøpende}
+                        setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder}
+                        allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}
+                    />
+                    <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendeFravær}</Element>
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >
                 <Utregningskolonne allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
