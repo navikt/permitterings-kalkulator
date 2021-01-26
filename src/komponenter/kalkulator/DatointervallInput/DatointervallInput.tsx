@@ -98,11 +98,11 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 label={checkbokstekst}
                 checked={props.erLøpende}
                 onChange={() => {
-                    const oppdaterterLøpendePermittering = !props.erLøpende
-                    if (oppdaterterLøpendePermittering === true) {
-                        oppdaterPermitteringsdatoer(undefined, new Date())
+                    const nyStatus = !props.erLøpende
+                    if (nyStatus === true) {
+                        oppdaterPermitteringsdatoer(undefined, ARBEIDSGIVERPERIODE2DATO)
                     }
-                    props.setErLøpende(oppdaterterLøpendePermittering)
+                    props.setErLøpende(nyStatus)
                 } }
             />
         </div>
@@ -110,6 +110,3 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
 };
 
 export default DatoIntervallInput;
-
-
-
