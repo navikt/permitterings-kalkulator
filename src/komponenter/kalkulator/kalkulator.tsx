@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Systemtittel } from 'nav-frontend-typografi';
+import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
 import { Knapp } from 'nav-frontend-knapper';
 import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
@@ -41,6 +41,8 @@ const Kalkulator = () => {
                 <div className={'kalkulator__utfyllingskolonne'}>
                     <Systemtittel>Når treffer arbeidsgiver 2 dine ansatte?</Systemtittel>
                     <div className={'kalkulator__permitteringsobjekter'}>
+                        <Ingress>Legg inn dato fra første permittering</Ingress>
+                        <Normaltekst>Fra første dag etter lønnsplikt</Normaltekst>
                         {permitteringsobjekter}
                     </div>
                     <Fraværsperioder setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />

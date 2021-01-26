@@ -81,7 +81,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                     oppdaterPermitteringsListe(props.type, event.currentTarget.value)
                 }}
                 skalVareFoer={datoIntervall.datoTil}
-                overtekst="Fra:"
+                overtekst="Første dag"
             />
             <div className="skjema-innhold__dato-velger-til">
                 <Datovelger
@@ -90,7 +90,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                         oppdaterPermitteringsListe(props.type, undefined ,event.currentTarget.value)
                     }}
                     disabled={false}
-                    overtekst="Til:"
+                    overtekst="Siste dag"
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
