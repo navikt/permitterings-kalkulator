@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Utregningskolonne.less';
-import { Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
-import { regnUtDatoAGP2, regnUtTotalAntallDager } from '../utregninger';
+import { antallUkerRundetOpp, regnUtDatoAGP2, regnUtTotalAntallDager } from '../utregninger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface UtregningskolonneProps  {
@@ -32,12 +32,16 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
         <div className={'utregningskolonne'}>
             {enkeltUtregninger}
             <div className={'utregningskolonne__total-alle-perioder'}>
-                <Element>totalt antall dager</Element>
-                <Element className={'utregningskolonne__svar'}>
-                    {dagerTilsammen}
+                <Normaltekst>Permittert i</Normaltekst>
+                <Element>
+                    {`${dagerTilsammen} dager (${antallUkerRundetOpp(dagerTilsammen)} uker)`}
                 </Element>
+                {dagerTilsammen>0 &&
+                <>
+                    <Normaltekst>Arbeidsgiverperiode 2 inntreffer</Normaltekst>
+                    <Element>{skrivOmDato(regnUtDatoAGP2(dagerTilsammen))}</Element>
+                </>}
             </div>
-            {dagerTilsammen>0 && <Element>Arbeidsgiverperiode 2 starter: {skrivOmDato(regnUtDatoAGP2(dagerTilsammen))}</Element>}
         </div>
     );
 };
