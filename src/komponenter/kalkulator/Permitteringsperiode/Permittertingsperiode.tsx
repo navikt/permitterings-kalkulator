@@ -7,7 +7,7 @@ import {
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall
 } from '../kalkulator';
-import { Element, Undertittel } from 'nav-frontend-typografi';
+
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 
@@ -19,14 +19,14 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = props => {
-    const [erLøpendePermittering, setErLøpendePermittering] = useState(true)
+    const [erLøpendePermittering, setErLøpendePermittering] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
 
     useEffect(() => {
         if (props.allePermitteringerOgFraværesPerioder.permitteringer.length> props.indeks && props.indeks>0) {
             ref.current?.scrollIntoView({ block: "center"})
         }
-    }, [props.info, props.allePermitteringerOgFraværesPerioder]);
+    }, );
 
     const leggTilNyPermitteringsperiode = () => {
         const nyPeriode: DatoIntervall = {

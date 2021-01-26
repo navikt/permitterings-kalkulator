@@ -4,7 +4,6 @@ import {
     AllePermitteringerOgFraværesPerioder,
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
-    PermitteringsperiodeInfo,
 } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -37,7 +36,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
             setIndeks(props.indeksPermitteringsperioder!!)
             setDatoIntervall(props.allePermitteringerOgFraværesPerioder.permitteringer[indeks])
         }
-    }, [props.indeksFraværsperioder, props.indeksPermitteringsperioder, indeks]);
+    }, [props.indeksFraværsperioder, props.indeksPermitteringsperioder, indeks, props.allePermitteringerOgFraværesPerioder, props.type]);
 
     const oppdaterPermitteringsListe = ( typeIntervall: string, fra?: Date, til?: Date) => {
         if (typeIntervall === 'PERMITTERINGSINTERVALL') {
@@ -89,7 +88,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                     onChange={event => {
                         oppdaterPermitteringsListe(props.type, undefined ,event.currentTarget.value)
                     }}
-                    disabled={false}
+                    disabled={props.erLøpende}
                     overtekst="Siste dag"
                     skalVareEtter={datoIntervall.datoFra}
                 />

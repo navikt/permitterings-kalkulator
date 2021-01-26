@@ -4,7 +4,6 @@ import './kalkulator.less';
 import Banner from '../banner/Banner';
 import { Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
-import { Knapp } from 'nav-frontend-knapper';
 import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 

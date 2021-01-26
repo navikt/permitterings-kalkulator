@@ -1,8 +1,8 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../kalkulator';
-import { antalldagerGått, summerAlleFraværeperioder, summerFraværsdagerIPermitteringsperiode } from '../../utregninger';
+import { antalldagerGått, summerFraværsdagerIPermitteringsperiode } from '../../utregninger';
 
 
 interface UtregningAvEnkelPeriodeProps {
@@ -15,7 +15,7 @@ interface UtregningAvEnkelPeriodeProps {
 
 const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = props => {
     const [antall, setAntall] = useState(0)
-    const ref = useRef<HTMLDivElement>(null)
+
 
     useEffect(() => {
         const antallDagerGått = props.permitteringsperiode.datoFra ?
@@ -25,7 +25,7 @@ const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = 
         const totalAntall = props.dagerTilsammen + svar - antall;
         props.setDagerTilsammen(totalAntall)
         setAntall(svar)
-    }, [props.allePermitteringerOgFraværesPerioder, props.permitteringsperiode]);
+    }, [props, antall]);
 
     return (
         <div className={'utregningskolonne__enkel-utregning-container'}>

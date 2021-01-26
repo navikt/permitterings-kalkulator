@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
-import { RadioPanelGruppe } from 'nav-frontend-skjema';
-import { Element, Ingress } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../../kalkulator';
+import { Ingress } from 'nav-frontend-typografi';
+import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 
@@ -15,19 +14,6 @@ interface Props {
 const Fraværsperioder:FunctionComponent<Props> = props => {
     const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
     const [erLøpendeFraværsperiode, setErLøpendeFravæesperiode] = useState(true)
-
-    const radios = [
-        {
-            label: 'Ja',
-            value: 'Ja',
-            id: '-Ja'
-        },
-        {
-            label: 'Nei',
-            value: 'Nei',
-            id: '-Nei'
-        },
-    ];
 
     const leggTilNyFraVærsPeriode = () => {
         setAntallFraværsperioder(antallFraværsperioder+1);

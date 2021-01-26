@@ -2,9 +2,9 @@ import React, { FunctionComponent, useState } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
-import { AllePermitteringerOgFraværesPerioder, PermitteringsperiodeInfo } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
-import { antallUkerRundetOpp, regnUtDatoAGP2, regnUtTotalAntallDager } from '../utregninger';
+import { antallUkerRundetOpp, regnUtDatoAGP2 } from '../utregninger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface UtregningskolonneProps  {
