@@ -9,11 +9,13 @@ import { Knapp } from 'nav-frontend-knapper';
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    etFraværAlleredeLøpende: boolean;
+    setFraværAlleredeLøpende: (finnesLøpendeFravær: boolean) => void;
 }
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
     const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
-    const [erLøpendeFraværsperiode, setErLøpendeFravæesperiode] = useState(true)
+    const [erLøpendeFraværsperiode, setErLøpendeFravæesperiode] = useState(false)
 
     const leggTilNyFraVærsPeriode = () => {
         setAntallFraværsperioder(antallFraværsperioder+1);
@@ -25,6 +27,8 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         .map ( (fraværsintervall, indeks) => {
         return (
             <DatoIntervallInput
+                setEnPeriodeAlleredeLøpende={props.setFraværAlleredeLøpende}
+                enPeriodeAlleredeLøpende={props.etFraværAlleredeLøpende}
                 setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}

@@ -7,6 +7,7 @@ import {
 } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
+import { Element } from 'nav-frontend-typografi';
 
 interface Props {
     indeksPermitteringsperioder?: number
@@ -16,11 +17,14 @@ interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     erLøpende: boolean;
     setErLøpende: (erLøpende: boolean) => void
+    setEnPeriodeAlleredeLøpende: (finnesløpendePermitterintb: boolean) => void
+    enPeriodeAlleredeLøpende: boolean
 }
 
 const DatoIntervallInput:FunctionComponent<Props> = props => {
     const [indeks, setIndeks] = useState(0)
     const [datoIntervall, setDatoIntervall] = useState<DatoIntervall>({datoFra:undefined, datoTil: undefined})
+    const [feilMelding, setFeilmelding] = useState('')
 
     const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
         'Permitteringen er fortsatt aktiv'
@@ -93,17 +97,31 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
+
             <Checkbox
                 label={checkbokstekst}
                 checked={props.erLøpende}
                 onChange={() => {
                     const nyStatus = !props.erLøpende
-                    if (nyStatus === true) {
-                        oppdaterPermitteringsdatoer(undefined, ARBEIDSGIVERPERIODE2DATO)
+                    if (nyStatus && props.enPeriodeAlleredeLøpende) {
+                        setFeilmelding('Kun en periode kan være løpende')
                     }
-                    props.setErLøpende(nyStatus)
-                } }
+                    else if (!nyStatus && props.enPeriodeAlleredeLøpende) {
+                        props.setEnPeriodeAlleredeLøpende(false);
+                        props.setErLøpende(nyStatus)
+                        setFeilmelding('');
+                    }
+                    else {
+                        if (nyStatus) {
+                            props.setEnPeriodeAlleredeLøpende(true)
+                            oppdaterPermitteringsdatoer(undefined, ARBEIDSGIVERPERIODE2DATO);
+                        }
+                        props.setErLøpende(nyStatus)
+                    }
+                }
+                }
             />
+            <Element className={'kalkulator__feilmelding'}>{feilMelding}</Element>
         </div>
     );
 };

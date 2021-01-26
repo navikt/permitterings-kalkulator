@@ -26,10 +26,16 @@ export interface AllePermitteringerOgFraværesPerioder {
 
 const Kalkulator = () => {
     const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: ARBEIDSGIVERPERIODE2DATO}], andreFraværsperioder: []})
+    const [enPermitteringAlleredeLøpende, setEnPermitteringAlleredeLøpende] = useState(false)
+    const [etFraværAlleredeLøpende, setFraværAlleredeFraværLøpende] = useState(false)
 
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
-            <Permitteringsperiode indeks={indeks} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} info={permitteringsperiode} setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} />
+            <Permitteringsperiode enPermitteringAlleredeLøpende={enPermitteringAlleredeLøpende} indeks={indeks}
+                                  setEnPermitteringAlleredeLøpende={setEnPermitteringAlleredeLøpende}
+                                  allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} info={permitteringsperiode}
+                                  setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder}
+            />
         );
     })
 
@@ -44,7 +50,7 @@ const Kalkulator = () => {
                         <Normaltekst>Fra første dag etter lønnsplikt</Normaltekst>
                         {permitteringsobjekter}
                     </div>
-                    <Fraværsperioder setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />
+                    <Fraværsperioder etFraværAlleredeLøpende={etFraværAlleredeLøpende} setFraværAlleredeLøpende={setFraværAlleredeFraværLøpende} setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} />
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >
                 <Utregningskolonne allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
@@ -55,9 +61,3 @@ const Kalkulator = () => {
 };
 
 export default Kalkulator;
-
-/*<div className={'kalkulator__utregningskolonne'} >
-                   <Utregningskolonne listeMedPermitteringsinfo={permitteringer}/>
-                </div>
-
- */
