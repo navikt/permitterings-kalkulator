@@ -37,6 +37,7 @@
     flex-direction: column;
     border-bottom: 2px solid @navGra20;
     margin-top: 1rem;
+    padding-bottom: 1rem;
   }
 
   &__datovelgere {
@@ -49,8 +50,21 @@
     color: @redErrorDarken20
   }
 
+  .knapp--standard {
+    border:none;
+    text-align: left;
+    padding: 0;
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
   &__legg-til-knapp {
     width: 20rem;
+  }
+
+  &__fraværsperioder {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid @navGra20;
   }
 
   &__utregningskolonne {
@@ -60,7 +74,6 @@
     top: 4rem;
     min-width: 15rem;
   }
-
 }
 
 @media (max-width: @screen-sm-min) {

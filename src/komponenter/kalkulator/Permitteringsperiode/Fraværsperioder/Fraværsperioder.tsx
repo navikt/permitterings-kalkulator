@@ -39,7 +39,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     })
 
     return (
-        <div className={'kalkulator__fraværsperioder'}>
+        <div>
             <Ingress className={'kalkulator__fraværsperioder__ingress'}>Har den ansatte hatt annet fravær i disse periodene?</Ingress>
             {fraVærsperiodeElementer}
             <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyFraVærsPeriode()}>+ legg til ny fraværsperiode</Knapp>

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import React, { FunctionComponent } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
@@ -20,13 +20,6 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = props => {
-    const ref = useRef<HTMLDivElement>(null)
-
-    useEffect(() => {
-        if (props.allePermitteringerOgFraværesPerioder.permitteringer.length> props.indeks && props.indeks>0) {
-            ref.current?.scrollIntoView({ block: "center"})
-        }
-    }, );
 
     const leggTilNyPermitteringsperiode = () => {
         const nyPeriode: DatoIntervall = {
@@ -39,7 +32,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
 
-    return (<div className={'permitteringsperiode'} ref={ref}>
+    return (<div className={'permitteringsperiode'} >
                 <DatoIntervallInput
                     setEnPeriodeAlleredeLøpende={props.setEnPermitteringAlleredeLøpende}
                     enPeriodeAlleredeLøpende={props.enPermitteringAlleredeLøpende}

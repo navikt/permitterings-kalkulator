@@ -1,12 +1,16 @@
 
 //returner antall dager fom startdato tom sluttdato
 import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall, PermitteringsperiodeInfo } from './kalkulator';
+import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 export const antalldagerGått = (fra: Date, til?: Date) => {
-    const tilDato = til ? til : new Date()
-    const msGatt = tilDato.getTime() - fra.getTime();
-    const dagerGått = msGatt/(1000*60*60*24)
-    return Math.ceil(dagerGått+1)
+    if (til) {
+        const tilDato = til ? til : new Date()
+        const msGatt = tilDato.getTime() - fra.getTime();
+        const dagerGått = msGatt/(1000*60*60*24)
+        return Math.ceil(dagerGått+1)
+    }
+    return 0;
 }
 
 export const antallUkerRundetOpp = (antallDager: number) => {
@@ -99,4 +103,115 @@ export const finnUtOmDefinnesOverlappendePerioder = (perioder: DatoIntervall[]) 
         })
     })
     return finnesOverLapp
+}
+
+export const kuttAvDatoIntervallFørGittDato = (gittDato: Date, tidsIntervall: DatoIntervall) =>  {
+    const nyttDatoIntervall: DatoIntervall = {
+        datoFra: tidsIntervall.datoFra,
+        datoTil: tidsIntervall.datoTil
+    }
+    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra!!.getTime() <gittDato.getTime()) {
+        console.log('linje 114')
+        if (tidsIntervall.datoTil!!.getTime() >= gittDato.getTime()) {
+            console.log('linje 115')
+            nyttDatoIntervall.datoFra = gittDato;
+        }
+        else {
+            nyttDatoIntervall.datoFra = undefined;
+            nyttDatoIntervall.datoTil = undefined;
+            }
+        }
+    skrivut(nyttDatoIntervall)
+    return nyttDatoIntervall;
+}
+
+export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: DatoIntervall) =>  {
+    const nyttDatoIntervall: DatoIntervall = {
+        datoFra: tidsIntervall.datoFra,
+        datoTil: tidsIntervall.datoTil
+    }
+    if (tidsIntervall.datoTil!!.getTime() > gittDato.getTime()) {
+        if (tidsIntervall.datoFra!!.getTime() >= gittDato.getTime()) {
+            nyttDatoIntervall.datoFra = undefined;
+            nyttDatoIntervall.datoTil = undefined;
+        }
+        else {
+            nyttDatoIntervall.datoTil = gittDato
+        }
+    }
+    skrivut(nyttDatoIntervall)
+    return nyttDatoIntervall;
+}
+
+const skrivut = (intervall: DatoIntervall) => {
+    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
+}
+
+const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
+    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(startdato, datoIntevall)
+    const datoIntervallFørSluttperiode = kuttAvDatoIntervallEtterGittDato(sluttDato, datoIntervallEtterStartperiode)
+    return datoIntervallFørSluttperiode
+}
+
+export const finnDato18MndSiden = (dato: Date) => {
+    const dager18mnd = 30.5*18;
+    const dato18mndsiden = new Date(dato);
+    dato18mndsiden.setDate(dato18mndsiden.getDate() - dager18mnd);
+    return dato18mndsiden;
+}
+
+export const finnDato18MndFram = (dato: Date) => {
+    const dager18mnd = 30.5*18;
+    const dato18mndFram = new Date(dato);
+    dato18mndFram.setDate(dato18mndFram.getDate() + dager18mnd);
+    return dato18mndFram;
+}
+
+export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) => {
+    const tidligsteDato = new Date()
+    let datoSatt = false
+    datointervall.forEach( datoIntervall => {
+        if (datoIntervall.datoFra && datoIntervall.datoFra< tidligsteDato) {
+            tidligsteDato.setDate(datoIntervall.datoFra.getDate())
+            datoSatt = true
+        }
+    }
+    )
+    if (datoSatt) {
+        return tidligsteDato
+    }
+}
+
+const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
+    return datoIntervall.datoFra !== undefined && datoIntervall.datoTil !== undefined
+}
+
+const datoIntervallErForandret = (original: DatoIntervall, oppdatert: DatoIntervall) => {
+    let erForandret = false
+    if (datoIntervallErDefinert(original) && datoIntervallErDefinert(oppdatert)) {
+        if ((skrivOmDato(original.datoFra) !== skrivOmDato(oppdatert.datoFra)) || skrivOmDato(original.datoTil) !== skrivOmDato(oppdatert.datoTil)) {
+            erForandret = true
+        }
+    }
+   return erForandret
+}
+
+export const settDatoerInnenforRiktigIntervall = (datoIntervall: DatoIntervall[], startDato: Date): DatoIntervall[] => {
+    let datoerEndret = false;
+    const sluttDato = finnDato18MndFram(startDato);
+    datoIntervall.forEach((intervall , indeks)=> {
+        if (datoIntervallErDefinert(intervall)) {
+            const datoInnenfor18mndsperioden = kuttAvDatoIntervallInnefor18mnd(intervall, startDato, sluttDato);
+            if (datoIntervallErForandret(intervall, datoInnenfor18mndsperioden)) {
+                datoerEndret = true
+            }
+            datoIntervall[indeks] = datoInnenfor18mndsperioden;
+        }
+    })
+    if (datoerEndret) {
+        console.log('HER HAR DET ENDRA SEG JA')
+        return datoIntervall
+    }
+    const tomliste: DatoIntervall[] = []
+    return tomliste
 }
