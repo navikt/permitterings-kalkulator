@@ -8,11 +8,11 @@ import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
     finnDato18MndFram,
-    finnDato18MndSiden,
     finnTidligstePermitteringsdato,
-    finnUtOmDefinnesOverlappendePerioder, konstruerTidlinje, settDatoerInnenforRiktigIntervall,
+    finnUtOmDefinnesOverlappendePerioder, settDatoerInnenforRiktigIntervall,
 } from './utregninger';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
+import Tidslinje from './Tidslinje/Tidslinje';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
@@ -60,7 +60,6 @@ const Kalkulator = () => {
 
     useEffect(() => {
         if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
-            konstruerTidlinje(allePermitteringerOgFraværesPerioder);
             const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
             if (oppdatertPermitteringsListe.length) {
                 const kopiAvAllePermitteringerOgFraværesPerioder = {...allePermitteringerOgFraværesPerioder}
@@ -117,6 +116,7 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}
                     />
                     <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendeFravær}</Element>
+                        <Tidslinje allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
                     </div>
                     {beskjedPerioderUtenfor18mnd}
                 </div>

@@ -100,13 +100,17 @@ export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: D
 export const finnUtOmDefinnesOverlappendePerioder = (perioder: DatoIntervall[]) => {
     let finnesOverLapp = false;
     perioder.forEach(periode => {
-        perioder.forEach(periode2 => {
-            if (periode.datoFra && periode2.datoFra && (periode !== periode2)) {
-                if (inngårIPermitteringsperiode(periode, periode2) > 0) {
-                    finnesOverLapp = true;
+        if (datoIntervallErDefinert(periode)) {
+            perioder.forEach(periode2 => {
+                if ( datoIntervallErDefinert(periode2) && (periode !== periode2)) {
+                    if (inngårIPermitteringsperiode(periode, periode2) > 0) {
+                        finnesOverLapp = true;
+                    }
                 }
-            }
-        })
+            })
+
+        }
+
     })
     return finnesOverLapp
 }
@@ -117,9 +121,7 @@ export const kuttAvDatoIntervallFørGittDato = (gittDato: Date, tidsIntervall: D
         datoTil: tidsIntervall.datoTil
     }
     if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra!!.getTime() <gittDato.getTime()) {
-        console.log('linje 114')
         if (tidsIntervall.datoTil!!.getTime() >= gittDato.getTime()) {
-            console.log('linje 115')
             nyttDatoIntervall.datoFra = gittDato;
         }
         else {
@@ -174,11 +176,11 @@ export const finnDato18MndFram = (dato: Date) => {
 }
 
 export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) => {
-    const tidligsteDato = new Date()
+    let tidligsteDato = new Date()
     let datoSatt = false
     datointervall.forEach( datoIntervall => {
         if (datoIntervall.datoFra && datoIntervall.datoFra< tidligsteDato) {
-            tidligsteDato.setDate(datoIntervall.datoFra.getDate())
+            tidligsteDato = datoIntervall.datoFra
             datoSatt = true
         }
     }
@@ -189,11 +191,11 @@ export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) =
 }
 
 export const finnSistePermitteringsdag = (datointervall: DatoIntervall[]) => {
-    const sisteDato = new Date()
+    let sisteDato = new Date()
     let datoSatt = false
     datointervall.forEach( datoIntervall => {
-            if (datoIntervall.datoTil && datoIntervall.datoTil>sisteDato) {
-                sisteDato.setDate(datoIntervall.datoTil.getDate())
+            if (datoIntervall.datoTil?.getTime() && datoIntervall.datoTil?.getTime()>=sisteDato.getTime()) {
+                sisteDato = datoIntervall.datoTil
                 datoSatt = true
             }
         }
@@ -230,7 +232,6 @@ export const settDatoerInnenforRiktigIntervall = (datoIntervall: DatoIntervall[]
         }
     })
     if (datoerEndret) {
-        console.log('HER HAR DET ENDRA SEG JA')
         return datoIntervall
     }
     const tomliste: DatoIntervall[] = []
@@ -252,13 +253,14 @@ export const sjekkOmDatoErIntervall = (dato: Date, intervall: DatoIntervall) => 
     return dato.getTime()>=intervall.datoFra!!.getTime() && dato.getTime() <= intervall.datoTil!!.getTime()
 }
 
-export const konstruerTidlinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
+export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
     const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
     const sluttDato = finnSistePermitteringsdag(allePermitteringerOgFravær.permitteringer);
     if (startDato && sluttDato) {
         const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
+        console.log('antall dager gått', antallDagerIPeriode, startDato.toDateString(), sluttDato.toDateString())
         const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-        for (let dagteller = 0; dagteller < antallDagerIPeriode-1; dagteller++) {
+        for (let dagteller = 0; dagteller < antallDagerIPeriode; dagteller++) {
             const aktuellDato = new Date(startDato);
             aktuellDato.setDate(startDato.getDate() + dagteller);
             const aktuellDatoMedKategori = finneKategori(aktuellDato, allePermitteringerOgFravær);
@@ -270,12 +272,13 @@ export const konstruerTidlinje = (allePermitteringerOgFravær: AllePermitteringe
 }
 
 const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
+    let finnes = false;
     perioder.forEach(periode => {
-        if (sjekkOmDatoErIntervall(dato, periode)) {
-            return true
+        if (datoIntervallErDefinert(periode) && sjekkOmDatoErIntervall(dato, periode)) {
+            finnes = true
         }
     })
-    return false
+    return finnes
 }
 
 const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder): DatoMedKategori => {
