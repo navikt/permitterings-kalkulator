@@ -7,7 +7,6 @@ import {
     PermitteringsperiodeInfo,
 } from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
-import { start } from 'repl';
 
 export const antalldagerGått = (fra: Date, til?: Date) => {
     if (til) {
@@ -265,6 +264,20 @@ export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermittering
             aktuellDato.setDate(startDato.getDate() + dagteller);
             const aktuellDatoMedKategori = finneKategori(aktuellDato, allePermitteringerOgFravær);
             listeMedTidslinjeObjekter.push(aktuellDatoMedKategori)
+        }
+        const dato18mnd = finnDato18MndFram(startDato);
+        const gjenståendeDagerI18Mnd = antalldagerGått(startDato, dato18mnd)
+        const sisteAktiveDag = listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length-1].dato
+        const startGjenværendePeriode = new Date(sisteAktiveDag)
+        startGjenværendePeriode.setDate(sisteAktiveDag.getDate() +1);
+        for (let dagteller = 0; dagteller < gjenståendeDagerI18Mnd; dagteller++) {
+            const aktuellDato = new Date(startGjenværendePeriode);
+            aktuellDato.setDate(startGjenværendePeriode.getDate() + dagteller);
+            const ubruktDag: DatoMedKategori = {
+                dato: aktuellDato,
+                kategori: 1
+            }
+            listeMedTidslinjeObjekter.push(ubruktDag)
         }
         return listeMedTidslinjeObjekter
     }

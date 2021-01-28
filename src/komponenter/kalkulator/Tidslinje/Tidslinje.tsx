@@ -1,8 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { DatoMedKategori, konstruerTidslinje, settDatoerInnenforRiktigIntervall } from '../utregninger';
+import { DatoMedKategori, konstruerTidslinje } from '../utregninger';
 import './Tidslinje.less';
 import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
-
+import { Normaltekst } from 'nav-frontend-typografi';
+import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -18,25 +19,22 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
     const finnFarge = (datoKategori: DatoMedKategori) => {
         if (datoKategori.kategori === 0) {
-            return 'blue'
+            return 'blå'
         }
         if (datoKategori.kategori === 2) {
-            return 'red'
+            return 'grå'
         }
-        return 'green'
+        return 'lysblå'
     }
-
-    console.log('tidslinje objekt: ', tidslinjeobjekter);
 
     const tidslinjeHTMLObjekt = tidslinjeobjekter
         .map ( objekt => {
             const style: React.CSSProperties = {
                 width: breddePerObjekt,
                 backgroundColor: finnFarge(objekt),
-                height: '6px'
             }
             return (
-                <div style={style}/>
+                <div style={style} className={'kalkulator__tidslinjeobjekt '+ finnFarge(objekt)}/>
             );
 
         })
@@ -44,8 +42,14 @@ const Tidslinje:FunctionComponent<Props> = props => {
     console.log(tidslinjeHTMLObjekt.length, 'lengde')
 
     return (
-        <div className={'kalkulator__tidslinje'}>
+        <div className={'kalkulator__tidslinje-container start'}>
+            {tidslinjeobjekter.length>0 && <div className={'kalkulator__tidslinje-datoer'}>
+                <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
+                <Normaltekst>{skrivOmDato(tidslinjeobjekter[tidslinjeobjekter.length-1].dato)}</Normaltekst>
+            </div>}
+            <div className={'kalkulator__tidslinje'}>
             {tidslinjeHTMLObjekt}
+            </div>
         </div>
     );
 };
