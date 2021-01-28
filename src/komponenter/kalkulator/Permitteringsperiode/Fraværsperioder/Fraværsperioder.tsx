@@ -5,7 +5,6 @@ import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 
-
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

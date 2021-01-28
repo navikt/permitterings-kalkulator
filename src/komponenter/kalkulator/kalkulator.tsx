@@ -10,7 +10,7 @@ import {
     finnDato18MndFram,
     finnDato18MndSiden,
     finnTidligstePermitteringsdato,
-    finnUtOmDefinnesOverlappendePerioder, settDatoerInnenforRiktigIntervall,
+    finnUtOmDefinnesOverlappendePerioder, konstruerTidlinje, settDatoerInnenforRiktigIntervall,
 } from './utregninger';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
@@ -60,6 +60,7 @@ const Kalkulator = () => {
 
     useEffect(() => {
         if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
+            konstruerTidlinje(allePermitteringerOgFraværesPerioder);
             const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
             if (oppdatertPermitteringsListe.length) {
                 const kopiAvAllePermitteringerOgFraværesPerioder = {...allePermitteringerOgFraværesPerioder}

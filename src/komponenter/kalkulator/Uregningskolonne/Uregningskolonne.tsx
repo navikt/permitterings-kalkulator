@@ -38,6 +38,12 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
                 </Element>
                 {dagerTilsammen>0 &&
                 <>
+                    {dagerTilsammen>49*7 &&
+                    <Element>{`Du har hatt permittertie i ${antallUkerRundetOpp(dagerTilsammen)} uker.
+                    Du har lønnsplikt etter 49, så du må betale ut lønn`
+                    }
+                    </Element>
+                    }
                     <Normaltekst>Arbeidsgiverperiode 2 inntreffer</Normaltekst>
                     <Element>{skrivOmDato(regnUtDatoAGP2(dagerTilsammen))}</Element>
                 </>}

@@ -1,7 +1,13 @@
 
 //returner antall dager fom startdato tom sluttdato
-import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall, PermitteringsperiodeInfo } from './kalkulator';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    ARBEIDSGIVERPERIODE2DATO,
+    DatoIntervall,
+    PermitteringsperiodeInfo,
+} from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
+import { start } from 'repl';
 
 export const antalldagerGått = (fra: Date, til?: Date) => {
     if (til) {
@@ -182,6 +188,21 @@ export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) =
     }
 }
 
+export const finnSistePermitteringsdag = (datointervall: DatoIntervall[]) => {
+    const sisteDato = new Date()
+    let datoSatt = false
+    datointervall.forEach( datoIntervall => {
+            if (datoIntervall.datoTil && datoIntervall.datoTil>sisteDato) {
+                sisteDato.setDate(datoIntervall.datoTil.getDate())
+                datoSatt = true
+            }
+        }
+    )
+    if (datoSatt) {
+        return sisteDato
+    }
+}
+
 const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     return datoIntervall.datoFra !== undefined && datoIntervall.datoTil !== undefined
 }
@@ -214,4 +235,67 @@ export const settDatoerInnenforRiktigIntervall = (datoIntervall: DatoIntervall[]
     }
     const tomliste: DatoIntervall[] = []
     return tomliste
+}
+
+export enum datointervallKategori {
+    PERMITTERT,
+    ARBEIDER,
+    ANNETFRAVÆR
+}
+
+export interface DatoMedKategori {
+    dato: Date
+    kategori: datointervallKategori,
+}
+
+export const sjekkOmDatoErIntervall = (dato: Date, intervall: DatoIntervall) => {
+    return dato.getTime()>=intervall.datoFra!!.getTime() && dato.getTime() <= intervall.datoTil!!.getTime()
+}
+
+export const konstruerTidlinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
+    const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
+    const sluttDato = finnSistePermitteringsdag(allePermitteringerOgFravær.permitteringer);
+    if (startDato && sluttDato) {
+        const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
+        const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
+        for (let dagteller = 0; dagteller < antallDagerIPeriode-1; dagteller++) {
+            const aktuellDato = new Date(startDato);
+            aktuellDato.setDate(startDato.getDate() + dagteller);
+            const aktuellDatoMedKategori = finneKategori(aktuellDato, allePermitteringerOgFravær);
+            listeMedTidslinjeObjekter.push(aktuellDatoMedKategori)
+        }
+        return listeMedTidslinjeObjekter
+    }
+    return [];
+}
+
+const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
+    perioder.forEach(periode => {
+        if (sjekkOmDatoErIntervall(dato, periode)) {
+            return true
+        }
+    })
+    return false
+}
+
+const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder): DatoMedKategori => {
+    const erFraVærsDato = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+    if (erFraVærsDato) {
+        return {
+            kategori: 2,
+            dato: dato
+        }
+    }
+    const erPermittert = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.permitteringer)
+    if (erPermittert) {
+        return {
+            kategori: 0,
+            dato: dato
+        }
+
+    }
+    return {
+        kategori: 1,
+        dato: dato
+    }
 }
