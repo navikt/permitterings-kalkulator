@@ -1,10 +1,8 @@
 
-//returner antall dager fom startdato tom sluttdato
 import {
     AllePermitteringerOgFraværesPerioder,
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
-    PermitteringsperiodeInfo,
 } from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
@@ -27,18 +25,38 @@ export const datoErFørMars = (dato: Date) => {
     return dato.getTime()<førsteMars.getTime()
 }
 
-export const regnUtTotalAntallDager = (listeMedPermitteringsInfo: PermitteringsperiodeInfo[]): number => {
-    let antallDagerBruktSummert = 0;
-        listeMedPermitteringsInfo.forEach(informasjon => {
-            if (informasjon.permitteringsIntervall.datoFra && informasjon) {
-                const sumDager = antalldagerGått(informasjon.permitteringsIntervall.datoFra, informasjon.permitteringsIntervall.datoTil)
-                - summerAlleFraværeperioder(informasjon)
-                antallDagerBruktSummert += sumDager
-            }
-    })
-    return antallDagerBruktSummert
+export interface OversiktOverBrukteOgGjenværendeDager {
+    dagerPermittert: number,
+    dagerAnnetFravær: number,
+    dagerGjensående: number
 }
 
+export const sumPermitteringerOgFravær = (allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder): OversiktOverBrukteOgGjenværendeDager => {
+    const statusAlleDager18mndLsite = konstruerTidslinje(allePErmitteringerOgFraværsperioder);
+    let permittert = 0;
+    let antallDagerFravær = 0;
+    let gjenståendeDager = 0;
+    statusAlleDager18mndLsite.forEach(dag => {
+        if (dag.kategori === 0) {
+            permittert ++;
+        }
+        if (dag.kategori === 1) {
+            gjenståendeDager ++
+        }
+        if (dag.kategori === 2) {
+            antallDagerFravær++
+        }
+    })
+
+    const oversikt: OversiktOverBrukteOgGjenværendeDager = {
+        dagerPermittert: permittert,
+        dagerGjensående: gjenståendeDager,
+        dagerAnnetFravær: antallDagerFravær
+    }
+    return oversikt
+}
+
+//denne regner feil
 export const regnUtDatoAGP2 = (dagerBrukt: number) => {
     const dagerIgjen = 210 - dagerBrukt;
     const dagenDato = new Date();
@@ -50,15 +68,6 @@ export const regnUtDatoAGP2 = (dagerBrukt: number) => {
     return ARBEIDSGIVERPERIODE2DATO
 }
 
-export const summerAlleFraværeperioder = (permitteringsinfo: PermitteringsperiodeInfo) => {
-    let antall = 0;
-    permitteringsinfo.andreFraværsIntervall.forEach(fraværsIntervall => {
-        if (fraværsIntervall.datoFra) {
-            antall += antalldagerGått(fraværsIntervall.datoFra, fraværsIntervall.datoTil)
-        }
-    })
-    return antall
-}
 
 export const inngårIPermitteringsperiode = (permitteringsintervall: DatoIntervall, fraværsintervall: DatoIntervall) => {
     if (permitteringsintervall.datoFra && permitteringsintervall.datoTil && fraværsintervall.datoFra && fraværsintervall.datoTil) {
@@ -90,6 +99,7 @@ export const inngårIPermitteringsperiode = (permitteringsintervall: DatoInterva
     return 0;
 }
 
+//denne er bra
 export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: DatoIntervall, fraværsperioder: DatoIntervall[]) => {
     let antallFraværsdagerIPeriode = 0;
     fraværsperioder.forEach(periode => antallFraværsdagerIPeriode+=inngårIPermitteringsperiode(permitteringsperiode,periode))
@@ -146,13 +156,10 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
             nyttDatoIntervall.datoTil = gittDato
         }
     }
-    skrivut(nyttDatoIntervall)
     return nyttDatoIntervall;
 }
 
-const skrivut = (intervall: DatoIntervall) => {
-    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
-}
+
 
 const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
     const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(startdato, datoIntevall)
@@ -190,7 +197,7 @@ export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) =
 }
 
 export const finnSistePermitteringsdag = (datointervall: DatoIntervall[]) => {
-    let sisteDato = new Date()
+    let sisteDato = new Date(datointervall[0].datoTil!!)
     let datoSatt = false
     datointervall.forEach( datoIntervall => {
             if (datoIntervall.datoTil?.getTime() && datoIntervall.datoTil?.getTime()>=sisteDato.getTime()) {
@@ -248,16 +255,17 @@ export interface DatoMedKategori {
     kategori: datointervallKategori,
 }
 
-export const sjekkOmDatoErIntervall = (dato: Date, intervall: DatoIntervall) => {
+export const datoErIEnkeltIntervall = (dato: Date, intervall: DatoIntervall) => {
     return dato.getTime()>=intervall.datoFra!!.getTime() && dato.getTime() <= intervall.datoTil!!.getTime()
 }
 
 export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
+
     const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
     const sluttDato = finnSistePermitteringsdag(allePermitteringerOgFravær.permitteringer);
     if (startDato && sluttDato) {
+        console.log('denne trigges')
         const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
-        console.log('antall dager gått', antallDagerIPeriode, startDato.toDateString(), sluttDato.toDateString())
         const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
         for (let dagteller = 0; dagteller < antallDagerIPeriode; dagteller++) {
             const aktuellDato = new Date(startDato);
@@ -287,7 +295,7 @@ export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermittering
 const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
     let finnes = false;
     perioder.forEach(periode => {
-        if (datoIntervallErDefinert(periode) && sjekkOmDatoErIntervall(dato, periode)) {
+        if (datoIntervallErDefinert(periode) && datoErIEnkeltIntervall(dato, periode)) {
             finnes = true
         }
     })
@@ -314,4 +322,8 @@ const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePe
         kategori: 1,
         dato: dato
     }
+}
+
+const skrivut = (intervall: DatoIntervall) => {
+    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
 }

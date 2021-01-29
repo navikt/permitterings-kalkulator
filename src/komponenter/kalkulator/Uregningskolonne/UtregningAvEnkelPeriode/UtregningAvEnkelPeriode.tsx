@@ -8,22 +8,17 @@ import { antalldagerGått, summerFraværsdagerIPermitteringsperiode } from '../.
 interface UtregningAvEnkelPeriodeProps {
     indeks: number
     permitteringsperiode: DatoIntervall;
-    setDagerTilsammen: (dager: number) => void;
-    dagerTilsammen: number
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const UtregningAvEnkelPeriode:FunctionComponent<UtregningAvEnkelPeriodeProps> = props => {
     const [antall, setAntall] = useState(0)
 
-
     useEffect(() => {
         const antallDagerGått = props.permitteringsperiode.datoFra ?
             antalldagerGått(props.permitteringsperiode.datoFra!!, props.permitteringsperiode.datoTil) : 0;
         const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(props.permitteringsperiode, props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
         const svar = antallDagerGått - fraværIPerioden;
-        const totalAntall = props.dagerTilsammen + svar - antall;
-        props.setDagerTilsammen(totalAntall)
         setAntall(svar)
     }, [props, antall]);
 
