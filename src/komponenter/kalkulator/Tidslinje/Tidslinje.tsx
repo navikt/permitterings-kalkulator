@@ -39,8 +39,6 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
         })
 
-    console.log(tidslinjeHTMLObjekt.length, 'lengde')
-
     return (
         <div className={'kalkulator__tidslinje-container start'}>
             {tidslinjeobjekter.length>0 && <div className={'kalkulator__tidslinje-datoer'}>
