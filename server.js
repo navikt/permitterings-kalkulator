@@ -53,9 +53,7 @@ server.get('/arbeidsgiver-permittering/internal/isReady', (req, res) =>
 const sanityQueryKeys = () => [
     'sist-oppdatert',
     'hvordan-permittere-ansatte',
-    'nar-skal-jeg-utbetale-lonn-illustrasjon',
     'nar-skal-jeg-utbetale-lonn',
-    'nar-skal-jeg-utbetale-lonn-etter-31-aug',
     'i-permitteringsperioden',
     'vanlige-sporsmal',
 ];
@@ -75,7 +73,7 @@ const sendDataObj = (json) => ({
 
 const url = () =>
     process.env.DECORATOR_EXTERNAL_URL ||
-    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Permittere ansatte som følge av koronavirus"}]';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Veiviser for permittering"}]';
 
 const sanityQuery = () =>
     sanityQueryKeys()

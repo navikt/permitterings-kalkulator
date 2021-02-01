@@ -16,9 +16,7 @@ const Banner = (props: Props) => {
                 aria-roledescription="site banner"
             >
                 <div className={cls.element('tekst')}>
-                    <Sidetittel>
-                        Permittere ansatte som følge av koronavirus
-                    </Sidetittel>
+                    <Sidetittel>Veiviser for permittering</Sidetittel>
                 </div>
                 <div className={cls.element('bunnlinje')} />
             </div>

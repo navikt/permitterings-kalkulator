@@ -3,7 +3,7 @@ const request = require('request');
 
 const { JSDOM } = jsdom;
 const url =
-    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Permittere ansatte som følge av koronavirus"}]';
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Veiviser for permittering"}]';
 const htmlinsert = [
     { inject: 'styles', from: 'styles' },
     { inject: 'scripts', from: 'scripts' },

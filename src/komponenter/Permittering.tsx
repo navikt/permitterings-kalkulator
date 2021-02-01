@@ -17,9 +17,7 @@ const Permittering = () => {
     const {
         sistOppdatert,
         hvordanPermittere,
-        narSkalJegUtbetaleIllustrasjon,
         narSkalJegUtbetale,
-        narSkalJegUtbetaleEtter31aug,
         iPermitteringsperioden,
         vanligeSpr,
     } = useContext(PermitteringContext);
@@ -47,9 +45,7 @@ const Permittering = () => {
                         />
                         <NarSkalJegUtbetaleLonn
                             className={permittering.className}
-                            illustrasjon={narSkalJegUtbetaleIllustrasjon}
                             content={narSkalJegUtbetale}
-                            contentEtter={narSkalJegUtbetaleEtter31aug}
                             overskrift="Når skal jeg utbetale lønn?"
                             id="narSkalJegUtbetaleLonn"
                         />
