@@ -324,6 +324,17 @@ const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePe
     }
 }
 
+export const flytt18mndsperiode1dag = (tidligereStartDato: Date, allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder) => {
+    const nyStartDag = new Date(tidligereStartDato);
+    nyStartDag.setDate(nyStartDag.getDate() + 1);
+    const sluttDato = finnDato18MndFram(nyStartDag);
+    allePermitteringerOgFravær.permitteringer.forEach((periode, indeks) => {
+        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(periode, nyStartDag, sluttDato)
+        allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
+    })
+    return allePermitteringerOgFravær
+}
+
 const skrivut = (intervall: DatoIntervall) => {
     console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
 }
