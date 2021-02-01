@@ -3,8 +3,8 @@ import './kalkulator.less';
 
 import Banner from '../banner/Banner';
 import { Element, Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import Permitteringsperiode from './Permitteringsperiode/Permittertingsperiode';
-import Utregningskolonne from './Uregningskolonne/Uregningskolonne';
+import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
+import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
     finnDato18MndFram,
@@ -93,7 +93,7 @@ const Kalkulator = () => {
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>Når treffer arbeidsgiver 2 dine ansatte?</Systemtittel>
+                    <Systemtittel>Få oversikt over permitteringspeioder</Systemtittel>
                     <Normaltekst>
                         Fra 1. november 2020 økte maksperioden en arbeidsgiver kan fritas fra sin
                         lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker.

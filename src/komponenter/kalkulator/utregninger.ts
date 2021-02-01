@@ -70,18 +70,18 @@ export const regnUtDatoAGP2 = (dagerBrukt: number) => {
 
 
 export const inngårIPermitteringsperiode = (permitteringsintervall: DatoIntervall, fraværsintervall: DatoIntervall) => {
-    if (permitteringsintervall.datoFra && permitteringsintervall.datoTil && fraværsintervall.datoFra && fraværsintervall.datoTil) {
-        const helefraVærsperiodenInngår = (fraværsintervall.datoFra!!.getTime() >= permitteringsintervall.datoFra!!.getTime())
-            && (fraværsintervall.datoTil!!.getTime() <= permitteringsintervall.datoTil!!.getTime())
+    if (datoIntervallErDefinert(permitteringsintervall) && datoIntervallErDefinert(fraværsintervall)) {
+        const helefraVærsperiodenInngår = (fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!!)
+            && (fraværsintervall.datoTil!! <= permitteringsintervall.datoTil!!)
 
-        const fraværIHelePerioden = (fraværsintervall.datoFra!!.getTime()<permitteringsintervall.datoFra!!.getTime()) &&
-            fraværsintervall.datoTil!!.getTime()>permitteringsintervall.datoTil!!.getTime();
+        const fraværIHelePerioden = (fraværsintervall.datoFra!!<permitteringsintervall.datoFra!!) &&
+            fraværsintervall.datoTil!! > permitteringsintervall.datoTil!!;
 
-        const sisteDelInngår = (fraværsintervall.datoFra!!.getTime() > permitteringsintervall.datoFra!!.getTime()) &&
-            fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoTil!!.getTime()
+        const sisteDelInngår = (fraværsintervall.datoFra!! > permitteringsintervall.datoFra!!) &&
+            fraværsintervall.datoFra!! < permitteringsintervall.datoTil!!
 
-        const førsteDelInngår = (fraværsintervall.datoFra!!.getTime() < permitteringsintervall.datoFra!!.getTime()) &&
-            fraværsintervall.datoTil!!.getTime() > permitteringsintervall.datoFra!!.getTime();
+        const førsteDelInngår = (fraværsintervall.datoFra!! < permitteringsintervall.datoFra!!) &&
+            fraværsintervall.datoTil!! > permitteringsintervall.datoFra!!;
 
         switch(true) {
             case helefraVærsperiodenInngår:
@@ -129,8 +129,8 @@ export const kuttAvDatoIntervallFørGittDato = (gittDato: Date, tidsIntervall: D
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil
     }
-    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra!!.getTime() <gittDato.getTime()) {
-        if (tidsIntervall.datoTil!!.getTime() >= gittDato.getTime()) {
+    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra!! <gittDato!!) {
+        if (tidsIntervall.datoTil!!>= gittDato!!) {
             nyttDatoIntervall.datoFra = gittDato;
         }
         else {
@@ -147,8 +147,8 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil
     }
-    if (tidsIntervall.datoTil!!.getTime() > gittDato.getTime()) {
-        if (tidsIntervall.datoFra!!.getTime() >= gittDato.getTime()) {
+    if (tidsIntervall.datoTil!! > gittDato) {
+        if (tidsIntervall.datoFra!! >= gittDato!!) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
         }
@@ -258,7 +258,7 @@ export interface DatoMedKategori {
 }
 
 export const datoErIEnkeltIntervall = (dato: Date, intervall: DatoIntervall) => {
-    return dato.getTime()>=intervall.datoFra!!.getTime() && dato.getTime() <= intervall.datoTil!!.getTime()
+    return dato>=intervall.datoFra!! && dato <= intervall.datoTil!!
 }
 
 export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {

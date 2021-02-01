@@ -20,26 +20,26 @@ interface Props {
 }
 
 const DatoIntervallInput:FunctionComponent<Props> = props => {
-    const [indeks, setIndeks] = useState(0)
-    const [datoIntervall, setDatoIntervall] = useState<DatoIntervall>({datoFra:undefined, datoTil: undefined})
     const [feilMelding, setFeilmelding] = useState('')
     const [erLøpende, setErLøpende] = useState(false)
 
     const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
         'Permitteringen er fortsatt aktiv'
 
+    let indeks = 0;
+    let datoIntervall: DatoIntervall = {
+        datoFra: undefined,
+        datoTil: undefined
+    }
 
-    useEffect(() => {
-        if (props.type === 'FRAVÆRSINTERVALL') {
-            const indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
-            setIndeks(indeks)
-            setDatoIntervall(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks])
+    if (props.type === 'FRAVÆRSINTERVALL') {
+        indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
+        datoIntervall = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks]
         }
-        else {
-            setIndeks(props.indeksPermitteringsperioder!!)
-            setDatoIntervall(props.allePermitteringerOgFraværesPerioder.permitteringer[indeks])
-        }
-    }, [props.indeksFraværsperioder, props.indeksPermitteringsperioder, indeks, props.allePermitteringerOgFraværesPerioder, props.type]);
+    else {
+        indeks = props.indeksPermitteringsperioder ? props.indeksPermitteringsperioder : 0
+        datoIntervall = props.allePermitteringerOgFraværesPerioder.permitteringer[indeks]
+    }
 
     useEffect(() => {
         if (!props.enPeriodeAlleredeLøpende) {
