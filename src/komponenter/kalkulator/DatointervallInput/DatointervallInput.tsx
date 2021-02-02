@@ -26,11 +26,8 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
         'Permitteringen er fortsatt aktiv'
 
-    let indeks = 0;
-    let datoIntervall: DatoIntervall = {
-        datoFra: undefined,
-        datoTil: undefined
-    }
+    let indeks;
+    let datoIntervall: DatoIntervall;
 
     if (props.type === 'FRAVÆRSINTERVALL') {
         indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;

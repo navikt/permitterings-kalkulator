@@ -129,8 +129,10 @@ export const kuttAvDatoIntervallFørGittDato = (gittDato: Date, tidsIntervall: D
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil
     }
-    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra!! <gittDato!!) {
-        if (tidsIntervall.datoTil!!>= gittDato!!) {
+    // @ts-ignore
+    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra <gittDato) {
+        // @ts-ignore
+        if (tidsIntervall.datoTil>= gittDato) {
             nyttDatoIntervall.datoFra = gittDato;
         }
         else {
@@ -147,7 +149,8 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil
     }
-    if (tidsIntervall.datoTil!! > gittDato) {
+    // @ts-ignore
+    if (tidsIntervall.datoTil > gittDato) {
         if (tidsIntervall.datoFra!! >= gittDato!!) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;

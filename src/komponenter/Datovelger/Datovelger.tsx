@@ -18,7 +18,7 @@ import './Datovelger.less';
 
 interface Props {
     overtekst: string;
-    value?: Date | undefined;
+    value?: Date;
     onChange: (event: any) => void;
     disabled?: boolean;
     skalVareEtter?: Date;
@@ -44,9 +44,9 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     const onDatoClick = (day: Date) => {
-        const feilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
-        if (feilmelding !== '') {
-            setFeilMelding(feilmelding);
+        const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
+        if (nyFeilmelding !== '') {
+            setFeilMelding(nyFeilmelding);
         } else {
             props.onChange({
                 currentTarget: {
