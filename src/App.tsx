@@ -5,6 +5,7 @@ import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
 import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
 import Context from './komponenter/Context';
+import Kalkulator from './komponenter/kalkulator/kalkulator';
 
 const App = () => {
     useEffect(skrivTilMalingBesokerSide);
@@ -17,6 +18,11 @@ const App = () => {
                             <Route
                                 path={'/arbeidsgiver-permittering'}
                                 component={Permittering}
+                                exact={true}
+                            />
+                            <Route
+                                path={'/arbeidsgiver-permittering/permittering-kalkulator'}
+                                component={Kalkulator}
                                 exact={true}
                             />
                         </Redirect>
