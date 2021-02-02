@@ -13,17 +13,13 @@ import {
 } from './utregninger';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import Tidslinje from './Tidslinje/Tidslinje';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
 export interface DatoIntervall {
     datoFra: Date | undefined
     datoTil: Date | undefined
-}
-
-export interface PermitteringsperiodeInfo {
-    permitteringsIntervall: DatoIntervall;
-    andreFraværsIntervall: DatoIntervall[];
 }
 
 export interface AllePermitteringerOgFraværesPerioder {
@@ -94,7 +90,7 @@ const Kalkulator = () => {
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
                     <Systemtittel>Få oversikt over permitteringspeioder</Systemtittel>
-                    <Normaltekst>
+                    <Normaltekst className={'kalkulator__generell-info'}>
                         Fra 1. november 2020 økte maksperioden en arbeidsgiver kan fritas fra sin
                         lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker.
                         Her kan du regne ut hvor mange uker du har permittert dine ansatte, og hvor mye du har igjen. Hvilken tidsperiode som gjelder
@@ -104,7 +100,16 @@ const Kalkulator = () => {
                     <Element>Din 18 måneders periode begynte {skrivOmDato(førsteDagI18mndsPeriode)} og slutter {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}</Element>}
                     <div className={'kalkulator__permitteringsobjekter'}>
                         <Ingress>Legg inn dato fra første permittering</Ingress>
-                        <Normaltekst>Fra første dag etter lønnsplikt</Normaltekst>
+                        <div className={'kalkulator__overskrift-med-hjelpetekst'}>
+                        <Normaltekst >
+                            Fra første dag etter lønnsplikt
+                        </Normaltekst>
+                        <Hjelpetekst>
+                            Som arbeidsgiver skal du betale lønn til dine permitterte i lønnspliktperioden.
+                            Disse dagene skal ikke telles med i beregningen.
+                        </Hjelpetekst>
+                            </div>
+
                         {permitteringsobjekter}
                         <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendePermittering}</Element>
                     </div>

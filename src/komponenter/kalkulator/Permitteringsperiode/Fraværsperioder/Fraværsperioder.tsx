@@ -4,6 +4,7 @@ import { Ingress } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
@@ -39,7 +40,10 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
 
     return (
         <div>
-            <Ingress className={'kalkulator__fraværsperioder__ingress'}>Har den ansatte hatt annet fravær i disse periodene?</Ingress>
+            <div className={'kalkulator__ingress-med-hjelpetekst'}>
+                <Ingress className={'kalkulator__fraværsperioder__ingress'}>Har den ansatte hatt annet fravær i disse periodene?</Ingress>
+                <Hjelpetekst>Fravær grunnet permisjoner eller 100 prosent sykmeldinger i permitteringsperioden skal ikke telles med.</Hjelpetekst>
+            </div>
             {fraVærsperiodeElementer}
             <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyFraVærsPeriode()}>+ legg til ny fraværsperiode</Knapp>
         </div>

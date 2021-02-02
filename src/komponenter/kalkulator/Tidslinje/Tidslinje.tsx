@@ -25,9 +25,9 @@ const skrivUtypeDato = (type: number):string => {
         case (type === 0) :
             return 'permittert'
         case (type === 1) :
-            return 'annet fravær'
-        case (type === 2) :
             return 'i arbeid'
+        case (type === 2) :
+            return 'annet fravær'
         default :
             return ''
     }
