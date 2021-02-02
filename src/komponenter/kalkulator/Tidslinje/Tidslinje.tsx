@@ -61,7 +61,10 @@ const Tidslinje:FunctionComponent<Props> = props => {
                 backgroundColor: finnFarge(objekt),
             }
             return (
-                <div id = {'kalkulator-tidslinjeobjekt-'+indeks}style={style} className={'kalkulator__tidslinjeobjekt '+ finnFarge(objekt)}/>
+                <div id = {'kalkulator-tidslinjeobjekt-'+indeks}style={style}
+                     className={'kalkulator__tidslinjeobjekt '+ finnFarge(objekt)}
+                     key={indeks}
+                />
             );
         })
 

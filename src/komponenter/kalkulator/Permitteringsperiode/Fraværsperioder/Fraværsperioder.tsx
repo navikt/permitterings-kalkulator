@@ -32,6 +32,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}
                 type={'FRAVÆRSINTERVALL'}
+                key={indeks}
             />
 
         );
