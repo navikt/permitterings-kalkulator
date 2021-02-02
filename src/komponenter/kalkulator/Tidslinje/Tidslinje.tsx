@@ -20,11 +20,25 @@ const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
     return Math.abs(avstand)
 }
 
+const skrivUtypeDato = (type: number):string => {
+    switch (true) {
+        case (type === 0) :
+            return 'permittert'
+        case (type === 1) :
+            return 'annet fravær'
+        case (type === 2) :
+            return 'i arbeid'
+        default :
+            return ''
+    }
+}
+
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
     const breddePerObjekt = (100/tidslinjeobjekter.length).toString()+'%';
 
     const [datoSkalVises, setDatoSkalVises] = useState('')
+    const [typeDatoOnHover, setTypeDatoOnHover] = useState('')
 
     useEffect(() => {
         setTidslinjeobjekter(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
@@ -62,17 +76,22 @@ const Tidslinje:FunctionComponent<Props> = props => {
             }
         }
         )
+        const type = tidslinjeobjekter[indeksElementDato].kategori;
+        const typeItekst = skrivUtypeDato(type)
+        setTypeDatoOnHover(typeItekst)
         const dato = skrivOmDato(tidslinjeobjekter[indeksElementDato].dato)
         setDatoSkalVises(dato)
     }
 
     return (
         <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
+            <div className={'kalkulator__tidslinje-dato-info'}>
+                <Normaltekst>{datoSkalVises}</Normaltekst>
+                <Normaltekst>{typeDatoOnHover}</Normaltekst>
+            </div>
             { tidslinjeobjekter.length >0 && <>
                     <Draggable axis={'x'} bounds={"parent"} onDrag={() => OnTidslinjeDrag()}>
-                        <div id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
-                            {datoSkalVises}
-                        </div>
+                        <div id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}/>
                     </Draggable>
                     <div className={ 'kalkulator__tidslinje-datoer'}>
                         <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
