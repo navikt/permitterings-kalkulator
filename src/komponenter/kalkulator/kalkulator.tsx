@@ -80,6 +80,7 @@ const Kalkulator = () => {
                                   setEnPermitteringAlleredeLøpende={setEnPermitteringAlleredeLøpende}
                                   allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder} info={permitteringsperiode}
                                   setAllePermitteringerOgFraværesPerioder={setAllePermitteringerOgFraværesPerioder}
+                                  key={indeks.toString()}
             />
         );
     })
@@ -106,10 +107,9 @@ const Kalkulator = () => {
                         </Normaltekst>
                         <Hjelpetekst>
                             Som arbeidsgiver skal du betale lønn til dine permitterte i lønnspliktperioden.
-                            Disse dagene skal ikke telles med i beregningen.
+                            Disse dagene telles ikke med i beregningen.
                         </Hjelpetekst>
                             </div>
-
                         {permitteringsobjekter}
                         <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendePermittering}</Element>
                     </div>

@@ -42,7 +42,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         <div>
             <div className={'kalkulator__ingress-med-hjelpetekst'}>
                 <Ingress className={'kalkulator__fraværsperioder__ingress'}>Har den ansatte hatt annet fravær i disse periodene?</Ingress>
-                <Hjelpetekst>Fravær grunnet permisjoner eller 100 prosent sykmeldinger i permitteringsperioden skal ikke telles med.</Hjelpetekst>
+                <Hjelpetekst>Fravær grunnet permisjoner eller 100 prosent sykmeldinger i permitteringsperioden telles ikke med i beregningen.</Hjelpetekst>
             </div>
             {fraVærsperiodeElementer}
             <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyFraVærsPeriode()}>+ legg til ny fraværsperiode</Knapp>

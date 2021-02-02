@@ -25,6 +25,7 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
                 permitteringsperiode={permitteringsperiode}
                 indeks={indeks}
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
+                key={indeks}
             />
 
         );
