@@ -46,6 +46,7 @@
         "nav-frontend-lenker-style": "^0.2.29",
         "nav-frontend-paneler-style": "^0.3.21",
         "nav-frontend-popover": "^0.0.43",
+        "nav-frontend-popover-style": "^0.0.14",
         "nav-frontend-skjema": "^3.0.18",
         "nav-frontend-skjema-style": "^2.0.10",
         "nav-frontend-spinner": "^2.0.2",

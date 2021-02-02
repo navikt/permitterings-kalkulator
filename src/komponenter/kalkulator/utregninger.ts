@@ -152,7 +152,7 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
     // @ts-ignore
     if (tidsIntervall.datoTil > gittDato) {
         // @ts-ignore
-        if (tidsIntervall.datoFra >= gittDato!!) {
+        if (tidsIntervall.datoFra >= gittDato) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
         }
