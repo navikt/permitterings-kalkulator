@@ -151,7 +151,8 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
     }
     // @ts-ignore
     if (tidsIntervall.datoTil > gittDato) {
-        if (tidsIntervall.datoFra!! >= gittDato!!) {
+        // @ts-ignore
+        if (tidsIntervall.datoFra >= gittDato!!) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
         }
@@ -161,8 +162,6 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
     }
     return nyttDatoIntervall;
 }
-
-
 
 const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
     const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(startdato, datoIntevall)
