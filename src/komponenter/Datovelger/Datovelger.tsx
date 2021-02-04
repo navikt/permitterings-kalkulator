@@ -15,6 +15,7 @@ import {
 } from './datofunksjoner';
 import kalender from './kalender.svg';
 import './Datovelger.less';
+import { finn1DagFram, finn1DagTilbake } from '../kalkulator/utregninger';
 
 interface Props {
     overtekst: string;
@@ -32,28 +33,32 @@ const Datovelger: FunctionComponent<Props> = props => {
     const selectedDate = new Date(props.value || new Date());
     const [tempDate, setTempDate] = useState(skrivOmDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
+    const [valgtDato, setValgtDato] = useState(props.value);
 
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
-        if (props.value) {
+        if (valgtDato) {
             return editing ? tempDate : skrivOmDato(selectedDate);
         } else {
             return 'dd/mm/yyyy';
         }
     };
 
+    console.log(skrivOmDato(valgtDato), 'DETTE ER DATO', skrivOmDato(props.value))
+
     const onDatoClick = (day: Date) => {
         const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
         if (nyFeilmelding !== '') {
-            setFeilMelding(nyFeilmelding);
+            setFeilMelding(nyFeilmelding)
         } else {
             props.onChange({
                 currentTarget: {
                     value: day,
                 },
             });
-            setFeilMelding('');
+            setFeilMelding('')
+            setValgtDato(day)
         }
         setErApen(false);
     };
@@ -79,8 +84,16 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     useEffect(() => {
-        document.addEventListener('click', handleOutsideClick, false);
+        const verdi = props.skalVareFoer ? props.skalVareFoer : props.skalVareEtter
+        if (verdi) {
+            setFeilMelding(datoValidering(props.value, props.skalVareEtter, props.skalVareFoer))
+        }
+    }, [props.skalVareEtter, props.skalVareFoer]);
 
+
+
+    useEffect(() => {
+        document.addEventListener('click', handleOutsideClick, false);
         return () => {
             window.removeEventListener('click', handleOutsideClick, false);
         };

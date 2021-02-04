@@ -170,18 +170,35 @@ const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato:
 }
 
 export const finnDato18MndSiden = (dato: Date) => {
-    const dager18mnd = 30.5*18;
+    const dager18mnd = 52*(1+(1/2))*7;
     const dato18mndsiden = new Date(dato);
     dato18mndsiden.setDate(dato18mndsiden.getDate() - dager18mnd);
     return dato18mndsiden;
 }
 
 export const finnDato18MndFram = (dato: Date) => {
-    const dager18mnd = 30.5*18;
-    const dato18mndFram = new Date(dato);
-    dato18mndFram.setDate(dato18mndFram.getDate() + dager18mnd);
-    return dato18mndFram;
+    let år = dato.getFullYear();
+    const månedom18måneder = (dato.getMonth()+18)%12 + 1
+    if (månedom18måneder-1 < dato.getMonth()){
+        år += 2
+    }
+    else {
+        år +=1;
+    }
+    let månedString = månedom18måneder.toString();
+    if (månedom18måneder<10) {
+        månedString = '0'+månedString
+    }
+    let datoString = dato.getDate().toString()
+    if (dato.getDate() < 10) {
+        datoString = '0'+datoString
+    }
+    let nyDato: Date;
+    nyDato = new Date(år + '-' + månedString + '-' + datoString)
+    return nyDato
 }
+
+
 
 export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) => {
     let tidligsteDato = datointervall[0].datoFra
@@ -266,10 +283,10 @@ export const datoErIEnkeltIntervall = (dato: Date, intervall: DatoIntervall) => 
 export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
     const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
     const sluttDato = finnSistePermitteringsdato(allePermitteringerOgFravær.permitteringer);
-    if (startDato && sluttDato) {
+    if (startDato && sluttDato && allePermitteringerOgFravær.permitteringer.length) {
         const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
         const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-        for (let dagteller = 0; dagteller < antallDagerIPeriode; dagteller++) {
+        for (let dagteller = 0; dagteller <= antallDagerIPeriode; dagteller++) {
             const aktuellDato = new Date(startDato);
             aktuellDato.setDate(startDato.getDate() + dagteller);
             const aktuellDatoMedKategori = finneKategori(aktuellDato, allePermitteringerOgFravær);
@@ -327,11 +344,10 @@ const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePe
 }
 
 export const flytt18mndsperiode1dag = (tidligereStartDato: Date, allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder) => {
-    const nyStartDag = new Date(tidligereStartDato);
-    nyStartDag.setDate(nyStartDag.getDate() + 1);
-    const sluttDato = finnDato18MndFram(nyStartDag);
+    const nyStartDag = finn1DagFram(tidligereStartDato)
+    const sluttDato = finnDato18MndFram(nyStartDag!!);
     allePermitteringerOgFravær.permitteringer.forEach((periode, indeks) => {
-        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(periode, nyStartDag, sluttDato)
+        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(periode, nyStartDag!!, sluttDato)
         allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
     })
     return allePermitteringerOgFravær
@@ -339,4 +355,22 @@ export const flytt18mndsperiode1dag = (tidligereStartDato: Date, allePermitterin
 
 const skrivut = (intervall: DatoIntervall) => {
     console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
+}
+
+export const finn1DagFram = (dato?: Date) => {
+    if (dato) {
+        const enDagFram = new Date(dato);
+        enDagFram.setDate(enDagFram.getDate() + 1);
+        return enDagFram
+    }
+    return undefined
+}
+
+export const finn1DagTilbake = (dato?: Date) => {
+    if (dato) {
+        const enDagTilbake = new Date(dato);
+        enDagTilbake.setDate(enDagTilbake.getDate() + 1);
+        return enDagTilbake
+    }
+    return undefined
 }

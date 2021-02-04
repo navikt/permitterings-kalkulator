@@ -1,10 +1,11 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Ingress } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import { finn1DagFram, finnSistePermitteringsdato, finnTidligstePermitteringsdato } from '../../utregninger';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
@@ -19,7 +20,15 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     const leggTilNyFraVærsPeriode = () => {
         setAntallFraværsperioder(antallFraværsperioder+1);
         const kopiAvAllPermitteringsInfo = {...props.allePermitteringerOgFraværesPerioder}
-        kopiAvAllPermitteringsInfo.andreFraværsperioder.push({datoFra: undefined, datoTil: undefined})
+        let startDatoIntervall: Date | undefined;
+        if (antallFraværsperioder === 0) {
+            startDatoIntervall = finnTidligstePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer)
+        }
+        else {
+            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+        }
+        kopiAvAllPermitteringsInfo.andreFraværsperioder.push(
+            {datoFra: finn1DagFram(startDatoIntervall), datoTil: finn1DagFram(finn1DagFram(startDatoIntervall))})
     }
 
     const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
