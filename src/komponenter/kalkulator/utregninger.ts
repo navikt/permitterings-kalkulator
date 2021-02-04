@@ -200,8 +200,12 @@ export const finnDato18MndFram = (dato: Date) => {
 
 export const finnDato18MndTilbake = (dato: Date) => {
     let år = dato.getFullYear() -1;
+    let nyDagIMnd = finn1DagFram(dato)
     let måned18månederTilbake = dato.getMonth()+1-6
-    if (måned18månederTilbake<1 ) {
+    if (nyDagIMnd!!.getDate() < dato.getDate()) {
+        måned18månederTilbake ++
+    }
+    if (måned18månederTilbake<1) {
         måned18månederTilbake = 12+måned18månederTilbake
         år --
     }
@@ -209,12 +213,13 @@ export const finnDato18MndTilbake = (dato: Date) => {
     if (måned18månederTilbake<10) {
         månedString = '0'+månedString
     }
-    let datoString = (dato.getDate()+1).toString()
-    if (dato.getDate() < 10) {
-        datoString = '0'+datoString
+    let dagString =  nyDagIMnd!!.getDate().toString()
+    if (nyDagIMnd!!.getDate() < 10) {
+        dagString = '0'+dagString
     }
     let nyDato: Date;
-    nyDato = new Date(år + '-' + månedString + '-' + datoString)
+    console.log('dette er forsøkstring:', år + '-' + månedString + '-' + dagString)
+    nyDato = new Date(år + '-' + månedString + '-' + dagString)
     return nyDato
 }
 
