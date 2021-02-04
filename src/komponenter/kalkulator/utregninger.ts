@@ -176,7 +176,7 @@ export const finnDato18MndSiden = (dato: Date) => {
     return dato18mndsiden;
 }
 
-export const finnDato18MndFram = (dato: Date) => {
+export const finnDato18MndFram2 = (dato: Date) => {
     let år = dato.getFullYear();
     const månedom18måneder = (dato.getMonth()+18)%12 + 1
     if (månedom18måneder-1 < dato.getMonth()){
@@ -199,27 +199,18 @@ export const finnDato18MndFram = (dato: Date) => {
 }
 
 export const finnDato18MndTilbake = (dato: Date) => {
-    let år = dato.getFullYear() -1;
-    let nyDagIMnd = finn1DagFram(dato)
-    let måned18månederTilbake = dato.getMonth()+1-6
-    if (nyDagIMnd!!.getDate() < dato.getDate()) {
-        måned18månederTilbake ++
-    }
-    if (måned18månederTilbake<1) {
-        måned18månederTilbake = 12+måned18månederTilbake
-        år --
-    }
-    let månedString = måned18månederTilbake.toString();
-    if (måned18månederTilbake<10) {
-        månedString = '0'+månedString
-    }
-    let dagString =  nyDagIMnd!!.getDate().toString()
-    if (nyDagIMnd!!.getDate() < 10) {
-        dagString = '0'+dagString
-    }
-    let nyDato: Date;
-    console.log('dette er forsøkstring:', år + '-' + månedString + '-' + dagString)
-    nyDato = new Date(år + '-' + månedString + '-' + dagString)
+    let nyDato = new Date()
+    nyDato.setFullYear(dato.getFullYear()-2)
+    nyDato.setMonth(dato.getMonth() +6)
+    nyDato.setDate(dato.getDate()+1);
+    return nyDato
+}
+
+export const finnDato18MndFram = (dato: Date) => {
+    let nyDato = new Date()
+    nyDato.setFullYear(dato.getFullYear()+1)
+    nyDato.setMonth(dato.getMonth() +6)
+    nyDato.setDate(dato.getDate()-1);
     return nyDato
 }
 
