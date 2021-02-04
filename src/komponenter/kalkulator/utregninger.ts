@@ -189,7 +189,7 @@ export const finnDato18MndFram = (dato: Date) => {
     if (månedom18måneder<10) {
         månedString = '0'+månedString
     }
-    let datoString = dato.getDate().toString()
+    let datoString = (dato.getDate()-1).toString()
     if (dato.getDate() < 10) {
         datoString = '0'+datoString
     }
@@ -198,7 +198,25 @@ export const finnDato18MndFram = (dato: Date) => {
     return nyDato
 }
 
-
+export const finnDato18MndTilbake = (dato: Date) => {
+    let år = dato.getFullYear() -1;
+    let måned18månederTilbake = dato.getMonth()+1-6
+    if (måned18månederTilbake<1 ) {
+        måned18månederTilbake = 12+måned18månederTilbake
+        år --
+    }
+    let månedString = måned18månederTilbake.toString();
+    if (måned18månederTilbake<10) {
+        månedString = '0'+månedString
+    }
+    let datoString = (dato.getDate()+1).toString()
+    if (dato.getDate() < 10) {
+        datoString = '0'+datoString
+    }
+    let nyDato: Date;
+    nyDato = new Date(år + '-' + månedString + '-' + datoString)
+    return nyDato
+}
 
 export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) => {
     let tidligsteDato = datointervall[0].datoFra
