@@ -45,8 +45,6 @@ const Datovelger: FunctionComponent<Props> = props => {
         }
     };
 
-    console.log(skrivOmDato(valgtDato), 'DETTE ER DATO', skrivOmDato(props.value))
-
     const onDatoClick = (day: Date) => {
         const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
         if (nyFeilmelding !== '') {

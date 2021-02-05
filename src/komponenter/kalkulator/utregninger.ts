@@ -203,6 +203,11 @@ export const finnDato18MndTilbake = (dato: Date) => {
     nyDato.setFullYear(dato.getFullYear()-2)
     nyDato.setMonth(dato.getMonth() +6)
     nyDato.setDate(dato.getDate()+1);
+    if (nyDato.getDate() < dato.getDate()){
+        const førsteDatoINyMåned = new Date(nyDato);
+        førsteDatoINyMåned.setDate(1);
+        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!
+    }
     return nyDato
 }
 
@@ -383,7 +388,7 @@ export const finn1DagFram = (dato?: Date) => {
 export const finn1DagTilbake = (dato?: Date) => {
     if (dato) {
         const enDagTilbake = new Date(dato);
-        enDagTilbake.setDate(enDagTilbake.getDate() + 1);
+        enDagTilbake.setDate(enDagTilbake.getDate() - 1);
         return enDagTilbake
     }
     return undefined

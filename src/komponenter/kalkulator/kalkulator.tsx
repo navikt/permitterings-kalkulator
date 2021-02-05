@@ -104,8 +104,7 @@ const Kalkulator = () => {
                     { førsteDagI18mndsPeriode &&
                         <>
                     <Element>Testdato er {skrivOmDato(førsteDagI18mndsPeriode)}. 18 måneder bakover fra testdato er {skrivOmDato(finnDato18MndTilbake(førsteDagI18mndsPeriode))}.
-                        18 måneder framover er {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}. Bruk av begge returnerer originale testdato:
-                        {skrivOmDato(finnDato18MndTilbake(finnDato18MndFram(førsteDagI18mndsPeriode)))}
+                        18 måneder framover er {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}
                     </Element>
                     <Element>Din 18 måneders periode begynte {skrivOmDato(førsteDagI18mndsPeriode)} og slutter {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}</Element>
                     </>
