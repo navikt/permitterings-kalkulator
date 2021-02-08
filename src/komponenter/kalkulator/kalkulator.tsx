@@ -7,9 +7,9 @@ import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
-    finnDato18MndFram,
+    finnDato18MndFram, finnDato18MndTilbake,
     finnTidligstePermitteringsdato,
-    finnUtOmDefinnesOverlappendePerioder, settDatoerInnenforRiktigIntervall,
+    finnUtOmDefinnesOverlappendePerioder
 } from './utregninger';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import Tidslinje from './Tidslinje/Tidslinje';
@@ -34,7 +34,7 @@ const Kalkulator = () => {
 
     const [beskjedOverlappendePermittering,setBeskjedOverlappendePermittering] = useState('');
     const [beskjedOverlappendeFravær,setBeskjedOverlappendeFravær] = useState('');
-    const [beskjedPerioderUtenfor18mnd,setBeskjedPerioderUtenfor18mnd] = useState('');
+    //const [beskjedPerioderUtenfor18mnd,setBeskjedPerioderUtenfor18mnd] = useState('');
 
     const [førsteDagI18mndsPeriode, setFørsteDagI18mndsPeriode] = useState<undefined|Date>(undefined)
 
@@ -54,7 +54,7 @@ const Kalkulator = () => {
 
     },[allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær, beskjedOverlappendePermittering] );
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
             const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
             if (oppdatertPermitteringsListe.length) {
@@ -65,6 +65,8 @@ const Kalkulator = () => {
             }
         }
     },[allePermitteringerOgFraværesPerioder, førsteDagI18mndsPeriode] );
+
+     */
 
     useEffect(() => {
        const førstepermitteringsDag = finnTidligstePermitteringsdato(allePermitteringerOgFraværesPerioder.permitteringer)
@@ -90,15 +92,23 @@ const Kalkulator = () => {
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>Få oversikt over permitteringspeioder</Systemtittel>
+                    <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
                     <Normaltekst className={'kalkulator__generell-info'}>
                         Fra 1. november 2020 økte maksperioden en arbeidsgiver kan fritas fra sin
                         lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker.
                         Her kan du regne ut hvor mange uker du har permittert dine ansatte, og hvor mye du har igjen. Hvilken tidsperiode som gjelder
                         for deg finner du ved å fylle inn startdato fra din første permittering.
+                        <Element>Dagens dato er {skrivOmDato(new Date())}. 18 måneder bakover fra i dag er {skrivOmDato(finnDato18MndTilbake(new Date()))}.
+                            18 måneder framover er {skrivOmDato(finnDato18MndFram(new Date()))}.
+                        </Element>
                     </Normaltekst>
                     { førsteDagI18mndsPeriode &&
-                    <Element>Din 18 måneders periode begynte {skrivOmDato(førsteDagI18mndsPeriode)} og slutter {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}</Element>}
+                        <>
+                    <Element>Testdato er {skrivOmDato(førsteDagI18mndsPeriode)}. 18 måneder bakover fra testdato er {skrivOmDato(finnDato18MndTilbake(førsteDagI18mndsPeriode))}.
+                        18 måneder framover er {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}
+                    </Element>
+                    </>
+                    }
                     <div className={'kalkulator__permitteringsobjekter'}>
                         <Ingress>Legg inn dato fra første permittering</Ingress>
                         <div className={'kalkulator__overskrift-med-hjelpetekst'}>
@@ -123,7 +133,6 @@ const Kalkulator = () => {
                     <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendeFravær}</Element>
                         <Tidslinje allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
                     </div>
-                    {beskjedPerioderUtenfor18mnd}
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >
                 <Utregningskolonne allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>

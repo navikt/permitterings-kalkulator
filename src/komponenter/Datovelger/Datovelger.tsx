@@ -44,16 +44,17 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     const onDatoClick = (day: Date) => {
+        console.log('datoklikk på ', props.overtekst, skrivOmDato(day))
         const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
         if (nyFeilmelding !== '') {
-            setFeilMelding(nyFeilmelding);
+            setFeilMelding(nyFeilmelding)
         } else {
             props.onChange({
                 currentTarget: {
                     value: day,
                 },
             });
-            setFeilMelding('');
+            setFeilMelding('')
         }
         setErApen(false);
     };
@@ -79,8 +80,22 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     useEffect(() => {
-        document.addEventListener('click', handleOutsideClick, false);
+        const verdi = props.skalVareFoer ? props.skalVareFoer : props.skalVareEtter
+        if (verdi) {
+            setFeilMelding(datoValidering(verdi, props.skalVareEtter, props.skalVareFoer))
+        }
+    }, [props.skalVareEtter, props.skalVareFoer]);
 
+    useEffect(() => {
+        if (erApen) {
+            setFeilMelding('')
+        }
+    }, [erApen]);
+
+
+
+    useEffect(() => {
+        document.addEventListener('click', handleOutsideClick, false);
         return () => {
             window.removeEventListener('click', handleOutsideClick, false);
         };

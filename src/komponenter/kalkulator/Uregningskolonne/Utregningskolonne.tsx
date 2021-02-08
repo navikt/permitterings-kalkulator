@@ -7,10 +7,8 @@ import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelP
 import {
     antallUkerRundetOpp,
     OversiktOverBrukteOgGjenværendeDager,
-    regnUtDatoAGP2,
     sumPermitteringerOgFravær,
 } from '../utregninger';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface UtregningskolonneProps  {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -31,6 +29,8 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
         );
     })
 
+    const heleUkerPermittert = Math.floor(oversiktOverDager.dagerPermittert/7);
+    const restIDager = oversiktOverDager.dagerPermittert%7
 
     return (
         <div className={'utregningskolonne'}>
@@ -38,18 +38,16 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
             <div className={'utregningskolonne__total-alle-perioder'}>
                 <Normaltekst>Permittert i</Normaltekst>
                 <Element>
-                    {`${oversiktOverDager.dagerPermittert} dager (${antallUkerRundetOpp(oversiktOverDager.dagerPermittert)} uker)`}
+                    {`${heleUkerPermittert} uker og ${restIDager} dager`}
                 </Element>
                 {oversiktOverDager.dagerPermittert>0 &&
                 <>
                     {oversiktOverDager.dagerPermittert>49*7 &&
-                    <Element>{`Du har hatt permittertie i ${antallUkerRundetOpp(oversiktOverDager.dagerPermittert)} uker.
-                    Du har lønnsplikt etter 49, så du må betale ut lønn`
+                    <Element>{`Du har permittert i ${antallUkerRundetOpp(oversiktOverDager.dagerPermittert)} uker.
+                    Lønnsplikten har inntraff den (sett inn dato permitteringen ble overskredt)`
                     }
                     </Element>
                     }
-                    <Normaltekst>Arbeidsgiverperiode 2 inntreffer</Normaltekst>
-                    <Element>{skrivOmDato(regnUtDatoAGP2(oversiktOverDager.dagerPermittert))}</Element>
                 </>}
             </div>
         </div>

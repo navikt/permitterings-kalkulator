@@ -8,6 +8,8 @@ import {
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
+import { finn1DagFram } from '../utregninger';
+import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     indeksPermitteringsperioder?: number
@@ -23,20 +25,21 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     const [feilMelding, setFeilmelding] = useState('')
     const [erLøpende, setErLøpende] = useState(false)
 
-    const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
-        'Permitteringen er fortsatt aktiv'
-
-    let indeks;
     let datoIntervall: DatoIntervall;
 
-    if (props.type === 'FRAVÆRSINTERVALL') {
-        indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
-        datoIntervall = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks]
+        let indeks;
+
+        if (props.type === 'FRAVÆRSINTERVALL') {
+            indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
+            datoIntervall = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks]
         }
-    else {
-        indeks = props.indeksPermitteringsperioder ? props.indeksPermitteringsperioder : 0
-        datoIntervall = props.allePermitteringerOgFraværesPerioder.permitteringer[indeks]
+        else {
+            indeks = props.indeksPermitteringsperioder ? props.indeksPermitteringsperioder : 0
+            datoIntervall = props.allePermitteringerOgFraværesPerioder.permitteringer[indeks]
     }
+
+    const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
+        'Permitteringen er fortsatt aktiv'
 
     useEffect(() => {
         if (!props.enPeriodeAlleredeLøpende) {
@@ -52,10 +55,14 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
         else {
             oppdaterFraværsdatoer(fra, til)
         }
+        if (fra && !datoIntervall.datoTil) {
+            oppdaterPermitteringsListe(typeIntervall,undefined, finn1DagFram(fra))
+        }
     }
 
     const oppdaterFraværsdatoer = (fra?: Date, til?: Date) => {
         const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
+        console.log('prøver å oppdatere fraværsdatoer', skrivOmDato(fra), skrivOmDato(til))
         if (fra) {
             kopiAvPermitterinsperioder.andreFraværsperioder[props.indeksFraværsperioder!!].datoFra = fra
         }
@@ -66,6 +73,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     }
 
     const oppdaterPermitteringsdatoer = (fra?: Date, til?: Date) => {
+        console.log('kaller oppdater permdatoer: fra, til ', skrivOmDato(fra), skrivOmDato(til))
         const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
             permitteringer: [...props.allePermitteringerOgFraværesPerioder.permitteringer],
             andreFraværsperioder: [...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder]
@@ -101,7 +109,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 />
             </div>
 
-            <Checkbox
+            <Checkbox className={'kalkulator__datovelgere-checkbox'}
                 label={checkbokstekst}
                 checked={erLøpende}
                 onChange={() => {

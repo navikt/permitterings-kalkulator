@@ -9,6 +9,7 @@ import {
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
+import { finn1DagFram, finnSistePermitteringsdato } from '../utregninger';
 
 interface Props {
     info: DatoIntervall;
@@ -22,8 +23,9 @@ interface Props {
 const Permitteringsperiode: FunctionComponent<Props> = props => {
 
     const leggTilNyPermitteringsperiode = () => {
+        const sistRegistrerteDag = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer);
         const nyPeriode: DatoIntervall = {
-            datoFra: undefined,
+            datoFra: finn1DagFram(sistRegistrerteDag),
             datoTil: undefined
         }
 

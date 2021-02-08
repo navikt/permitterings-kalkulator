@@ -5,6 +5,7 @@ import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import { finn1DagFram, finnSistePermitteringsdato, finnTidligstePermitteringsdato } from '../../utregninger';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
@@ -19,7 +20,15 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
     const leggTilNyFraVærsPeriode = () => {
         setAntallFraværsperioder(antallFraværsperioder+1);
         const kopiAvAllPermitteringsInfo = {...props.allePermitteringerOgFraværesPerioder}
-        kopiAvAllPermitteringsInfo.andreFraværsperioder.push({datoFra: undefined, datoTil: undefined})
+        let startDatoIntervall: Date | undefined;
+        if (antallFraværsperioder === 0) {
+            startDatoIntervall = finnTidligstePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer)
+        }
+        else {
+            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+        }
+        kopiAvAllPermitteringsInfo.andreFraværsperioder.push(
+            {datoFra: finn1DagFram(startDatoIntervall), datoTil: undefined})
     }
 
     const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
@@ -43,7 +52,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         <div>
             <div className={'kalkulator__ingress-med-hjelpetekst'}>
                 <Ingress className={'kalkulator__fraværsperioder__ingress'}>Har den ansatte hatt annet fravær i disse periodene?</Ingress>
-                <Hjelpetekst>Fravær grunnet permisjoner eller 100 prosent sykmeldinger i permitteringsperioden telles ikke med i beregningen.</Hjelpetekst>
+                <Hjelpetekst>Fravær på heltid grunnet ferie, permisjon eller sykmelding telles ikke med i beregningen. Dette gjelder uavhengig av stillingens størrelse og permitteringsgrad. Hvis arbeidstakeren er 100 prosent sykmeldt fra en deltidsstilling er dette et heltidsfravær</Hjelpetekst>
             </div>
             {fraVærsperiodeElementer}
             <Knapp className={'kalkulator__legg-til-knapp'} onClick={()=>leggTilNyFraVærsPeriode()}>+ legg til ny fraværsperiode</Knapp>
