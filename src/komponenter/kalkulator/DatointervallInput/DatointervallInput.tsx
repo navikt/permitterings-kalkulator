@@ -109,7 +109,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 />
             </div>
 
-            <Checkbox
+            <Checkbox className={'kalkulator__datovelgere-checkbox'}
                 label={checkbokstekst}
                 checked={erLøpende}
                 onChange={() => {
