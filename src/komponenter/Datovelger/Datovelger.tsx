@@ -15,7 +15,6 @@ import {
 } from './datofunksjoner';
 import kalender from './kalender.svg';
 import './Datovelger.less';
-import { finn1DagFram, finn1DagTilbake } from '../kalkulator/utregninger';
 
 interface Props {
     overtekst: string;

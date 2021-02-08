@@ -169,13 +169,6 @@ const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato:
     return datoIntervallFørSluttperiode
 }
 
-export const finnDato18MndSiden = (dato: Date) => {
-    const dager18mnd = 52*(1+(1/2))*7;
-    const dato18mndsiden = new Date(dato);
-    dato18mndsiden.setDate(dato18mndsiden.getDate() - dager18mnd);
-    return dato18mndsiden;
-}
-
 /*export const finnDato18MndFram2 = (dato: Date) => {
     let år = dato.getFullYear();
     const månedom18måneder = (dato.getMonth()+18)%12 + 1

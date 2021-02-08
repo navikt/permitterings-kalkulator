@@ -34,7 +34,7 @@ const Kalkulator = () => {
 
     const [beskjedOverlappendePermittering,setBeskjedOverlappendePermittering] = useState('');
     const [beskjedOverlappendeFravær,setBeskjedOverlappendeFravær] = useState('');
-    const [beskjedPerioderUtenfor18mnd,setBeskjedPerioderUtenfor18mnd] = useState('');
+    //const [beskjedPerioderUtenfor18mnd,setBeskjedPerioderUtenfor18mnd] = useState('');
 
     const [førsteDagI18mndsPeriode, setFørsteDagI18mndsPeriode] = useState<undefined|Date>(undefined)
 
@@ -92,15 +92,14 @@ const Kalkulator = () => {
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>Få oversikt over permitteringspeioder</Systemtittel>
+                    <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
                     <Normaltekst className={'kalkulator__generell-info'}>
                         Fra 1. november 2020 økte maksperioden en arbeidsgiver kan fritas fra sin
                         lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker.
                         Her kan du regne ut hvor mange uker du har permittert dine ansatte, og hvor mye du har igjen. Hvilken tidsperiode som gjelder
                         for deg finner du ved å fylle inn startdato fra din første permittering.
                         <Element>Dagens dato er {skrivOmDato(new Date())}. 18 måneder bakover fra i dag er {skrivOmDato(finnDato18MndTilbake(new Date()))}.
-                            18 måneder framover er {skrivOmDato(finnDato18MndFram(new Date()))}. Bruk av begge returnerer skal returnere dagens dato:
-                            {skrivOmDato(finnDato18MndTilbake(finnDato18MndFram(new Date)))}
+                            18 måneder framover er {skrivOmDato(finnDato18MndFram(new Date()))}.
                         </Element>
                     </Normaltekst>
                     { førsteDagI18mndsPeriode &&
@@ -134,7 +133,6 @@ const Kalkulator = () => {
                     <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendeFravær}</Element>
                         <Tidslinje allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
                     </div>
-                    {beskjedPerioderUtenfor18mnd}
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >
                 <Utregningskolonne allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
