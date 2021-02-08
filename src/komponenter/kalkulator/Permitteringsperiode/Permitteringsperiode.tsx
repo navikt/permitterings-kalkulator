@@ -26,7 +26,7 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         const sistRegistrerteDag = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer);
         const nyPeriode: DatoIntervall = {
             datoFra: finn1DagFram(sistRegistrerteDag),
-            datoTil: finn1DagFram(finn1DagFram(sistRegistrerteDag))
+            datoTil: undefined
         }
 
         const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};

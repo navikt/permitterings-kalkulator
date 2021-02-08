@@ -176,7 +176,7 @@ export const finnDato18MndSiden = (dato: Date) => {
     return dato18mndsiden;
 }
 
-export const finnDato18MndFram2 = (dato: Date) => {
+/*export const finnDato18MndFram2 = (dato: Date) => {
     let år = dato.getFullYear();
     const månedom18måneder = (dato.getMonth()+18)%12 + 1
     if (månedom18måneder-1 < dato.getMonth()){
@@ -198,6 +198,8 @@ export const finnDato18MndFram2 = (dato: Date) => {
     return nyDato
 }
 
+ */
+
 export const finnDato18MndTilbake = (dato: Date) => {
     let nyDato = new Date()
     nyDato.setFullYear(dato.getFullYear()-2)
@@ -206,7 +208,7 @@ export const finnDato18MndTilbake = (dato: Date) => {
     if (nyDato.getDate() < dato.getDate()){
         const førsteDatoINyMåned = new Date(nyDato);
         førsteDatoINyMåned.setDate(1);
-        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!
+        nyDato = førsteDatoINyMåned!
     }
     return nyDato
 }
@@ -216,6 +218,11 @@ export const finnDato18MndFram = (dato: Date) => {
     nyDato.setFullYear(dato.getFullYear()+1)
     nyDato.setMonth(dato.getMonth() +6)
     nyDato.setDate(dato.getDate()-1);
+    if (nyDato.getDate() + 1 < dato.getDate()) {
+        const førsteDatoINyMåned = new Date(nyDato);
+        førsteDatoINyMåned.setDate(1);
+        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!
+    }
     return nyDato
 }
 

@@ -33,12 +33,11 @@ const Datovelger: FunctionComponent<Props> = props => {
     const selectedDate = new Date(props.value || new Date());
     const [tempDate, setTempDate] = useState(skrivOmDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
-    const [valgtDato, setValgtDato] = useState(props.value);
 
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
-        if (valgtDato) {
+        if (props.value) {
             return editing ? tempDate : skrivOmDato(selectedDate);
         } else {
             return 'dd/mm/yyyy';
@@ -46,6 +45,7 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     const onDatoClick = (day: Date) => {
+        console.log('datoklikk på ', props.overtekst, skrivOmDato(day))
         const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
         if (nyFeilmelding !== '') {
             setFeilMelding(nyFeilmelding)
@@ -56,7 +56,6 @@ const Datovelger: FunctionComponent<Props> = props => {
                 },
             });
             setFeilMelding('')
-            setValgtDato(day)
         }
         setErApen(false);
     };
@@ -84,9 +83,15 @@ const Datovelger: FunctionComponent<Props> = props => {
     useEffect(() => {
         const verdi = props.skalVareFoer ? props.skalVareFoer : props.skalVareEtter
         if (verdi) {
-            setFeilMelding(datoValidering(props.value, props.skalVareEtter, props.skalVareFoer))
+            setFeilMelding(datoValidering(verdi, props.skalVareEtter, props.skalVareFoer))
         }
     }, [props.skalVareEtter, props.skalVareFoer]);
+
+    useEffect(() => {
+        if (erApen) {
+            setFeilMelding('')
+        }
+    }, [erApen]);
 
 
 

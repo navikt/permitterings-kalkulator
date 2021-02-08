@@ -9,7 +9,7 @@ import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværspe
 import {
     finnDato18MndFram, finnDato18MndTilbake,
     finnTidligstePermitteringsdato,
-    finnUtOmDefinnesOverlappendePerioder, settDatoerInnenforRiktigIntervall,
+    finnUtOmDefinnesOverlappendePerioder
 } from './utregninger';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import Tidslinje from './Tidslinje/Tidslinje';
@@ -54,7 +54,7 @@ const Kalkulator = () => {
 
     },[allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær, beskjedOverlappendePermittering] );
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
             const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
             if (oppdatertPermitteringsListe.length) {
@@ -65,6 +65,8 @@ const Kalkulator = () => {
             }
         }
     },[allePermitteringerOgFraværesPerioder, førsteDagI18mndsPeriode] );
+
+     */
 
     useEffect(() => {
        const førstepermitteringsDag = finnTidligstePermitteringsdato(allePermitteringerOgFraværesPerioder.permitteringer)
@@ -106,7 +108,6 @@ const Kalkulator = () => {
                     <Element>Testdato er {skrivOmDato(førsteDagI18mndsPeriode)}. 18 måneder bakover fra testdato er {skrivOmDato(finnDato18MndTilbake(førsteDagI18mndsPeriode))}.
                         18 måneder framover er {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}
                     </Element>
-                    <Element>Din 18 måneders periode begynte {skrivOmDato(førsteDagI18mndsPeriode)} og slutter {skrivOmDato(finnDato18MndFram(førsteDagI18mndsPeriode))}</Element>
                     </>
                     }
                     <div className={'kalkulator__permitteringsobjekter'}>
