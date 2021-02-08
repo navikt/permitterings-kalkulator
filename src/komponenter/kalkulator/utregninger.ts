@@ -201,7 +201,7 @@ export const finnDato18MndTilbake = (dato: Date) => {
     if (nyDato.getDate() < dato.getDate()){
         const førsteDatoINyMåned = new Date(nyDato);
         førsteDatoINyMåned.setDate(1);
-        nyDato = førsteDatoINyMåned!
+        nyDato = førsteDatoINyMåned
     }
     return nyDato
 }
