@@ -165,13 +165,11 @@ export const kuttAvDatoIntervallFørGittDato = (
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil,
     };
-    // @ts-ignore
     if (
         datoIntervallErDefinert(tidsIntervall) &&
-        tidsIntervall.datoFra < gittDato
+        tidsIntervall.datoFra! < gittDato
     ) {
-        // @ts-ignore
-        if (tidsIntervall.datoTil >= gittDato) {
+        if (tidsIntervall.datoTil! >= gittDato) {
             nyttDatoIntervall.datoFra = gittDato;
         } else {
             nyttDatoIntervall.datoFra = undefined;
@@ -190,10 +188,9 @@ export const kuttAvDatoIntervallEtterGittDato = (
         datoFra: tidsIntervall.datoFra,
         datoTil: tidsIntervall.datoTil,
     };
-    // @ts-ignore
-    if (tidsIntervall.datoTil > gittDato) {
-        // @ts-ignore
-        if (tidsIntervall.datoFra >= gittDato) {
+
+    if (tidsIntervall.datoTil! > gittDato) {
+        if (tidsIntervall.datoFra! >= gittDato) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
         } else {
@@ -218,30 +215,6 @@ const kuttAvDatoIntervallInnefor18mnd = (
     );
     return datoIntervallFørSluttperiode;
 };
-
-/*export const finnDato18MndFram2 = (dato: Date) => {
-    let år = dato.getFullYear();
-    const månedom18måneder = (dato.getMonth()+18)%12 + 1
-    if (månedom18måneder-1 < dato.getMonth()){
-        år += 2
-    }
-    else {
-        år +=1;
-    }
-    let månedString = månedom18måneder.toString();
-    if (månedom18måneder<10) {
-        månedString = '0'+månedString
-    }
-    let datoString = (dato.getDate()-1).toString()
-    if (dato.getDate() < 10) {
-        datoString = '0'+datoString
-    }
-    let nyDato: Date;
-    nyDato = new Date(år + '-' + månedString + '-' + datoString)
-    return nyDato
-}
-
- */
 
 export const finnDato18MndTilbake = (dato: Date) => {
     let nyDato = new Date();
