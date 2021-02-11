@@ -28,7 +28,7 @@ export interface AllePermitteringerOgFraværesPerioder {
 }
 
 const Kalkulator = () => {
-    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:undefined,datoTil: undefined}], andreFraværsperioder: []})
+    const [allePermitteringerOgFraværesPerioder, setAllePermitteringerOgFraværesPerioder] = useState<AllePermitteringerOgFraværesPerioder>({permitteringer:[{ datoFra:finnDato18MndTilbake(new Date()),datoTil: undefined}], andreFraværsperioder: []})
     const [enPermitteringAlleredeLøpende, setEnPermitteringAlleredeLøpende] = useState(false)
     const [etFraværAlleredeLøpende, setFraværAlleredeFraværLøpende] = useState(false)
 

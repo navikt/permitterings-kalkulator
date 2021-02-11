@@ -300,11 +300,24 @@ export const datoErIEnkeltIntervall = (dato: Date, intervall: DatoIntervall) => 
 }
 
 export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
+    const startDatoForBeregning = finnDato18MndTilbake(new Date())
+    startDatoForBeregning.setDate(startDatoForBeregning.getDate() -100)
     const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
+    const dagerFør1Permittering = antalldagerGått(startDatoForBeregning, startDato);
+
     const sluttDato = finnSistePermitteringsdato(allePermitteringerOgFravær.permitteringer);
     if (startDato && sluttDato && allePermitteringerOgFravær.permitteringer.length) {
         const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
         const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
+        for (let dagteller = 0; dagteller < dagerFør1Permittering; dagteller++) {
+            const aktuellDato = new Date(startDatoForBeregning);
+            aktuellDato.setDate(startDatoForBeregning.getDate() + dagteller);
+            const ubruktDag: DatoMedKategori = {
+                dato: aktuellDato,
+                kategori: 1
+            }
+            listeMedTidslinjeObjekter.push(ubruktDag)
+        }
         for (let dagteller = 0; dagteller <= antallDagerIPeriode; dagteller++) {
             const aktuellDato = new Date(startDato);
             aktuellDato.setDate(startDato.getDate() + dagteller);

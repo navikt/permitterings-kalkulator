@@ -1,5 +1,11 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { DatoMedKategori, konstruerTidslinje } from '../utregninger';
+import {
+    antalldagerGått,
+    DatoMedKategori,
+    finnDato18MndFram,
+    finnDato18MndTilbake,
+    konstruerTidslinje,
+} from '../utregninger';
 import './Tidslinje.less';
 import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -35,9 +41,10 @@ const skrivUtypeDato = (type: number):string => {
 
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
-    const breddePerObjekt = (100/tidslinjeobjekter.length).toString()+'%';
+    const breddePerObjekt = (100/tidslinjeobjekter.length);
+    const [sluttDato, setSluttDato] = useState(new Date())
+    const [startDato, setStartDato] = useState(finnDato18MndTilbake(sluttDato))
 
-    const [datoSkalVises, setDatoSkalVises] = useState('')
     const [typeDatoOnHover, setTypeDatoOnHover] = useState('')
 
     useEffect(() => {
@@ -57,7 +64,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
     const tidslinjeHTMLObjekt = tidslinjeobjekter
         .map ( (objekt, indeks) => {
             const style: React.CSSProperties = {
-                width: breddePerObjekt,
+                width: breddePerObjekt.toString()+'%',
                 backgroundColor: finnFarge(objekt),
             }
             return (
@@ -68,43 +75,56 @@ const Tidslinje:FunctionComponent<Props> = props => {
             );
         })
 
+
+    let breddeAvDragElement = breddePerObjekt*(antalldagerGått(startDato, sluttDato))
     const OnTidslinjeDrag = () => {
-        let indeksElementDato = 0;
+        let indeksStartDato = 0;
         let minimumAvstand = 1000
         tidslinjeHTMLObjekt.forEach((objekt,indeks) => {
             const avstand = regnUtHorisontalAvstandMellomToElement('draggable-periode','kalkulator-tidslinjeobjekt-'+indeks)
             if (avstand < minimumAvstand) {
                 minimumAvstand = avstand
-                indeksElementDato = indeks
+                indeksStartDato = indeks
             }
         }
         )
-        const type = tidslinjeobjekter[indeksElementDato].kategori;
+        const type = tidslinjeobjekter[indeksStartDato].kategori;
         const typeItekst = skrivUtypeDato(type)
         setTypeDatoOnHover(typeItekst)
-        const dato = skrivOmDato(tidslinjeobjekter[indeksElementDato].dato)
-        setDatoSkalVises(dato)
+        const dato = tidslinjeobjekter[indeksStartDato].dato
+        setStartDato(dato)
+        const sluttDato = finnDato18MndFram(tidslinjeobjekter[indeksStartDato].dato);
+        setSluttDato(sluttDato)
+        /*let indeksSluttdato = 0;
+        tidslinjeobjekter.forEach((objekt,indeks) => {
+            if (objekt.dato.toDateString() === sluttDato.toDateString()) {
+                indeksSluttdato = indeks
+            }
+        }
+        );
+
+         */
     }
 
     return (
         <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
             <div className={'kalkulator__tidslinje-dato-info'}>
-                <Normaltekst>{datoSkalVises}</Normaltekst>
+                <Normaltekst>{skrivOmDato(startDato) + '-' +skrivOmDato(sluttDato)}</Normaltekst>
                 <Normaltekst>{typeDatoOnHover}</Normaltekst>
             </div>
             { tidslinjeobjekter.length >0 && <>
-                    <Draggable axis={'x'} bounds={"parent"} onDrag={() => OnTidslinjeDrag()}>
-                        <div id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}/>
+                    <Draggable axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDrag()}>
+                        <div style={{width: `${breddeAvDragElement }%`}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}/>
                     </Draggable>
-                    <div className={ 'kalkulator__tidslinje-datoer'}>
-                        <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
-                        <Normaltekst>{skrivOmDato(tidslinjeobjekter[tidslinjeobjekter.length-1].dato)}</Normaltekst>
-                    </div>
             </>}
 
             <div className={'kalkulator__tidslinje'} id={'kalkulator__tidslinje'}>
             {tidslinjeHTMLObjekt}
             </div>
+            { tidslinjeobjekter.length>0 && <div className={ 'kalkulator__tidslinje-datoer'}>
+                <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
+                <Normaltekst>{skrivOmDato(tidslinjeobjekter[tidslinjeobjekter.length-1].dato)}</Normaltekst>
+            </div>}
         </div>
     );
 };
