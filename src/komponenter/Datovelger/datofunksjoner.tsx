@@ -65,7 +65,15 @@ export const MONTHS = {
 };
 
 export const WEEKDAYS_LONG = {
-    no: ['Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag', 'Søndag'],
+    no: [
+        'Mandag',
+        'Tirsdag',
+        'Onsdag',
+        'Torsdag',
+        'Fredag',
+        'Lørdag',
+        'Søndag',
+    ],
 };
 
 export const LABELS = {

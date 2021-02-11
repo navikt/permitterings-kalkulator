@@ -21,7 +21,9 @@ const App = () => {
                                 exact={true}
                             />
                             <Route
-                                path={'/arbeidsgiver-permittering/permittering-kalkulator'}
+                                path={
+                                    '/arbeidsgiver-permittering/permittering-kalkulator'
+                                }
                                 component={Kalkulator}
                                 exact={true}
                             />

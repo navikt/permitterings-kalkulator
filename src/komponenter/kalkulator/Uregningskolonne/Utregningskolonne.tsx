@@ -10,27 +10,36 @@ import {
     sumPermitteringerOgFravær,
 } from '../utregninger';
 
-interface UtregningskolonneProps  {
+interface UtregningskolonneProps {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
-const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
-    const oversiktOverDager: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(props.allePermitteringerOgFraværesPerioder)
+const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
+    props
+) => {
+    const oversiktOverDager: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(
+        props.allePermitteringerOgFraværesPerioder
+    );
 
-    const enkeltUtregninger = props.allePermitteringerOgFraværesPerioder.permitteringer.map( (permitteringsperiode, indeks) => {
-        return (
-            <UtregningAvEnkelPeriode
-                permitteringsperiode={permitteringsperiode}
-                indeks={indeks}
-                allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
-                key={indeks}
-            />
+    const enkeltUtregninger = props.allePermitteringerOgFraværesPerioder.permitteringer.map(
+        (permitteringsperiode, indeks) => {
+            return (
+                <UtregningAvEnkelPeriode
+                    permitteringsperiode={permitteringsperiode}
+                    indeks={indeks}
+                    allePermitteringerOgFraværesPerioder={
+                        props.allePermitteringerOgFraværesPerioder
+                    }
+                    key={indeks}
+                />
+            );
+        }
+    );
 
-        );
-    })
-
-    const heleUkerPermittert = Math.floor(oversiktOverDager.dagerPermittert/7);
-    const restIDager = oversiktOverDager.dagerPermittert%7
+    const heleUkerPermittert = Math.floor(
+        oversiktOverDager.dagerPermittert / 7
+    );
+    const restIDager = oversiktOverDager.dagerPermittert % 7;
 
     return (
         <div className={'utregningskolonne'}>
@@ -40,15 +49,18 @@ const Utregningskolonne:FunctionComponent<UtregningskolonneProps> = props => {
                 <Element>
                     {`${heleUkerPermittert} uker og ${restIDager} dager`}
                 </Element>
-                {oversiktOverDager.dagerPermittert>0 &&
-                <>
-                    {oversiktOverDager.dagerPermittert>49*7 &&
-                    <Element>{`Du har permittert i ${antallUkerRundetOpp(oversiktOverDager.dagerPermittert)} uker.
-                    Lønnsplikten har inntraff den (sett inn dato permitteringen ble overskredt)`
-                    }
-                    </Element>
-                    }
-                </>}
+                {oversiktOverDager.dagerPermittert > 0 && (
+                    <>
+                        {oversiktOverDager.dagerPermittert > 49 * 7 && (
+                            <Element>
+                                {`Du har permittert i ${antallUkerRundetOpp(
+                                    oversiktOverDager.dagerPermittert
+                                )} uker.
+                    Lønnsplikten har inntraff den (sett inn dato permitteringen ble overskredt)`}
+                            </Element>
+                        )}
+                    </>
+                )}
             </div>
         </div>
     );

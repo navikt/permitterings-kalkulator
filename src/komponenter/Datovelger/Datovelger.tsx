@@ -25,7 +25,7 @@ interface Props {
     skalVareFoer?: Date;
 }
 
-const Datovelger: FunctionComponent<Props> = props => {
+const Datovelger: FunctionComponent<Props> = (props) => {
     const datepickernode = useRef<HTMLDivElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
@@ -44,17 +44,21 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     const onDatoClick = (day: Date) => {
-        console.log('datoklikk på ', props.overtekst, skrivOmDato(day))
-        const nyFeilmelding = datoValidering(day, props.skalVareEtter, props.skalVareFoer);
+        console.log('datoklikk på ', props.overtekst, skrivOmDato(day));
+        const nyFeilmelding = datoValidering(
+            day,
+            props.skalVareEtter,
+            props.skalVareFoer
+        );
         if (nyFeilmelding !== '') {
-            setFeilMelding(nyFeilmelding)
+            setFeilMelding(nyFeilmelding);
         } else {
             props.onChange({
                 currentTarget: {
                     value: day,
                 },
             });
-            setFeilMelding('')
+            setFeilMelding('');
         }
         setErApen(false);
     };
@@ -70,7 +74,9 @@ const Datovelger: FunctionComponent<Props> = props => {
         }
     };
 
-    const handleOutsideClick: { (event: MouseEvent): void } = (e: MouseEvent) => {
+    const handleOutsideClick: { (event: MouseEvent): void } = (
+        e: MouseEvent
+    ) => {
         const node = datepickernode.current;
         // @ts-ignore
         if (node && node.contains(e.target as HTMLElement)) {
@@ -80,19 +86,21 @@ const Datovelger: FunctionComponent<Props> = props => {
     };
 
     useEffect(() => {
-        const verdi = props.skalVareFoer ? props.skalVareFoer : props.skalVareEtter
+        const verdi = props.skalVareFoer
+            ? props.skalVareFoer
+            : props.skalVareEtter;
         if (verdi) {
-            setFeilMelding(datoValidering(verdi, props.skalVareEtter, props.skalVareFoer))
+            setFeilMelding(
+                datoValidering(verdi, props.skalVareEtter, props.skalVareFoer)
+            );
         }
     }, [props.skalVareEtter, props.skalVareFoer]);
 
     useEffect(() => {
         if (erApen) {
-            setFeilMelding('')
+            setFeilMelding('');
         }
     }, [erApen]);
-
-
 
     useEffect(() => {
         document.addEventListener('click', handleOutsideClick, false);
@@ -112,11 +120,11 @@ const Datovelger: FunctionComponent<Props> = props => {
                     aria-label="Skriv startdato:"
                     value={tekstIInputfeltet()}
                     className={'datofelt__input'}
-                    onChange={event => {
+                    onChange={(event) => {
                         setEditing(true);
                         setTempDate(event.currentTarget.value);
                     }}
-                    onBlur={event => {
+                    onBlur={(event) => {
                         inputOnBlur(event);
                     }}
                 />
@@ -134,7 +142,7 @@ const Datovelger: FunctionComponent<Props> = props => {
                     selectedDays={selectedDate}
                     month={selectedDate}
                     firstDayOfWeek={1}
-                    onDayClick={day => onDatoClick(day)}
+                    onDayClick={(day) => onDatoClick(day)}
                     months={MONTHS['no']}
                     weekdaysLong={WEEKDAYS_LONG['no']}
                     weekdaysShort={WEEKDAYS_SHORT['no']}
