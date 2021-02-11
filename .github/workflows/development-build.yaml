@@ -7,7 +7,7 @@ on:
       - '!master'
 
 env:
-  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
+  APP_IMAGE: ghcr.io/${{ github.repository }}/arbeidsgiver-permittering
 
 jobs:
   bygg:
@@ -33,7 +33,7 @@ jobs:
       - name: Bygg Docker-image
         run: |
           docker build --tag $APP_IMAGE:$GITHUB_SHA .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_REPOSITORY --password-stdin
           docker push $APP_IMAGE
 
       - name: Lukk gamle deployment-issues
