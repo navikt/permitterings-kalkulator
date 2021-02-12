@@ -1,112 +1,110 @@
 @import '~nav-frontend-core/less/_variabler';
 
 .kalkulator-bakgrunn {
-  display:flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  background-color: #e6e6e6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background-color: #e6e6e6;
 }
 
 .kalkulator {
-  display: flex;
-  padding: 3rem 0 3rem;
-  width: 63rem;
-  max-width: 90%;
-
-  &__generell-info {
-    margin: 0.5rem 0 0.5rem;
-  }
-
-  .checkboks + .skjemaelement__label {
-    margin-top:0.5rem;
-  }
-
-  &__overskrift-med-hjelpetekst {
     display: flex;
-  }
+    padding: 3rem 0 3rem;
+    width: 63rem;
+    max-width: 90%;
 
-  .hjelpetekst__innhold {
-    max-width: 9rem
-  }
-
-  .hjelpetekst__apneknapp {
-    margin-left: 0.5rem;
-  }
-
-  &__utfyllingskolonne {
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    width:64%;
-    border-radius: 3px;
-    padding: 2rem;
-    margin-right: 1rem;
-  }
-
-  &__permitteringsobjekter {
-    display:flex;
-    flex-direction: column;
-    border-bottom: 2px solid @navGra20;
-    margin-top: 0.5rem;
-    padding-bottom: 1rem;
-  }
-
-  &__datovelgere {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  &__feilmelding {
-    margin-top: 0.5rem;
-    color: @redErrorDarken20
-  }
-
-  .knapp--standard {
-    border:none;
-    text-align: left;
-    padding: 0;
-    justify-content: flex-start;
-    margin-top: 1rem;
-  }
-
-  &__legg-til-knapp {
-    width: 20rem;
-  }
-
-  &__fraværsperioder {
-    padding-bottom: 1rem;
-    border-bottom: 2px solid @navGra20;
-  }
-
-  &__utregningskolonne {
-    background-color: white;
-    height: 100%;
-    position: sticky;
-    top: 4rem;
-    min-width: 15rem;
-  }
-}
-
-@media (max-width: @screen-sm-min) {
-  .kalkulator {
-    width: 100%;
-    flex-direction: column;
-    max-width: none;
-
-    .knapp--standard {
-      border:none;
+    &__generell-info {
+        margin: 0.5rem 0 0.5rem;
     }
 
-    &__utregningskolonne {
-      width: 100%
+    .checkboks + .skjemaelement__label {
+        margin-top: 0.5rem;
+    }
+
+    &__overskrift-med-hjelpetekst {
+        display: flex;
+    }
+
+    .hjelpetekst__innhold {
+        max-width: 9rem;
+    }
+
+    .hjelpetekst__apneknapp {
+        margin-left: 0.5rem;
     }
 
     &__utfyllingskolonne {
-      width: 90%;
-      align-self: center;
+        display: flex;
+        flex-direction: column;
+        background-color: white;
+        width: 64%;
+        border-radius: 3px;
+        padding: 2rem;
+        margin-right: 1rem;
     }
 
-  }
+    &__permitteringsobjekter {
+        display: flex;
+        flex-direction: column;
+        border-bottom: 2px solid @navGra20;
+        margin-top: 0.5rem;
+        padding-bottom: 1rem;
+    }
 
+    &__datovelgere {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__feilmelding {
+        margin-top: 0.5rem;
+        color: @redErrorDarken20;
+    }
+
+    .knapp--standard {
+        border: none;
+        text-align: left;
+        padding: 0;
+        justify-content: flex-start;
+        margin-top: 1rem;
+    }
+
+    &__legg-til-knapp {
+        width: 20rem;
+    }
+
+    &__fraværsperioder {
+        padding-bottom: 1rem;
+        border-bottom: 2px solid @navGra20;
+    }
+
+    &__utregningskolonne {
+        background-color: white;
+        height: 100%;
+        position: sticky;
+        top: 4rem;
+        min-width: 15rem;
+    }
+}
+
+@media (max-width: @screen-sm-min) {
+    .kalkulator {
+        width: 100%;
+        flex-direction: column;
+        max-width: none;
+
+        .knapp--standard {
+            border: none;
+        }
+
+        &__utregningskolonne {
+            width: 100%;
+        }
+
+        &__utfyllingskolonne {
+            width: 90%;
+            align-self: center;
+        }
+    }
 }
