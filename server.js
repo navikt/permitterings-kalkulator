@@ -71,9 +71,12 @@ const sendDataObj = (json) => ({
     env: [process.env.SANITY_PROJECT_ID, process.env.SANITY_DATASET],
 });
 
-const url = () =>
-    process.env.DECORATOR_EXTERNAL_URL ||
-    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Veiviser for permittering"}]';
+const uri =
+    'https://www.nav.no/dekoratoren/?context=arbeidsgiver&redirectToApp=true&level=Level4&language=nb';
+const breadcrumbs =
+    '&breadcrumbs=[{"url":"https://arbeidsgiver.nav.no/arbeidsgiver-permittering","title":"Veiviser for permittering"}]';
+
+const url = () => process.env.DECORATOR_EXTERNAL_URL || uri.concat(breadcrumbs);
 
 const sanityQuery = () =>
     sanityQueryKeys()
