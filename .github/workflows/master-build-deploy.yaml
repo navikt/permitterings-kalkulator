@@ -45,9 +45,9 @@ jobs:
 
       - name: Bygg, tag og push Docker-image
         run: |
-          docker build --tag APP_IMAGE .
+          docker build --tag $APP_IMAGE .
           echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
-          docker push APP_IMAGE
+          docker push $APP_IMAGE
 
       - name: Sett miljøvariabel COMMIT
         run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
