@@ -23,6 +23,7 @@ interface Props {
     disabled?: boolean;
     skalVareEtter?: Date;
     skalVareFoer?: Date;
+    className?: string;
 }
 
 const Datovelger: FunctionComponent<Props> = props => {
@@ -102,7 +103,7 @@ const Datovelger: FunctionComponent<Props> = props => {
     }, []);
 
     return (
-        <div ref={datepickernode} className={'datofelt'}>
+        <div ref={datepickernode} className={'datofelt ' + props.className}>
             <Label htmlFor={datovelgerId}>{props.overtekst}</Label>
             <div className={'datofelt__input-container'}>
                 <Input
