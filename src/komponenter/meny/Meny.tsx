@@ -55,7 +55,6 @@ const Meny = () => {
     const toggleButton = (): void => setViewmobilMenu(!viewmobilMenu);
 
     useEffect(() => {
-        console.log('test');
         setHeightPosition(getContainerHeight());
     }, [context.vanligeSpr]);
 
