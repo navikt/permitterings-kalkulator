@@ -7,7 +7,7 @@ on:
       - '!master'
 
 env:
-  APP_IMAGE: ghcr.io/${{ github.repository }}/arbeidsgiver-permittering
+  APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
   bygg:
@@ -32,7 +32,7 @@ jobs:
 
       - name: Bygg Docker-image
         run: |
-          docker build --tag $APP_IMAGE:$GITHUB_SHA .
+          docker build --tag $APP_IMAGE .
           echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_REPOSITORY --password-stdin
           docker push $APP_IMAGE
 

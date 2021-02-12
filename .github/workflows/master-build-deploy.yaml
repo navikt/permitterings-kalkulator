@@ -6,8 +6,7 @@ on:
       - 'master'
 
 env:
-  APP_IMAGE: ghcr.io/${{ github.repository }}/arbeidsgiver-permittering
-  IMAGE: ghcr.io/${{ github.repository }}/arbeidsgiver-permittering:${{ github.sha }}
+  APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
   bygg:
@@ -46,14 +45,14 @@ jobs:
 
       - name: Bygg, tag og push Docker-image
         run: |
-          docker build --tag $IMAGE --tag $APP_IMAGE:latest .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_REPOSITORY --password-stdin
+          docker build --tag $APP_IMAGE .
+          echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
           docker push $APP_IMAGE
 
       - name: Sett miljøvariabel COMMIT
         run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Sett miljøvariabel IMAGE
+      - name: Sett miljøvariabel for app IMAGE
         run: echo "IMAGE_CURRENT=$APP_IMAGE:$COMMIT" >> $GITHUB_ENV
 
       - name: Generere nais variabler for dev

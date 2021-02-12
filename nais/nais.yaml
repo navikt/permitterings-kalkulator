@@ -13,10 +13,10 @@ spec:
     - {{ingress}}
   liveness:
     path: /arbeidsgiver-permittering/internal/isReady
-    initialDelay: 10
+    initialDelay: 50
   readiness:
     path: /arbeidsgiver-permittering/internal/isReady
-    initialDelay: 10
+    initialDelay: 50
   vault:
     enabled: true
   webproxy: true
