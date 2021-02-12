@@ -34,7 +34,7 @@ jobs:
       - name: Bygg Docker-image
         run: |
           docker build --tag $APP_IMAGE .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u $GITHUB_REPOSITORY --password-stdin
+          echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
           docker push $APP_IMAGE
 
       - name: Lukk gamle deployment-issues
