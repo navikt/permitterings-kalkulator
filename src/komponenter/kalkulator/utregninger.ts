@@ -163,11 +163,13 @@ export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: 
     return nyttDatoIntervall;
 }
 
-const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
+export const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
     const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(startdato, datoIntevall)
     const datoIntervallFørSluttperiode = kuttAvDatoIntervallEtterGittDato(sluttDato, datoIntervallEtterStartperiode)
     return datoIntervallFørSluttperiode
 }
+
+
 
 /*export const finnDato18MndFram2 = (dato: Date) => {
     let år = dato.getFullYear();

@@ -15,6 +15,8 @@ import Draggable from 'react-draggable';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    set18mndsPeriode: (dato: Date) => void;
+    sisteDagIPeriode: Date;
 }
 
 const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
@@ -42,8 +44,6 @@ const skrivUtypeDato = (type: number):string => {
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
     const breddePerObjekt = (100/tidslinjeobjekter.length);
-    const [sluttDato, setSluttDato] = useState(new Date())
-    const [startDato, setStartDato] = useState(finnDato18MndTilbake(sluttDato))
 
     const [typeDatoOnHover, setTypeDatoOnHover] = useState('')
 
@@ -76,7 +76,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
         })
 
 
-    let breddeAvDragElement = breddePerObjekt*(antalldagerGått(startDato, sluttDato))
+    let breddeAvDragElement = breddePerObjekt*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
     const OnTidslinjeDrag = () => {
         let indeksStartDato = 0;
         let minimumAvstand = 1000
@@ -91,10 +91,8 @@ const Tidslinje:FunctionComponent<Props> = props => {
         const type = tidslinjeobjekter[indeksStartDato].kategori;
         const typeItekst = skrivUtypeDato(type)
         setTypeDatoOnHover(typeItekst)
-        const dato = tidslinjeobjekter[indeksStartDato].dato
-        setStartDato(dato)
         const sluttDato = finnDato18MndFram(tidslinjeobjekter[indeksStartDato].dato);
-        setSluttDato(sluttDato)
+        props.set18mndsPeriode(sluttDato)
         /*let indeksSluttdato = 0;
         tidslinjeobjekter.forEach((objekt,indeks) => {
             if (objekt.dato.toDateString() === sluttDato.toDateString()) {
@@ -109,7 +107,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
     return (
         <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
             <div className={'kalkulator__tidslinje-dato-info'}>
-                <Normaltekst>{skrivOmDato(startDato) + '-' +skrivOmDato(sluttDato)}</Normaltekst>
+                <Normaltekst>{skrivOmDato(finnDato18MndTilbake(props.sisteDagIPeriode)) + '-' +skrivOmDato(props.sisteDagIPeriode)}</Normaltekst>
                 <Normaltekst>{typeDatoOnHover}</Normaltekst>
             </div>
             { tidslinjeobjekter.length >0 && <>

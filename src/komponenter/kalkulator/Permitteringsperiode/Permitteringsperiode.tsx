@@ -34,6 +34,14 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
         props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
     }
 
+    /*const slettPeriode = () => {
+        const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
+        kopiAvPermitterinsperioder.permitteringer.splice(props.indeks, 1)
+        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder);
+    }
+
+     */
+
     return (<div className={'permitteringsperiode'} >
                 <DatoIntervallInput
                     setEnPeriodeAlleredeLøpende={props.setEnPermitteringAlleredeLøpende}
@@ -44,7 +52,10 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
                     type={'PERMITTERINGSINTERVALL'}
                 />
         { props.indeks === props.allePermitteringerOgFraværesPerioder.permitteringer.length -1 &&
-        <Knapp className={'permitteringsperiode__legg-til-knapp'} onClick={()=>leggTilNyPermitteringsperiode()}>+ legg til ny permitteringsperiode</Knapp>}
+        <Knapp className={'permitteringsperiode__legg-til-knapp'} onClick={()=> {
+            leggTilNyPermitteringsperiode();
+        }
+        }>+ legg til ny permitteringsperiode</Knapp>}
         </div>
     );
 };
