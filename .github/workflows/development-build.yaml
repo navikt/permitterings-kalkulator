@@ -20,7 +20,8 @@ jobs:
           fetch-depth: 0
 
       - name: Installer avhegigheter (yarn ci)
-        run: yarn ci --no-optional
+        run: |
+          yarn install --frozen-lockfile
 
       - name: Bygg applikasjonen (yarn run build)
         run: yarn run build-prod
