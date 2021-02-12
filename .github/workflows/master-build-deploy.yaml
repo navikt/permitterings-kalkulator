@@ -70,7 +70,7 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-env.yaml
-          IMAGE: ${{ env.IMAGE_CURRENT }}
+          IMAGE: ${{ env.APP_IMAGE }}
           REF: ${{ env.COMMIT }}
 
       - name: Generere nais variabler for prod
@@ -88,7 +88,7 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/prod-env.yaml
-          IMAGE: ${{ env.IMAGE_CURRENT }}
+          IMAGE: ${{ env.APP_IMAGE }}
           REF: ${{ env.COMMIT }}
 
 
