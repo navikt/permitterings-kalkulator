@@ -10,34 +10,15 @@ import {
     adjustMenuHeight,
     calcMenuWidthPosition,
     getContainerHeight,
-    getDesktopContainerOffsetTopDiff,
+    recalibrateMenuPosition,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
 import { PermitteringContext } from '../Context';
-
-interface PermitteringsLenke {
-    hopplenke: string;
-    lenketekst: string;
-}
-
-const lenker: PermitteringsLenke[] = [
-    {
-        hopplenke: '#hvordanPermittere',
-        lenketekst: 'Hvordan permittere ansatte?',
-    },
-    {
-        hopplenke: '#narSkalJegUtbetaleLonn',
-        lenketekst: 'Når skal jeg utbetale lønn?',
-    },
-    {
-        hopplenke: '#permitteringsperioden',
-        lenketekst: 'I permitteringsperioden',
-    },
-    {
-        hopplenke: '#vanligSpr',
-        lenketekst: 'Vanlige spørsmål',
-    },
-];
+import {
+    lenker,
+    PermitteringsLenke,
+    setFocusIndex,
+} from '../../utils/menu-lenker-utils';
 
 const Meny = () => {
     const context = useContext(PermitteringContext);
@@ -59,28 +40,8 @@ const Meny = () => {
     }, [context.vanligeSpr]);
 
     useEffect(() => {
-        const scrollHeight = (): number => window.scrollY || window.pageYOffset;
-        const hoppLenkerScrollheight = (): number[] =>
-            lenker
-                .map((section) =>
-                    document.getElementById(section.hopplenke.slice(1))
-                )
-                .map((sectionNode) =>
-                    sectionNode ? sectionNode.offsetTop : 0
-                );
-
-        const setFocusIndex = (): (void | null)[] | null => {
-            return lenker.length === 4
-                ? hoppLenkerScrollheight().map((scrollheight, index) => {
-                      if (scrollheight - 450 < scrollHeight()) {
-                          return setSectionInFocus(index);
-                      }
-                      return null;
-                  })
-                : null;
-        };
         const throttleSetFocusOnMenuLinkevent = debounce(
-            () => setFocusIndex(),
+            () => setFocusIndex(setSectionInFocus),
             10
         );
 
@@ -88,7 +49,6 @@ const Meny = () => {
             if (!windowWidthIsDesktopSize()) {
                 return setHeightPosition(adjustMenuHeight());
             }
-            return getDesktopContainerOffsetTopDiff();
         };
 
         window.onscroll = function () {
@@ -96,20 +56,24 @@ const Meny = () => {
             setMenuHeightPosition();
         };
 
-        const recalibrateMenuPosition = (): void => {
-            if (appDisplayMobileMenu === windowWidthIsDesktopSize()) {
-                setAppDisplayMobileMenu(!windowWidthIsDesktopSize());
-                !windowWidthIsDesktopSize()
-                    ? setHeightPosition(adjustMenuHeight())
-                    : setHeightPosition(getDesktopContainerOffsetTopDiff());
-            }
-            SetWidthPosition(calcMenuWidthPosition());
-        };
-
-        window.addEventListener('resize', recalibrateMenuPosition);
+        window.addEventListener('resize', () => {
+            recalibrateMenuPosition(
+                appDisplayMobileMenu,
+                setAppDisplayMobileMenu,
+                setHeightPosition,
+                SetWidthPosition
+            );
+        });
 
         return () =>
-            window.removeEventListener('resize', recalibrateMenuPosition);
+            window.removeEventListener('resize', () => {
+                recalibrateMenuPosition(
+                    appDisplayMobileMenu,
+                    setAppDisplayMobileMenu,
+                    setHeightPosition,
+                    SetWidthPosition
+                );
+            });
     }, [appDisplayMobileMenu]);
 
     return (
