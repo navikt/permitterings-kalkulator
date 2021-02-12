@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import debounce from 'lodash.debounce';
 import Menyknapp from './menyknapp/Menyknapp';
@@ -13,6 +13,7 @@ import {
     getDesktopContainerOffsetTopDiff,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
+import { PermitteringContext } from '../Context';
 
 interface PermitteringsLenke {
     hopplenke: string;
@@ -39,33 +40,27 @@ const lenker: PermitteringsLenke[] = [
 ];
 
 const Meny = () => {
+    const context = useContext(PermitteringContext);
     const cls = BEMHelper('meny');
     const [appDisplayMobileMenu, setAppDisplayMobileMenu] = useState<boolean>(
         !windowWidthIsDesktopSize()
     );
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
-    const [documentIsReady, setDocumentIsReady] = useState<boolean>(false);
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
     const [heightPosition, setHeightPosition] = useState<number>(0);
     const [widthPosition, SetWidthPosition] = useState<number>(
         calcMenuWidthPosition()
     );
 
-    const toggleButton = () => setViewmobilMenu(!viewmobilMenu);
-
-    document.onreadystatechange = function () {
-        setTimeout(() => {
-            setDocumentIsReady(true);
-        }, 500);
-    };
+    const toggleButton = (): void => setViewmobilMenu(!viewmobilMenu);
 
     useEffect(() => {
         setHeightPosition(getContainerHeight());
-    }, [documentIsReady]);
+    }, [context]);
 
     useEffect(() => {
-        const scrollHeight = () => window.scrollY || window.pageYOffset;
-        const hoppLenkerScrollheight = () =>
+        const scrollHeight = (): number => window.scrollY || window.pageYOffset;
+        const hoppLenkerScrollheight = (): number[] =>
             lenker
                 .map((section) =>
                     document.getElementById(section.hopplenke.slice(1))
@@ -74,7 +69,7 @@ const Meny = () => {
                     sectionNode ? sectionNode.offsetTop : 0
                 );
 
-        const setFocusIndex = () => {
+        const setFocusIndex = (): (void | null)[] | null => {
             return lenker.length === 4
                 ? hoppLenkerScrollheight().map((scrollheight, index) => {
                       if (scrollheight - 450 < scrollHeight()) {
@@ -86,10 +81,10 @@ const Meny = () => {
         };
         const throttleSetFocusOnMenuLinkevent = debounce(
             () => setFocusIndex(),
-            50
+            10
         );
 
-        const setMenuHeightPosition = () => {
+        const setMenuHeightPosition = (): number | void => {
             if (!windowWidthIsDesktopSize()) {
                 return setHeightPosition(adjustMenuHeight());
             }
@@ -101,7 +96,7 @@ const Meny = () => {
             setMenuHeightPosition();
         };
 
-        const recalibrateMenuPosition = () => {
+        const recalibrateMenuPosition = (): void => {
             if (appDisplayMobileMenu === windowWidthIsDesktopSize()) {
                 setAppDisplayMobileMenu(!windowWidthIsDesktopSize());
                 !windowWidthIsDesktopSize()
