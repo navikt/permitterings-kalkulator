@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    antalldagerGått,
-    DatoMedKategori,
+    antalldagerGått, datointervallKategori,
     finnDato18MndFram,
     finnDato18MndTilbake,
     konstruerTidslinje,
@@ -51,30 +50,87 @@ const Tidslinje:FunctionComponent<Props> = props => {
         setTidslinjeobjekter(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
     },[props.allePermitteringerOgFraværesPerioder] );
 
-    const finnFarge = (datoKategori: DatoMedKategori) => {
-        if (datoKategori.kategori === 0) {
-            return 'blå'
+    const finnFarge = (kategori: datointervallKategori) => {
+        if (kategori === 0) {
+            return '#0067C5'
         }
-        if (datoKategori.kategori === 2) {
-            return 'grå'
+        if (kategori === 2) {
+            return 'darksalmon'
         }
-        return 'lysblå'
+        return 'transParent'
     }
+
 
     const tidslinjeHTMLObjekt = tidslinjeobjekter
         .map ( (objekt, indeks) => {
             const style: React.CSSProperties = {
                 width: breddePerObjekt.toString()+'%',
-                backgroundColor: finnFarge(objekt),
             }
             return (
                 <div id = {'kalkulator-tidslinjeobjekt-'+indeks}style={style}
-                     className={'kalkulator__tidslinjeobjekt '+ finnFarge(objekt)}
+                     className={'kalkulator__tidslinjeobjekt '}
                      key={indeks}
                 />
             );
         })
 
+    interface FargeElement {
+        antallDagerISekvens: number,
+        kategori: datointervallKategori,
+        grenserTilFraværHøyre?: boolean,
+        grenserTilFraværVenstre?: boolean
+    }
+
+    const fargePerioder: FargeElement[] = [];
+    let rekkefølgeTeller = 1;
+    tidslinjeobjekter.forEach((objekt, indeks) => {
+        if (indeks !== 0) {
+            if (tidslinjeobjekter[indeks-1].kategori === tidslinjeobjekter[indeks].kategori) {
+                rekkefølgeTeller ++
+            }
+            else {
+                const fargeElement: FargeElement = {
+                    antallDagerISekvens: rekkefølgeTeller,
+                    kategori: tidslinjeobjekter[indeks-1].kategori,
+                }
+                fargePerioder.push(fargeElement)
+                rekkefølgeTeller = 1
+            }
+            if (indeks === tidslinjeobjekter.length-1) {
+                const fargeElement: FargeElement = {
+                    antallDagerISekvens: rekkefølgeTeller,
+                    kategori: tidslinjeobjekter[indeks].kategori,
+                }
+                fargePerioder.push(fargeElement)
+            }
+        }
+    })
+
+    const htmlFargeObjekt = fargePerioder.map ( (objekt, indeks) => {
+        let borderRadius ='0'
+        if (objekt.kategori === 0) {
+            const grenserTilFraværVenstre = objekt.kategori === 0 && fargePerioder[indeks-1].kategori === 2
+            const grenserTilFraværHøyre = objekt.kategori === 0 && fargePerioder[indeks+1].kategori === 2
+            if (grenserTilFraværVenstre) {
+                borderRadius = '0 4px 4px 0'
+            }
+            else if (grenserTilFraværHøyre ){
+                borderRadius = '4px 0 0 4px'
+            }
+            else {
+                borderRadius = '4px'
+            }
+        }
+
+        const style: React.CSSProperties = {
+            width: (breddePerObjekt*objekt.antallDagerISekvens).toString()+'%',
+            backgroundColor: finnFarge(objekt.kategori),
+            borderRadius: borderRadius
+        }
+        return (
+            <div style={style}/>
+        );
+    })
 
     let breddeAvDragElement = breddePerObjekt*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
     const OnTidslinjeDrag = () => {
@@ -116,7 +172,10 @@ const Tidslinje:FunctionComponent<Props> = props => {
                     </Draggable>
             </>}
 
-            <div className={'kalkulator__tidslinje'} id={'kalkulator__tidslinje'}>
+            <div className={'kalkulator__tidslinje-underlag'} id={'kalkulator__tidslinje'}>
+                <div className={'kalkulator__tidslinje-fargeperioder'}>
+                    {htmlFargeObjekt}
+                    </div>
             {tidslinjeHTMLObjekt}
             </div>
             { tidslinjeobjekter.length>0 && <div className={ 'kalkulator__tidslinje-datoer'}>
