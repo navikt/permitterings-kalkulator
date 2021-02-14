@@ -121,7 +121,7 @@ server.get(`${BASE_URL}/innhold/`, (req, res) => {
 });
 
 const serveAppWithMenu = (app) => {
-    template.staticPaths.forEach((path) => serverUse(path));
+    template.staticPaths.forEach((staticPath) => serverUse(staticPath));
     server.get([`${BASE_URL}/`, `${BASE_URL}/*`], (req, res) => {
         res.send(app);
     });
