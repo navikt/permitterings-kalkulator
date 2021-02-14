@@ -22,9 +22,9 @@ server.use(helmet());
 const BASE_URL = '/arbeidsgiver-permittering';
 
 const client = sanityClient({
-    projectId: process.env.SANITY_PROJECT_ID?.trim(),
-    dataset: process.env.SANITY_DATASET?.trim(),
-    token: process.env.SANITY_TOKEN?.trim(),
+    projectId: process.env.SANITY_PROJECT_ID.trim(),
+    dataset: process.env.SANITY_DATASET.trim(),
+    token: process.env.SANITY_TOKEN.trim(),
     useCdn: false,
 });
 
