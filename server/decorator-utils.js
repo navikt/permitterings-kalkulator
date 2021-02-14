@@ -4,6 +4,7 @@ const server = require('../server');
 const template = require('./template');
 const fs = require('fs-extra');
 const NodeCache = require('node-cache');
+const fetch = require('node-fetch');
 
 const { JSDOM } = jsdom;
 const prop = 'innerHTML';
@@ -15,36 +16,41 @@ const mainCacheMeny = new NodeCache({ stdTTL: 900, checkperiod: 90 });
 const backupCacheMeny = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 
 const injectMenuIntoHtml = (menu) => {
-    fs.readFile(__dirname + '/build/index.html', 'utf8', function (err, html) {
-        if (!err) {
-            const { document } = new JSDOM(html).window;
-            template.decoratorTemplatekeys().forEach((element) => {
-                document.getElementById(element.inject)[
-                    prop
-                ] = menu.getElementById(element.from)[prop];
-            });
-            const output = document.documentElement.innerHTML;
-            mainCacheMeny.set(mainCacheKey, output, 10000);
-            backupCacheMeny.set(backupCacheKey, output, 0);
-            server.serveAppWithMenu(output);
-        } else {
-            checkBackupCache();
+    fs.readFile(
+        __dirname + '/../build/index.html',
+        'utf8',
+        function (err, html) {
+            if (!err) {
+                const { document } = new JSDOM(html).window;
+                template.decoratorTemplatekeys().forEach((element) => {
+                    document.getElementById(element.inject)[
+                        prop
+                    ] = menu.getElementById(element.from)[prop];
+                });
+                const output = document.documentElement.innerHTML;
+                mainCacheMeny.set(mainCacheKey, output, 10000);
+                backupCacheMeny.set(backupCacheKey, output, 0);
+                server.serveAppWithMenu(output);
+            } else {
+                checkBackupCache();
+            }
         }
-    });
+    );
 };
 
 const getMenu = () => {
-    request({ method: 'GET', uri: template.url() }, (error, response, body) => {
-        if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-            const { document } = new JSDOM(body).window;
+    fetch(template.url(), { method: 'GET' })
+        .then((response) => response.text())
+        .then((data) => {
+            const { document } = new JSDOM(data).window;
             injectMenuIntoHtml(document);
-        } else {
-            console.log('tried to fetch menu fragments from ', `${url()}`);
+        })
+        .catch((err) => {
+            console.log('tried to fetch menu fragments from ', template.url());
             console.log('respons failed, with response ', response);
-            console.log('error: ', error);
+            console.log('error: ', err);
             checkBackupCache();
-        }
-    });
+        });
 };
 
 const getMenuAndServeApp = () => {
