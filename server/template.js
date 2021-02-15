@@ -35,7 +35,8 @@ const staticPaths = [
 const corsWhitelist = [
     '.nav.no',
     '.sanity.io',
-    'http://localhost:',
+    'http://localhost:3000',
+    'http://localhost:3001',
     'amplitude.nav.no',
     'nav.',
 ];

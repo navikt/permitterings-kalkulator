@@ -1,7 +1,7 @@
 export const BASE_URL = '/arbeidsgiver-permittering';
 
 export const isProduction = (): string =>
-    process.env.NODE_ENV === 'production' ? '' : 'http://127.0.0.1:3001';
+    process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
 
 const fetchdata: (url: string) => Promise<Response> = (url) => {
     return fetch(url, { method: 'GET' });

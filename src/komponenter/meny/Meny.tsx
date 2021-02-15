@@ -40,6 +40,14 @@ const Meny = () => {
     }, [context.vanligeSpr]);
 
     useEffect(() => {
+        const recalebrateMenuPos = () =>
+            recalibrateMenuPosition(
+                appDisplayMobileMenu,
+                setAppDisplayMobileMenu,
+                setHeightPosition,
+                SetWidthPosition
+            );
+
         const throttleSetFocusOnMenuLinkevent = debounce(
             () => setFocusIndex(setSectionInFocus),
             10
@@ -56,24 +64,9 @@ const Meny = () => {
             setMenuHeightPosition();
         };
 
-        window.addEventListener('resize', () => {
-            recalibrateMenuPosition(
-                appDisplayMobileMenu,
-                setAppDisplayMobileMenu,
-                setHeightPosition,
-                SetWidthPosition
-            );
-        });
+        window.addEventListener('resize', recalebrateMenuPos);
 
-        return () =>
-            window.removeEventListener('resize', () => {
-                recalibrateMenuPosition(
-                    appDisplayMobileMenu,
-                    setAppDisplayMobileMenu,
-                    setHeightPosition,
-                    SetWidthPosition
-                );
-            });
+        return () => window.removeEventListener('resize', recalebrateMenuPos);
     }, [appDisplayMobileMenu]);
 
     return (

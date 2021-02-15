@@ -20,8 +20,7 @@ export const skrivOmDatoStreng = (datoStreng: string) => {
     const month = parseInt(parts[1]);
     const day = parseInt(parts[0]);
     if (year > 1970 && month > 0 && day > 0) {
-        const returnDate = new Date(year, month - 1, day);
-        return returnDate;
+        return new Date(year, month - 1, day);
     } else {
         return false;
     }

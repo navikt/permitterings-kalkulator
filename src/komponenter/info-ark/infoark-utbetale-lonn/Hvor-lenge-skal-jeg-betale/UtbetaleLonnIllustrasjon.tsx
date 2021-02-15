@@ -55,9 +55,9 @@ const UtbetaleLonnIllustrasjon = () => {
                                 {element.tittel}
                             </Undertittel>
                             {element.tekst.map(
-                                (element: string, index: number) => (
+                                (text: string, index: number) => (
                                     <Normaltekst key={index}>
-                                        {element}
+                                        {text}
                                     </Normaltekst>
                                 )
                             )}
