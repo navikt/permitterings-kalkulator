@@ -4,11 +4,43 @@
 
   &__draggable-periode {
     height: 1rem;
-    background-color: @navBlaLighten80;
+    background-color: @navBla;
     position: absolute;
     left: 0;
-    bottom: -1rem;
+    top: 1rem;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
     border-radius: 4px;
+
+    .høyre {
+      border-radius: 0 4px 4px 4px;
+    }
+
+    .venstre {
+      border-radius: 4px 0 4px 4px;
+    }
+
+    .venstre-dato {
+      position: absolute;
+      left: 0;
+      top: 3rem
+    }
+
+    .høyre-dato {
+      position: absolute;
+      right: 0;
+      top: 3rem;
+
+    }
+
+  }
+
+  &__draggable-kant {
+    height: 3rem;
+    width: 2.5px;
+    background-color: @navBla;
+
   }
 
   &__tidslinje-dato-info {

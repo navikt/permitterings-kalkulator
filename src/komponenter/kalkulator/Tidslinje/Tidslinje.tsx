@@ -45,6 +45,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
     const breddePerObjekt = (100/tidslinjeobjekter.length);
 
     const [typeDatoOnHover, setTypeDatoOnHover] = useState('')
+    const [datoOnDrag, setDatoOnDrag] = useState(props.sisteDagIPeriode)
 
     useEffect(() => {
         setTidslinjeobjekter(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
@@ -52,7 +53,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
     const finnFarge = (kategori: datointervallKategori) => {
         if (kategori === 0) {
-            return '#0067C5'
+            return '#005B82'
         }
         if (kategori === 2) {
             return 'darksalmon'
@@ -133,7 +134,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
     })
 
     let breddeAvDragElement = breddePerObjekt*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
-    const OnTidslinjeDrag = () => {
+    const OnTidslinjeDragRelease = () => {
         let indeksStartDato = 0;
         let minimumAvstand = 1000
         tidslinjeHTMLObjekt.forEach((objekt,indeks) => {
@@ -156,8 +157,21 @@ const Tidslinje:FunctionComponent<Props> = props => {
             }
         }
         );
-
          */
+    }
+
+    const OnTidslinjeDrag = () => {
+        let indeksStartDato = 0;
+        let minimumAvstand = 1000
+        tidslinjeHTMLObjekt.forEach((objekt,indeks) => {
+                const avstand = regnUtHorisontalAvstandMellomToElement('draggable-periode','kalkulator-tidslinjeobjekt-'+indeks)
+                if (avstand < minimumAvstand) {
+                    minimumAvstand = avstand
+                    indeksStartDato = indeks
+                }
+            }
+        )
+        setDatoOnDrag(tidslinjeobjekter[indeksStartDato].dato)
     }
 
     return (
@@ -167,8 +181,17 @@ const Tidslinje:FunctionComponent<Props> = props => {
                 <Normaltekst>{typeDatoOnHover}</Normaltekst>
             </div>
             { tidslinjeobjekter.length >0 && <>
-                    <Draggable axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDrag()}>
-                        <div style={{width: `${breddeAvDragElement }%`}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}/>
+                    <Draggable axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDragRelease()} onDrag={() => OnTidslinjeDrag()}>
+                        <div style={{width: `${breddeAvDragElement }%`}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
+                            <div className={ 'kalkulator__draggable-kant venstre'}/>
+                            <Normaltekst  className = {'venstre-dato '}>
+                                {skrivOmDato(datoOnDrag)}
+                            </Normaltekst>
+                            <div className={ 'kalkulator__draggable-kant høyre'}/>
+                            <Normaltekst className = {'høyre-dato'}>
+                                {skrivOmDato(finnDato18MndFram(datoOnDrag))}
+                            </Normaltekst>
+                        </div>
                     </Draggable>
             </>}
 
@@ -178,12 +201,16 @@ const Tidslinje:FunctionComponent<Props> = props => {
                     </div>
             {tidslinjeHTMLObjekt}
             </div>
-            { tidslinjeobjekter.length>0 && <div className={ 'kalkulator__tidslinje-datoer'}>
-                <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
-                <Normaltekst>{skrivOmDato(tidslinjeobjekter[tidslinjeobjekter.length-1].dato)}</Normaltekst>
-            </div>}
+
         </div>
     );
 };
 
 export default Tidslinje;
+
+/*{ tidslinjeobjekter.length>0 && <div className={ 'kalkulator__tidslinje-datoer'}>
+    <Normaltekst>{skrivOmDato(tidslinjeobjekter[0].dato)}</Normaltekst>
+    <Normaltekst>{skrivOmDato(tidslinjeobjekter[tidslinjeobjekter.length-1].dato)}</Normaltekst>
+</div>}
+
+ */
