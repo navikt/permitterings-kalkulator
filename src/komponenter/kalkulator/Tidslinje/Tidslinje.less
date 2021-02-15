@@ -43,12 +43,6 @@
 
   }
 
-  &__tidslinje-dato-info {
-    position: absolute;
-    right : 0;
-    top: -0.5rem;
-  }
-
   &__tidslinje-container {
     display: flex;
     flex-direction: column;
@@ -79,6 +73,24 @@
 
     &__tidslinjeobjekt {
       height: 100%;
+    }
+
+    .dagens-dato {
+      position: relative;
+    }
+
+    .tidslinje-dagens-dato-markør {
+      position: absolute;
+      top: -2rem;
+      width: 2px;
+      height:3rem;
+      background-color: goldenrod;
+    }
+
+    .tidslinje-dagens-dato-markør-tekst {
+      position: absolute;
+      top: -1.5rem;
+      left: -2rem;
     }
 
     .lysblå {

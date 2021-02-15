@@ -7,7 +7,7 @@ import {
 } from '../utregninger';
 import './Tidslinje.less';
 import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 import Draggable from 'react-draggable';
@@ -27,29 +27,14 @@ const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
     return Math.abs(avstand)
 }
 
-const skrivUtypeDato = (type: number):string => {
-    switch (true) {
-        case (type === 0) :
-            return 'permittert'
-        case (type === 1) :
-            return 'i arbeid'
-        case (type === 2) :
-            return 'annet fravær'
-        default :
-            return ''
-    }
-}
-
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
     const breddePerObjekt = (100/tidslinjeobjekter.length);
-
-    const [typeDatoOnHover, setTypeDatoOnHover] = useState('')
-    const [datoOnDrag, setDatoOnDrag] = useState(props.sisteDagIPeriode)
+    const [datoOnDrag, setDatoOnDrag] = useState(finnDato18MndTilbake(props.sisteDagIPeriode))
 
     useEffect(() => {
         setTidslinjeobjekter(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
-    },[props.allePermitteringerOgFraværesPerioder] );
+    },[props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode] );
 
     const finnFarge = (kategori: datointervallKategori) => {
         if (kategori === 0) {
@@ -61,17 +46,22 @@ const Tidslinje:FunctionComponent<Props> = props => {
         return 'transParent'
     }
 
-
     const tidslinjeHTMLObjekt = tidslinjeobjekter
         .map ( (objekt, indeks) => {
             const style: React.CSSProperties = {
                 width: breddePerObjekt.toString()+'%',
             }
+            const erIdag = (skrivOmDato(objekt.dato) === skrivOmDato(new Date)) ? 'dagens-dato' : '';
             return (
                 <div id = {'kalkulator-tidslinjeobjekt-'+indeks}style={style}
-                     className={'kalkulator__tidslinjeobjekt '}
-                     key={indeks}
-                />
+                     className={'kalkulator__tidslinjeobjekt '+erIdag}
+                     key={indeks}>
+                    {erIdag &&
+                        <div className={'tidslinje-dagens-dato-markør'}>
+                            <Undertekst className={'tidslinje-dagens-dato-markør-tekst'}>{skrivOmDato(new Date())}</Undertekst>
+                        </div>
+                    }
+                </div>
             );
         })
 
@@ -135,21 +125,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
     let breddeAvDragElement = breddePerObjekt*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
     const OnTidslinjeDragRelease = () => {
-        let indeksStartDato = 0;
-        let minimumAvstand = 1000
-        tidslinjeHTMLObjekt.forEach((objekt,indeks) => {
-            const avstand = regnUtHorisontalAvstandMellomToElement('draggable-periode','kalkulator-tidslinjeobjekt-'+indeks)
-            if (avstand < minimumAvstand) {
-                minimumAvstand = avstand
-                indeksStartDato = indeks
-            }
-        }
-        )
-        const type = tidslinjeobjekter[indeksStartDato].kategori;
-        const typeItekst = skrivUtypeDato(type)
-        setTypeDatoOnHover(typeItekst)
-        const sluttDato = finnDato18MndFram(tidslinjeobjekter[indeksStartDato].dato);
-        props.set18mndsPeriode(sluttDato)
+        props.set18mndsPeriode(datoOnDrag)
         /*let indeksSluttdato = 0;
         tidslinjeobjekter.forEach((objekt,indeks) => {
             if (objekt.dato.toDateString() === sluttDato.toDateString()) {
@@ -175,12 +151,9 @@ const Tidslinje:FunctionComponent<Props> = props => {
     }
 
     return (
-        <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
-            <div className={'kalkulator__tidslinje-dato-info'}>
-                <Normaltekst>{skrivOmDato(finnDato18MndTilbake(props.sisteDagIPeriode)) + '-' +skrivOmDato(props.sisteDagIPeriode)}</Normaltekst>
-                <Normaltekst>{typeDatoOnHover}</Normaltekst>
-            </div>
-            { tidslinjeobjekter.length >0 && <>
+        <>
+            { tidslinjeobjekter.length>0 &&
+                <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
                     <Draggable axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDragRelease()} onDrag={() => OnTidslinjeDrag()}>
                         <div style={{width: `${breddeAvDragElement }%`}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
                             <div className={ 'kalkulator__draggable-kant venstre'}/>
@@ -193,16 +166,14 @@ const Tidslinje:FunctionComponent<Props> = props => {
                             </Normaltekst>
                         </div>
                     </Draggable>
-            </>}
-
-            <div className={'kalkulator__tidslinje-underlag'} id={'kalkulator__tidslinje'}>
-                <div className={'kalkulator__tidslinje-fargeperioder'}>
-                    {htmlFargeObjekt}
-                    </div>
-            {tidslinjeHTMLObjekt}
-            </div>
-
-        </div>
+                     <div className={'kalkulator__tidslinje-underlag'} id={'kalkulator__tidslinje'}>
+                        <div className={'kalkulator__tidslinje-fargeperioder'}>
+                        {htmlFargeObjekt}
+                        </div>
+                    {tidslinjeHTMLObjekt}
+                     </div>
+                </div>}
+            </>
     );
 };
 
