@@ -12,9 +12,9 @@ RUN npm install -g dotenv@8.2.0
 RUN npm install -g node-fetch@2.6.1
 
 WORKDIR /app
-COPY server.js ./
 COPY server ./server
 COPY build/ ./build
 
 EXPOSE 3000
 
+CMD["node", "server/server.js"]

@@ -10,9 +10,9 @@ const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 
-const decoratorUtils = require('./server/decorator-utils');
-const template = require('./server/template');
-const sanity = require('./server/sanity-utils');
+const decoratorUtils = require('./decorator-utils');
+const template = require('./template');
+const sanity = require('./sanity-utils');
 
 // env
 const server = express();
