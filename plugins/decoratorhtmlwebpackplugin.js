@@ -1,5 +1,5 @@
 const jsdom = require('jsdom');
-const request = require('request');
+const fetch = require('node-fetch');
 
 const { JSDOM } = jsdom;
 const url =
@@ -53,14 +53,16 @@ const getElement = (document, id) => {
 };
 
 const getMenu = (plugin) => {
-    request({ method: 'GET', uri: url }, (error, response, body) => {
-        if (!error && response.statusCode >= 200 && response.statusCode < 400) {
-            const { document } = new JSDOM(body).window;
+    fetch(url, { method: 'GET' })
+        .then((response) => response.text())
+        .then((data) => {
+            const { document } = new JSDOM(data).window;
             addElements(plugin, true, document);
-        } else {
+        })
+        .catch((err) => {
+            console.log('failed to fetch menufragments. error: ', err);
             enablebackup(plugin);
-        }
-    });
+        });
 };
 
 module.exports = decoratorHtmlWebpackPlugin;

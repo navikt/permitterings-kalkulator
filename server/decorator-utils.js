@@ -1,4 +1,3 @@
-const request = require('request');
 const jsdom = require('jsdom');
 const server = require('../server');
 const template = require('./template');
