@@ -10,9 +10,11 @@ RUN npm install -g fs-extra@8.1.0
 RUN npm install -g @sanity/client@1.149.7
 RUN npm install -g console-stamp@0.2.9
 RUN npm install -g dotenv@8.2.0
+RUN npm install -g node-fetch@2.6.1
 
 WORKDIR /app
 COPY server.js ./
+COPY server ./server
 COPY build/ ./build
 
 EXPOSE 3000

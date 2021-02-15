@@ -57,6 +57,7 @@
         "nav-frontend-typografi": "^2.0.26",
         "nav-frontend-typografi-style": "^1.0.22",
         "node-cache": "4.2.0",
+        "node-fetch": "^2.6.1",
         "prop-types": "^15.7.2",
         "react": "^16.13.1",
         "react-app-polyfill": "^1.0.6",
