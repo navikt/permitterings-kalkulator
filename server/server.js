@@ -14,7 +14,7 @@ const decoratorUtils = require('./decorator-utils');
 const template = require('./template');
 const sanity = require('./sanity-utils');
 
-// env
+// init
 const server = express();
 server.use(helmet());
 
