@@ -1,5 +1,5 @@
 import {
-    AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFravaerPerioder,
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
 } from './kalkulator';
@@ -31,7 +31,7 @@ export interface OversiktOverBrukteOgGjenværendeDager {
 }
 
 export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFravaerPerioder
 ): OversiktOverBrukteOgGjenværendeDager => {
     const statusAlleDager18mndLsite = konstruerTidslinje(
         allePErmitteringerOgFraværsperioder
@@ -347,7 +347,7 @@ export const datoErIEnkeltIntervall = (
 };
 
 export const konstruerTidslinje = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+    allePermitteringerOgFravær: AllePermitteringerOgFravaerPerioder
 ): DatoMedKategori[] => {
     const startDato = finnTidligstePermitteringsdato(
         allePermitteringerOgFravær.permitteringer
@@ -414,7 +414,7 @@ const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
 
 const finneKategori = (
     dato: Date,
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder
 ): DatoMedKategori => {
     const erFraVærsDato = finnesIIntervaller(
         dato,
@@ -444,7 +444,7 @@ const finneKategori = (
 
 export const flytt18mndsperiode1dag = (
     tidligereStartDato: Date,
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+    allePermitteringerOgFravær: AllePermitteringerOgFravaerPerioder
 ) => {
     const nyStartDag = finn1DagFram(tidligereStartDato);
     const sluttDato = finnDato18MndFram(nyStartDag!!);

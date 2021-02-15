@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './DatointervallInput.less';
 import {
-    AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFravaerPerioder,
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
 } from '../kalkulator';
@@ -15,10 +15,10 @@ interface Props {
     indeksPermitteringsperioder?: number;
     indeksFraværsperioder?: number;
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder
     ) => void;
     type: string;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
     setEnPeriodeAlleredeLøpende: (finnesløpendePermitterintb: boolean) => void;
     enPeriodeAlleredeLøpende: boolean;
 }
@@ -104,7 +104,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             skrivOmDato(fra),
             skrivOmDato(til)
         );
-        const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
+        const kopiAvPermitterinsperioder: AllePermitteringerOgFravaerPerioder = {
             permitteringer: [
                 ...props.allePermitteringerOgFraværesPerioder.permitteringer,
             ],

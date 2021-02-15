@@ -1,14 +1,14 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { DatoMedKategori, konstruerTidslinje } from '../utregninger';
 import './Tidslinje.less';
-import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import { AllePermitteringerOgFravaerPerioder } from '../kalkulator';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 import Draggable from 'react-draggable';
 
 interface Props {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
 }
 
 const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {

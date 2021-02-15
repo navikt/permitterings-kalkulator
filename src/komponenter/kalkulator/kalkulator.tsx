@@ -2,24 +2,17 @@ import React, { useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import {
-    Element,
-    Ingress,
-    Normaltekst,
-    Systemtittel,
-} from 'nav-frontend-typografi';
+import { Element, Ingress, Normaltekst } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
-    finnDato18MndFram,
-    finnDato18MndTilbake,
     finnTidligstePermitteringsdato,
     finnUtOmDefinnesOverlappendePerioder,
 } from './utregninger';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import Tidslinje from './Tidslinje/Tidslinje';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import KalkulatorInfoTekst from './KalkulatorInfoTekst';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
@@ -28,7 +21,7 @@ export interface DatoIntervall {
     datoTil: Date | undefined;
 }
 
-export interface AllePermitteringerOgFraværesPerioder {
+export interface AllePermitteringerOgFravaerPerioder {
     permitteringer: DatoIntervall[];
     andreFraværsperioder: DatoIntervall[];
 }
@@ -37,7 +30,7 @@ const Kalkulator = () => {
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
-    ] = useState<AllePermitteringerOgFraværesPerioder>({
+    ] = useState<AllePermitteringerOgFravaerPerioder>({
         permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
@@ -56,7 +49,6 @@ const Kalkulator = () => {
     const [beskjedOverlappendeFravær, setBeskjedOverlappendeFravær] = useState(
         ''
     );
-    //const [beskjedPerioderUtenfor18mnd,setBeskjedPerioderUtenfor18mnd] = useState('');
 
     const [førsteDagI18mndsPeriode, setFørsteDagI18mndsPeriode] = useState<
         undefined | Date
@@ -90,20 +82,6 @@ const Kalkulator = () => {
         beskjedOverlappendeFravær,
         beskjedOverlappendePermittering,
     ]);
-
-    /*useEffect(() => {
-        if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
-            const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
-            if (oppdatertPermitteringsListe.length) {
-                const kopiAvAllePermitteringerOgFraværesPerioder = {...allePermitteringerOgFraværesPerioder}
-                kopiAvAllePermitteringerOgFraværesPerioder.permitteringer = oppdatertPermitteringsListe
-                setAllePermitteringerOgFraværesPerioder(kopiAvAllePermitteringerOgFraværesPerioder);
-                setBeskjedPerioderUtenfor18mnd('Du har perioder utenfor 18 mnd')
-            }
-        }
-    },[allePermitteringerOgFraværesPerioder, førsteDagI18mndsPeriode] );
-
-     */
 
     useEffect(() => {
         const førstepermitteringsDag = finnTidligstePermitteringsdato(
@@ -143,43 +121,9 @@ const Kalkulator = () => {
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
                 <div className={'kalkulator__utfyllingskolonne'}>
-                    <Systemtittel>
-                        Få oversikt over permitteringsperioder
-                    </Systemtittel>
-                    <Normaltekst className={'kalkulator__generell-info'}>
-                        Fra 1. november 2020 økte maksperioden en arbeidsgiver
-                        kan fritas fra sin lønnsplikt innenfor en periode på 18
-                        måneder, fra 26 til 49 uker. Her kan du regne ut hvor
-                        mange uker du har permittert dine ansatte, og hvor mye
-                        du har igjen. Hvilken tidsperiode som gjelder for deg
-                        finner du ved å fylle inn startdato fra din første
-                        permittering.
-                        <Element>
-                            Dagens dato er {skrivOmDato(new Date())}. 18 måneder
-                            bakover fra i dag er{' '}
-                            {skrivOmDato(finnDato18MndTilbake(new Date()))}. 18
-                            måneder framover er{' '}
-                            {skrivOmDato(finnDato18MndFram(new Date()))}.
-                        </Element>
-                    </Normaltekst>
-                    {førsteDagI18mndsPeriode && (
-                        <>
-                            <Element>
-                                Testdato er{' '}
-                                {skrivOmDato(førsteDagI18mndsPeriode)}. 18
-                                måneder bakover fra testdato er{' '}
-                                {skrivOmDato(
-                                    finnDato18MndTilbake(
-                                        førsteDagI18mndsPeriode
-                                    )
-                                )}
-                                . 18 måneder framover er{' '}
-                                {skrivOmDato(
-                                    finnDato18MndFram(førsteDagI18mndsPeriode)
-                                )}
-                            </Element>
-                        </>
-                    )}
+                    <KalkulatorInfoTekst
+                        førsteDagI18mndsPeriode={førsteDagI18mndsPeriode}
+                    />
                     <div className={'kalkulator__permitteringsobjekter'}>
                         <Ingress>Legg inn dato fra første permittering</Ingress>
                         <div
