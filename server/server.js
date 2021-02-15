@@ -47,7 +47,7 @@ const setHeaders = (responsheader) => {
 };
 
 const setBuildpathStatic = (subpath) => {
-    return express.static(path.join(__dirname, `build/${subpath}`));
+    return express.static(path.join(__dirname, `/../build/${subpath}`));
 };
 
 const serverUse = (staticPath) => {
@@ -84,9 +84,9 @@ const setServerPort = () => {
 };
 
 const serveAppWithOutMenu = () => {
-    server.use(BASE_URL, express.static(path.join(__dirname, 'build')));
+    server.use(BASE_URL, express.static(path.join(__dirname, '/../build')));
     server.get(`${BASE_URL}/*`, (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '/../build', 'index.html'));
     });
     setServerPort();
 };
