@@ -6,7 +6,12 @@ export interface BEMWrapper {
 
 const BEMHelper: (cls: string) => BEMWrapper = (cls: string) => ({
     className: cls,
-    element: (e?: string, m?: string) => `${cls}__${e}${m ? ` ${cls}__${e}--${m}` : ''}`,
+    element: (e?: string, m?: string) => {
+        if (m) {
+            return `${cls}__${e} ${cls}__${e}--${m}`;
+        }
+        return `${cls}__${e}`;
+    },
     modifier: (m?: string) => `${cls}--${m}`,
 });
 
