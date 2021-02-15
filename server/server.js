@@ -10,9 +10,9 @@ const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 
-const decoratorUtils = require('./server/decorator-utils');
-const template = require('./server/template');
-const sanity = require('./server/sanity-utils');
+const decoratorUtils = require('./decorator-utils');
+const template = require('./template');
+const sanity = require('./sanity-utils');
 
 // env
 const server = express();
@@ -47,7 +47,7 @@ const setHeaders = (responsheader) => {
 };
 
 const setBuildpathStatic = (subpath) => {
-    return express.static(path.join(__dirname, `build/${subpath}`));
+    return express.static(path.join(__dirname, `/../build/${subpath}`));
 };
 
 const serverUse = (staticPath) => {
@@ -84,9 +84,9 @@ const setServerPort = () => {
 };
 
 const serveAppWithOutMenu = () => {
-    server.use(BASE_URL, express.static(path.join(__dirname, 'build')));
+    server.use(BASE_URL, express.static(path.join(__dirname, '/../build')));
     server.get(`${BASE_URL}/*`, (req, res) => {
-        res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+        res.sendFile(path.resolve(__dirname, '/../build', 'index.html'));
     });
     setServerPort();
 };

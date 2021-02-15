@@ -1,5 +1,5 @@
 const jsdom = require('jsdom');
-const server = require('../server');
+const server = require('./server');
 const template = require('./template');
 const fs = require('fs-extra');
 const NodeCache = require('node-cache');
