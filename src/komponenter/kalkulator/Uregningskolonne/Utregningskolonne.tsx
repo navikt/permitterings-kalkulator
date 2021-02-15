@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
-import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import { AllePermitteringerOgFravaerPerioder } from '../kalkulator';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
     antallUkerRundetOpp,
@@ -11,7 +11,7 @@ import {
 } from '../utregninger';
 
 interface UtregningskolonneProps {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
 }
 
 const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (

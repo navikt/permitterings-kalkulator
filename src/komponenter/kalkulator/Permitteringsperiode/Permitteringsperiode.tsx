@@ -3,7 +3,7 @@ import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
 import {
-    AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFravaerPerioder,
     DatoIntervall,
 } from '../kalkulator';
 
@@ -14,9 +14,9 @@ import { finn1DagFram, finnSistePermitteringsdato } from '../utregninger';
 interface Props {
     info: DatoIntervall;
     indeks: number;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder
     ) => void;
     setEnPermitteringAlleredeLøpende: (finnesløpende: boolean) => void;
     enPermitteringAlleredeLøpende: boolean;

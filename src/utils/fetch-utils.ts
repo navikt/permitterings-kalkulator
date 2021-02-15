@@ -10,7 +10,7 @@ const fetchdata: (url: string) => Promise<Response> = (url) => {
 export const fetchsanityJSON = async (url: string) => {
     const response = await fetchdata(`${url}${BASE_URL}/innhold`);
     await status(response);
-    return await response.json();
+    return response.json();
 };
 
 function status(response: Response) {

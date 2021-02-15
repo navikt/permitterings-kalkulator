@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Ingress } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
+import { AllePermitteringerOgFravaerPerioder } from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
@@ -13,9 +13,9 @@ import {
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder
     ) => void;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
     etFraværAlleredeLøpende: boolean;
     setFraværAlleredeLøpende: (finnesLøpendeFravær: boolean) => void;
 }
