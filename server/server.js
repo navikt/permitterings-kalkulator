@@ -33,18 +33,26 @@ const sendDataObj = (json) => ({
     env: [process.env.SANITY_PROJECT_ID, process.env.SANITY_DATASET],
 });
 
-const setHeaders = (responsheader) => {
-    responsheader.setHeader('Access-Control-Allow-Origin', '*');
-    responsheader.setHeader(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, PATCH, DELETE'
-    );
-    responsheader.setHeader(
-        'Access-Control-Allow-Headers',
-        'X-Requested-With,content-type'
-    );
-    responsheader.setHeader('Access-Control-Allow-Credentials', true);
-};
+server.use((req, res, next) => {
+    if (template.corsWhitelist.includes(req.headers.origin)) {
+        res.header('Access-Control-Allow-Origin', req.headers.origin);
+        res.header(
+            'Access-Control-Allow-Headers',
+            'Origin, X-Requested-With, Content-Type, Accept'
+        );
+        res.header(
+            'Access-Control-Allow-Methods',
+            'GET, HEAD, OPTIONS, POST, PUT'
+        );
+        res.setHeader(
+            'Access-Control-Allow-Headers',
+            'X-Requested-With,content-type'
+        );
+        res.setHeader('Access-Control-Allow-Credentials', true);
+    }
+
+    next();
+});
 
 const setBuildpathStatic = (subpath) => {
     return express.static(path.join(__dirname, `/../build/${subpath}`));
@@ -59,7 +67,6 @@ const serverUse = (staticPath) => {
 
 // sanity innhold
 server.get(`${BASE_URL}/innhold/`, (req, res) => {
-    setHeaders(res);
     const cacheInnhold = sanity.mainCacheInnhold.get(
         sanity.mainCacheInnholdKey
     );

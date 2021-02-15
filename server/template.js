@@ -32,7 +32,16 @@ const staticPaths = [
     'index.css',
 ];
 
+const corsWhitelist = [
+    '.nav.no',
+    '.sanity.io',
+    'http://localhost:',
+    'amplitude.nav.no',
+    'nav.',
+];
+
 module.exports.url = url;
 module.exports.staticPaths = staticPaths;
+module.exports.corsWhitelist = corsWhitelist;
 module.exports.sanityQueryKeys = sanityQueryKeys;
 module.exports.decoratorTemplatekeys = decoratorTemplatekeys;
