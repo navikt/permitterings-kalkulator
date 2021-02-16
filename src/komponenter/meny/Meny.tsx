@@ -40,7 +40,7 @@ const Meny = () => {
     }, [context.permitteringInnhold.vanligeSpr]);
 
     useEffect(() => {
-        const recalebrateMenuPos = () =>
+        const recalebrateMenuPos = (): void =>
             recalibrateMenuPosition(
                 appDisplayMobileMenu,
                 setAppDisplayMobileMenu,

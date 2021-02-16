@@ -44,14 +44,14 @@ const Context = (props: Props) => {
     >(
         type: K,
         value: T
-    ) => {
+    ): void => {
         return setInnhold((prevState) => ({
             ...prevState,
             [type]: [...prevState[type], value],
         }));
     };
 
-    const setSideSistOppdatert = <T extends SistOppdatert>(value: T) => {
+    const setSideSistOppdatert = <T extends SistOppdatert>(value: T): void => {
         setSistOppdatert(value);
     };
 
@@ -62,37 +62,12 @@ const Context = (props: Props) => {
         setSideSistOppdatert,
     };
 
-    /* const setPermitteringInnholdFraNokkelVerdi = (
-        type: string,
-        item: SanityBlockTypes
-    ): keyof PermitteringInnhold | keyof SistOppdatert | void => {
-        switch (type) {
-            case 'sist-oppdatert':
-                setSideSistOppdatert(item);
-                break;
-            case 'hvordan-permittere-ansatte':
-                settPermitteringInnhold('hvordanPermittere', item);
-                settPermitteringInnhold('hvordanPermittere', item);
-                break;
-            case 'i-permitteringsperioden':
-                settPermitteringInnhold('iPermitteringsperioden', item);
-                break;
-            case 'nar-skal-jeg-utbetale-lonn':
-                settPermitteringInnhold('narSkalJegUtbetale', item);
-                break;
-            case 'vanlige-sporsmal':
-                settPermitteringInnhold('vanligeSpr', item);
-                break;
-        }
-    };
-*/
     useEffect(() => {
         const url = isProduction();
         fetchsanityJSON(url)
             .then((res) => {
                 setEnv(res.env);
                 res.data.forEach((item) => {
-                    //setPermitteringInnholdFraNokkelVerdi(item._type, item);
                     setPermitteringInnholdFraNokkelVerdi(
                         item._type,
                         item,
