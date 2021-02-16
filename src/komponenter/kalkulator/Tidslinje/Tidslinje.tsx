@@ -46,9 +46,7 @@ const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => 
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder));
     const [datoOnDrag, setDatoOnDrag] = useState(finnDato18MndTilbake(props.sisteDagIPeriode));
-    const breddeAv1Element = finnBreddeAvObjekt('kalkulator-idslinje-wrapper')!!/tidslinjeobjekter.length
-
-    let breddeAvDragElement = breddeAv1Element*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
+    const breddeAv1ElementIProsent = tidslinjeobjekter.length/100;
 
     console.log('antall dager gått? ', antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode));
 
@@ -69,7 +67,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
     const tidslinjeHTMLObjekt = tidslinjeobjekter
         .map ( (objekt, indeks) => {
             const style: React.CSSProperties = {
-                width: breddeAv1Element,
+                width: breddeAv1ElementIProsent.toString() + '%',
             }
             const erIdag = (skrivOmDato(objekt.dato) === skrivOmDato(new Date)) ? 'dagens-dato' : '';
             return (
@@ -134,7 +132,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
         }
 
         const style: React.CSSProperties = {
-            width: breddeAv1Element*objekt.antallDagerISekvens,
+            width: (breddeAv1ElementIProsent*objekt.antallDagerISekvens).toString() +'%',
             backgroundColor: finnFarge(objekt.kategori),
             borderRadius: borderRadius
         }
@@ -168,8 +166,8 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
 
 
-
-    const posisjonTilFørsteDagIPeriode = tidslinjeobjekter[0] ?  antalldagerGått(tidslinjeobjekter[0].dato, finnDato18MndTilbake(props.sisteDagIPeriode))*breddeAv1Element!! : 0;
+    console.log(breddeAv1ElementIProsent*(antalldagerGått(datoOnDrag, finnDato18MndFram(datoOnDrag)) ), 'bredde i prosent', breddeAv1ElementIProsent)
+    const posisjonTilFørsteDagIPeriode = tidslinjeobjekter[0] ?  (finnBreddeAvObjekt('kalkulator-tidslinje-wrapper')!!)/(tidslinjeobjekter.length)*antalldagerGått(tidslinjeobjekter[0].dato, datoOnDrag) : 0;
 
     return (
         <div className={'kalkulator__tidslinje-container start'} id={'kalkulator-tidslinje-container'}  >
@@ -177,7 +175,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
                     <>
                     <Draggable defaultPosition={{x: posisjonTilFørsteDagIPeriode, y: 0}} axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDragRelease()} onDrag={() => OnTidslinjeDrag()}>
-                        <div style={{width: breddeAvDragElement }} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
+                        <div style={{width: (breddeAv1ElementIProsent*(antalldagerGått(datoOnDrag, finnDato18MndFram(datoOnDrag)) )/100).toString()+'%'}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
                             <div className={ 'kalkulator__draggable-kant venstre'}/>
                             <Normaltekst  className = {'venstre-dato '}>
                                 {skrivOmDato(datoOnDrag)}
@@ -208,3 +206,5 @@ export default Tidslinje;
 </div>}
 
  */
+
+//breddeAv1ElementIProsent*(antalldagerGått(datoOnDrag, finnDato18MndFram(datoOnDrag)) )

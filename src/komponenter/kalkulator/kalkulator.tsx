@@ -93,7 +93,7 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}
                     />
                     <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendeFravær}</Element>
-                        <div className={'kalkulator__tidslinje-wrapper'} id={'kalkulator-idslinje-wrapper'}>
+                        <div className={'kalkulator__tidslinje-wrapper'} id={'kalkulator-tidslinje-wrapper'}>
                         <Tidslinje sisteDagIPeriode={sisteDagI18mndsPeriode} set18mndsPeriode={setSisteDagI18mndsPeriode} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
                         </div>
                     </div>
