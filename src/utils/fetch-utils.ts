@@ -1,4 +1,4 @@
-import { DocumentTypes } from '../komponenter/Context';
+import { DocumentTypes } from '../komponenter/ContextProvider';
 
 interface Innhold {
     data: DocumentTypes[];

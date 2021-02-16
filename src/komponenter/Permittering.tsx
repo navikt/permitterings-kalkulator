@@ -8,7 +8,7 @@ import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsma
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
-import { PermitteringContext } from './Context';
+import { PermitteringContext } from './ContextProvider';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');

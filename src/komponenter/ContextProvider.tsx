@@ -26,7 +26,7 @@ export interface Context {
 
 export const PermitteringContext = React.createContext({} as Context);
 
-const Context = (props: Props) => {
+const ContextProvider = (props: Props) => {
     const [innhold, setInnhold] = useState({
         hvordanPermittere: [],
         narSkalJegUtbetale: [],
@@ -88,4 +88,4 @@ const Context = (props: Props) => {
     );
 };
 
-export default Context;
+export default ContextProvider;

@@ -13,7 +13,7 @@ import {
     recalibrateMenuPosition,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
-import { PermitteringContext } from '../Context';
+import { PermitteringContext } from '../ContextProvider';
 import {
     lenker,
     PermitteringsLenke,
