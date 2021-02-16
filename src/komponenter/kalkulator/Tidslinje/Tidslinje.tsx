@@ -27,6 +27,11 @@ const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
     return Math.abs(avstand)
 }
 
+const finnBreddeAvObjekt = (id: string) => {
+    const element = document.getElementById(id);
+    return element?.offsetWidth;
+}
+
 const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
     let indeksDato = 0;
     tidslinjeobjekt.forEach((objekt, indeks) => {
@@ -39,9 +44,10 @@ const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => 
 }
 
 const Tidslinje:FunctionComponent<Props> = props => {
-    const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
+    const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder));
     const breddePerObjekt = (100/tidslinjeobjekter.length);
-    const [datoOnDrag, setDatoOnDrag] = useState(finnDato18MndTilbake(props.sisteDagIPeriode))
+    const [datoOnDrag, setDatoOnDrag] = useState(finnDato18MndTilbake(props.sisteDagIPeriode));
+    const [initialPosisjonDragger, setInitialPosisjonDragger] = useState(0);
 
     useEffect(() => {
         setTidslinjeobjekter(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder))
@@ -157,11 +163,17 @@ const Tidslinje:FunctionComponent<Props> = props => {
     //console.log('prøver å finne et id-navn',regnUtIndeksForDato(finnDato18MndTilbake(props.sisteDagIPeriode), tidslinjeobjekter))
     //const førsteDatoIPeriodePosisjon = førsteDatoIPeriode?.getBoundingClientRect();
 
+
+
+    const breddeAv1Element = finnBreddeAvObjekt('kalkulator-utfyllingskolonne')!!/tidslinjeobjekter.length
+    const posisjonTilFørsteDagIPeriode = tidslinjeobjekter[0] ?  antalldagerGått(tidslinjeobjekter[0].dato, finnDato18MndTilbake(props.sisteDagIPeriode))*breddeAv1Element!! : 0;
+
     return (
-        <>
+        <div className={'kalkulator__tidslinje-container start'} id={'kalkulator-tidslinje-container'}  >
             { tidslinjeobjekter.length>0 &&
-                <div className={'kalkulator__tidslinje-container start'} id={'kalkulator__tidslinje-container start'}  >
-                    <Draggable axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDragRelease()} onDrag={() => OnTidslinjeDrag()}>
+
+                    <>
+                    <Draggable defaultPosition={{x: posisjonTilFørsteDagIPeriode, y: 0}} axis={'x'} bounds={"parent"} onStop={() => OnTidslinjeDragRelease()} onDrag={() => OnTidslinjeDrag()}>
                         <div style={{width: `${breddeAvDragElement }%`}} id={'draggable-periode'} className={ 'kalkulator__draggable-periode'}>
                             <div className={ 'kalkulator__draggable-kant venstre'}/>
                             <Normaltekst  className = {'venstre-dato '}>
@@ -179,8 +191,9 @@ const Tidslinje:FunctionComponent<Props> = props => {
                         </div>
                     {tidslinjeHTMLObjekt}
                      </div>
-                </div>}
-            </>
+                    </>}
+                </div>
+
     );
 };
 

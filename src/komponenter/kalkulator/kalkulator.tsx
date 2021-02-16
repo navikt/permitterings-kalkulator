@@ -53,20 +53,6 @@ const Kalkulator = () => {
 
     },[allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær, beskjedOverlappendePermittering] );
 
-    /*useEffect(() => {
-        if (førsteDagI18mndsPeriode && allePermitteringerOgFraværesPerioder.permitteringer.length) {
-            const oppdatertPermitteringsListe = settDatoerInnenforRiktigIntervall(allePermitteringerOgFraværesPerioder.permitteringer, førsteDagI18mndsPeriode)
-            if (oppdatertPermitteringsListe.length) {
-                const kopiAvAllePermitteringerOgFraværesPerioder = {...allePermitteringerOgFraværesPerioder}
-                kopiAvAllePermitteringerOgFraværesPerioder.permitteringer = oppdatertPermitteringsListe
-                setAllePermitteringerOgFraværesPerioder(kopiAvAllePermitteringerOgFraværesPerioder);
-                setBeskjedPerioderUtenfor18mnd('Du har perioder utenfor 18 mnd')
-            }
-        }
-    },[allePermitteringerOgFraværesPerioder, førsteDagI18mndsPeriode] );
-
-     */
-
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map((permitteringsperiode, indeks) => {
         return (
             <Permitteringsperiode enPermitteringAlleredeLøpende={enPermitteringAlleredeLøpende} indeks={indeks}
@@ -82,7 +68,7 @@ const Kalkulator = () => {
         <div className={'kalkulator-bakgrunn'}>
             <Banner classname={'banner'} />
             <div className={'kalkulator'}>
-                <div className={'kalkulator__utfyllingskolonne'}>
+                <div className={'kalkulator__utfyllingskolonne'} id = {'kalkulator-utfyllingskolonne'}>
                     <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
                     <Topp sisteDagIPeriode={sisteDagI18mndsPeriode} set18mndsPeriode={setSisteDagI18mndsPeriode}/>
                     <div className={'kalkulator__permitteringsobjekter'}>

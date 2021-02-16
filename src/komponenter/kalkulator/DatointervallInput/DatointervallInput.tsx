@@ -55,6 +55,7 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
         else {
             oppdaterFraværsdatoer(fra, til)
         }
+        // sette default til-dato
         if (fra && !datoIntervall.datoTil) {
             oppdaterPermitteringsListe(typeIntervall,undefined, finn1DagFram(fra))
         }
@@ -73,7 +74,6 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
     }
 
     const oppdaterPermitteringsdatoer = (fra?: Date, til?: Date) => {
-        console.log('kaller oppdater permdatoer: fra, til ', skrivOmDato(fra), skrivOmDato(til))
         const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
             permitteringer: [...props.allePermitteringerOgFraværesPerioder.permitteringer],
             andreFraværsperioder: [...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder]
