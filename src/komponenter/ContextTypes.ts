@@ -29,13 +29,11 @@ export const setPermitteringInnholdFraNokkelVerdi = (
         value: T
     ) => void
 ): void => {
-    console.log('type', type);
     switch (type) {
         case 'sist-oppdatert':
             setSideSistOppdatert(item);
             break;
         case 'hvordan-permittere-ansatte':
-            console.log('type = hvordan-permittere-ansatte');
             settPermitteringInnhold('hvordanPermittere', item);
             break;
         case 'i-permitteringsperioden':
