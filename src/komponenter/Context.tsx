@@ -4,68 +4,101 @@ import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
 import { scrollIntoView } from '../utils/scrollIntoView';
 import { setEnv } from '../sanity-blocks/serializer';
+import {
+    PermitteringInnhold,
+    SettPermitteringInnhold,
+    SettSideSistOppdatert,
+    setPermitteringInnholdFraNokkelVerdi,
+} from './ContextTypes';
 
 interface Props {
     children: React.ReactNode;
 }
 
-type DocumentTypes = SanityBlockTypes;
+export type DocumentTypes = SanityBlockTypes;
 
-interface ContextTypes {
+export interface Context {
+    permitteringInnhold: PermitteringInnhold;
     sistOppdatert: SistOppdatert | null;
-    hvordanPermittere: [] | SanityBlockTypes[];
-    narSkalJegUtbetale: [] | SanityBlockTypes[];
-    iPermitteringsperioden: [] | SanityBlockTypes[];
-    vanligeSpr: [] | SanityBlockTypes[];
+    settPermitteringInnhold: SettPermitteringInnhold;
+    setSideSistOppdatert: SettSideSistOppdatert;
 }
 
-export const PermitteringContext = React.createContext({} as ContextTypes);
+export const PermitteringContext = React.createContext({} as Context);
 
 const Context = (props: Props) => {
+    const [innhold, setInnhold] = useState({
+        hvordanPermittere: [],
+        narSkalJegUtbetale: [],
+        iPermitteringsperioden: [],
+        vanligeSpr: [],
+    });
+
     const [sistOppdatert, setSistOppdatert] = useState<SistOppdatert | null>(
         null
     );
-    const [hvordanPermittere, setHvordanPermittere] = useState<
-        [] | SanityBlockTypes[]
-    >([]);
-    const [narSkalJegUtbetale, setNarSkalJegUtbetale] = useState<
-        [] | SanityBlockTypes[]
-    >([]);
-    const [iPermitteringsperioden, setIpermitteringsperioden] = useState<
-        [] | SanityBlockTypes[]
-    >([]);
-    const [vanligeSpr, setVanligeSpr] = useState<[] | SanityBlockTypes[]>([]);
 
-    const contextdata: ContextTypes = {
-        sistOppdatert: sistOppdatert,
-        hvordanPermittere: hvordanPermittere,
-        narSkalJegUtbetale: narSkalJegUtbetale,
-        iPermitteringsperioden: iPermitteringsperioden,
-        vanligeSpr: vanligeSpr,
+    const settPermitteringInnhold = <
+        K extends keyof NonNullable<PermitteringInnhold>,
+        T extends SanityBlockTypes
+    >(
+        type: K,
+        value: T
+    ) => {
+        return setInnhold((prevState) => ({
+            ...prevState,
+            [type]: [...prevState[type], value],
+        }));
     };
 
-    useEffect(() => {
-        const skrivfraSanity = (item: DocumentTypes) => {
-            switch (item._type) {
-                case 'sist-oppdatert':
-                    return setSistOppdatert(item as SistOppdatert);
-                case 'hvordan-permittere-ansatte':
-                    return setHvordanPermittere((data) => [...data, item]);
-                case 'i-permitteringsperioden':
-                    return setIpermitteringsperioden((data) => [...data, item]);
-                case 'nar-skal-jeg-utbetale-lonn':
-                    return setNarSkalJegUtbetale((data) => [...data, item]);
-                case 'vanlige-sporsmal':
-                    return setVanligeSpr((data) => [...data, item]);
-            }
-        };
+    const setSideSistOppdatert = <T extends SistOppdatert>(value: T) => {
+        setSistOppdatert(value);
+    };
 
+    const contextData: Context = {
+        permitteringInnhold: innhold,
+        sistOppdatert,
+        settPermitteringInnhold,
+        setSideSistOppdatert,
+    };
+
+    /* const setPermitteringInnholdFraNokkelVerdi = (
+        type: string,
+        item: SanityBlockTypes
+    ): keyof PermitteringInnhold | keyof SistOppdatert | void => {
+        switch (type) {
+            case 'sist-oppdatert':
+                setSideSistOppdatert(item);
+                break;
+            case 'hvordan-permittere-ansatte':
+                settPermitteringInnhold('hvordanPermittere', item);
+                settPermitteringInnhold('hvordanPermittere', item);
+                break;
+            case 'i-permitteringsperioden':
+                settPermitteringInnhold('iPermitteringsperioden', item);
+                break;
+            case 'nar-skal-jeg-utbetale-lonn':
+                settPermitteringInnhold('narSkalJegUtbetale', item);
+                break;
+            case 'vanlige-sporsmal':
+                settPermitteringInnhold('vanligeSpr', item);
+                break;
+        }
+    };
+*/
+    useEffect(() => {
         const url = isProduction();
         fetchsanityJSON(url)
             .then((res) => {
                 setEnv(res.env);
-                res.data.forEach((item: SanityBlockTypes) => {
-                    skrivfraSanity(item);
+                res.data.forEach((item) => {
+                    //setPermitteringInnholdFraNokkelVerdi(item._type, item);
+                    setPermitteringInnholdFraNokkelVerdi(
+                        item._type,
+                        item,
+                        setSideSistOppdatert,
+                        settPermitteringInnhold
+                    );
                 });
             })
             .catch((err) => console.warn(err));
@@ -74,7 +107,7 @@ const Context = (props: Props) => {
     }, []);
 
     return (
-        <PermitteringContext.Provider value={contextdata}>
+        <PermitteringContext.Provider value={contextData}>
             {props.children}
         </PermitteringContext.Provider>
     );

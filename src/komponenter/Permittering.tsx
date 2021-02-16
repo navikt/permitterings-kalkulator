@@ -14,13 +14,16 @@ export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
 
 const Permittering = () => {
+    const { permitteringInnhold, sistOppdatert } = useContext(
+        PermitteringContext
+    );
+
     const {
-        sistOppdatert,
         hvordanPermittere,
         narSkalJegUtbetale,
         iPermitteringsperioden,
         vanligeSpr,
-    } = useContext(PermitteringContext);
+    } = permitteringInnhold;
 
     return (
         <div className={permittering.className}>
@@ -43,6 +46,7 @@ const Permittering = () => {
                             overskrift="Hvordan permittere ansatte?"
                             id="hvordanPermittere"
                         />
+
                         <NarSkalJegUtbetaleLonn
                             className={permittering.className}
                             content={narSkalJegUtbetale}

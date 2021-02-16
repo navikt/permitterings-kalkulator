@@ -37,7 +37,7 @@ const Meny = () => {
 
     useEffect(() => {
         setHeightPosition(getContainerHeight());
-    }, [context.vanligeSpr]);
+    }, [context.permitteringInnhold.vanligeSpr]);
 
     useEffect(() => {
         const recalebrateMenuPos = () =>
