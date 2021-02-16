@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    antalldagerGått, datointervallKategori,
+    antalldagerGått, datointervallKategori, DatoMedKategori, finn1DagTilbake,
     finnDato18MndFram,
     finnDato18MndTilbake,
     konstruerTidslinje,
@@ -25,6 +25,17 @@ const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
     const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
     const avstand = posisjonBeskrivelse1?.left!! - posisjonBeskrivelse2?.left!!
     return Math.abs(avstand)
+}
+
+const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
+    let indeksDato = 0;
+    tidslinjeobjekt.forEach((objekt, indeks) => {
+        if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
+            console.log('dette skjer for indeks', indeks)
+            indeksDato = indeks
+        }
+    })
+    return indeksDato
 }
 
 const Tidslinje:FunctionComponent<Props> = props => {
@@ -125,15 +136,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
 
     let breddeAvDragElement = breddePerObjekt*(antalldagerGått(finnDato18MndTilbake(props.sisteDagIPeriode), props.sisteDagIPeriode))
     const OnTidslinjeDragRelease = () => {
-        props.set18mndsPeriode(datoOnDrag)
-        /*let indeksSluttdato = 0;
-        tidslinjeobjekter.forEach((objekt,indeks) => {
-            if (objekt.dato.toDateString() === sluttDato.toDateString()) {
-                indeksSluttdato = indeks
-            }
-        }
-        );
-         */
+        props.set18mndsPeriode(finnDato18MndFram(datoOnDrag));
     }
 
     const OnTidslinjeDrag = () => {
@@ -149,6 +152,10 @@ const Tidslinje:FunctionComponent<Props> = props => {
         )
         setDatoOnDrag(tidslinjeobjekter[indeksStartDato].dato)
     }
+
+    //const førsteDatoIPeriode = document.getElementById('kalkulator-tidslinjeobjekt-' + regnUtIndeksForDato(finnDato18MndTilbake(props.sisteDagIPeriode), tidslinjeobjekter));
+    //console.log('prøver å finne et id-navn',regnUtIndeksForDato(finnDato18MndTilbake(props.sisteDagIPeriode), tidslinjeobjekter))
+    //const førsteDatoIPeriodePosisjon = førsteDatoIPeriode?.getBoundingClientRect();
 
     return (
         <>

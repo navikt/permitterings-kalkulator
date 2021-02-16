@@ -357,13 +357,13 @@ const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
 
 const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder): DatoMedKategori => {
     const erFraVærsDato = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.andreFraværsperioder)
-    if (erFraVærsDato) {
+    const erPermittert = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.permitteringer)
+    if (erFraVærsDato && erPermittert) {
         return {
             kategori: 2,
             dato: dato
         }
     }
-    const erPermittert = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.permitteringer)
     if (erPermittert) {
         return {
             kategori: 0,
