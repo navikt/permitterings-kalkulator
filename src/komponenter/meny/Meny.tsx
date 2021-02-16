@@ -13,7 +13,7 @@ import {
     recalibrateMenuPosition,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
-import { PermitteringContext } from '../Context';
+import { PermitteringContext } from '../ContextProvider';
 import {
     lenker,
     PermitteringsLenke,
@@ -37,10 +37,10 @@ const Meny = () => {
 
     useEffect(() => {
         setHeightPosition(getContainerHeight());
-    }, [context.vanligeSpr]);
+    }, [context.permitteringInnhold.vanligeSpr]);
 
     useEffect(() => {
-        const recalebrateMenuPos = () =>
+        const recalebrateMenuPos = (): void =>
             recalibrateMenuPosition(
                 appDisplayMobileMenu,
                 setAppDisplayMobileMenu,

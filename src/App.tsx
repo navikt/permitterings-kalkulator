@@ -4,7 +4,7 @@ import Redirect from './Redirect';
 import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
 import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
-import Context from './komponenter/Context';
+import ContextProvider from './komponenter/ContextProvider';
 import Kalkulator from './komponenter/kalkulator/kalkulator';
 
 const App = () => {
@@ -13,7 +13,7 @@ const App = () => {
         <BrowserRouter>
             <div className="arbeidsgiver-permittering">
                 <Switch>
-                    <Context>
+                    <ContextProvider>
                         <Redirect>
                             <Route
                                 path={'/arbeidsgiver-permittering'}
@@ -28,7 +28,7 @@ const App = () => {
                                 exact={true}
                             />
                         </Redirect>
-                    </Context>
+                    </ContextProvider>
                 </Switch>
             </div>
         </BrowserRouter>
