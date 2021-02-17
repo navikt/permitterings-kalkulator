@@ -6,7 +6,7 @@ import {
     DatoIntervall,
 } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
-import { Checkbox } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 import { finn1DagFram } from '../utregninger';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
@@ -109,9 +109,10 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 />
             </div>
 
-            <Checkbox className={'kalkulator__datovelgere-checkbox'}
+            <Radio className={'kalkulator__datovelgere-checkbox'}
                 label={checkbokstekst}
                 checked={erLøpende}
+                   name={checkbokstekst}
                 onChange={() => {
                     const nyStatus = !erLøpende
                     if (nyStatus && props.enPeriodeAlleredeLøpende) {

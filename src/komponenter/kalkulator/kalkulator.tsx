@@ -13,6 +13,7 @@ import {
 import Tidslinje from './Tidslinje/Tidslinje';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
@@ -72,7 +73,7 @@ const Kalkulator = () => {
                     <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
                     <Topp sisteDagIPeriode={sisteDagI18mndsPeriode} set18mndsPeriode={setSisteDagI18mndsPeriode}/>
                     <div className={'kalkulator__permitteringsobjekter'}>
-                        <Undertittel>Legg inn permitteringsperiode for arbeidstaker</Undertittel>
+                        <Undertittel>2. Legg inn permitteringsperiode for arbeidstaker</Undertittel>
                         <Normaltekst className={'kalkulator__etter-lønnplikt'}>
                             Fra første dag etter lønnsplikt
                         </Normaltekst>
@@ -106,6 +107,17 @@ const Kalkulator = () => {
                         <div className={'kalkulator__tidslinje-wrapper'} id={'kalkulator-tidslinje-wrapper'}>
                         <Tidslinje sisteDagIPeriode={sisteDagI18mndsPeriode} set18mndsPeriode={setSisteDagI18mndsPeriode} allePermitteringerOgFraværesPerioder={allePermitteringerOgFraværesPerioder}/>
                         </div>
+                        <AlertStripe type="info">
+                            <strong>Forklaringer</strong>
+                            <br/>
+                            <strong>Permitteringsdager:</strong>
+                            <br/>
+                            kalenderdager arbeidstakeren har vært permittert (ikke kun dagene arbeidstakeren ikke var på jobb)
+                            <br/>
+                            <strong>Lønnspliktperiode:</strong>
+                            <br/>
+                            Perioden arbeidsgiver har plikt til å betale ut lønn, selv om arbeidstakeren er permittert. Lønnspliktperiode omtales også som arbeidsgiverperiode.
+                        </AlertStripe>
                     </div>
                 </div>
                 <div className={'kalkulator__utregningskolonne'} >

@@ -7,6 +7,7 @@ import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
+import Lenke from 'nav-frontend-lenker';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
@@ -20,7 +21,10 @@ const Topp:FunctionComponent<Props> = props => {
         <div className={'kalkulator__topp'}>
             <Normaltekst className={'kalkulator__generell-info'}>
                 Fra 1. november 2020 økte maksperioden en arbeidsgiver kan fritas fra sin
-                lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker.
+                lønnsplikt innenfor en periode på 18 måneder, fra 26 til 49 uker. <Lenke
+                href={'https://arbeidsgiver.nav.no/arbeidsgiver-permittering#narSkalJegUtbetaleLonn'}>
+                Du kan lese mer om beregning av lønnsplikt ved permittering her.
+            </Lenke>
             </Normaltekst>
             <Undertittel>
                 1. Angi hvilken 18 mnd periode du vil beregne
