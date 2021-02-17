@@ -70,7 +70,7 @@ const Tidslinje:FunctionComponent<Props> = props => {
             const style: React.CSSProperties = {
                 width: breddeAv1ElementIProsent.toString() + '%',
             }
-            const erIdagBoolean = skrivOmDato(objekt.dato) === skrivOmDato(new Date);
+            const erIdagBoolean = skrivOmDato(objekt.dato) === skrivOmDato(new Date());
             const erIdag = erIdagBoolean ? 'dagens-dato' : ''
             return (
                 <div id = {'kalkulator-tidslinjeobjekt-'+indeks} style={style}
