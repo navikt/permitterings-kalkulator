@@ -7,7 +7,7 @@ on:
       - '!master'
 
 env:
-  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
+  APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
   bygg:
@@ -19,11 +19,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Installer avhegigheter (npm ci)
-        run: npm ci --no-optional
+      - name: Installer avhegigheter (yarn ci)
+        run: |
+          yarn install --frozen-lockfile
 
-      - name: Bygg applikasjonen (npm run build)
-        run: npm run build-prod
+      - name: Bygg applikasjonen (yarn run build)
+        run: yarn run build-prod
 
       - name: Sett variable
         id: variable
@@ -32,8 +33,8 @@ jobs:
 
       - name: Bygg Docker-image
         run: |
-          docker build --tag $APP_IMAGE:$GITHUB_SHA .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          docker build --tag $APP_IMAGE .
+          echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
           docker push $APP_IMAGE
 
       - name: Lukk gamle deployment-issues

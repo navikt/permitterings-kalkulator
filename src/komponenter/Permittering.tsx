@@ -8,23 +8,26 @@ import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsma
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
-import { PermitteringContext } from './Context';
+import { PermitteringContext } from './ContextProvider';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
 
 const Permittering = () => {
+    const { permitteringInnhold, sistOppdatert } = useContext(
+        PermitteringContext
+    );
+
     const {
-        sistOppdatert,
         hvordanPermittere,
         narSkalJegUtbetale,
         iPermitteringsperioden,
         vanligeSpr,
-    } = useContext(PermitteringContext);
+    } = permitteringInnhold;
 
     return (
         <div className={permittering.className}>
-            <Banner classname="banner" />
+            <Banner classname="banner" center={true} />
             <div className={permittering.element('container')}>
                 <div
                     className={permittering.element('wrapper')}
@@ -43,6 +46,7 @@ const Permittering = () => {
                             overskrift="Hvordan permittere ansatte?"
                             id="hvordanPermittere"
                         />
+
                         <NarSkalJegUtbetaleLonn
                             className={permittering.className}
                             content={narSkalJegUtbetale}

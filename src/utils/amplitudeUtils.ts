@@ -4,11 +4,11 @@ import amplitudevalues from './amplitudevalues.json';
 const miljo = process.env.NODE_ENV ? process.env.NODE_ENV : 'development';
 const defaultkey = '#arbeidsgiver-permittering-'.concat(miljo);
 
-export const skrivTilMalingBesokerSide = () => {
+export const skrivTilMalingBesokerSide = (): void => {
     amplitude.logEvent(defaultkey.concat('-brukerbesokersiden'));
 };
 
-export const skrivTilMalingMenyValg = (key: string) => {
+export const skrivTilMalingMenyValg = (key: string): void => {
     const jsonsection = 'menyvalg';
     amplitudevalues.forEach((value: any) => {
         if (value[jsonsection][key]) {
@@ -22,19 +22,21 @@ export const skrivTilMalingMenyValg = (key: string) => {
     });
 };
 
-export const skrivTilMalingBesokerSideGaTilSkjema = () => {
+export const skrivTilMalingBesokerSideGaTilSkjema = (): void => {
     amplitude.logEvent(defaultkey.concat('-gaTilsoknadSkjema'));
 };
 
-export const skrivTilMalingFantDuIkkeDetDuLetteEtter = () => {
+export const skrivTilMalingFantDuIkkeDetDuLetteEtter = (): void => {
     amplitude.logEvent(defaultkey.concat('-brukerFantIkke'));
 };
 
-export const skrivTilMalingBrukerTrykketPaSporsmal = (hopplenke: string) => {
+export const skrivTilMalingBrukerTrykketPaSporsmal = (
+    hopplenke: string
+): void => {
     amplitude.logEvent(defaultkey.concat('-').concat(hopplenke));
 };
 
-export const skrivTilMalingVideoBlirSpilt = (event: any) => {
+export const skrivTilMalingVideoBlirSpilt = (event: any): void => {
     const attributeName = 'amplitude-tracked';
     const played = event.target.currentTime / event.target.duration;
     const amplitudeTracked = event.target.getAttribute(attributeName);

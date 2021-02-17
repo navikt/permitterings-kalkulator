@@ -3,13 +3,13 @@ import BEMHelper from '../../utils/bem';
 import { permitteringClassName } from '../Permittering';
 import { Undertittel } from 'nav-frontend-typografi';
 
-interface Tekstseksjon {
+interface TekstseksjonType {
     tittel?: string;
     id?: string;
     disableModifier?: boolean;
 }
 
-const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
+const Tekstseksjon: FunctionComponent<TekstseksjonType> = (props) => {
     const className = BEMHelper(permitteringClassName);
     return (
         <>
@@ -25,7 +25,7 @@ const Tekstseksjon: FunctionComponent<Tekstseksjon> = (props) => {
                         id={props.id}
                         role="heading"
                         aria-level={2}
-                        aria-labelledby={props.id ? props.id : undefined}
+                        aria-labelledby={props.id}
                     >
                         {props.tittel}
                     </Undertittel>

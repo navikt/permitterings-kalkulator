@@ -6,8 +6,7 @@ on:
       - 'master'
 
 env:
-  APP_IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering
-  IMAGE: docker.pkg.github.com/${{ github.repository }}/arbeidsgiver-permittering:${{ github.sha }}
+  APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
   bygg:
@@ -38,22 +37,23 @@ jobs:
       - name: Sjekk ut kode
         uses: actions/checkout@v2
 
-      - name: Installer avhengigheter (npm ci)
-        run: npm ci --no-optional
+      - name: Installer avhengigheter (yarn ci)
+        run: |
+          yarn install --frozen-lockfile
 
-      - name: Bygg (npm run build)
-        run: npm run build
+      - name: Bygg (yarn run build)
+        run: yarn run build
 
       - name: Bygg, tag og push Docker-image
         run: |
-          docker build --tag $IMAGE --tag $APP_IMAGE:latest .
-          echo ${{ secrets.GITHUB_TOKEN }} | docker login docker.pkg.github.com -u $GITHUB_REPOSITORY --password-stdin
+          docker build --tag $APP_IMAGE .
+          echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
           docker push $APP_IMAGE
 
       - name: Sett miljøvariabel COMMIT
         run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Sett miljøvariabel IMAGE
+      - name: Sett miljøvariabel for app IMAGE
         run: echo "IMAGE_CURRENT=$APP_IMAGE:$COMMIT" >> $GITHUB_ENV
 
       - name: Generere nais variabler for dev
@@ -71,7 +71,7 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/dev-env.yaml
-          IMAGE: ${{ env.IMAGE_CURRENT }}
+          IMAGE: ${{ env.APP_IMAGE }}
           REF: ${{ env.COMMIT }}
 
       - name: Generere nais variabler for prod
@@ -89,7 +89,7 @@ jobs:
           RESOURCE: nais/nais.yaml
           PRINT_PAYLOAD: true
           VARS: nais/prod-env.yaml
-          IMAGE: ${{ env.IMAGE_CURRENT }}
+          IMAGE: ${{ env.APP_IMAGE }}
           REF: ${{ env.COMMIT }}
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import BEMHelper from '../../utils/bem';
 import debounce from 'lodash.debounce';
 import Menyknapp from './menyknapp/Menyknapp';
@@ -10,90 +10,53 @@ import {
     adjustMenuHeight,
     calcMenuWidthPosition,
     getContainerHeight,
-    getDesktopContainerOffsetTopDiff,
+    recalibrateMenuPosition,
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
-
-interface PermitteringsLenke {
-    hopplenke: string;
-    lenketekst: string;
-}
-
-const lenker: PermitteringsLenke[] = [
-    {
-        hopplenke: '#hvordanPermittere',
-        lenketekst: 'Hvordan permittere ansatte?',
-    },
-    {
-        hopplenke: '#narSkalJegUtbetaleLonn',
-        lenketekst: 'Når skal jeg utbetale lønn?',
-    },
-    {
-        hopplenke: '#permitteringsperioden',
-        lenketekst: 'I permitteringsperioden',
-    },
-    {
-        hopplenke: '#vanligSpr',
-        lenketekst: 'Vanlige spørsmål',
-    },
-];
+import { PermitteringContext } from '../ContextProvider';
+import {
+    lenker,
+    PermitteringsLenke,
+    setFocusIndex,
+} from '../../utils/menu-lenker-utils';
 
 const Meny = () => {
+    const context = useContext(PermitteringContext);
     const cls = BEMHelper('meny');
     const [appDisplayMobileMenu, setAppDisplayMobileMenu] = useState<boolean>(
         !windowWidthIsDesktopSize()
     );
     const [viewmobilMenu, setViewmobilMenu] = useState<boolean>(false);
-    const [documentIsReady, setDocumentIsReady] = useState<boolean>(false);
     const [sectionInFocus, setSectionInFocus] = useState<number>(0);
     const [heightPosition, setHeightPosition] = useState<number>(0);
     const [widthPosition, SetWidthPosition] = useState<number>(
         calcMenuWidthPosition()
     );
 
-    const toggleButton = () => setViewmobilMenu(!viewmobilMenu);
-
-    document.onreadystatechange = function () {
-        setTimeout(() => {
-            setDocumentIsReady(true);
-        }, 500);
-    };
+    const toggleButton = (): void => setViewmobilMenu(!viewmobilMenu);
 
     useEffect(() => {
         setHeightPosition(getContainerHeight());
-    }, [documentIsReady]);
+    }, [context.permitteringInnhold.vanligeSpr]);
 
     useEffect(() => {
-        const scrollHeight = () => window.scrollY || window.pageYOffset;
-        const hoppLenkerScrollheight = () =>
-            lenker
-                .map((section) =>
-                    document.getElementById(section.hopplenke.slice(1))
-                )
-                .map((sectionNode) =>
-                    sectionNode ? sectionNode.offsetTop : 0
-                );
+        const recalebrateMenuPos = (): void =>
+            recalibrateMenuPosition(
+                appDisplayMobileMenu,
+                setAppDisplayMobileMenu,
+                setHeightPosition,
+                SetWidthPosition
+            );
 
-        const setFocusIndex = () => {
-            return lenker.length === 4
-                ? hoppLenkerScrollheight().map((scrollheight, index) => {
-                      if (scrollheight - 450 < scrollHeight()) {
-                          return setSectionInFocus(index);
-                      }
-                      return null;
-                  })
-                : null;
-        };
         const throttleSetFocusOnMenuLinkevent = debounce(
-            () => setFocusIndex(),
-            50
+            () => setFocusIndex(setSectionInFocus),
+            10
         );
 
-        const setMenuHeightPosition = () => {
+        const setMenuHeightPosition = (): number | void => {
             if (!windowWidthIsDesktopSize()) {
                 return setHeightPosition(adjustMenuHeight());
             }
-            return getDesktopContainerOffsetTopDiff();
         };
 
         window.onscroll = function () {
@@ -101,20 +64,9 @@ const Meny = () => {
             setMenuHeightPosition();
         };
 
-        const recalibrateMenuPosition = () => {
-            if (appDisplayMobileMenu === windowWidthIsDesktopSize()) {
-                setAppDisplayMobileMenu(!windowWidthIsDesktopSize());
-                !windowWidthIsDesktopSize()
-                    ? setHeightPosition(adjustMenuHeight())
-                    : setHeightPosition(getDesktopContainerOffsetTopDiff());
-            }
-            SetWidthPosition(calcMenuWidthPosition());
-        };
+        window.addEventListener('resize', recalebrateMenuPos);
 
-        window.addEventListener('resize', recalibrateMenuPosition);
-
-        return () =>
-            window.removeEventListener('resize', recalibrateMenuPosition);
+        return () => window.removeEventListener('resize', recalebrateMenuPos);
     }, [appDisplayMobileMenu]);
 
     return (

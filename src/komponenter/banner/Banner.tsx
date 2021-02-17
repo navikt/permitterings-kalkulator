@@ -5,21 +5,25 @@ import './banner.less';
 
 interface Props {
     classname: string;
+    center?: boolean;
 }
 
 const Banner = (props: Props) => {
     const cls = BEMHelper(props.classname);
+    const className = props.center
+        ? cls.className.concat(' ').concat(cls.modifier('center'))
+        : cls.className;
     return (
-            <div
-                className={cls.className}
-                role="banner"
-                aria-roledescription="site banner"
-            >
-                <div className={cls.element('tekst')}>
-                    <Sidetittel>Veiviser for permittering</Sidetittel>
-                </div>
-                <div className={cls.element('bunnlinje')} />
+        <div
+            className={className}
+            role="banner"
+            aria-roledescription="site banner"
+        >
+            <div className={cls.element('tekst')}>
+                <Sidetittel>Veiviser for permittering</Sidetittel>
             </div>
+            <div className={cls.element('bunnlinje')} />
+        </div>
     );
 };
 
