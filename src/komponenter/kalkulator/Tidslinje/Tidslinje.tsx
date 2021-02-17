@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    antalldagerGått, datointervallKategori, DatoMedKategori, finn1DagTilbake,
+    antalldagerGått, datointervallKategori,
     finnDato18MndFram,
     finnDato18MndTilbake,
     konstruerTidslinje,
@@ -32,16 +32,17 @@ const finnBreddeAvObjekt = (id: string) => {
     return element?.offsetWidth;
 }
 
-const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
+/*const regnUtIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
     let indeksDato = 0;
     tidslinjeobjekt.forEach((objekt, indeks) => {
         if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
-            console.log('dette skjer for indeks', indeks)
             indeksDato = indeks
         }
     })
     return indeksDato
 }
+
+ */
 
 const Tidslinje:FunctionComponent<Props> = props => {
     const [tidslinjeobjekter, setTidslinjeobjekter] = useState(konstruerTidslinje(props.allePermitteringerOgFraværesPerioder));
@@ -69,13 +70,14 @@ const Tidslinje:FunctionComponent<Props> = props => {
             const style: React.CSSProperties = {
                 width: breddeAv1ElementIProsent.toString() + '%',
             }
-            const erIdag = (skrivOmDato(objekt.dato) === skrivOmDato(new Date)) ? 'dagens-dato' : '';
+            const erIdagBoolean = skrivOmDato(objekt.dato) === skrivOmDato(new Date);
+            const erIdag = erIdagBoolean ? 'dagens-dato' : ''
             return (
                 <div id = {'kalkulator-tidslinjeobjekt-'+indeks} style={style}
-                     className={'kalkulator__tidslinjeobjekt '+erIdag}
+                     className={'kalkulator__tidslinjeobjekt '+erIdag + ' '+ skrivOmDato(objekt.dato)}
                      key={indeks}>
                     {erIdag &&
-                        <div className={'tidslinje-dagens-dato-markør'}>
+                        <div className={'tidslinje-dagens-dato-markør' }onClick={() => console.log('dato er :', skrivOmDato(objekt.dato))}>
                             <Undertekst className={'tidslinje-dagens-dato-markør-tekst'}>{skrivOmDato(new Date())}</Undertekst>
                         </div>
                     }

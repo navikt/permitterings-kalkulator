@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Element, Ingress, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
@@ -11,8 +11,8 @@ import {
     finnUtOmDefinnesOverlappendePerioder
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import Topp from './Topp/Topp';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01')
 
@@ -72,16 +72,26 @@ const Kalkulator = () => {
                     <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
                     <Topp sisteDagIPeriode={sisteDagI18mndsPeriode} set18mndsPeriode={setSisteDagI18mndsPeriode}/>
                     <div className={'kalkulator__permitteringsobjekter'}>
-                        <Ingress>Legg inn dato fra første permittering</Ingress>
-                        <div className={'kalkulator__overskrift-med-hjelpetekst'}>
-                        <Normaltekst >
+                        <Undertittel>Legg inn permitteringsperiode for arbeidstaker</Undertittel>
+                        <Normaltekst className={'kalkulator__etter-lønnplikt'}>
                             Fra første dag etter lønnsplikt
                         </Normaltekst>
-                        <Hjelpetekst>
-                            Som arbeidsgiver skal du betale lønn til dine permitterte i lønnspliktperioden.
-                            Disse dagene telles ikke med i beregningen.
-                        </Hjelpetekst>
-                            </div>
+                            <Ekspanderbartpanel
+                                tittel={<Normaltekst><strong>Om permittering og lønnsplikt</strong></Normaltekst>}
+                            >
+                                <Normaltekst>
+                                    Dette skal du <strong> ikke legge inn som permitteringsperiode</strong>
+                                <ul>
+                                    <li>Arbeidsperioder i full stilling i mer enn 6 uker sammenhengende</li>
+                                    <li>Permittering grunnet streik</li>
+                                    <li>Perioder du betalr permitteringslønn</li>
+                                    <li>Klikk på lenken  “- be om tilgang“ på tjenesten du trenger. Du kommer nå til Altinn.</li>
+                                </ul>
+                                    <strong> Om lønnsplikt</strong>
+                                    <br/>
+                                    Som arbeidsgiver skal du betale lønn til dine permitterte i lønnspliktperioden. Disse dagene telles ikke med i beregningen.
+                                    </Normaltekst>
+                            </Ekspanderbartpanel>
                         {permitteringsobjekter}
                         <Element className={'kalkulator__feilmelding'}>{beskjedOverlappendePermittering}</Element>
                     </div>
