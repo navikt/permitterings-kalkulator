@@ -1,4 +1,3 @@
-
 import {
     AllePermitteringerOgFraværesPerioder,
     ARBEIDSGIVERPERIODE2DATO,
@@ -6,170 +5,221 @@ import {
 } from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
-export const antalldagerGått = (fra: Date, til?: Date) => {
-    if (til) {
-        const tilDato = til ? til : new Date()
+export const antalldagerGått = (fra?: Date, til?: Date) => {
+    if (fra && til) {
+        const tilDato = til ? til : new Date();
         const msGatt = tilDato.getTime() - fra.getTime();
-        const dagerGått = msGatt/(1000*60*60*24)
-        return Math.ceil(dagerGått+1)
+        const dagerGått = msGatt / (1000 * 60 * 60 * 24);
+        return Math.ceil(dagerGått + 1);
     }
     return 0;
-}
+};
 
 export const antallUkerRundetOpp = (antallDager: number) => {
-    return Math.ceil(antallDager/7);
-}
+    return Math.ceil(antallDager / 7);
+};
 
 export const datoErFørMars = (dato: Date) => {
-    const førsteMars = new Date('2021-03-01')
-    return dato.getTime()<førsteMars.getTime()
-}
+    const førsteMars = new Date('2021-03-01');
+    return dato.getTime() < førsteMars.getTime();
+};
 
 export interface OversiktOverBrukteOgGjenværendeDager {
-    dagerPermittert: number,
-    dagerAnnetFravær: number,
-    dagerGjensående: number
+    dagerPermittert: number;
+    dagerAnnetFravær: number;
+    dagerGjensående: number;
 }
 
-export const sumPermitteringerOgFravær = (allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder): OversiktOverBrukteOgGjenværendeDager => {
-    const statusAlleDager18mndLsite = konstruerTidslinje(allePErmitteringerOgFraværsperioder);
+export const sumPermitteringerOgFravær = (
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
+    sisteDag: Date
+): OversiktOverBrukteOgGjenværendeDager => {
+    const statusAlleDager18mndLsite = konstruerTidslinje(
+        allePErmitteringerOgFraværsperioder,
+        sisteDag
+    );
     let permittert = 0;
     let antallDagerFravær = 0;
     let gjenståendeDager = 0;
-    statusAlleDager18mndLsite.forEach(dag => {
+    statusAlleDager18mndLsite.forEach((dag) => {
         if (dag.kategori === 0) {
-            permittert ++;
+            permittert++;
         }
         if (dag.kategori === 1) {
-            gjenståendeDager ++
+            gjenståendeDager++;
         }
         if (dag.kategori === 2) {
-            antallDagerFravær++
+            antallDagerFravær++;
         }
-    })
+    });
 
     const oversikt: OversiktOverBrukteOgGjenværendeDager = {
         dagerPermittert: permittert,
         dagerGjensående: gjenståendeDager,
-        dagerAnnetFravær: antallDagerFravær
-    }
-    return oversikt
-}
+        dagerAnnetFravær: antallDagerFravær,
+    };
+    return oversikt;
+};
 
 //denne regner feil
 export const regnUtDatoAGP2 = (dagerBrukt: number) => {
     const dagerIgjen = 210 - dagerBrukt;
     const dagenDato = new Date();
     const beregnetAGP2 = new Date(dagenDato);
-    beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen)
-    if (dagerIgjen>0) {
-        return beregnetAGP2
+    beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen);
+    if (dagerIgjen > 0) {
+        return beregnetAGP2;
     }
-    return ARBEIDSGIVERPERIODE2DATO
-}
+    return ARBEIDSGIVERPERIODE2DATO;
+};
 
+export const inngårIPermitteringsperiode = (
+    permitteringsintervall: DatoIntervall,
+    fraværsintervall: DatoIntervall
+) => {
+    if (
+        datoIntervallErDefinert(permitteringsintervall) &&
+        datoIntervallErDefinert(fraværsintervall)
+    ) {
+        const helefraVærsperiodenInngår =
+            fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!! &&
+            fraværsintervall.datoTil!! <= permitteringsintervall.datoTil!!;
 
-export const inngårIPermitteringsperiode = (permitteringsintervall: DatoIntervall, fraværsintervall: DatoIntervall) => {
-    if (datoIntervallErDefinert(permitteringsintervall) && datoIntervallErDefinert(fraværsintervall)) {
-        const helefraVærsperiodenInngår = (fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!!)
-            && (fraværsintervall.datoTil!! <= permitteringsintervall.datoTil!!)
-
-        const fraværIHelePerioden = (fraværsintervall.datoFra!!<permitteringsintervall.datoFra!!) &&
+        const fraværIHelePerioden =
+            fraværsintervall.datoFra!! < permitteringsintervall.datoFra!! &&
             fraværsintervall.datoTil!! > permitteringsintervall.datoTil!!;
 
-        const sisteDelInngår = (fraværsintervall.datoFra!! > permitteringsintervall.datoFra!!) &&
-            fraværsintervall.datoFra!! < permitteringsintervall.datoTil!!
+        const sisteDelInngår =
+            fraværsintervall.datoFra!! > permitteringsintervall.datoFra!! &&
+            fraværsintervall.datoFra!! < permitteringsintervall.datoTil!!;
 
-        const førsteDelInngår = (fraværsintervall.datoFra!! < permitteringsintervall.datoFra!!) &&
+        const førsteDelInngår =
+            fraværsintervall.datoFra!! < permitteringsintervall.datoFra!! &&
             fraværsintervall.datoTil!! > permitteringsintervall.datoFra!!;
 
-        switch(true) {
+        switch (true) {
             case helefraVærsperiodenInngår:
-                return antalldagerGått(fraværsintervall.datoFra!!, fraværsintervall.datoTil)
+                return antalldagerGått(
+                    fraværsintervall.datoFra!!,
+                    fraværsintervall.datoTil
+                );
             case fraværIHelePerioden:
-                return antalldagerGått(permitteringsintervall.datoFra!!, permitteringsintervall.datoTil)
+                return antalldagerGått(
+                    permitteringsintervall.datoFra!!,
+                    permitteringsintervall.datoTil
+                );
             case sisteDelInngår:
-                return antalldagerGått(fraværsintervall.datoFra!!, permitteringsintervall.datoTil)
+                return antalldagerGått(
+                    fraværsintervall.datoFra!!,
+                    permitteringsintervall.datoTil
+                );
             case førsteDelInngår:
-                return antalldagerGått(permitteringsintervall.datoFra!!, fraværsintervall.datoTil)
+                return antalldagerGått(
+                    permitteringsintervall.datoFra!!,
+                    fraværsintervall.datoTil
+                );
             default:
-                return 0
+                return 0;
         }
     }
     return 0;
-}
+};
 
 //denne er bra
-export const summerFraværsdagerIPermitteringsperiode = (permitteringsperiode: DatoIntervall, fraværsperioder: DatoIntervall[]) => {
+export const summerFraværsdagerIPermitteringsperiode = (
+    permitteringsperiode: DatoIntervall,
+    fraværsperioder: DatoIntervall[]
+) => {
     let antallFraværsdagerIPeriode = 0;
-    fraværsperioder.forEach(periode => antallFraværsdagerIPeriode+=inngårIPermitteringsperiode(permitteringsperiode,periode))
-    return antallFraværsdagerIPeriode
-}
+    fraværsperioder.forEach(
+        (periode) =>
+            (antallFraværsdagerIPeriode += inngårIPermitteringsperiode(
+                permitteringsperiode,
+                periode
+            ))
+    );
+    return antallFraværsdagerIPeriode;
+};
 
-export const finnUtOmDefinnesOverlappendePerioder = (perioder: DatoIntervall[]) => {
+export const finnUtOmDefinnesOverlappendePerioder = (
+    perioder: DatoIntervall[]
+) => {
     let finnesOverLapp = false;
-    perioder.forEach(periode => {
+    perioder.forEach((periode) => {
         if (datoIntervallErDefinert(periode)) {
-            perioder.forEach(periode2 => {
-                if ( datoIntervallErDefinert(periode2) && (periode !== periode2)) {
+            perioder.forEach((periode2) => {
+                if (datoIntervallErDefinert(periode2) && periode !== periode2) {
                     if (inngårIPermitteringsperiode(periode, periode2) > 0) {
                         finnesOverLapp = true;
                     }
                 }
-            })
-
+            });
         }
+    });
+    return finnesOverLapp;
+};
 
-    })
-    return finnesOverLapp
-}
-
-export const kuttAvDatoIntervallFørGittDato = (gittDato: Date, tidsIntervall: DatoIntervall) =>  {
+export const kuttAvDatoIntervallFørGittDato = (
+    gittDato: Date,
+    tidsIntervall: DatoIntervall
+) => {
     const nyttDatoIntervall: DatoIntervall = {
         datoFra: tidsIntervall.datoFra,
-        datoTil: tidsIntervall.datoTil
-    }
+        datoTil: tidsIntervall.datoTil,
+    };
     // @ts-ignore
-    if (datoIntervallErDefinert(tidsIntervall) && tidsIntervall.datoFra <gittDato) {
+    if (
+        datoIntervallErDefinert(tidsIntervall) &&
+        tidsIntervall.datoFra < gittDato
+    ) {
         // @ts-ignore
-        if (tidsIntervall.datoTil>= gittDato) {
+        if (tidsIntervall.datoTil >= gittDato) {
             nyttDatoIntervall.datoFra = gittDato;
-        }
-        else {
+        } else {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
-            }
         }
-    skrivut(nyttDatoIntervall)
+    }
+    skrivut(nyttDatoIntervall);
     return nyttDatoIntervall;
-}
+};
 
-export const kuttAvDatoIntervallEtterGittDato = (gittDato: Date, tidsIntervall: DatoIntervall) =>  {
+export const kuttAvDatoIntervallEtterGittDato = (
+    gittDato: Date,
+    tidsIntervall: DatoIntervall
+) => {
     const nyttDatoIntervall: DatoIntervall = {
         datoFra: tidsIntervall.datoFra,
-        datoTil: tidsIntervall.datoTil
-    }
+        datoTil: tidsIntervall.datoTil,
+    };
     // @ts-ignore
     if (tidsIntervall.datoTil > gittDato) {
         // @ts-ignore
         if (tidsIntervall.datoFra >= gittDato) {
             nyttDatoIntervall.datoFra = undefined;
             nyttDatoIntervall.datoTil = undefined;
-        }
-        else {
-            nyttDatoIntervall.datoTil = gittDato
+        } else {
+            nyttDatoIntervall.datoTil = gittDato;
         }
     }
     return nyttDatoIntervall;
-}
+};
 
-export const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, startdato: Date, sluttDato: Date) => {
-    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(startdato, datoIntevall)
-    const datoIntervallFørSluttperiode = kuttAvDatoIntervallEtterGittDato(sluttDato, datoIntervallEtterStartperiode)
-    return datoIntervallFørSluttperiode
-}
-
-
+export const kuttAvDatoIntervallInnefor18mnd = (
+    datoIntevall: DatoIntervall,
+    startdato: Date,
+    sluttDato: Date
+) => {
+    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
+        startdato,
+        datoIntevall
+    );
+    const datoIntervallFørSluttperiode = kuttAvDatoIntervallEtterGittDato(
+        sluttDato,
+        datoIntervallEtterStartperiode
+    );
+    return datoIntervallFørSluttperiode;
+};
 
 /*export const finnDato18MndFram2 = (dato: Date) => {
     let år = dato.getFullYear();
@@ -196,215 +246,276 @@ export const kuttAvDatoIntervallInnefor18mnd = (datoIntevall: DatoIntervall, sta
  */
 
 export const finnDato18MndTilbake = (dato: Date) => {
-    let nyDato = new Date()
-    nyDato.setFullYear(dato.getFullYear()-2)
-    nyDato.setMonth(dato.getMonth() +6)
-    nyDato.setDate(dato.getDate()+1);
-    if (nyDato.getDate() < dato.getDate()){
+    let nyDato = new Date();
+    nyDato.setFullYear(dato.getFullYear() - 2);
+    nyDato.setMonth(dato.getMonth() + 6);
+    nyDato.setDate(dato.getDate() + 1);
+    if (nyDato.getDate() < dato.getDate()) {
         const førsteDatoINyMåned = new Date(nyDato);
         førsteDatoINyMåned.setDate(1);
-        nyDato = førsteDatoINyMåned
+        nyDato = førsteDatoINyMåned;
     }
-    return nyDato
-}
+    return nyDato;
+};
 
 export const finnDato18MndFram = (dato: Date) => {
-    let nyDato = new Date()
-    nyDato.setFullYear(dato.getFullYear()+1)
-    nyDato.setMonth(dato.getMonth() +6)
-    nyDato.setDate(dato.getDate()-1);
+    let nyDato = new Date();
+    nyDato.setFullYear(dato.getFullYear() + 1);
+    nyDato.setMonth(dato.getMonth() + 6);
+    nyDato.setDate(dato.getDate() - 1);
     if (nyDato.getDate() + 1 < dato.getDate()) {
         const førsteDatoINyMåned = new Date(nyDato);
         førsteDatoINyMåned.setDate(1);
-        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!
+        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!;
     }
-    return nyDato
-}
+    return nyDato;
+};
 
-export const finnTidligstePermitteringsdato = (datointervall: DatoIntervall[]) => {
-    let tidligsteDato = datointervall[0].datoFra
-    datointervall.forEach( datoIntervall => {
+export const finnTidligstePermitteringsdato = (
+    datointervall: DatoIntervall[]
+) => {
+    let tidligsteDato = datointervall[0].datoFra!!;
+    datointervall.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
             if (!tidligsteDato) {
-                tidligsteDato = datoIntervall.datoFra
+                tidligsteDato = datoIntervall.datoFra;
             }
-            if (tidligsteDato>datoIntervall.datoFra) {
-                tidligsteDato = datoIntervall.datoFra
+            if (tidligsteDato > datoIntervall.datoFra) {
+                tidligsteDato = datoIntervall.datoFra;
             }
         }
-    }
-    )
-    return tidligsteDato
-}
+    });
+    return tidligsteDato;
+};
 
 export const finnSistePermitteringsdato = (datointervall: DatoIntervall[]) => {
-    let sisteDato = datointervall[0].datoTil
-    datointervall.forEach( datoIntervall => {
-            if (datoIntervall.datoTil) {
-                if (!sisteDato) {
-                    sisteDato = datoIntervall.datoTil
-                }
-                if (sisteDato<datoIntervall.datoTil) {
-                    sisteDato = datoIntervall.datoTil
-                }
+    let sisteDato = datointervall[0].datoTil;
+    datointervall.forEach((datoIntervall) => {
+        if (datoIntervall.datoTil) {
+            if (!sisteDato) {
+                sisteDato = datoIntervall.datoTil;
+            }
+            if (sisteDato < datoIntervall.datoTil) {
+                sisteDato = datoIntervall.datoTil;
             }
         }
-    )
-    return sisteDato
-}
+    });
+    return sisteDato;
+};
 
-const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
-    return datoIntervall.datoFra !== undefined && datoIntervall.datoTil !== undefined
-}
+export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
+    return (
+        datoIntervall.datoFra !== undefined &&
+        datoIntervall.datoTil !== undefined
+    );
+};
 
-const datoIntervallErForandret = (original: DatoIntervall, oppdatert: DatoIntervall) => {
-    let erForandret = false
-    if (datoIntervallErDefinert(original) && datoIntervallErDefinert(oppdatert)) {
-        if ((skrivOmDato(original.datoFra) !== skrivOmDato(oppdatert.datoFra)) || skrivOmDato(original.datoTil) !== skrivOmDato(oppdatert.datoTil)) {
-            erForandret = true
+const datoIntervallErForandret = (
+    original: DatoIntervall,
+    oppdatert: DatoIntervall
+) => {
+    let erForandret = false;
+    if (
+        datoIntervallErDefinert(original) &&
+        datoIntervallErDefinert(oppdatert)
+    ) {
+        if (
+            skrivOmDato(original.datoFra) !== skrivOmDato(oppdatert.datoFra) ||
+            skrivOmDato(original.datoTil) !== skrivOmDato(oppdatert.datoTil)
+        ) {
+            erForandret = true;
         }
     }
-   return erForandret
-}
-
-export const settDatoerInnenforRiktigIntervall = (datoIntervall: DatoIntervall[], startDato: Date): DatoIntervall[] => {
-    let datoerEndret = false;
-    const sluttDato = finnDato18MndFram(startDato);
-    datoIntervall.forEach((intervall , indeks)=> {
-        if (datoIntervallErDefinert(intervall)) {
-            const datoInnenfor18mndsperioden = kuttAvDatoIntervallInnefor18mnd(intervall, startDato, sluttDato);
-            if (datoIntervallErForandret(intervall, datoInnenfor18mndsperioden)) {
-                datoerEndret = true
-            }
-            datoIntervall[indeks] = datoInnenfor18mndsperioden;
-        }
-    })
-    if (datoerEndret) {
-        return datoIntervall
-    }
-    const tomliste: DatoIntervall[] = []
-    return tomliste
-}
+    return erForandret;
+};
 
 export enum datointervallKategori {
     PERMITTERT,
     ARBEIDER,
-    ANNETFRAVÆR
+    ANNETFRAVÆR,
 }
 
 export interface DatoMedKategori {
-    dato: Date
-    kategori: datointervallKategori,
+    dato: Date;
+    kategori: datointervallKategori;
 }
 
-export const datoErIEnkeltIntervall = (dato: Date, intervall: DatoIntervall) => {
-    return dato>=intervall.datoFra!! && dato <= intervall.datoTil!!
-}
+export const datoErIEnkeltIntervall = (
+    dato: Date,
+    intervall: DatoIntervall
+) => {
+    return dato >= intervall.datoFra!! && dato <= intervall.datoTil!!;
+};
 
-export const konstruerTidslinje = (allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder): DatoMedKategori[] => {
-    const startDatoForBeregning = finnDato18MndTilbake(new Date())
-    startDatoForBeregning.setDate(startDatoForBeregning.getDate() -100)
-    const startDato = finnTidligstePermitteringsdato(allePermitteringerOgFravær.permitteringer);
-    const dagerFør1Permittering = antalldagerGått(startDatoForBeregning, startDato);
-
-    const sluttDato = finnSistePermitteringsdato(allePermitteringerOgFravær.permitteringer);
-    if (startDato && sluttDato && allePermitteringerOgFravær.permitteringer.length) {
-        const antallDagerIPeriode = antalldagerGått(startDato,sluttDato)
-        const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-        for (let dagteller = 0; dagteller < dagerFør1Permittering; dagteller++) {
-            const aktuellDato = new Date(startDatoForBeregning);
-            aktuellDato.setDate(startDatoForBeregning.getDate() + dagteller);
-            const ubruktDag: DatoMedKategori = {
-                dato: aktuellDato,
-                kategori: 1
-            }
-            listeMedTidslinjeObjekter.push(ubruktDag)
-        }
-        for (let dagteller = 0; dagteller <= antallDagerIPeriode; dagteller++) {
-            const aktuellDato = new Date(startDato);
-            aktuellDato.setDate(startDato.getDate() + dagteller);
-            const aktuellDatoMedKategori = finneKategori(aktuellDato, allePermitteringerOgFravær);
-            listeMedTidslinjeObjekter.push(aktuellDatoMedKategori)
-        }
-        const dato18mnd = finnDato18MndFram(startDato);
-        const sisteAktiveDag = listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length-1].dato
-        const gjenståendeDagerI18Mnd = antalldagerGått(sisteAktiveDag, dato18mnd)
-        const startGjenværendePeriode = new Date(sisteAktiveDag)
-        startGjenværendePeriode.setDate(sisteAktiveDag.getDate());
-        for (let dagteller = 0; dagteller < gjenståendeDagerI18Mnd; dagteller++) {
-            const aktuellDato = new Date(startGjenværendePeriode);
-            aktuellDato.setDate(startGjenværendePeriode.getDate() + dagteller);
-            const ubruktDag: DatoMedKategori = {
-                dato: aktuellDato,
-                kategori: 1
-            }
-            listeMedTidslinjeObjekter.push(ubruktDag)
-        }
-        return listeMedTidslinjeObjekter
+export const konstruerTidslinje = (
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
+    sisteDagIBeregningsperiode: Date
+): DatoMedKategori[] => {
+    const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
+    const foerstePermitteringsdag = finnTidligstePermitteringsdato(
+        allePermitteringerOgFravær.permitteringer
+    );
+    const foersteDagIBeregningsperiode = finnDato18MndTilbake(
+        sisteDagIBeregningsperiode
+    );
+    if (foerstePermitteringsdag < foersteDagIBeregningsperiode) {
+        const foersteObjektITidslinje = new Date(foerstePermitteringsdag);
+        foersteObjektITidslinje.setDate(
+            foerstePermitteringsdag.getDate() - 100
+        );
+        listeMedTidslinjeObjekter.push({
+            dato: foersteObjektITidslinje,
+            kategori: datointervallKategori.ARBEIDER,
+        });
+    } else {
+        const foersteObjektITidslinje = new Date(foersteDagIBeregningsperiode);
+        foersteObjektITidslinje.setDate(
+            foersteDagIBeregningsperiode.getDate() - 100
+        );
+        listeMedTidslinjeObjekter.push({
+            dato: foersteObjektITidslinje,
+            kategori: datointervallKategori.ARBEIDER,
+        });
     }
-    return [];
-}
+    //legg til begynnelseselementer
+    let nesteDag = finn1DagFram(listeMedTidslinjeObjekter[0].dato);
+    const antallDagerFørPermittering = antalldagerGått(
+        listeMedTidslinjeObjekter[0].dato,
+        foerstePermitteringsdag
+    );
+    for (let dag = 1; dag < antallDagerFørPermittering - 1; dag++) {
+        listeMedTidslinjeObjekter.push({
+            dato: finn1DagFram(listeMedTidslinjeObjekter[dag - 1].dato),
+            kategori: 1,
+        });
+    }
+    listeMedTidslinjeObjekter.push(
+        finneKategori(foerstePermitteringsdag, allePermitteringerOgFravær)
+    );
+    const sisteRegistrertePermittering = finnSistePermitteringsdato(
+        allePermitteringerOgFravær.permitteringer
+    )
+        ? finnSistePermitteringsdato(allePermitteringerOgFravær.permitteringer)
+        : sisteDagIBeregningsperiode;
+    const antallDagerMedInput = antalldagerGått(
+        foerstePermitteringsdag,
+        sisteRegistrertePermittering
+    );
+    for (let dag = 0; dag < antallDagerMedInput; dag++) {
+        const forrigeDato =
+            listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
+                .dato;
+        listeMedTidslinjeObjekter.push(
+            finneKategori(finn1DagFram(forrigeDato), allePermitteringerOgFravær)
+        );
+    }
+    if (sisteDagIBeregningsperiode > sisteRegistrertePermittering!!) {
+        const antallDagerIgjenI18mnd = antalldagerGått(
+            sisteRegistrertePermittering!!,
+            sisteDagIBeregningsperiode
+        );
+        for (let dag = 0; dag < antallDagerIgjenI18mnd; dag++) {
+            const forrigeDato =
+                listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
+                    .dato;
+            listeMedTidslinjeObjekter.push({
+                dato: finn1DagFram(forrigeDato),
+                kategori: 1,
+            });
+        }
+    }
+    for (let dag = 0; dag < 60; dag++) {
+        const forrigeDato =
+            listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
+                .dato;
+        listeMedTidslinjeObjekter.push({
+            dato: finn1DagFram(forrigeDato),
+            kategori: 1,
+        });
+    }
+
+    return listeMedTidslinjeObjekter;
+};
 
 const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
     let finnes = false;
-    perioder.forEach(periode => {
-        if (datoIntervallErDefinert(periode) && datoErIEnkeltIntervall(dato, periode)) {
-            finnes = true
+    perioder.forEach((periode) => {
+        if (
+            datoIntervallErDefinert(periode) &&
+            datoErIEnkeltIntervall(dato, periode)
+        ) {
+            finnes = true;
         }
-    })
-    return finnes
-}
+    });
+    return finnes;
+};
 
-const finneKategori = (dato: Date, allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder): DatoMedKategori => {
-    const erFraVærsDato = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.andreFraværsperioder)
-    const erPermittert = finnesIIntervaller(dato, allePermitteringerOgFraværesPerioder.permitteringer)
+const finneKategori = (
+    dato: Date,
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+): DatoMedKategori => {
+    const erFraVærsDato = finnesIIntervaller(
+        dato,
+        allePermitteringerOgFraværesPerioder.andreFraværsperioder
+    );
+    const erPermittert = finnesIIntervaller(
+        dato,
+        allePermitteringerOgFraværesPerioder.permitteringer
+    );
     if (erFraVærsDato && erPermittert) {
         return {
             kategori: 2,
-            dato: dato
-        }
+            dato: dato,
+        };
     }
     if (erPermittert) {
         return {
             kategori: 0,
-            dato: dato
-        }
-
+            dato: dato,
+        };
     }
     return {
         kategori: 1,
-        dato: dato
-    }
-}
+        dato: dato,
+    };
+};
 
-export const flytt18mndsperiode1dag = (tidligereStartDato: Date, allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder) => {
-    const nyStartDag = finn1DagFram(tidligereStartDato)
+export const flytt18mndsperiode1dag = (
+    tidligereStartDato: Date,
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+) => {
+    const nyStartDag = finn1DagFram(tidligereStartDato);
     const sluttDato = finnDato18MndFram(nyStartDag!!);
     allePermitteringerOgFravær.permitteringer.forEach((periode, indeks) => {
-        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(periode, nyStartDag!!, sluttDato)
+        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(
+            periode,
+            nyStartDag!!,
+            sluttDato
+        );
         allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
-    })
-    return allePermitteringerOgFravær
-}
+    });
+    return allePermitteringerOgFravær;
+};
 
 const skrivut = (intervall: DatoIntervall) => {
-    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil))
-}
+    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil));
+};
 
-export const finn1DagFram = (dato?: Date) => {
-    if (dato) {
-        const enDagFram = new Date(dato);
-        enDagFram.setDate(enDagFram.getDate() + 1);
-        return enDagFram
-    }
-    return undefined
-}
+export const finn1DagFram = (dato: Date) => {
+    const enDagFram = new Date(dato);
+    enDagFram.setDate(enDagFram.getDate() + 1);
+    return enDagFram;
+};
+
+const datoerErLike = (dato1: Date, dato2: Date) => {
+    return skrivOmDato(dato1) === skrivOmDato(dato2);
+};
 
 export const finn1DagTilbake = (dato?: Date) => {
     if (dato) {
         const enDagTilbake = new Date(dato);
         enDagTilbake.setDate(enDagTilbake.getDate() - 1);
-        return enDagTilbake
+        return enDagTilbake;
     }
-    return undefined
-}
+    return undefined;
+};

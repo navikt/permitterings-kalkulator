@@ -25,7 +25,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
             startDatoIntervall = finnTidligstePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer)
         }
         else {
-            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)!!
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push(
             {datoFra: finn1DagFram(startDatoIntervall), datoTil: undefined})

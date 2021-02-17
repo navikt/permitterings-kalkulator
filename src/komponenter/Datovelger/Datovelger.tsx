@@ -45,7 +45,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     };
 
     const onDatoClick = (day: Date) => {
-        console.log('datoklikk på ', props.overtekst, skrivOmDato(day));
         const nyFeilmelding = datoValidering(
             day,
             props.skalVareEtter,
