@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import {
-    AllePermitteringerOgFravaerPerioder,
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
 } from '../../kalkulator';
 import {
@@ -13,7 +13,7 @@ import {
 interface UtregningAvEnkelPeriodeProps {
     indeks: number;
     permitteringsperiode: DatoIntervall;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFravaerPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
 }
 
 const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> = (
