@@ -19,7 +19,7 @@ interface Props {
     set18mndsPeriode: (dato: Date) => void;
     sisteDagIPeriode: Date;
     breddeAvDatoObjektIProsent: number;
-    endringAv: 'datovelger' | 'tidslinje';
+    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
@@ -122,14 +122,23 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        setAbsoluttPosisjonFraHøyreDragElement(
-            antallElementMellomObjekt(
-                GRENSERFOR18MNDPERIODE.datoFra!!,
-                finnDato18MndTilbake(props.sisteDagIPeriode),
+        if (props.endringAv === 'datovelger') {
+            const elementerMellomDatoOnDragOgsisteDagIPeriode = antallElementMellomObjekt(
+                datoOnDrag,
+                props.sisteDagIPeriode,
                 tidslinjeObjekter
-            ) * props.breddeAvDatoObjektIProsent
-        );
-    }, [props.sisteDagIPeriode, props.breddeAvDatoObjektIProsent, datoOnDrag]);
+            );
+            setAbsoluttPosisjonFraHøyreDragElement(
+                elementerMellomDatoOnDragOgsisteDagIPeriode *
+                    props.breddeAvDatoObjektIProsent
+            );
+        }
+    }, [
+        props.sisteDagIPeriode,
+        props.breddeAvDatoObjektIProsent,
+        datoOnDrag,
+        tidslinjeObjekter,
+    ]);
 
     const tidslinjeHTMLObjekt = tidslinjeObjekter.map(
         (objekt: DatoMedKategori, indeks: number) => {
@@ -250,8 +259,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         });
         setDatoOnDrag(tidslinjeObjekter[indeksStartDato].dato);
     };
-
-    console.log(absoluttPosisjonFraHøyreDragElement);
 
     return (
         <div

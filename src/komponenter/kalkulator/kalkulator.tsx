@@ -67,7 +67,7 @@ const Kalkulator = () => {
     const [
         sisteDagI18mndsPeriodeEndretAv,
         setsteDagI18mndsPeriodeEndretAv,
-    ] = useState<'datovelger' | 'tidslinje'>('datovelger');
+    ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
     const [
         beskjedOverlappendePermittering,
         setBeskjedOverlappendePermittering,

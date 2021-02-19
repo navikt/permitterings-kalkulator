@@ -10,7 +10,7 @@ import Lenke from 'nav-frontend-lenker';
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
     sisteDagIPeriode: Date;
-    endringAv: 'datovelger' | 'tidslinje';
+    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 

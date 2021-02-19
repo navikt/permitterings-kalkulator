@@ -361,7 +361,7 @@ export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
                 if (tidsLinje[indeks].dato.getDate() !== 1) {
                     bestårTest = false;
                     console.log(
-                        'dato rare kategorier kategoriene: ',
+                        'datoer som feiler test kategorier',
                         tidsLinje[indeks].kategori,
                         tidsLinje[indeks - 1].kategori
                     );
