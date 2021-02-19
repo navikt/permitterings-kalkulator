@@ -1,11 +1,12 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import './Topp.less';
-import { finnDato18MndTilbake } from '../utregninger';
+import { finnDato18MndFram, finnDato18MndTilbake } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
+import { GRENSERFOR18MNDPERIODE } from '../kalkulator';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
@@ -15,6 +16,29 @@ interface Props {
 }
 
 const Topp: FunctionComponent<Props> = (props) => {
+    const [feilMelding, setFeilmelding] = useState('');
+
+    const datoValidering = (dato: Date) => {
+        if (dato >= GRENSERFOR18MNDPERIODE.datoTil!!) {
+            setFeilmelding(
+                'sett dato før ' + skrivOmDato(GRENSERFOR18MNDPERIODE.datoTil)
+            );
+            return false;
+        }
+        if (finnDato18MndTilbake(dato) <= GRENSERFOR18MNDPERIODE.datoFra!!) {
+            setFeilmelding(
+                'sett dato før ' +
+                    skrivOmDato(
+                        finnDato18MndFram(GRENSERFOR18MNDPERIODE.datoFra!!)
+                    )
+            );
+            return false;
+        } else {
+            setFeilmelding('');
+            return true;
+        }
+    };
+
     return (
         <div className={'kalkulator__topp'}>
             <Normaltekst className={'kalkulator__generell-info'}>
@@ -48,11 +72,14 @@ const Topp: FunctionComponent<Props> = (props) => {
                     </Element>
                 </div>
                 <Datovelger
+                    tjenesteBestemtFeilmelding={feilMelding}
                     className={'initial-datovelger'}
                     overtekst={'Siste dag i perioden'}
                     onChange={(event) => {
-                        props.set18mndsPeriode(event.currentTarget.value);
-                        props.setEndringAv('datovelger');
+                        if (datoValidering(event.currentTarget.value)) {
+                            props.set18mndsPeriode(event.currentTarget.value);
+                            props.setEndringAv('datovelger');
+                        }
                     }}
                     value={props.sisteDagIPeriode}
                 />
@@ -65,7 +92,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                 />
                 <Normaltekst>
                     Du kan velge en annen beregningsperiode ved å endre siste
-                    dag i perioden.
+                    dag i perioden. {feilMelding}
                 </Normaltekst>
             </div>
         </div>

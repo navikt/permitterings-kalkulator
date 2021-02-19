@@ -24,6 +24,7 @@ interface Props {
     skalVareEtter?: Date;
     skalVareFoer?: Date;
     className?: string;
+    tjenesteBestemtFeilmelding?: string;
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
@@ -95,6 +96,12 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             );
         }
     }, [props.skalVareEtter, props.skalVareFoer]);
+
+    useEffect(() => {
+        if (props.tjenesteBestemtFeilmelding?.length) {
+            setFeilMelding(props.tjenesteBestemtFeilmelding);
+        }
+    }, [props.tjenesteBestemtFeilmelding]);
 
     useEffect(() => {
         if (erApen) {

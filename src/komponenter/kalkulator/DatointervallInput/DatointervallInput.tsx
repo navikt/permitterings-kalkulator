@@ -9,7 +9,6 @@ import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
 import { Element } from 'nav-frontend-typografi';
 import { finn1DagFram } from '../utregninger';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     indeksPermitteringsperioder?: number;

@@ -1,18 +1,19 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    datointervallKategori,
     DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
-import {
-    AllePermitteringerOgFraværesPerioder,
-    GRENSERFOR18MNDPERIODE,
-} from '../kalkulator';
-import { Normaltekst, Undertekst } from 'nav-frontend-typografi';
+import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
+import {
+    lagHTMLObjektForAlleDatoer,
+    lagHTMLObjektForPeriodeMedFarge,
+    lagObjektForRepresentasjonAvPerioderMedFarge,
+} from './tidslinjefunksjoner';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -97,16 +98,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         | undefined
     >('absolute');
 
-    const finnFarge = (kategori: datointervallKategori) => {
-        if (kategori === 0) {
-            return '#005B82';
-        }
-        if (kategori === 2) {
-            return 'darksalmon';
-        }
-        return 'transParent';
-    };
-
     useEffect(() => {
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
@@ -138,105 +129,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         props.breddeAvDatoObjektIProsent,
         datoOnDrag,
         tidslinjeObjekter,
+        props.endringAv,
     ]);
 
-    const tidslinjeHTMLObjekt = tidslinjeObjekter.map(
-        (objekt: DatoMedKategori, indeks: number) => {
-            const style: React.CSSProperties = {
-                width: props.breddeAvDatoObjektIProsent.toString() + '%',
-            };
-            const erIdagBoolean =
-                skrivOmDato(objekt.dato) === skrivOmDato(new Date());
-            const erIdag = erIdagBoolean ? 'dagens-dato' : '';
-            return (
-                <div
-                    id={'kalkulator-tidslinjeobjekt-' + indeks}
-                    style={style}
-                    className={
-                        'kalkulator__tidslinjeobjekt ' +
-                        erIdag +
-                        ' ' +
-                        skrivOmDato(objekt.dato)
-                    }
-                    key={indeks}
-                >
-                    {erIdag && (
-                        <div className={'tidslinje-dagens-dato-markør'}>
-                            <Undertekst
-                                className={'tidslinje-dagens-dato-markør-tekst'}
-                            >
-                                {skrivOmDato(new Date())}
-                            </Undertekst>
-                        </div>
-                    )}
-                </div>
-            );
-        }
+    const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
+        tidslinjeObjekter,
+        props.breddeAvDatoObjektIProsent
     );
-
-    interface FargeElement {
-        antallDagerISekvens: number;
-        kategori: datointervallKategori;
-        grenserTilFraværHøyre?: boolean;
-        grenserTilFraværVenstre?: boolean;
-    }
-
-    const fargePerioder: FargeElement[] = [];
-    let rekkefølgeTeller = 1;
-    tidslinjeObjekter.forEach((objekt, indeks) => {
-        if (indeks !== 0) {
-            if (
-                tidslinjeObjekter[indeks - 1].kategori ===
-                tidslinjeObjekter[indeks].kategori
-            ) {
-                rekkefølgeTeller++;
-            } else {
-                const fargeElement: FargeElement = {
-                    antallDagerISekvens: rekkefølgeTeller,
-                    kategori: tidslinjeObjekter[indeks - 1].kategori,
-                };
-                fargePerioder.push(fargeElement);
-                rekkefølgeTeller = 1;
-            }
-            if (indeks === tidslinjeObjekter.length - 1) {
-                const fargeElement: FargeElement = {
-                    antallDagerISekvens: rekkefølgeTeller,
-                    kategori: tidslinjeObjekter[indeks].kategori,
-                };
-                fargePerioder.push(fargeElement);
-            }
-        }
-    });
-
-    const htmlFargeObjekt = fargePerioder.map((objekt, indeks) => {
-        let borderRadius = '0';
-        if (objekt.kategori === 0) {
-            const grenserTilFraværVenstre =
-                objekt.kategori === 0 &&
-                fargePerioder[indeks - 1].kategori === 2;
-            const grenserTilFraværHøyre =
-                objekt.kategori === 0 &&
-                fargePerioder[indeks + 1].kategori === 2;
-            if (grenserTilFraværVenstre) {
-                borderRadius = '0 4px 4px 0';
-            } else if (grenserTilFraværHøyre) {
-                borderRadius = '4px 0 0 4px';
-            } else {
-                borderRadius = '4px';
-            }
-        }
-
-        const style: React.CSSProperties = {
-            width:
-                (
-                    props.breddeAvDatoObjektIProsent *
-                    objekt.antallDagerISekvens
-                ).toString() + '%',
-            backgroundColor: finnFarge(objekt.kategori),
-            borderRadius: borderRadius,
-        };
-        return <div style={style} />;
-    });
+    const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
+        lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeObjekter),
+        props.breddeAvDatoObjektIProsent
+    );
 
     const OnTidslinjeDragRelease = () => {
         props.set18mndsPeriode(datoOnDrag);
@@ -247,7 +150,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         props.setEndringAv('tidslinje');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
-        tidslinjeHTMLObjekt.forEach((objekt, indeks) => {
+        htmlElementerForHverDato.forEach((objekt, indeks) => {
             const avstand = regnUtHorisontalAvstandMellomToElement(
                 'draggable-periode',
                 'kalkulator-tidslinjeobjekt-' + indeks
@@ -259,6 +162,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         });
         setDatoOnDrag(tidslinjeObjekter[indeksStartDato].dato);
     };
+
+    const datoVisesPaDragElement =
+        props.endringAv === 'tidslinje' ? datoOnDrag : props.sisteDagIPeriode;
 
     return (
         <div
@@ -294,11 +200,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                                 className={'kalkulator__draggable-kant høyre'}
                             />
                             <Normaltekst className={'venstre-dato '}>
-                                {skrivOmDato(finnDato18MndTilbake(datoOnDrag))}
+                                {skrivOmDato(
+                                    finnDato18MndTilbake(datoVisesPaDragElement)
+                                )}
                             </Normaltekst>
 
                             <Normaltekst className={'høyre-dato'}>
-                                {skrivOmDato(datoOnDrag)}
+                                {skrivOmDato(datoVisesPaDragElement)}
                             </Normaltekst>
                         </div>
                     </Draggable>
@@ -309,7 +217,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         <div className={'kalkulator__tidslinje-fargeperioder'}>
                             {htmlFargeObjekt}
                         </div>
-                        {tidslinjeHTMLObjekt}
+                        {htmlElementerForHverDato}
                     </div>
                 </>
             )}

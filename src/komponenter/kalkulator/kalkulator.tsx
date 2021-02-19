@@ -21,7 +21,6 @@ import Tidslinje, { fraPixelTilProsent } from './Tidslinje/Tidslinje';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 

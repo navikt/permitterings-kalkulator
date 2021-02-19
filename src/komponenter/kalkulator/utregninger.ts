@@ -310,25 +310,6 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     );
 };
 
-const datoIntervallErForandret = (
-    original: DatoIntervall,
-    oppdatert: DatoIntervall
-) => {
-    let erForandret = false;
-    if (
-        datoIntervallErDefinert(original) &&
-        datoIntervallErDefinert(oppdatert)
-    ) {
-        if (
-            skrivOmDato(original.datoFra) !== skrivOmDato(oppdatert.datoFra) ||
-            skrivOmDato(original.datoTil) !== skrivOmDato(oppdatert.datoTil)
-        ) {
-            erForandret = true;
-        }
-    }
-    return erForandret;
-};
-
 export enum datointervallKategori {
     PERMITTERT,
     ARBEIDER,
@@ -398,96 +379,6 @@ export const konstruerStatiskTidslinje = (
     return listeMedTidslinjeObjekter;
 };
 
-/*export const konstruerTidslinje = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    sisteDagIBeregningsperiode: Date
-): DatoMedKategori[] => {
-    const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-    const foerstePermitteringsdag = finnTidligstePermitteringsdato(
-        allePermitteringerOgFravær.permitteringer
-    );
-    const foersteDagIBeregningsperiode = finnDato18MndTilbake(
-        sisteDagIBeregningsperiode
-    );
-    if (foerstePermitteringsdag < foersteDagIBeregningsperiode) {
-        const foersteObjektITidslinje = new Date(foerstePermitteringsdag);
-        foersteObjektITidslinje.setDate(
-            foerstePermitteringsdag.getDate() - 100
-        );
-        listeMedTidslinjeObjekter.push({
-            dato: foersteObjektITidslinje,
-            kategori: datointervallKategori.ARBEIDER,
-        });
-    } else {
-        const foersteObjektITidslinje = new Date(foersteDagIBeregningsperiode);
-        foersteObjektITidslinje.setDate(
-            foersteDagIBeregningsperiode.getDate() - 100
-        );
-        listeMedTidslinjeObjekter.push({
-            dato: foersteObjektITidslinje,
-            kategori: datointervallKategori.ARBEIDER,
-        });
-    }
-    //legg til begynnelseselementer
-    let nesteDag = finn1DagFram(listeMedTidslinjeObjekter[0].dato);
-    const antallDagerFørPermittering = antalldagerGått(
-        listeMedTidslinjeObjekter[0].dato,
-        foerstePermitteringsdag
-    );
-    for (let dag = 1; dag < antallDagerFørPermittering - 1; dag++) {
-        listeMedTidslinjeObjekter.push({
-            dato: finn1DagFram(listeMedTidslinjeObjekter[dag - 1].dato),
-            kategori: 1,
-        });
-    }
-    const sisteRegistrertePermittering = finnSistePermitteringsdato(
-        allePermitteringerOgFravær.permitteringer
-    )
-        ? finnSistePermitteringsdato(allePermitteringerOgFravær.permitteringer)
-        : sisteDagIBeregningsperiode;
-    const antallDagerMedInput = antalldagerGått(
-        foerstePermitteringsdag,
-        sisteRegistrertePermittering
-    );
-    for (let dag = 0; dag < antallDagerMedInput; dag++) {
-        const forrigeDato =
-            listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
-                .dato;
-        listeMedTidslinjeObjekter.push(
-            finneKategori(finn1DagFram(forrigeDato), allePermitteringerOgFravær)
-        );
-    }
-    if (sisteDagIBeregningsperiode > sisteRegistrertePermittering!!) {
-        const antallDagerIgjenI18mnd = antalldagerGått(
-            sisteRegistrertePermittering!!,
-            sisteDagIBeregningsperiode
-        );
-        for (let dag = 0; dag < antallDagerIgjenI18mnd; dag++) {
-            const forrigeDato =
-                listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
-                    .dato;
-            listeMedTidslinjeObjekter.push({
-                dato: finn1DagFram(forrigeDato),
-                kategori: 1,
-            });
-        }
-    }
-    for (let dag = 0; dag < 60; dag++) {
-        const forrigeDato =
-            listeMedTidslinjeObjekter[listeMedTidslinjeObjekter.length - 1]
-                .dato;
-        listeMedTidslinjeObjekter.push({
-            dato: finn1DagFram(forrigeDato),
-            kategori: 1,
-        });
-    }
-    console.log(testFunksjonAvTidslinje(listeMedTidslinjeObjekter))
-
-    return listeMedTidslinjeObjekter;
-};
-
- */
-
 const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
     let finnes = false;
     perioder.forEach((periode) => {
@@ -556,10 +447,6 @@ export const finn1DagFram = (dato: Date) => {
     const enDagFram = new Date(dato);
     enDagFram.setDate(enDagFram.getDate() + 1);
     return enDagFram;
-};
-
-const datoerErLike = (dato1: Date, dato2: Date) => {
-    return skrivOmDato(dato1) === skrivOmDato(dato2);
 };
 
 export const finn1DagTilbake = (dato?: Date) => {
