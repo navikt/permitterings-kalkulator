@@ -12,18 +12,16 @@ import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
+    antalldagerGått,
     datoIntervallErDefinert,
     finnDato18MndTilbake,
     finnUtOmDefinnesOverlappendePerioder,
-    konstruerTidslinje,
 } from './utregninger';
-import Tidslinje, {
-    finnBreddeAvObjekt,
-    fraPixelTilProsent,
-} from './Tidslinje/Tidslinje';
+import Tidslinje, { fraPixelTilProsent } from './Tidslinje/Tidslinje';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
@@ -36,6 +34,17 @@ export interface AllePermitteringerOgFraværesPerioder {
     permitteringer: DatoIntervall[];
     andreFraværsperioder: DatoIntervall[];
 }
+
+const dagensDato = new Date();
+const bakover18mnd = finnDato18MndTilbake(dagensDato);
+const maksGrenseIBakoverITid = new Date(bakover18mnd);
+maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
+const maksGrenseFramoverITid = new Date(dagensDato);
+maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 56);
+export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
+    datoFra: maksGrenseIBakoverITid,
+    datoTil: maksGrenseFramoverITid,
+};
 
 const Kalkulator = () => {
     const [
@@ -56,6 +65,10 @@ const Kalkulator = () => {
     );
 
     const [
+        sisteDagI18mndsPeriodeEndretAv,
+        setsteDagI18mndsPeriodeEndretAv,
+    ] = useState<'datovelger' | 'tidslinje'>('datovelger');
+    const [
         beskjedOverlappendePermittering,
         setBeskjedOverlappendePermittering,
     ] = useState('');
@@ -65,12 +78,6 @@ const Kalkulator = () => {
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState(
         new Date()
-    );
-    const [tidslinjeobjekter, setTidslinjeobjekter] = useState(
-        konstruerTidslinje(
-            allePermitteringerOgFraværesPerioder,
-            sisteDagI18mndsPeriode
-        )
     );
 
     useEffect(() => {
@@ -102,15 +109,6 @@ const Kalkulator = () => {
         beskjedOverlappendePermittering,
     ]);
 
-    useEffect(() => {
-        setTidslinjeobjekter(
-            konstruerTidslinje(
-                allePermitteringerOgFraværesPerioder,
-                sisteDagI18mndsPeriode
-            )
-        );
-    }, [allePermitteringerOgFraværesPerioder, sisteDagI18mndsPeriode]);
-
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map(
         (permitteringsperiode, indeks) => {
             return (
@@ -135,11 +133,6 @@ const Kalkulator = () => {
         }
     );
 
-    const breddeAvDatoElementIProsent = fraPixelTilProsent(
-        'kalkulator-tidslinje-wrapper',
-        tidslinjeobjekter.length
-    );
-
     return (
         <div className={'kalkulator-bakgrunn'}>
             <Banner classname={'banner'} />
@@ -154,6 +147,8 @@ const Kalkulator = () => {
                     <Topp
                         sisteDagIPeriode={sisteDagI18mndsPeriode}
                         set18mndsPeriode={setSisteDagI18mndsPeriode}
+                        setEndringAv={setsteDagI18mndsPeriodeEndretAv}
+                        endringAv={sisteDagI18mndsPeriodeEndretAv}
                     />
                     <div className={'kalkulator__permitteringsobjekter'}>
                         <Undertittel>
@@ -229,10 +224,16 @@ const Kalkulator = () => {
                                     .permitteringer[0]
                             ) && (
                                 <Tidslinje
-                                    tidslinje={tidslinjeobjekter}
-                                    pixelAvDatoElement={fraPixelTilProsent(
+                                    setEndringAv={
+                                        setsteDagI18mndsPeriodeEndretAv
+                                    }
+                                    endringAv={sisteDagI18mndsPeriodeEndretAv}
+                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'kalkulator-tidslinje-wrapper',
-                                        tidslinjeobjekter.length
+                                        antalldagerGått(
+                                            GRENSERFOR18MNDPERIODE.datoFra,
+                                            GRENSERFOR18MNDPERIODE.datoTil
+                                        )
                                     )}
                                     sisteDagIPeriode={sisteDagI18mndsPeriode}
                                     set18mndsPeriode={setSisteDagI18mndsPeriode}

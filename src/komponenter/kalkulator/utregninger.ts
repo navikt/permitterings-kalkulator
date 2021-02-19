@@ -2,6 +2,7 @@ import {
     AllePermitteringerOgFraværesPerioder,
     ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
+    GRENSERFOR18MNDPERIODE,
 } from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
@@ -34,9 +35,8 @@ export const sumPermitteringerOgFravær = (
     allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
     sisteDag: Date
 ): OversiktOverBrukteOgGjenværendeDager => {
-    const statusAlleDager18mndLsite = konstruerTidslinje(
-        allePErmitteringerOgFraværsperioder,
-        sisteDag
+    const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
+        allePErmitteringerOgFraværsperioder
     );
     let permittert = 0;
     let antallDagerFravær = 0;
@@ -170,7 +170,7 @@ export const kuttAvDatoIntervallFørGittDato = (
     // @ts-ignore
     if (
         datoIntervallErDefinert(tidsIntervall) &&
-        tidsIntervall.datoFra < gittDato
+        tidsIntervall.datoFra!! < gittDato
     ) {
         // @ts-ignore
         if (tidsIntervall.datoTil >= gittDato) {
@@ -347,7 +347,58 @@ export const datoErIEnkeltIntervall = (
     return dato >= intervall.datoFra!! && dato <= intervall.datoTil!!;
 };
 
-export const konstruerTidslinje = (
+export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
+    let bestårTest = true;
+    tidsLinje.forEach((objekt, indeks) => {
+        if (indeks > 0) {
+            if (
+                !(
+                    tidsLinje[indeks].dato.getDate() -
+                        tidsLinje[indeks - 1].dato.getDate() ===
+                    1
+                )
+            ) {
+                if (tidsLinje[indeks].dato.getDate() !== 1) {
+                    bestårTest = false;
+                    console.log(
+                        'dato rare kategorier kategoriene: ',
+                        tidsLinje[indeks].kategori,
+                        tidsLinje[indeks - 1].kategori
+                    );
+                }
+            }
+        }
+    });
+    console.log(
+        skrivOmDato(tidsLinje[0].dato),
+        skrivOmDato(tidsLinje[tidsLinje.length - 1].dato)
+    );
+    return bestårTest;
+};
+
+export const konstruerStatiskTidslinje = (
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+) => {
+    const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
+    const antallObjektITidslinje = antalldagerGått(
+        GRENSERFOR18MNDPERIODE.datoFra,
+        GRENSERFOR18MNDPERIODE.datoTil
+    );
+    const startDato = GRENSERFOR18MNDPERIODE.datoFra;
+    listeMedTidslinjeObjekter.push(
+        finneKategori(startDato!!, allePermitteringerOgFravær)
+    );
+    for (let dag = 1; dag < antallObjektITidslinje; dag++) {
+        const nesteDag = finn1DagFram(listeMedTidslinjeObjekter[dag - 1].dato);
+        listeMedTidslinjeObjekter.push(
+            finneKategori(nesteDag, allePermitteringerOgFravær)
+        );
+    }
+    console.log(testFunksjonAvTidslinje(listeMedTidslinjeObjekter));
+    return listeMedTidslinjeObjekter;
+};
+
+/*export const konstruerTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     sisteDagIBeregningsperiode: Date
 ): DatoMedKategori[] => {
@@ -389,9 +440,6 @@ export const konstruerTidslinje = (
             kategori: 1,
         });
     }
-    listeMedTidslinjeObjekter.push(
-        finneKategori(foerstePermitteringsdag, allePermitteringerOgFravær)
-    );
     const sisteRegistrertePermittering = finnSistePermitteringsdato(
         allePermitteringerOgFravær.permitteringer
     )
@@ -433,9 +481,12 @@ export const konstruerTidslinje = (
             kategori: 1,
         });
     }
+    console.log(testFunksjonAvTidslinje(listeMedTidslinjeObjekter))
 
     return listeMedTidslinjeObjekter;
 };
+
+ */
 
 const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
     let finnes = false;
