@@ -43,8 +43,12 @@ export const lagHTMLObjektForAlleDatoer = (
                         <Undertekst
                             className={'tidslinje-dagens-dato-markør-tekst'}
                         >
+                            I dag
+                            <br />
                             {skrivOmDato(new Date())}
                         </Undertekst>
+                        <div className={'tidslinje-dagens-dato-strek'} />
+                        <div className={'tidslinje-dagens-dato-sirkel'} />
                     </div>
                 )}
                 {erÅrsmarkering && <Årsmarkør dato={objekt.dato} />}

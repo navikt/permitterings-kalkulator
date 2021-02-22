@@ -10,8 +10,8 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    etFraværAlleredeLøpende: boolean;
-    setFraværAlleredeLøpende: (finnesLøpendeFravær: boolean) => void;
+    setIndeksLøpendeFraværsperiode: (indeks: number) => void;
+    indeksLøpendeFraværsperiode: undefined|number;
 }
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
@@ -35,8 +35,8 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         .map ( (fraværsintervall, indeks) => {
         return (
             <DatoIntervallInput
-                setEnPeriodeAlleredeLøpende={props.setFraværAlleredeLøpende}
-                enPeriodeAlleredeLøpende={props.etFraværAlleredeLøpende}
+                setIndeksLøpendeperiode={props.setIndeksLøpendeFraværsperiode}
+                indeksLøpendeperiode={props.indeksLøpendeFraværsperiode}
                 setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}

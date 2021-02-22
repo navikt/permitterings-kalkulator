@@ -7,7 +7,6 @@ import {
 } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
 import { finn1DagFram } from '../utregninger';
 
 interface Props {
@@ -18,42 +17,68 @@ interface Props {
     ) => void;
     type: string;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setEnPeriodeAlleredeLøpende: (finnesløpendePermitterintb: boolean) => void;
-    enPeriodeAlleredeLøpende: boolean;
+    setIndeksLøpendeperiode: (indeks: number) => void;
+    indeksLøpendeperiode: undefined | number;
 }
 
+const finnAktueltDatoIntervall = (
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    indeksPermitteringsperioder?: number,
+    indeksFraværsperioder?: number
+) => {
+    if (indeksPermitteringsperioder) {
+        return allePermitteringerOgFraværesPerioder.permitteringer[
+            indeksPermitteringsperioder
+        ];
+    }
+    if (indeksFraværsperioder) {
+        return allePermitteringerOgFraværesPerioder.andreFraværsperioder[
+            indeksFraværsperioder
+        ];
+    }
+    return allePermitteringerOgFraværesPerioder.permitteringer[0];
+};
+
+const finnIndeks = (
+    indeksPermitteringsperioder?: number,
+    indeksFraværsperioder?: number
+) => {
+    if (indeksPermitteringsperioder) {
+        return indeksPermitteringsperioder;
+    }
+    if (indeksFraværsperioder) {
+        return indeksFraværsperioder;
+    }
+    return 0;
+};
+
+const checkbokstekst = (typeCheckboks: string) => {
+    if (typeCheckboks === 'FRAVÆRSINTERVALL') {
+        return 'Fraværet er fortsatt aktivt';
+    }
+    return 'Permitteringen er fortsatt aktiv';
+};
+
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
-    const [feilMelding, setFeilmelding] = useState('');
     const [erLøpende, setErLøpende] = useState(false);
 
-    let datoIntervall: DatoIntervall;
-
-    let indeks;
-
-    if (props.type === 'FRAVÆRSINTERVALL') {
-        indeks = props.indeksFraværsperioder ? props.indeksFraværsperioder : 0;
-        datoIntervall =
-            props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[
-                indeks
-            ];
-    } else {
-        indeks = props.indeksPermitteringsperioder
-            ? props.indeksPermitteringsperioder
-            : 0;
-        datoIntervall =
-            props.allePermitteringerOgFraværesPerioder.permitteringer[indeks];
-    }
-
-    const checkbokstekst =
-        props.type === 'FRAVÆRSINTERVALL'
-            ? 'Fraværet er fortsatt aktivt'
-            : 'Permitteringen er fortsatt aktiv';
+    const indeks = finnIndeks(
+        props.indeksPermitteringsperioder,
+        props.indeksFraværsperioder
+    );
+    let datoIntervall: DatoIntervall = finnAktueltDatoIntervall(
+        props.allePermitteringerOgFraværesPerioder,
+        props.indeksPermitteringsperioder,
+        props.indeksFraværsperioder
+    );
 
     useEffect(() => {
-        if (!props.enPeriodeAlleredeLøpende) {
-            setFeilmelding('');
+        if (props.indeksLøpendeperiode !== indeks) {
+            setErLøpende(false);
+        } else {
+            setErLøpende(true);
         }
-    }, [props.enPeriodeAlleredeLøpende]);
+    }, [props.indeksLøpendeperiode, indeks]);
 
     const oppdaterPermitteringsListe = (
         typeIntervall: string,
@@ -148,33 +173,22 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
 
             <Radio
                 className={'kalkulator__datovelgere-checkbox'}
-                label={checkbokstekst}
+                label={checkbokstekst(props.type)}
                 checked={erLøpende}
-                name={checkbokstekst}
+                name={checkbokstekst(props.type)}
                 onChange={() => {
                     const nyStatus = !erLøpende;
-                    if (nyStatus && props.enPeriodeAlleredeLøpende) {
-                        setFeilmelding('Kun en periode kan være løpende');
-                    } else if (!nyStatus && props.enPeriodeAlleredeLøpende) {
-                        props.setEnPeriodeAlleredeLøpende(false);
-                        setErLøpende(nyStatus);
-                        setFeilmelding('');
-                    } else {
-                        if (nyStatus) {
-                            props.setEnPeriodeAlleredeLøpende(true);
-                            oppdaterPermitteringsListe(
-                                props.type,
-                                undefined,
-                                ARBEIDSGIVERPERIODE2DATO
-                            );
-                        }
-                        setErLøpende(nyStatus);
+                    setErLøpende(!erLøpende);
+                    if (nyStatus) {
+                        props.setIndeksLøpendeperiode(indeks);
+                        oppdaterPermitteringsListe(
+                            props.type,
+                            undefined,
+                            ARBEIDSGIVERPERIODE2DATO
+                        );
                     }
                 }}
             />
-            <Element className={'kalkulator__feilmelding'}>
-                {feilMelding}
-            </Element>
         </div>
     );
 };

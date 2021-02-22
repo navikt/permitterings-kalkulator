@@ -18,8 +18,8 @@ interface Props {
     setAllePermitteringerOgFraværesPerioder: (
         allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
-    setEnPermitteringAlleredeLøpende: (finnesløpende: boolean) => void;
-    enPermitteringAlleredeLøpende: boolean;
+    setIndeksLøpendePermitteringsperiode: (indeks: number) => void;
+    indeksLøpendePermitteringsperiode: undefined | number;
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
@@ -56,10 +56,10 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
-                setEnPeriodeAlleredeLøpende={
-                    props.setEnPermitteringAlleredeLøpende
+                setIndeksLøpendeperiode={
+                    props.setIndeksLøpendePermitteringsperiode
                 }
-                enPeriodeAlleredeLøpende={props.enPermitteringAlleredeLøpende}
+                indeksLøpendeperiode={props.indeksLøpendePermitteringsperiode}
                 indeksPermitteringsperioder={props.indeks}
                 allePermitteringerOgFraværesPerioder={
                     props.allePermitteringerOgFraværesPerioder

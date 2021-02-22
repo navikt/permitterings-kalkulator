@@ -39,7 +39,7 @@ const bakover18mnd = finnDato18MndTilbake(dagensDato);
 const maksGrenseIBakoverITid = new Date(bakover18mnd);
 maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
 const maksGrenseFramoverITid = new Date(dagensDato);
-maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 56);
+maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
 export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
     datoFra: maksGrenseIBakoverITid,
     datoTil: maksGrenseFramoverITid,
@@ -56,12 +56,13 @@ const Kalkulator = () => {
         andreFraværsperioder: [],
     });
     const [
-        enPermitteringAlleredeLøpende,
-        setEnPermitteringAlleredeLøpende,
-    ] = useState(false);
-    const [etFraværAlleredeLøpende, setFraværAlleredeFraværLøpende] = useState(
-        false
-    );
+        indeksLøpendePermitteringsperiode,
+        setIndeksLøpendePermitteringsperiod,
+    ] = useState<number | undefined>(undefined);
+    const [
+        indeksLøpendeFraværsperiode,
+        setIndeksLøpendeFraværsperiode,
+    ] = useState<number | undefined>(undefined);
 
     const [
         sisteDagI18mndsPeriodeEndretAv,
@@ -112,12 +113,12 @@ const Kalkulator = () => {
         (permitteringsperiode, indeks) => {
             return (
                 <Permitteringsperiode
-                    enPermitteringAlleredeLøpende={
-                        enPermitteringAlleredeLøpende
+                    indeksLøpendePermitteringsperiode={
+                        indeksLøpendePermitteringsperiode
                     }
                     indeks={indeks}
-                    setEnPermitteringAlleredeLøpende={
-                        setEnPermitteringAlleredeLøpende
+                    setIndeksLøpendePermitteringsperiode={
+                        setIndeksLøpendePermitteringsperiod
                     }
                     allePermitteringerOgFraværesPerioder={
                         allePermitteringerOgFraværesPerioder
@@ -200,9 +201,11 @@ const Kalkulator = () => {
                     </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
-                            etFraværAlleredeLøpende={etFraværAlleredeLøpende}
-                            setFraværAlleredeLøpende={
-                                setFraværAlleredeFraværLøpende
+                            indeksLøpendeFraværsperiode={
+                                indeksLøpendeFraværsperiode
+                            }
+                            setIndeksLøpendeFraværsperiode={
+                                setIndeksLøpendeFraværsperiode
                             }
                             setAllePermitteringerOgFraværesPerioder={
                                 setAllePermitteringerOgFraværesPerioder
@@ -218,6 +221,9 @@ const Kalkulator = () => {
                             className={'kalkulator__tidslinje-wrapper'}
                             id={'kalkulator-tidslinje-wrapper'}
                         >
+                            <Undertittel>
+                                Beregningen vises i tidslinje
+                            </Undertittel>
                             {datoIntervallErDefinert(
                                 allePermitteringerOgFraværesPerioder
                                     .permitteringer[0]

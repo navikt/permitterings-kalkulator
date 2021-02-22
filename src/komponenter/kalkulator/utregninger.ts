@@ -214,11 +214,10 @@ export const kuttAvDatoIntervallInnefor18mnd = (
         startdato,
         datoIntevall
     );
-    const datoIntervallFørSluttperiode = kuttAvDatoIntervallEtterGittDato(
+    return kuttAvDatoIntervallEtterGittDato(
         sluttDato,
         datoIntervallEtterStartperiode
     );
-    return datoIntervallFørSluttperiode;
 };
 
 /*export const finnDato18MndFram2 = (dato: Date) => {
@@ -333,11 +332,9 @@ export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
     tidsLinje.forEach((objekt, indeks) => {
         if (indeks > 0) {
             if (
-                !(
-                    tidsLinje[indeks].dato.getDate() -
-                        tidsLinje[indeks - 1].dato.getDate() ===
-                    1
-                )
+                tidsLinje[indeks].dato.getDate() -
+                    tidsLinje[indeks - 1].dato.getDate() !==
+                1
             ) {
                 if (tidsLinje[indeks].dato.getDate() !== 1) {
                     bestårTest = false;
@@ -427,11 +424,11 @@ export const flytt18mndsperiode1dag = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
 ) => {
     const nyStartDag = finn1DagFram(tidligereStartDato);
-    const sluttDato = finnDato18MndFram(nyStartDag!!);
+    const sluttDato = finnDato18MndFram(nyStartDag);
     allePermitteringerOgFravær.permitteringer.forEach((periode, indeks) => {
         const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(
             periode,
-            nyStartDag!!,
+            nyStartDag,
             sluttDato
         );
         allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
