@@ -2,38 +2,44 @@
 
 .kalkulator {
     &__draggable-periode {
-        height: 1rem;
+        position: relative;
+        height: 1.5rem;
         background-color: @navBla;
+        border-radius: 8px 8px 0 0;
         left: 0;
         display: flex;
         justify-content: space-between;
         z-index: 2;
-        border-radius: 4px;
 
         .høyre {
-            border-radius: 0 4px 4px 4px;
+            position: absolute;
+            right: 0;
+            top: 8px;
         }
 
         .venstre {
-            border-radius: 4px 0 4px 4px;
+            position: absolute;
+            left: 0;
+            top: 8px;
         }
 
         .venstre-dato {
             position: absolute;
-            left: 0;
-            top: 5rem;
+            left: -2rem;
+            top: 3rem;
         }
 
         .høyre-dato {
             position: absolute;
-            right: 0;
-            top: 5rem;
+            right: -2rem;
+            top: 3rem;
         }
     }
 
     &__draggable-kant {
-        height: 3rem;
-        width: 2.5px;
+        height: 2.5rem;
+        width: 3px;
+        border-radius: 20px;
         background-color: @navBla;
     }
 
@@ -63,7 +69,7 @@
         height: 1rem;
         border-radius: 3px;
         position: absolute;
-        top: 2rem;
+        top: 1.5rem;
         background-color: @navLysGra;
 
         &__tidslinjeobjekt {
