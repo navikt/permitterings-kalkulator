@@ -2,6 +2,7 @@ import { datointervallKategori, DatoMedKategori } from '../utregninger';
 import React from 'react';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import { Undertekst } from 'nav-frontend-typografi';
+import Årsmarkør from './Årsmarkør/Årsmarkør';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
@@ -20,16 +21,20 @@ export const lagHTMLObjektForAlleDatoer = (
         };
         const erIdagBoolean =
             skrivOmDato(objekt.dato) === skrivOmDato(new Date());
-        const erIdag = erIdagBoolean ? 'dagens-dato' : '';
+        const erIdag = erIdagBoolean ? ' dagens-dato' : '';
+        const erÅrsmarkering = erÅrsMarkering(objekt.dato)
+            ? ' årsmarkering'
+            : '';
         return (
             <div
                 id={'kalkulator-tidslinjeobjekt-' + indeks}
                 style={style}
                 className={
-                    'kalkulator__tidslinjeobjekt ' +
+                    'kalkulator__tidslinjeobjekt' +
                     erIdag +
                     ' ' +
-                    skrivOmDato(objekt.dato)
+                    skrivOmDato(objekt.dato) +
+                    erÅrsmarkering
                 }
                 key={indeks}
             >
@@ -42,6 +47,7 @@ export const lagHTMLObjektForAlleDatoer = (
                         </Undertekst>
                     </div>
                 )}
+                {erÅrsmarkering && <Årsmarkør dato={objekt.dato} />}
             </div>
         );
     });
@@ -119,4 +125,8 @@ const finnFarge = (kategori: datointervallKategori) => {
         return 'darksalmon';
     }
     return 'transParent';
+};
+
+export const erÅrsMarkering = (dato: Date) => {
+    return dato.getMonth() === 0 && dato.getDate() === 1;
 };

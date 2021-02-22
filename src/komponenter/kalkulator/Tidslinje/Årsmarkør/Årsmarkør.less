@@ -1,0 +1,37 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.kalkulator {
+
+  &__tidslinje-årsmarkering {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: absolute;
+    align-items: center;
+    width: 2px;
+    top: -1.2rem;
+  }
+
+  &__tidslinje-årsmarkering-vertikal-sylinder {
+    height: 2rem;
+    width: 1rem;
+    background-color: @navLysGra;
+    border-radius: 10px;
+  }
+
+  &__tidslinje-årsmarkering-nedre-sirkel {
+    border-radius: 27px;
+    border-color: transparent;
+    width: 1rem;
+    height: 1rem;
+    text-align: center;
+    background-color: white;
+    position: absolute;
+    align-self: center;
+  }
+
+}
+
+.årsmarkering {
+  position: relative;
+}
