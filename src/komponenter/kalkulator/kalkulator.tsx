@@ -222,7 +222,7 @@ const Kalkulator = () => {
                             id={'kalkulator-tidslinje-wrapper'}
                         >
                             <Undertittel>
-                                Beregningen vises i tidslinje
+                                4. Beregningen vises i tidslinje
                             </Undertittel>
                             {datoIntervallErDefinert(
                                 allePermitteringerOgFraværesPerioder
