@@ -18,7 +18,7 @@ interface Props {
     setAllePermitteringerOgFraværesPerioder: (
         allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
-    setIndeksLøpendePermitteringsperiode: (indeks: number) => void;
+    setIndeksLøpendePermitteringsperiode: (indeks: number | undefined) => void;
     indeksLøpendePermitteringsperiode: undefined | number;
 }
 

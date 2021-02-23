@@ -15,8 +15,7 @@ const Årsmarkør: FunctionComponent<Props> = (
         <div className={'kalkulator__tidslinje-årsmarkering'}>
             <div className={'kalkulator__tidslinje-årsmarkering-vertikal-sylinder'}/>
             <div className={'kalkulator__tidslinje-årsmarkering-nedre-sirkel'}/>
-            <Undertekst
-            >
+            <Undertekst className={'kalkulator__tidslinje-årsmarkering-tekst'}>
                 {props.dato.getFullYear()}
             </Undertekst>
         </div>

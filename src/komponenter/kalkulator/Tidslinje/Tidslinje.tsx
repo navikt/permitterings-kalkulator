@@ -14,6 +14,7 @@ import {
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
 } from './tidslinjefunksjoner';
+import { Fargeforklaringer } from './Fargeforklaringer';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -219,6 +220,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         </div>
                         {htmlElementerForHverDato}
                     </div>
+                    <Fargeforklaringer />
                 </>
             )}
         </div>

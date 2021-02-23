@@ -90,10 +90,21 @@ const Topp: FunctionComponent<Props> = (props) => {
                     className={'kalkulator__ikon-kalender'}
                     src={kalender}
                 />
-                <Normaltekst>
-                    Du kan velge en annen beregningsperiode ved å endre siste
-                    dag i perioden. {feilMelding}
-                </Normaltekst>
+                <div>
+                    <Normaltekst>
+                        {
+                            'Permitteringsukene beregnes alltid i et tidsrom på 18 måneder av gangen.  Du kan endre 18 måneders perioden ved å bruke datovelgeren over til høyre.'
+                        }
+                    </Normaltekst>
+                    <br />
+                    <Normaltekst>
+                        {`Dagen du har valgt som sluttdato for perioden er ${skrivOmDato(
+                            props.sisteDagIPeriode
+                        )}. 18 måneders perioden er tidsrommet fra og med ${skrivOmDato(
+                            finnDato18MndTilbake(props.sisteDagIPeriode)
+                        )} til og med ${skrivOmDato(props.sisteDagIPeriode)} .`}
+                    </Normaltekst>
+                </div>
             </div>
         </div>
     );

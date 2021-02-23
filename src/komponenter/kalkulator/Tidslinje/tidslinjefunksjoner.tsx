@@ -123,10 +123,10 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
 
 const finnFarge = (kategori: datointervallKategori) => {
     if (kategori === 0) {
-        return '#005B82';
+        return '#5EAEC7';
     }
     if (kategori === 2) {
-        return 'darksalmon';
+        return '#E3B0AB';
     }
     return 'transParent';
 };

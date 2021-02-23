@@ -17,26 +17,26 @@ interface Props {
     ) => void;
     type: string;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setIndeksLøpendeperiode: (indeks: number) => void;
+    setIndeksLøpendeperiode: (indeks: number | undefined) => void;
     indeksLøpendeperiode: undefined | number;
 }
 
 const finnAktueltDatoIntervall = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    type: string,
     indeksPermitteringsperioder?: number,
     indeksFraværsperioder?: number
 ) => {
-    if (indeksPermitteringsperioder) {
-        return allePermitteringerOgFraværesPerioder.permitteringer[
-            indeksPermitteringsperioder
-        ];
-    }
-    if (indeksFraværsperioder) {
+    if (type === 'FRAVÆRSINTERVALL') {
+        const indeks = indeksFraværsperioder ? indeksFraværsperioder : 0;
         return allePermitteringerOgFraværesPerioder.andreFraværsperioder[
-            indeksFraværsperioder
+            indeks
         ];
     }
-    return allePermitteringerOgFraværesPerioder.permitteringer[0];
+    const indeks = indeksPermitteringsperioder
+        ? indeksPermitteringsperioder
+        : 0;
+    return allePermitteringerOgFraværesPerioder.permitteringer[indeks];
 };
 
 const finnIndeks = (
@@ -68,6 +68,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     );
     let datoIntervall: DatoIntervall = finnAktueltDatoIntervall(
         props.allePermitteringerOgFraværesPerioder,
+        props.type,
         props.indeksPermitteringsperioder,
         props.indeksFraværsperioder
     );
@@ -75,8 +76,6 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         if (props.indeksLøpendeperiode !== indeks) {
             setErLøpende(false);
-        } else {
-            setErLøpende(true);
         }
     }, [props.indeksLøpendeperiode, indeks]);
 
@@ -174,9 +173,10 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             <Radio
                 className={'kalkulator__datovelgere-checkbox'}
                 label={checkbokstekst(props.type)}
-                checked={erLøpende}
+                checked={indeks === props.indeksLøpendeperiode}
                 name={checkbokstekst(props.type)}
                 onChange={() => {
+                    console.log('ON CHANGE');
                     const nyStatus = !erLøpende;
                     setErLøpende(!erLøpende);
                     if (nyStatus) {
@@ -186,6 +186,10 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                             undefined,
                             ARBEIDSGIVERPERIODE2DATO
                         );
+                    }
+                    if (props.indeksLøpendeperiode === indeks && nyStatus) {
+                        props.setIndeksLøpendeperiode(undefined);
+                        setErLøpende(false);
                     }
                 }}
             />

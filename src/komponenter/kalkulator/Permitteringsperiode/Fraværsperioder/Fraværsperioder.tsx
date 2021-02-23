@@ -10,7 +10,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setIndeksLøpendeFraværsperiode: (indeks: number) => void;
+    setIndeksLøpendeFraværsperiode: (indeks: number|undefined) => void;
     indeksLøpendeFraværsperiode: undefined|number;
 }
 

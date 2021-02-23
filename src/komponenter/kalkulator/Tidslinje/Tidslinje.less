@@ -26,13 +26,13 @@
         .venstre-dato {
             position: absolute;
             left: -2rem;
-            top: 3rem;
+            top: 3.5rem;
         }
 
         .høyre-dato {
             position: absolute;
             right: -2rem;
-            top: 3rem;
+            top: 3.5rem;
         }
     }
 
@@ -49,6 +49,7 @@
         position: relative;
         margin-bottom: 3rem;
         margin-top: 2rem;
+        min-height: 8rem;
     }
 
     &__tidslinje-datoer {
@@ -115,16 +116,35 @@
             left: -2rem;
         }
 
-        .lysblå {
-            background-color: @navGronnLighten40;
+        .tidslinje-farge-forklaring {
+            width: 10rem;
+        }
+    }
+
+    &__tidslinje-farge-forklaring {
+        width: 10rem;
+        height: 3rem;
+        position: absolute;
+        top: 6rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .annet-fravær {
+            height: 1rem;
+            width: 1rem;
+            background-color: #e3b0ab;
         }
 
-        .blå {
-            background-color: @navBlaLighten40;
+        .permittert {
+            background-color: #5eaec7;
+            height: 1rem;
+            width: 1rem;
         }
+    }
 
-        .grå {
-            background-color: @navRodLighten40;
-        }
+    &__tidslinje-farge-forklaring-container {
+        display: flex;
+        justify-content: space-between;
     }
 }
