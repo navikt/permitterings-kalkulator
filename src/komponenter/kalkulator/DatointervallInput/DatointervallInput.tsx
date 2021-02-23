@@ -27,15 +27,14 @@ const finnAktueltDatoIntervall = (
     indeksPermitteringsperioder?: number,
     indeksFraværsperioder?: number
 ) => {
+    let indeks = 0;
     if (type === 'FRAVÆRSINTERVALL') {
-        const indeks = indeksFraværsperioder ? indeksFraværsperioder : 0;
+        indeks = indeksFraværsperioder ? indeksFraværsperioder : 0;
         return allePermitteringerOgFraværesPerioder.andreFraværsperioder[
             indeks
         ];
     }
-    const indeks = indeksPermitteringsperioder
-        ? indeksPermitteringsperioder
-        : 0;
+    indeks = indeksPermitteringsperioder ? indeksPermitteringsperioder : 0;
     return allePermitteringerOgFraværesPerioder.permitteringer[indeks];
 };
 
