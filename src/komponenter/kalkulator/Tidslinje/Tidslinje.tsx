@@ -112,7 +112,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
-        props.set18mndsPeriode(datoOnDrag!!);
+        const dato = datoOnDrag!!;
+        props.set18mndsPeriode(dato);
     };
 
     const OnTidslinjeDrag = () => {
