@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
+    antalldagerGått,
     DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
@@ -9,13 +10,13 @@ import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
+
+import { Fargeforklaringer } from './Fargeforklaringer';
 import {
     lagHTMLObjektForAlleDatoer,
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
 } from './tidslinjefunksjoner';
-import { Fargeforklaringer } from './Fargeforklaringer';
-
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Date) => void;
@@ -72,15 +73,18 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         konstruerStatiskTidslinje(props.allePermitteringerOgFraværesPerioder)
     );
     const [
-        absoluttPosisjonFraHøyreDragElement,
-        setAbsoluttPosisjonFraHøyreDragElement,
+        absoluttPosisjonFraVenstreDragElement,
+        setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
-        antallElementMellomObjekt(
-            props.sisteDagIPeriode,
-            tidslinjeObjekter[tidslinjeObjekter.length - 1].dato,
-            tidslinjeObjekter
-        ) * props.breddeAvDatoObjektIProsent
+        (FinnIndeksForDato(props.sisteDagIPeriode, tidslinjeObjekter) +
+            1 -
+            antalldagerGått(
+                finnDato18MndTilbake(props.sisteDagIPeriode),
+                props.sisteDagIPeriode
+            )) *
+            props.breddeAvDatoObjektIProsent
     );
+
     const [
         posisjonsStylingDragElement,
         setPosisjonsStylingDragElement,
@@ -120,7 +124,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 props.sisteDagIPeriode,
                 tidslinjeObjekter
             );
-            setAbsoluttPosisjonFraHøyreDragElement(
+            setAbsoluttPosisjonFraVenstreDragElement(
                 elementerMellomDatoOnDragOgsisteDagIPeriode *
                     props.breddeAvDatoObjektIProsent
             );
@@ -184,7 +188,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             style={{
                                 position: posisjonsStylingDragElement,
                                 left:
-                                    absoluttPosisjonFraHøyreDragElement.toString() +
+                                    absoluttPosisjonFraVenstreDragElement.toString() +
                                     '%',
                                 width:
                                     (

@@ -344,13 +344,24 @@ export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
                         tidsLinje[indeks - 1].kategori
                     );
                 }
+                if (
+                    tidsLinje[indeks].dato.getMonth() -
+                        tidsLinje[indeks - 1].dato.getMonth() !==
+                        1 &&
+                    tidsLinje[indeks].dato.getMonth() !== 0
+                ) {
+                    console.log(
+                        'datoer som feiler test kategorier',
+                        tidsLinje[indeks].kategori,
+                        tidsLinje[indeks - 1].kategori,
+                        skrivOmDato(tidsLinje[indeks].dato),
+                        skrivOmDato(tidsLinje[indeks - 1].dato)
+                    );
+                    bestårTest = false;
+                }
             }
         }
     });
-    console.log(
-        skrivOmDato(tidsLinje[0].dato),
-        skrivOmDato(tidsLinje[tidsLinje.length - 1].dato)
-    );
     return bestårTest;
 };
 
