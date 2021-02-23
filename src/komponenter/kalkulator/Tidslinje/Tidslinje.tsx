@@ -41,7 +41,7 @@ export const finnBreddeAvObjekt = (id: string) => {
     return element?.offsetWidth;
 };
 
-const FinnIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
+const finnIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
     let indeksDato = 0;
     tidslinjeobjekt.forEach((objekt, indeks) => {
         if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
@@ -51,13 +51,26 @@ const FinnIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
     return indeksDato;
 };
 
+const regnUtPosisjonFraVenstreGittSluttdato = (
+    tidslinjeObjekter: DatoMedKategori[],
+    breddePerElementIProsent: number,
+    sluttDato: Date
+) => {
+    return (
+        (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
+            1 -
+            antalldagerGått(finnDato18MndTilbake(sluttDato), sluttDato)) *
+        breddePerElementIProsent
+    );
+};
+
 const antallElementMellomObjekt = (
     fra: Date,
     til: Date,
     tidslinje: DatoMedKategori[]
 ) => {
-    const indeksTil = FinnIndeksForDato(til, tidslinje);
-    const indeksFra = FinnIndeksForDato(fra, tidslinje);
+    const indeksTil = finnIndeksForDato(til, tidslinje);
+    const indeksFra = finnIndeksForDato(fra, tidslinje);
     return indeksTil - indeksFra + 1;
 };
 
@@ -76,13 +89,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
-        (FinnIndeksForDato(props.sisteDagIPeriode, tidslinjeObjekter) +
-            1 -
-            antalldagerGått(
-                finnDato18MndTilbake(props.sisteDagIPeriode),
-                props.sisteDagIPeriode
-            )) *
-            props.breddeAvDatoObjektIProsent
+        regnUtPosisjonFraVenstreGittSluttdato(
+            tidslinjeObjekter,
+            props.breddeAvDatoObjektIProsent,
+            props.sisteDagIPeriode
+        )
     );
 
     const [
@@ -118,23 +129,30 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        if (props.endringAv === 'datovelger') {
-            const elementerMellomDatoOnDragOgsisteDagIPeriode = antallElementMellomObjekt(
-                datoOnDrag,
-                props.sisteDagIPeriode,
-                tidslinjeObjekter
+        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
+            tidslinjeObjekter,
+            props.breddeAvDatoObjektIProsent,
+            props.sisteDagIPeriode
+        );
+        if (
+            datoOnDrag.toDateString() !== props.sisteDagIPeriode.toDateString()
+        ) {
+            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
+                tidslinjeObjekter,
+                props.breddeAvDatoObjektIProsent,
+                datoOnDrag
             );
             setAbsoluttPosisjonFraVenstreDragElement(
-                elementerMellomDatoOnDragOgsisteDagIPeriode *
-                    props.breddeAvDatoObjektIProsent
+                nyPosisjonFraVenstre - posisjonDragElement
             );
+        } else {
+            setAbsoluttPosisjonFraVenstreDragElement(nyPosisjonFraVenstre);
         }
     }, [
+        datoOnDrag,
         props.sisteDagIPeriode,
         props.breddeAvDatoObjektIProsent,
-        datoOnDrag,
         tidslinjeObjekter,
-        props.endringAv,
     ]);
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
@@ -151,7 +169,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     };
 
     const OnTidslinjeDrag = () => {
-        setPosisjonsStylingDragElement(undefined);
+        setPosisjonsStylingDragElement('static');
         props.setEndringAv('tidslinje');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
@@ -167,6 +185,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         });
         setDatoOnDrag(tidslinjeObjekter[indeksStartDato].dato);
     };
+
+    console.log(absoluttPosisjonFraVenstreDragElement);
 
     const datoVisesPaDragElement =
         props.endringAv === 'tidslinje' ? datoOnDrag : props.sisteDagIPeriode;
