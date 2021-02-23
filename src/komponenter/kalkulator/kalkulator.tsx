@@ -45,14 +45,17 @@ export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
     datoTil: maksGrenseFramoverITid,
 };
 
+export const getDefaultPermitteringsperiode = (): DatoIntervall => ({
+    datoFra: finnDato18MndTilbake(new Date()),
+    datoTil: undefined,
+});
+
 const Kalkulator = () => {
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [
-            { datoFra: finnDato18MndTilbake(new Date()), datoTil: undefined },
-        ],
+        permitteringer: [getDefaultPermitteringsperiode()],
         andreFraværsperioder: [],
     });
     const [

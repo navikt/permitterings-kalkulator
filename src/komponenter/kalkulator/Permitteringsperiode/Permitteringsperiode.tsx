@@ -5,6 +5,7 @@ import './Permitteringsperiode.less';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    getDefaultPermitteringsperiode,
 } from '../kalkulator';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
@@ -52,8 +53,9 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         if (kopiAvPermitterinsperioder.permitteringer.length > 1) {
             kopiAvPermitterinsperioder.permitteringer.splice(props.indeks, 1);
         } else {
-            // TODO Hva skal skje her?
-            console.log('// TODO Hva skal skje her?');
+            kopiAvPermitterinsperioder.permitteringer = [
+                getDefaultPermitteringsperiode(),
+            ];
         }
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvPermitterinsperioder
