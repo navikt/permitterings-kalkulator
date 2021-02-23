@@ -24,6 +24,7 @@ interface Props {
     skalVareEtter?: Date;
     skalVareFoer?: Date;
     className?: string;
+    tjenesteBestemtFeilmelding?: string;
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
@@ -40,12 +41,11 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         if (props.value) {
             return editing ? tempDate : skrivOmDato(selectedDate);
         } else {
-            return 'dd/mm/yyyy';
+            return 'dd.mm.yyyy';
         }
     };
 
     const onDatoClick = (day: Date) => {
-        console.log('datoklikk på ', props.overtekst, skrivOmDato(day));
         const nyFeilmelding = datoValidering(
             day,
             props.skalVareEtter,
@@ -70,7 +70,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         if (newDato) {
             onDatoClick(newDato);
         } else {
-            setFeilMelding('dd/mm/yyyy');
+            setFeilMelding('dd.mm.yyyy');
             setErApen(false);
         }
     };
@@ -96,6 +96,12 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             );
         }
     }, [props.skalVareEtter, props.skalVareFoer]);
+
+    useEffect(() => {
+        if (props.tjenesteBestemtFeilmelding?.length) {
+            setFeilMelding(props.tjenesteBestemtFeilmelding);
+        }
+    }, [props.tjenesteBestemtFeilmelding]);
 
     useEffect(() => {
         if (erApen) {

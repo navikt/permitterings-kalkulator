@@ -7,92 +7,148 @@ import {
 } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
-import { Element } from 'nav-frontend-typografi';
 import { finn1DagFram } from '../utregninger';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
-    indeksPermitteringsperioder?: number
-    indeksFraværsperioder?: number
-    setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
-    type: string
+    indeksPermitteringsperioder?: number;
+    indeksFraværsperioder?: number;
+    setAllePermitteringerOgFraværesPerioder: (
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+    ) => void;
+    type: string;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setEnPeriodeAlleredeLøpende: (finnesløpendePermitterintb: boolean) => void
-    enPeriodeAlleredeLøpende: boolean
+    setIndeksLøpendeperiode: (indeks: number | undefined) => void;
+    indeksLøpendeperiode: undefined | number;
 }
 
-const DatoIntervallInput:FunctionComponent<Props> = props => {
-    const [feilMelding, setFeilmelding] = useState('')
-    const [erLøpende, setErLøpende] = useState(false)
-
-    let datoIntervall: DatoIntervall;
-
-        let indeks;
-
-        if (props.type === 'FRAVÆRSINTERVALL') {
-            indeks = props.indeksFraværsperioder? props.indeksFraværsperioder : 0;
-            datoIntervall = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder[indeks]
-        }
-        else {
-            indeks = props.indeksPermitteringsperioder ? props.indeksPermitteringsperioder : 0
-            datoIntervall = props.allePermitteringerOgFraværesPerioder.permitteringer[indeks]
+const finnAktueltDatoIntervall = (
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    type: string,
+    indeksPermitteringsperioder?: number,
+    indeksFraværsperioder?: number
+) => {
+    let indeks = 0;
+    if (type === 'FRAVÆRSINTERVALL') {
+        indeks = indeksFraværsperioder ? indeksFraværsperioder : 0;
+        return allePermitteringerOgFraværesPerioder.andreFraværsperioder[
+            indeks
+        ];
     }
+    indeks = indeksPermitteringsperioder ? indeksPermitteringsperioder : 0;
+    return allePermitteringerOgFraværesPerioder.permitteringer[indeks];
+};
 
-    const checkbokstekst = props.type === 'FRAVÆRSINTERVALL' ? 'Fraværet er fortsatt aktivt' :
-        'Permitteringen er fortsatt aktiv'
+const finnIndeks = (
+    indeksPermitteringsperioder?: number,
+    indeksFraværsperioder?: number
+) => {
+    if (indeksPermitteringsperioder) {
+        return indeksPermitteringsperioder;
+    }
+    if (indeksFraværsperioder) {
+        return indeksFraværsperioder;
+    }
+    return 0;
+};
+
+const checkbokstekst = (typeCheckboks: string) => {
+    if (typeCheckboks === 'FRAVÆRSINTERVALL') {
+        return 'Fraværet er fortsatt aktivt';
+    }
+    return 'Permitteringen er fortsatt aktiv';
+};
+
+const DatoIntervallInput: FunctionComponent<Props> = (props) => {
+    const [erLøpende, setErLøpende] = useState(false);
+
+    const indeks = finnIndeks(
+        props.indeksPermitteringsperioder,
+        props.indeksFraværsperioder
+    );
+    let datoIntervall: DatoIntervall = finnAktueltDatoIntervall(
+        props.allePermitteringerOgFraværesPerioder,
+        props.type,
+        props.indeksPermitteringsperioder,
+        props.indeksFraværsperioder
+    );
 
     useEffect(() => {
-        if (!props.enPeriodeAlleredeLøpende) {
-            setFeilmelding('')
+        if (props.indeksLøpendeperiode !== indeks) {
+            setErLøpende(false);
         }
+    }, [props.indeksLøpendeperiode, indeks]);
 
-    }, [props.enPeriodeAlleredeLøpende]);
-
-    const oppdaterPermitteringsListe = ( typeIntervall: string, fra?: Date, til?: Date) => {
+    const oppdaterPermitteringsListe = (
+        typeIntervall: string,
+        fra?: Date,
+        til?: Date
+    ) => {
         if (typeIntervall === 'PERMITTERINGSINTERVALL') {
             oppdaterPermitteringsdatoer(fra, til);
-        }
-        else {
-            oppdaterFraværsdatoer(fra, til)
+        } else {
+            oppdaterFraværsdatoer(fra, til);
         }
         // sette default til-dato
         if (fra && !datoIntervall.datoTil) {
-            oppdaterPermitteringsListe(typeIntervall,undefined, finn1DagFram(fra))
+            oppdaterPermitteringsListe(
+                typeIntervall,
+                undefined,
+                finn1DagFram(fra)
+            );
         }
-    }
+    };
 
     const oppdaterFraværsdatoer = (fra?: Date, til?: Date) => {
-        const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
-        console.log('prøver å oppdatere fraværsdatoer', skrivOmDato(fra), skrivOmDato(til))
+        const kopiAvPermitterinsperioder = {
+            ...props.allePermitteringerOgFraværesPerioder,
+        };
         if (fra) {
-            kopiAvPermitterinsperioder.andreFraværsperioder[props.indeksFraværsperioder!!].datoFra = fra
+            kopiAvPermitterinsperioder.andreFraværsperioder[
+                props.indeksFraværsperioder!!
+            ].datoFra = fra;
+        } else {
+            kopiAvPermitterinsperioder.andreFraværsperioder[
+                props.indeksFraværsperioder!!
+            ].datoTil = til;
         }
-        else {
-            kopiAvPermitterinsperioder.andreFraværsperioder[props.indeksFraværsperioder!!].datoTil = til
-        }
-        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
-    }
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvPermitterinsperioder
+        );
+    };
 
     const oppdaterPermitteringsdatoer = (fra?: Date, til?: Date) => {
         const kopiAvPermitterinsperioder: AllePermitteringerOgFraværesPerioder = {
-            permitteringer: [...props.allePermitteringerOgFraværesPerioder.permitteringer],
-            andreFraværsperioder: [...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder]
+            permitteringer: [
+                ...props.allePermitteringerOgFraværesPerioder.permitteringer,
+            ],
+            andreFraværsperioder: [
+                ...props.allePermitteringerOgFraværesPerioder
+                    .andreFraværsperioder,
+            ],
         };
         if (fra) {
-            kopiAvPermitterinsperioder.permitteringer[props.indeksPermitteringsperioder!!].datoFra = fra
+            kopiAvPermitterinsperioder.permitteringer[
+                props.indeksPermitteringsperioder!!
+            ].datoFra = fra;
+        } else {
+            kopiAvPermitterinsperioder.permitteringer[
+                props.indeksPermitteringsperioder!!
+            ].datoTil = til;
         }
-        else {
-            kopiAvPermitterinsperioder.permitteringer[props.indeksPermitteringsperioder!!].datoTil = til
-        }
-        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
-    }
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvPermitterinsperioder
+        );
+    };
 
     return (
         <div className={'kalkulator__datovelgere'}>
             <Datovelger
                 value={datoIntervall.datoFra}
-                onChange={event => {
-                    oppdaterPermitteringsListe(props.type, event.currentTarget.value)
+                onChange={(event) => {
+                    oppdaterPermitteringsListe(
+                        props.type,
+                        event.currentTarget.value
+                    );
                 }}
                 skalVareFoer={datoIntervall.datoTil}
                 overtekst="Første dag"
@@ -100,8 +156,12 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
             <div className="skjema-innhold__dato-velger-til">
                 <Datovelger
                     value={datoIntervall.datoTil}
-                    onChange={event => {
-                        oppdaterPermitteringsListe(props.type, undefined ,event.currentTarget.value)
+                    onChange={(event) => {
+                        oppdaterPermitteringsListe(
+                            props.type,
+                            undefined,
+                            event.currentTarget.value
+                        );
                     }}
                     disabled={erLøpende}
                     overtekst="Siste dag"
@@ -109,31 +169,29 @@ const DatoIntervallInput:FunctionComponent<Props> = props => {
                 />
             </div>
 
-            <Radio className={'kalkulator__datovelgere-checkbox'}
-                label={checkbokstekst}
-                checked={erLøpende}
-                   name={checkbokstekst}
+            <Radio
+                className={'kalkulator__datovelgere-checkbox'}
+                label={checkbokstekst(props.type)}
+                checked={indeks === props.indeksLøpendeperiode}
+                name={checkbokstekst(props.type)}
                 onChange={() => {
-                    const nyStatus = !erLøpende
-                    if (nyStatus && props.enPeriodeAlleredeLøpende) {
-                        setFeilmelding('Kun en periode kan være løpende')
+                    console.log('ON CHANGE');
+                    const nyStatus = !erLøpende;
+                    setErLøpende(!erLøpende);
+                    if (nyStatus) {
+                        props.setIndeksLøpendeperiode(indeks);
+                        oppdaterPermitteringsListe(
+                            props.type,
+                            undefined,
+                            ARBEIDSGIVERPERIODE2DATO
+                        );
                     }
-                    else if (!nyStatus && props.enPeriodeAlleredeLøpende) {
-                        props.setEnPeriodeAlleredeLøpende(false);
-                        setErLøpende(nyStatus)
-                        setFeilmelding('');
+                    if (props.indeksLøpendeperiode === indeks && nyStatus) {
+                        props.setIndeksLøpendeperiode(undefined);
+                        setErLøpende(false);
                     }
-                    else {
-                        if (nyStatus) {
-                            props.setEnPeriodeAlleredeLøpende(true)
-                            oppdaterPermitteringsListe(props.type, undefined, ARBEIDSGIVERPERIODE2DATO);
-                        }
-                        setErLøpende(nyStatus)
-                    }
-                }
-                }
+                }}
             />
-            <Element className={'kalkulator__feilmelding'}>{feilMelding}</Element>
         </div>
     );
 };

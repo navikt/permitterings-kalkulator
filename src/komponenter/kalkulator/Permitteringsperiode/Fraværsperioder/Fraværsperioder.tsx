@@ -10,8 +10,8 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    etFraværAlleredeLøpende: boolean;
-    setFraværAlleredeLøpende: (finnesLøpendeFravær: boolean) => void;
+    setIndeksLøpendeFraværsperiode: (indeks: number|undefined) => void;
+    indeksLøpendeFraværsperiode: undefined|number;
 }
 
 const Fraværsperioder:FunctionComponent<Props> = props => {
@@ -25,7 +25,7 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
             startDatoIntervall = finnTidligstePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer)
         }
         else {
-            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+            startDatoIntervall = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)!!
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push(
             {datoFra: finn1DagFram(startDatoIntervall), datoTil: undefined})
@@ -35,8 +35,8 @@ const Fraværsperioder:FunctionComponent<Props> = props => {
         .map ( (fraværsintervall, indeks) => {
         return (
             <DatoIntervallInput
-                setEnPeriodeAlleredeLøpende={props.setFraværAlleredeLøpende}
-                enPeriodeAlleredeLøpende={props.etFraværAlleredeLøpende}
+                setIndeksLøpendeperiode={props.setIndeksLøpendeFraværsperiode}
+                indeksLøpendeperiode={props.indeksLøpendeFraværsperiode}
                 setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
                 allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
                 indeksFraværsperioder={indeks}

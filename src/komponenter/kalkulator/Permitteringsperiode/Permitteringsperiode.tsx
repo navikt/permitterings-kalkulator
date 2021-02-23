@@ -4,7 +4,7 @@ import './Permitteringsperiode.less';
 
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervall
+    DatoIntervall,
 } from '../kalkulator';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
@@ -15,24 +15,35 @@ interface Props {
     info: DatoIntervall;
     indeks: number;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setAllePermitteringerOgFraværesPerioder: (allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder) => void;
-    setEnPermitteringAlleredeLøpende: (finnesløpende: boolean) => void
-    enPermitteringAlleredeLøpende: boolean
+    setAllePermitteringerOgFraværesPerioder: (
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+    ) => void;
+    setIndeksLøpendePermitteringsperiode: (indeks: number | undefined) => void;
+    indeksLøpendePermitteringsperiode: undefined | number;
 }
 
-const Permitteringsperiode: FunctionComponent<Props> = props => {
-
+const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const leggTilNyPermitteringsperiode = () => {
-        const sistRegistrerteDag = finnSistePermitteringsdato(props.allePermitteringerOgFraværesPerioder.permitteringer);
+        const sistRegistrerteDag = finnSistePermitteringsdato(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        )
+            ? finnSistePermitteringsdato(
+                  props.allePermitteringerOgFraværesPerioder.permitteringer
+              )
+            : new Date();
         const nyPeriode: DatoIntervall = {
-            datoFra: finn1DagFram(sistRegistrerteDag),
-            datoTil: undefined
-        }
+            datoFra: finn1DagFram(sistRegistrerteDag!!),
+            datoTil: undefined,
+        };
 
-        const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
-        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode)
-        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder)
-    }
+        const kopiAvPermitterinsperioder = {
+            ...props.allePermitteringerOgFraværesPerioder,
+        };
+        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode);
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvPermitterinsperioder
+        );
+    };
 
     /*const slettPeriode = () => {
         const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
@@ -42,20 +53,35 @@ const Permitteringsperiode: FunctionComponent<Props> = props => {
 
      */
 
-    return (<div className={'permitteringsperiode'} >
-                <DatoIntervallInput
-                    setEnPeriodeAlleredeLøpende={props.setEnPermitteringAlleredeLøpende}
-                    enPeriodeAlleredeLøpende={props.enPermitteringAlleredeLøpende}
-                    indeksPermitteringsperioder={props.indeks}
-                    allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
-                    setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
-                    type={'PERMITTERINGSINTERVALL'}
-                />
-        { props.indeks === props.allePermitteringerOgFraværesPerioder.permitteringer.length -1 &&
-        <Knapp className={'permitteringsperiode__legg-til-knapp'} onClick={()=> {
-            leggTilNyPermitteringsperiode();
-        }
-        }>+ legg til ny permitteringsperiode</Knapp>}
+    return (
+        <div className={'permitteringsperiode'}>
+            <DatoIntervallInput
+                setIndeksLøpendeperiode={
+                    props.setIndeksLøpendePermitteringsperiode
+                }
+                indeksLøpendeperiode={props.indeksLøpendePermitteringsperiode}
+                indeksPermitteringsperioder={props.indeks}
+                allePermitteringerOgFraværesPerioder={
+                    props.allePermitteringerOgFraværesPerioder
+                }
+                setAllePermitteringerOgFraværesPerioder={
+                    props.setAllePermitteringerOgFraværesPerioder
+                }
+                type={'PERMITTERINGSINTERVALL'}
+            />
+            {props.indeks ===
+                props.allePermitteringerOgFraværesPerioder.permitteringer
+                    .length -
+                    1 && (
+                <Knapp
+                    className={'permitteringsperiode__legg-til-knapp'}
+                    onClick={() => {
+                        leggTilNyPermitteringsperiode();
+                    }}
+                >
+                    + legg til ny permitteringsperiode
+                </Knapp>
+            )}
         </div>
     );
 };
