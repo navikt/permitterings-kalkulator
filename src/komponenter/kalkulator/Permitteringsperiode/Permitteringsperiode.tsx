@@ -9,7 +9,7 @@ import {
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finn1DagFram, finnSistePermitteringsdato } from '../utregninger';
+import { finn1DagFram, finnSisteDato } from '../utregninger';
 
 interface Props {
     info: DatoIntervall;
@@ -24,10 +24,10 @@ interface Props {
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const leggTilNyPermitteringsperiode = () => {
-        const sistRegistrerteDag = finnSistePermitteringsdato(
+        const sistRegistrerteDag = finnSisteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         )
-            ? finnSistePermitteringsdato(
+            ? finnSisteDato(
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
             : new Date();
@@ -45,13 +45,20 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
-    /*const slettPeriode = () => {
-        const kopiAvPermitterinsperioder = {...props.allePermitteringerOgFraværesPerioder};
-        kopiAvPermitterinsperioder.permitteringer.splice(props.indeks, 1)
-        props.setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder);
-    }
-
-     */
+    const slettPeriode = () => {
+        const kopiAvPermitterinsperioder = {
+            ...props.allePermitteringerOgFraværesPerioder,
+        };
+        if (kopiAvPermitterinsperioder.permitteringer.length > 1) {
+            kopiAvPermitterinsperioder.permitteringer.splice(props.indeks, 1);
+        } else {
+            // TODO Hva skal skje her?
+            console.log('// TODO Hva skal skje her?');
+        }
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvPermitterinsperioder
+        );
+    };
 
     return (
         <div className={'permitteringsperiode'}>
@@ -68,6 +75,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                     props.setAllePermitteringerOgFraværesPerioder
                 }
                 type={'PERMITTERINGSINTERVALL'}
+                slettPeriode={slettPeriode}
             />
             {props.indeks ===
                 props.allePermitteringerOgFraværesPerioder.permitteringer

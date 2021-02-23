@@ -270,9 +270,7 @@ export const finnDato18MndFram = (dato: Date) => {
     return nyDato;
 };
 
-export const finnTidligstePermitteringsdato = (
-    datointervall: DatoIntervall[]
-) => {
+export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
     let tidligsteDato = datointervall[0].datoFra!!;
     datointervall.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
@@ -287,15 +285,15 @@ export const finnTidligstePermitteringsdato = (
     return tidligsteDato;
 };
 
-export const finnSistePermitteringsdato = (datointervall: DatoIntervall[]) => {
+export const finnSisteDato = (datointervall: DatoIntervall[]) => {
     let sisteDato = datointervall[0].datoTil;
-    datointervall.forEach((datoIntervall) => {
-        if (datoIntervall.datoTil) {
+    datointervall.forEach((intervall) => {
+        if (intervall.datoTil) {
             if (!sisteDato) {
-                sisteDato = datoIntervall.datoTil;
+                sisteDato = intervall.datoTil;
             }
-            if (sisteDato < datoIntervall.datoTil) {
-                sisteDato = datoIntervall.datoTil;
+            if (sisteDato < intervall.datoTil) {
+                sisteDato = intervall.datoTil;
             }
         }
     });
