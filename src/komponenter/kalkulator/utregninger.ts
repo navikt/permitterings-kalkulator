@@ -457,6 +457,18 @@ export const finn1DagFram = (dato: Date) => {
     return enDagFram;
 };
 
+/*const antallElementMellomObjekt = (
+    fra: Date,
+    til: Date,
+    tidslinje: DatoMedKategori[]
+) => {
+    const indeksTil = finnIndeksForDato(til, tidslinje);
+    const indeksFra = finnIndeksForDato(fra, tidslinje);
+    return indeksTil - indeksFra + 1;
+};
+
+ */
+
 export const finn1DagTilbake = (dato?: Date) => {
     if (dato) {
         const enDagTilbake = new Date(dato);

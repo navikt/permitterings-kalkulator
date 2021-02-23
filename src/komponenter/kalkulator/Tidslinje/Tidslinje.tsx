@@ -1,7 +1,5 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    antalldagerGått,
-    DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
@@ -16,6 +14,8 @@ import {
     lagHTMLObjektForAlleDatoer,
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
+    regnUtHorisontalAvstandMellomToElement,
+    regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -26,62 +26,8 @@ interface Props {
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
-const regnUtHorisontalAvstandMellomToElement = (id1: string, id2: string) => {
-    const element1 = document.getElementById(id1);
-    const element2 = document.getElementById(id2);
-    const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
-    const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
-    const avstand =
-        posisjonBeskrivelse1?.right!! - posisjonBeskrivelse2?.right!!;
-    return Math.abs(avstand);
-};
-
-export const finnBreddeAvObjekt = (id: string) => {
-    const element = document.getElementById(id);
-    return element?.offsetWidth;
-};
-
-const finnIndeksForDato = (dato: Date, tidslinjeobjekt: DatoMedKategori[]) => {
-    let indeksDato = 0;
-    tidslinjeobjekt.forEach((objekt, indeks) => {
-        if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
-            indeksDato = indeks;
-        }
-    });
-    return indeksDato;
-};
-
-const regnUtPosisjonFraVenstreGittSluttdato = (
-    tidslinjeObjekter: DatoMedKategori[],
-    breddePerElementIProsent: number,
-    sluttDato: Date
-) => {
-    return (
-        (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
-            1 -
-            antalldagerGått(finnDato18MndTilbake(sluttDato), sluttDato)) *
-        breddePerElementIProsent
-    );
-};
-
-const antallElementMellomObjekt = (
-    fra: Date,
-    til: Date,
-    tidslinje: DatoMedKategori[]
-) => {
-    const indeksTil = finnIndeksForDato(til, tidslinje);
-    const indeksFra = finnIndeksForDato(fra, tidslinje);
-    return indeksTil - indeksFra + 1;
-};
-
-export const fraPixelTilProsent = (idContainer: string, antallBarn: number) => {
-    const breddeContainer = document.getElementById(idContainer)?.offsetWidth;
-    const breddePerObjekt = breddeContainer!! / antallBarn;
-    return (breddePerObjekt / breddeContainer!!) * 100;
-};
-
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const [datoOnDrag, setDatoOnDrag] = useState(props.sisteDagIPeriode);
+    const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState(
         konstruerStatiskTidslinje(props.allePermitteringerOgFraværesPerioder)
     );
@@ -135,6 +81,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         );
         if (
+            datoOnDrag &&
             datoOnDrag.toDateString() !== props.sisteDagIPeriode.toDateString()
         ) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
@@ -165,7 +112,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
-        props.set18mndsPeriode(datoOnDrag);
+        props.set18mndsPeriode(datoOnDrag!!);
     };
 
     const OnTidslinjeDrag = () => {
@@ -186,10 +133,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         setDatoOnDrag(tidslinjeObjekter[indeksStartDato].dato);
     };
 
-    console.log(absoluttPosisjonFraVenstreDragElement);
-
     const datoVisesPaDragElement =
-        props.endringAv === 'tidslinje' ? datoOnDrag : props.sisteDagIPeriode;
+        props.endringAv === 'tidslinje' && datoOnDrag
+            ? datoOnDrag
+            : props.sisteDagIPeriode;
 
     return (
         <div

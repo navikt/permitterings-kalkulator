@@ -17,7 +17,8 @@ import {
     finnDato18MndTilbake,
     finnUtOmDefinnesOverlappendePerioder,
 } from './utregninger';
-import Tidslinje, { fraPixelTilProsent } from './Tidslinje/Tidslinje';
+import Tidslinje from './Tidslinje/Tidslinje';
+import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
