@@ -175,7 +175,6 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 checked={indeks === props.indeksLøpendeperiode}
                 name={checkbokstekst(props.type)}
                 onChange={() => {
-                    console.log('ON CHANGE');
                     const nyStatus = !erLøpende;
                     setErLøpende(!erLøpende);
                     if (nyStatus) {

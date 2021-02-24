@@ -15,7 +15,7 @@ export const skrivOmDato = (dato?: Date) => {
 };
 
 export const skrivOmDatoStreng = (datoStreng: string) => {
-    const parts = datoStreng.split('/');
+    const parts = datoStreng.split('.');
     const year = parseInt(parts[2]);
     const month = parseInt(parts[1]);
     const day = parseInt(parts[0]);

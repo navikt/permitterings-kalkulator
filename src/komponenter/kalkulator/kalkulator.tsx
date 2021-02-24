@@ -17,7 +17,8 @@ import {
     finnDato18MndTilbake,
     finnUtOmDefinnesOverlappendePerioder,
 } from './utregninger';
-import Tidslinje, { fraPixelTilProsent } from './Tidslinje/Tidslinje';
+import Tidslinje from './Tidslinje/Tidslinje';
+import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
@@ -221,31 +222,39 @@ const Kalkulator = () => {
                             className={'kalkulator__tidslinje-wrapper'}
                             id={'kalkulator-tidslinje-wrapper'}
                         >
-                            <Undertittel>
-                                4. Beregningen vises i tidslinje
-                            </Undertittel>
                             {datoIntervallErDefinert(
                                 allePermitteringerOgFraværesPerioder
                                     .permitteringer[0]
                             ) && (
-                                <Tidslinje
-                                    setEndringAv={
-                                        setsteDagI18mndsPeriodeEndretAv
-                                    }
-                                    endringAv={sisteDagI18mndsPeriodeEndretAv}
-                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                        'kalkulator-tidslinje-wrapper',
-                                        antalldagerGått(
-                                            GRENSERFOR18MNDPERIODE.datoFra,
-                                            GRENSERFOR18MNDPERIODE.datoTil
-                                        )
-                                    )}
-                                    sisteDagIPeriode={sisteDagI18mndsPeriode}
-                                    set18mndsPeriode={setSisteDagI18mndsPeriode}
-                                    allePermitteringerOgFraværesPerioder={
-                                        allePermitteringerOgFraværesPerioder
-                                    }
-                                />
+                                <>
+                                    <Undertittel>
+                                        4. Beregningen vises i tidslinje
+                                    </Undertittel>
+                                    <Tidslinje
+                                        setEndringAv={
+                                            setsteDagI18mndsPeriodeEndretAv
+                                        }
+                                        endringAv={
+                                            sisteDagI18mndsPeriodeEndretAv
+                                        }
+                                        breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                            'kalkulator-tidslinje-wrapper',
+                                            antalldagerGått(
+                                                GRENSERFOR18MNDPERIODE.datoFra,
+                                                GRENSERFOR18MNDPERIODE.datoTil
+                                            )
+                                        )}
+                                        sisteDagIPeriode={
+                                            sisteDagI18mndsPeriode
+                                        }
+                                        set18mndsPeriode={
+                                            setSisteDagI18mndsPeriode
+                                        }
+                                        allePermitteringerOgFraværesPerioder={
+                                            allePermitteringerOgFraværesPerioder
+                                        }
+                                    />
+                                </>
                             )}
                         </div>
                         <AlertStripe type="info">

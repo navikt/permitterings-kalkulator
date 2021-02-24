@@ -1,4 +1,9 @@
-import { datointervallKategori, DatoMedKategori } from '../utregninger';
+import {
+    antalldagerGått,
+    datointervallKategori,
+    DatoMedKategori,
+    finnDato18MndTilbake,
+} from '../utregninger';
 import React from 'react';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import { Undertekst } from 'nav-frontend-typografi';
@@ -87,6 +92,56 @@ export const lagHTMLObjektForPeriodeMedFarge = (
         };
         return <div style={style} />;
     });
+};
+
+export const regnUtHorisontalAvstandMellomToElement = (
+    id1: string,
+    id2: string
+) => {
+    const element1 = document.getElementById(id1);
+    const element2 = document.getElementById(id2);
+    const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
+    const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
+    const avstand =
+        posisjonBeskrivelse1?.right!! - posisjonBeskrivelse2?.right!!;
+    return Math.abs(avstand);
+};
+
+export const finnBreddeAvObjekt = (id: string) => {
+    const element = document.getElementById(id);
+    return element?.offsetWidth;
+};
+
+export const finnIndeksForDato = (
+    dato: Date,
+    tidslinjeobjekt: DatoMedKategori[]
+) => {
+    let indeksDato = 0;
+    tidslinjeobjekt.forEach((objekt, indeks) => {
+        if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
+            indeksDato = indeks;
+        }
+    });
+    return indeksDato;
+};
+
+export const regnUtPosisjonFraVenstreGittSluttdato = (
+    tidslinjeObjekter: DatoMedKategori[],
+    breddePerElementIProsent: number,
+    sluttDato: Date
+) => {
+    return (
+        (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
+            1 -
+            antalldagerGått(finnDato18MndTilbake(sluttDato), sluttDato)) *
+        breddePerElementIProsent
+    );
+};
+
+export const fraPixelTilProsent = (idContainer: string, antallBarn: number) => {
+    const breddeContainer = document.getElementById(idContainer)?.offsetWidth;
+    const breddePerObjekt = breddeContainer!! / antallBarn;
+    return (breddePerObjekt / breddeContainer!!) * 100;
 };
 
 export const lagObjektForRepresentasjonAvPerioderMedFarge = (
