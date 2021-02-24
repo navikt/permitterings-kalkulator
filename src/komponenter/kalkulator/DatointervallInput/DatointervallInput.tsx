@@ -9,6 +9,7 @@ import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
 import { finn1DagFram } from '../utregninger';
 import { Knapp } from 'nav-frontend-knapper';
+import { Sletteknapp } from '../Sletteknapp/Sletteknapp';
 
 interface Props {
     indeksPermitteringsperioder?: number;
@@ -194,7 +195,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                     }
                 }}
             />
-            <Knapp onClick={props.slettPeriode}>slett</Knapp>
+            <Sletteknapp onClick={props.slettPeriode} />
         </div>
     );
 };
