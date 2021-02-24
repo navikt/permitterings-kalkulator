@@ -28,6 +28,7 @@ export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 export interface DatoIntervall {
     datoFra: Date | undefined;
     datoTil: Date | undefined;
+    erLøpende?: boolean;
 }
 
 export interface AllePermitteringerOgFraværesPerioder {
