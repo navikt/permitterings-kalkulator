@@ -8,7 +8,7 @@ type Props = {
 } & KnappBaseProps;
 
 export const Sletteknapp: FunctionComponent<Props> = (props) => (
-    <Knapp mini={true} {...props}>
+    <Knapp mini={true} type="flat" {...props}>
         <Kryss className="sletteknapp__kryss" /> Fjern
     </Knapp>
 );
