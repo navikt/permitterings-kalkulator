@@ -5,7 +5,6 @@ import {
     GRENSERFOR18MNDPERIODE,
 } from './kalkulator';
 import { skrivOmDato } from '../Datovelger/datofunksjoner';
-import { finnIndeksForDato } from './Tidslinje/tidslinjefunksjoner';
 
 export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
@@ -432,16 +431,6 @@ export const finn1DagFram = (dato: Date) => {
     const enDagFram = new Date(dato);
     enDagFram.setDate(enDagFram.getDate() + 1);
     return enDagFram;
-};
-
-const antallElementMellomObjekt = (
-    fra: Date,
-    til: Date,
-    tidslinje: DatoMedKategori[]
-) => {
-    const indeksTil = finnIndeksForDato(til, tidslinje);
-    const indeksFra = finnIndeksForDato(fra, tidslinje);
-    return indeksTil - indeksFra + 1;
 };
 
 export const finn1DagTilbake = (dato?: Date) => {
