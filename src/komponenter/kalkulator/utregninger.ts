@@ -220,30 +220,6 @@ export const kuttAvDatoIntervallInnefor18mnd = (
     );
 };
 
-/*export const finnDato18MndFram2 = (dato: Date) => {
-    let år = dato.getFullYear();
-    const månedom18måneder = (dato.getMonth()+18)%12 + 1
-    if (månedom18måneder-1 < dato.getMonth()){
-        år += 2
-    }
-    else {
-        år +=1;
-    }
-    let månedString = månedom18måneder.toString();
-    if (månedom18måneder<10) {
-        månedString = '0'+månedString
-    }
-    let datoString = (dato.getDate()-1).toString()
-    if (dato.getDate() < 10) {
-        datoString = '0'+datoString
-    }
-    let nyDato: Date;
-    nyDato = new Date(år + '-' + månedString + '-' + datoString)
-    return nyDato
-}
-
- */
-
 export const finnDato18MndTilbake = (dato: Date) => {
     let nyDato = new Date();
     nyDato.setFullYear(dato.getFullYear() - 2);
@@ -342,13 +318,24 @@ export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
                         tidsLinje[indeks - 1].kategori
                     );
                 }
+                if (
+                    tidsLinje[indeks].dato.getMonth() -
+                        tidsLinje[indeks - 1].dato.getMonth() !==
+                        1 &&
+                    tidsLinje[indeks].dato.getMonth() !== 0
+                ) {
+                    console.log(
+                        'datoer som feiler test kategorier',
+                        tidsLinje[indeks].kategori,
+                        tidsLinje[indeks - 1].kategori,
+                        skrivOmDato(tidsLinje[indeks].dato),
+                        skrivOmDato(tidsLinje[indeks - 1].dato)
+                    );
+                    bestårTest = false;
+                }
             }
         }
     });
-    console.log(
-        skrivOmDato(tidsLinje[0].dato),
-        skrivOmDato(tidsLinje[tidsLinje.length - 1].dato)
-    );
     return bestårTest;
 };
 
