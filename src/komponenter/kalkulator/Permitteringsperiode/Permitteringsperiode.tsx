@@ -57,6 +57,9 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 getDefaultPermitteringsperiode(),
             ];
         }
+        if (props.indeksLøpendePermitteringsperiode === props.indeks) {
+            props.setIndeksLøpendePermitteringsperiode(undefined);
+        }
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvPermitterinsperioder
         );

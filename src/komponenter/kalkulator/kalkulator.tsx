@@ -182,7 +182,7 @@ const Kalkulator = () => {
                                     </li>
                                     <li>Permittering grunnet streik</li>
                                     <li>
-                                        Perioder du betalr permitteringslønn
+                                        Perioder du betale permitteringslønn
                                     </li>
                                     <li>
                                         Klikk på lenken “- be om tilgang“ på

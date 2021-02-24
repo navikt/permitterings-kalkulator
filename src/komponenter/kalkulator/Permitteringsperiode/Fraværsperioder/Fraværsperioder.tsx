@@ -57,7 +57,13 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
-        kopiAvAllPermitteringsInfo.andreFraværsperioder.splice(indeks, 1);
+        if (kopiAvAllPermitteringsInfo.andreFraværsperioder.length > 1) {
+            kopiAvAllPermitteringsInfo.andreFraværsperioder.splice(indeks, 1);
+            if (props.indeksLøpendeFraværsperiode === indeks) {
+                props.setIndeksLøpendeFraværsperiode(undefined);
+            }
+        }
+
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvAllPermitteringsInfo
         );
