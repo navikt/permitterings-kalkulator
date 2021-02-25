@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
-import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall } from '../kalkulator';
+import { DatoIntervall } from '../typer';
+import { ARBEIDSGIVERPERIODE2DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
 import { finn1DagFram } from '../utregninger';

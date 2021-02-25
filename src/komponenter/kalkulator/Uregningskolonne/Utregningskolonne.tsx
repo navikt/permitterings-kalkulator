@@ -1,13 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-
-import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
+import { OversiktOverBrukteOgGjenværendeDager } from '../typer';
 import {
     finnDato18MndTilbake,
     kuttAvDatoIntervallInnefor18mnd,
-    OversiktOverBrukteOgGjenværendeDager,
     sumPermitteringerOgFravær,
 } from '../utregninger';
 

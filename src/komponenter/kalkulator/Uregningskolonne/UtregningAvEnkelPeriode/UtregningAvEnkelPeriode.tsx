@@ -4,7 +4,7 @@ import { Element, Undertekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
-} from '../../kalkulator';
+} from '../../typer';
 import {
     antalldagerGått,
     summerFraværsdagerIPermitteringsperiode,
@@ -13,7 +13,7 @@ import {
 interface UtregningAvEnkelPeriodeProps {
     indeks: number;
     permitteringsperiode: DatoIntervall;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> = (

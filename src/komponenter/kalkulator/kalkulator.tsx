@@ -11,41 +11,19 @@ import {
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
+import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antalldagerGått,
     datoIntervallErDefinert,
     finnDato18MndTilbake,
     finnUtOmDefinnesOverlappendePerioder,
+    GRENSERFOR18MNDPERIODE,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
-
-export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
-
-export interface DatoIntervall {
-    datoFra: Date | undefined;
-    datoTil: Date | undefined;
-    erLøpende?: boolean;
-}
-
-export interface AllePermitteringerOgFraværesPerioder {
-    permitteringer: DatoIntervall[];
-    andreFraværsperioder: DatoIntervall[];
-}
-
-const dagensDato = new Date();
-const bakover18mnd = finnDato18MndTilbake(dagensDato);
-const maksGrenseIBakoverITid = new Date(bakover18mnd);
-maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
-const maksGrenseFramoverITid = new Date(dagensDato);
-maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
-export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
-    datoFra: maksGrenseIBakoverITid,
-    datoTil: maksGrenseFramoverITid,
-};
 
 const Kalkulator = () => {
     const [

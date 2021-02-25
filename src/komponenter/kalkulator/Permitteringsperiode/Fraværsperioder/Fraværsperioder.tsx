@@ -1,10 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-} from '../../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {

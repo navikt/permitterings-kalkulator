@@ -4,7 +4,7 @@ import {
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
-import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';

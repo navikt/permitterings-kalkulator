@@ -6,7 +6,7 @@ import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
-import { GRENSERFOR18MNDPERIODE } from '../kalkulator';
+import { GRENSERFOR18MNDPERIODE } from '../utregninger';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;

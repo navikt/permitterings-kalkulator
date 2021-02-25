@@ -1,10 +1,12 @@
+import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import {
     AllePermitteringerOgFraværesPerioder,
-    ARBEIDSGIVERPERIODE2DATO,
     DatoIntervall,
-    GRENSERFOR18MNDPERIODE,
-} from './kalkulator';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
+    DatoMedKategori,
+    OversiktOverBrukteOgGjenværendeDager,
+} from './typer';
+
+export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
 export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
@@ -24,12 +26,6 @@ export const datoErFørMars = (dato: Date) => {
     const førsteMars = new Date('2021-03-01');
     return dato.getTime() < førsteMars.getTime();
 };
-
-export interface OversiktOverBrukteOgGjenværendeDager {
-    dagerPermittert: number;
-    dagerAnnetFravær: number;
-    dagerGjensående: number;
-}
 
 export const sumPermitteringerOgFravær = (
     allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
@@ -233,6 +229,22 @@ export const finnDato18MndTilbake = (dato: Date) => {
     return nyDato;
 };
 
+/**
+ * De her konstantene (eller hvertfall dagens dato) burde egentlig være "singletons"
+ * eller ligge i en state sån at alle steder hvor man bruker "dagens dato" får eksakt den samme datoen
+ */
+const dagensDato = new Date();
+const bakover18mnd = finnDato18MndTilbake(dagensDato);
+const maksGrenseIBakoverITid = new Date(bakover18mnd);
+maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
+const maksGrenseFramoverITid = new Date(dagensDato);
+maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
+
+export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
+    datoFra: maksGrenseIBakoverITid,
+    datoTil: maksGrenseFramoverITid,
+};
+
 export const finnDato18MndFram = (dato: Date) => {
     let nyDato = new Date();
     nyDato.setFullYear(dato.getFullYear() + 1);
@@ -247,10 +259,10 @@ export const finnDato18MndFram = (dato: Date) => {
 };
 
 export const finnTidligstePermitteringsdato = (
-    datointervall: DatoIntervall[]
+    datoIntervaller: DatoIntervall[]
 ) => {
-    let tidligsteDato = datointervall[0].datoFra!!;
-    datointervall.forEach((datoIntervall) => {
+    let tidligsteDato = datoIntervaller[0].datoFra!!;
+    datoIntervaller.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
             if (!tidligsteDato) {
                 tidligsteDato = datoIntervall.datoFra;
@@ -284,17 +296,6 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
         datoIntervall.datoTil !== undefined
     );
 };
-
-export enum datointervallKategori {
-    PERMITTERT,
-    ARBEIDER,
-    ANNETFRAVÆR,
-}
-
-export interface DatoMedKategori {
-    dato: Date;
-    kategori: datointervallKategori;
-}
 
 export const datoErIEnkeltIntervall = (
     dato: Date,
