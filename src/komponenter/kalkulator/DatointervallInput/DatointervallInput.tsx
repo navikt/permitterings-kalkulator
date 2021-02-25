@@ -3,6 +3,7 @@ import './DatointervallInput.less';
 import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Radio } from 'nav-frontend-skjema';
+import { finn1DagFram } from '../utregninger';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -27,16 +28,29 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             datoTil: dato,
         });
 
+    const onFraDatoChange = (event: any) => {
+        const eventDato: Date = event.currentTarget.value;
+
+        const nyttDatoIntervall = !!datoIntervall.datoTil
+            ? {
+                  datoFra: eventDato,
+              }
+            : {
+                  datoFra: eventDato,
+                  datoTil: finn1DagFram(eventDato),
+              };
+
+        setDatoIntervall({
+            ...datoIntervall,
+            ...nyttDatoIntervall,
+        });
+    };
+
     return (
         <div className={'kalkulator__datovelgere'}>
             <Datovelger
                 value={datoIntervall.datoFra}
-                onChange={(event) =>
-                    setDatoIntervall({
-                        ...datoIntervall,
-                        datoFra: event.currentTarget.value,
-                    })
-                }
+                onChange={onFraDatoChange}
                 skalVareFoer={datoIntervall.datoTil}
                 overtekst="Første dag"
             />
