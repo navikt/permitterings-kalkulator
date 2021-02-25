@@ -1,7 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder } from '../../kalkulator';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoIntervall,
+} from '../../kalkulator';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
@@ -21,37 +24,60 @@ interface Props {
 }
 
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
-    const antallFraværsperioder =
-        props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            ?.length || 0;
+    const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
 
     const leggTilNyFraVærsPeriode = () => {
+        setAntallFraværsperioder(antallFraværsperioder + 1);
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
-        let startDatoIntervall: Date;
+        let startDatoIntervall: Date | undefined;
         if (antallFraværsperioder === 0) {
             startDatoIntervall = finnTidligsteDato(
                 props.allePermitteringerOgFraværesPerioder.permitteringer
             );
         } else {
-            const sisteDatoMedFravær = finnSisteDato(
+            startDatoIntervall = finnSisteDato(
                 props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            );
-            startDatoIntervall =
-                sisteDatoMedFravær ||
-                finnTidligsteDato(
-                    props.allePermitteringerOgFraværesPerioder.permitteringer
-                );
+            )!!;
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push({
             datoFra: finn1DagFram(startDatoIntervall),
             datoTil: undefined,
         });
-        props.setAllePermitteringerOgFraværesPerioder(
-            kopiAvAllPermitteringsInfo
-        );
     };
+
+    const oppdaterDatoIntervall = (
+        indeks: number,
+        datoIntervall: DatoIntervall
+    ) => {
+        const kopiAvFraværsperioder = [
+            ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
+        ];
+        kopiAvFraværsperioder[indeks] = datoIntervall;
+        props.setAllePermitteringerOgFraværesPerioder({
+            ...props.allePermitteringerOgFraværesPerioder,
+            andreFraværsperioder: kopiAvFraværsperioder,
+        });
+    };
+
+    const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
+        (fraværsintervall, indeks) => {
+            return (
+                <DatoIntervallInput
+                    erLøpendeLabel="Fraværet er fortsatt aktivt"
+                    datoIntervall={
+                        props.allePermitteringerOgFraværesPerioder
+                            .andreFraværsperioder[indeks]
+                    }
+                    setDatoIntervall={(datoIntervall) =>
+                        oppdaterDatoIntervall(indeks, datoIntervall)
+                    }
+                    slettPeriode={() => slettFraværsperiode(indeks)}
+                />
+            );
+        }
+    );
 
     const slettFraværsperiode = (indeks: number) => {
         const kopiAvAllPermitteringsInfo = {
@@ -68,29 +94,6 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             kopiAvAllPermitteringsInfo
         );
     };
-
-    const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
-        (fraværsintervall, indeks) => {
-            return (
-                <DatoIntervallInput
-                    setIndeksLøpendeperiode={
-                        props.setIndeksLøpendeFraværsperiode
-                    }
-                    indeksLøpendeperiode={props.indeksLøpendeFraværsperiode}
-                    setAllePermitteringerOgFraværesPerioder={
-                        props.setAllePermitteringerOgFraværesPerioder
-                    }
-                    allePermitteringerOgFraværesPerioder={
-                        props.allePermitteringerOgFraværesPerioder
-                    }
-                    indeksFraværsperioder={indeks}
-                    type={'FRAVÆRSINTERVALL'}
-                    key={indeks}
-                    slettPeriode={() => slettFraværsperiode(indeks)}
-                />
-            );
-        }
-    );
 
     return (
         <div>

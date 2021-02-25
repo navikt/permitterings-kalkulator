@@ -46,6 +46,16 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
+    const oppdaterDatoIntervall = (datoIntervall: DatoIntervall) => {
+        const kopiAvPermitteringsperioder = [
+            ...props.allePermitteringerOgFraværesPerioder.permitteringer,
+        ];
+        kopiAvPermitteringsperioder[props.indeks] = datoIntervall;
+        props.setAllePermitteringerOgFraværesPerioder({
+            ...props.allePermitteringerOgFraværesPerioder,
+            permitteringer: kopiAvPermitteringsperioder,
+        });
+    };
     const slettPeriode = () => {
         const kopiAvPermitterinsperioder = {
             ...props.allePermitteringerOgFraværesPerioder,
@@ -68,18 +78,13 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
-                setIndeksLøpendeperiode={
-                    props.setIndeksLøpendePermitteringsperiode
+                datoIntervall={
+                    props.allePermitteringerOgFraværesPerioder.permitteringer[
+                        props.indeks
+                    ]
                 }
-                indeksLøpendeperiode={props.indeksLøpendePermitteringsperiode}
-                indeksPermitteringsperioder={props.indeks}
-                allePermitteringerOgFraværesPerioder={
-                    props.allePermitteringerOgFraværesPerioder
-                }
-                setAllePermitteringerOgFraværesPerioder={
-                    props.setAllePermitteringerOgFraværesPerioder
-                }
-                type={'PERMITTERINGSINTERVALL'}
+                setDatoIntervall={oppdaterDatoIntervall}
+                erLøpendeLabel="Permitteringen er fortsatt aktiv"
                 slettPeriode={slettPeriode}
             />
             {props.indeks ===
