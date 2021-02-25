@@ -55,18 +55,25 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         });
     };
     const slettPeriode = () => {
-        const kopiAvPermitterinsperioder = {
-            ...props.allePermitteringerOgFraværesPerioder,
-        };
-        if (kopiAvPermitterinsperioder.permitteringer.length > 1) {
-            kopiAvPermitterinsperioder.permitteringer.splice(props.indeks, 1);
+        let nyePermitteringsperioder = [
+            ...props.allePermitteringerOgFraværesPerioder.permitteringer,
+        ];
+        console.log(
+            'gamlePermitteringer',
+            JSON.stringify(nyePermitteringsperioder)
+        );
+        if (nyePermitteringsperioder.length > 1) {
+            nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
-            kopiAvPermitterinsperioder.permitteringer = [
-                getDefaultPermitteringsperiode(),
-            ];
+            nyePermitteringsperioder = [getDefaultPermitteringsperiode()];
         }
-        props.setAllePermitteringerOgFraværesPerioder(
-            kopiAvPermitterinsperioder
+        props.setAllePermitteringerOgFraværesPerioder({
+            ...props.allePermitteringerOgFraværesPerioder,
+            permitteringer: nyePermitteringsperioder,
+        });
+        console.log(
+            'nyePermitteringer',
+            JSON.stringify(nyePermitteringsperioder)
         );
     };
 

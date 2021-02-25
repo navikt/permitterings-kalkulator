@@ -17,13 +17,6 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
 
-    const setErLøpende = (løpende: boolean) => {
-        setDatoIntervall({
-            ...datoIntervall,
-            erLøpende: løpende,
-        });
-    };
-
     const setTilDato = (dato: Date) =>
         setDatoIntervall({
             ...datoIntervall,
@@ -48,6 +41,21 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
         });
     };
 
+    const onErLøpendeChange = () => {
+        const nyState = erLøpende
+            ? {
+                  erLøpende: false,
+              }
+            : {
+                  erLøpende: true,
+                  datoTil: ARBEIDSGIVERPERIODE2DATO,
+              };
+        setDatoIntervall({
+            ...datoIntervall,
+            ...nyState,
+        });
+    };
+
     return (
         <div className={'kalkulator__datovelgere'}>
             <Datovelger
@@ -69,15 +77,9 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             <Checkbox
                 className={'kalkulator__datovelgere-checkbox'}
                 label={erLøpendeLabel}
-                checked={datoIntervall.erLøpende}
+                checked={erLøpende}
                 name={erLøpendeLabel}
-                onChange={() => {
-                    const nyStatus = !erLøpende;
-                    setErLøpende(!erLøpende);
-                    if (nyStatus) {
-                        setTilDato(ARBEIDSGIVERPERIODE2DATO);
-                    }
-                }}
+                onChange={onErLøpendeChange}
             />
             <Sletteknapp onClick={props.slettPeriode} />
         </div>
