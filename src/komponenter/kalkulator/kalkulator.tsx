@@ -60,14 +60,6 @@ const Kalkulator = () => {
         permitteringer: [getDefaultPermitteringsperiode()],
         andreFraværsperioder: [],
     });
-    const [
-        indeksLøpendePermitteringsperiode,
-        setIndeksLøpendePermitteringsperiod,
-    ] = useState<number | undefined>(undefined);
-    const [
-        indeksLøpendeFraværsperiode,
-        setIndeksLøpendeFraværsperiode,
-    ] = useState<number | undefined>(undefined);
 
     const [
         sisteDagI18mndsPeriodeEndretAv,
@@ -118,13 +110,7 @@ const Kalkulator = () => {
         (permitteringsperiode, indeks) => {
             return (
                 <Permitteringsperiode
-                    indeksLøpendePermitteringsperiode={
-                        indeksLøpendePermitteringsperiode
-                    }
                     indeks={indeks}
-                    setIndeksLøpendePermitteringsperiode={
-                        setIndeksLøpendePermitteringsperiod
-                    }
                     allePermitteringerOgFraværesPerioder={
                         allePermitteringerOgFraværesPerioder
                     }
@@ -206,12 +192,6 @@ const Kalkulator = () => {
                     </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
-                            indeksLøpendeFraværsperiode={
-                                indeksLøpendeFraværsperiode
-                            }
-                            setIndeksLøpendeFraværsperiode={
-                                setIndeksLøpendeFraværsperiode
-                            }
                             setAllePermitteringerOgFraværesPerioder={
                                 setAllePermitteringerOgFraværesPerioder
                             }

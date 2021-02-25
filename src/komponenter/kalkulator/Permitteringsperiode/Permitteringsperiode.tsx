@@ -19,8 +19,6 @@ interface Props {
     setAllePermitteringerOgFraværesPerioder: (
         allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
-    setIndeksLøpendePermitteringsperiode: (indeks: number | undefined) => void;
-    indeksLøpendePermitteringsperiode: undefined | number;
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
@@ -66,9 +64,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             kopiAvPermitterinsperioder.permitteringer = [
                 getDefaultPermitteringsperiode(),
             ];
-        }
-        if (props.indeksLøpendePermitteringsperiode === props.indeks) {
-            props.setIndeksLøpendePermitteringsperiode(undefined);
         }
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvPermitterinsperioder

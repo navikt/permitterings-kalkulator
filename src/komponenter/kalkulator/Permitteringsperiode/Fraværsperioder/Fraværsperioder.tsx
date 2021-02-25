@@ -19,8 +19,6 @@ interface Props {
         allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setIndeksLøpendeFraværsperiode: (indeks: number | undefined) => void;
-    indeksLøpendeFraværsperiode: undefined | number;
 }
 
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
@@ -85,11 +83,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         };
         if (kopiAvAllPermitteringsInfo.andreFraværsperioder.length > 1) {
             kopiAvAllPermitteringsInfo.andreFraværsperioder.splice(indeks, 1);
-            if (props.indeksLøpendeFraværsperiode === indeks) {
-                props.setIndeksLøpendeFraværsperiode(undefined);
-            }
         }
-
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvAllPermitteringsInfo
         );

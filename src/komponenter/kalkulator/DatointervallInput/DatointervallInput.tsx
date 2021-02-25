@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
-import { Radio } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import { finn1DagFram } from '../utregninger';
 import { Sletteknapp } from '../Sletteknapp/Sletteknapp';
 
@@ -66,7 +66,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 />
             </div>
 
-            <Radio
+            <Checkbox
                 className={'kalkulator__datovelgere-checkbox'}
                 label={erLøpendeLabel}
                 checked={datoIntervall.erLøpende}
