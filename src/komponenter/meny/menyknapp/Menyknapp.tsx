@@ -17,6 +17,8 @@ const Menyknapp = (button: Button) => {
                 className={cls.element('button', !button.on ? '' : 'on')}
                 role="button"
                 onClick={button.change}
+                onKeyPress={button.change}
+                tabIndex={0}
             >
                 <span />
                 <span />
