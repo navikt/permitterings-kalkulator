@@ -22,27 +22,33 @@ interface Props {
 }
 
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
-    const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
+    const antallFraværsperioder =
+        props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const leggTilNyFraVærsPeriode = () => {
-        setAntallFraværsperioder(antallFraværsperioder + 1);
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
         let startDatoIntervall: Date | undefined;
+        const tidligstePermitteringsdato = finnTidligsteDato(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
         if (antallFraværsperioder === 0) {
-            startDatoIntervall = finnTidligsteDato(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            );
+            startDatoIntervall = tidligstePermitteringsdato;
         } else {
-            startDatoIntervall = finnSisteDato(
-                props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            )!!;
+            startDatoIntervall =
+                finnSisteDato(
+                    props.allePermitteringerOgFraværesPerioder
+                        .andreFraværsperioder
+                ) || tidligstePermitteringsdato;
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push({
             datoFra: finn1DagFram(startDatoIntervall),
             datoTil: undefined,
         });
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvAllPermitteringsInfo
+        );
     };
 
     const oppdaterDatoIntervall = (
@@ -64,6 +70,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             return (
                 <DatoIntervallInput
                     erLøpendeLabel="Fraværet er fortsatt aktivt"
+                    key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder
                             .andreFraværsperioder[indeks]

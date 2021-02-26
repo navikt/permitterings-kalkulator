@@ -261,7 +261,9 @@ export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
     return tidligsteDato;
 };
 
-export const finnSisteDato = (datointervall: DatoIntervall[]) => {
+export const finnSisteDato = (
+    datointervall: DatoIntervall[]
+): Date | undefined => {
     let sisteDato = datointervall[0].datoTil;
     datointervall.forEach((intervall) => {
         if (intervall.datoTil) {
