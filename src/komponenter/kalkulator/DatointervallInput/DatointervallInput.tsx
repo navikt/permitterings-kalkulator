@@ -4,7 +4,7 @@ import { ARBEIDSGIVERPERIODE2DATO, DatoIntervall } from '../kalkulator';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import { finn1DagFram } from '../utregninger';
-import { Sletteknapp } from '../Sletteknapp/Sletteknapp';
+import { Lukknapp } from 'nav-frontend-ikonknapper';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -57,15 +57,17 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     };
 
     return (
-        <div className={'kalkulator__datovelgere'}>
-            <Datovelger
-                value={datoIntervall.datoFra}
-                onChange={onFraDatoChange}
-                skalVareFoer={datoIntervall.datoTil}
-                overtekst="Første dag"
-            />
-            <div className="skjema-innhold__dato-velger-til">
+        <div className="datointervall-input">
+            <div className="datointervall-input__dato-wrapper">
                 <Datovelger
+                    className="datointervall-input__datoinput"
+                    value={datoIntervall.datoFra}
+                    onChange={onFraDatoChange}
+                    skalVareFoer={datoIntervall.datoTil}
+                    overtekst="Første dag"
+                />
+                <Datovelger
+                    className="datointervall-input__datoinput"
                     value={datoIntervall.datoTil}
                     onChange={(event) => setTilDato(event.currentTarget.value)}
                     disabled={erLøpende}
@@ -73,15 +75,17 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
-
             <Checkbox
-                className={'kalkulator__datovelgere-checkbox'}
+                className="datointervall-input__checkbox"
                 label={erLøpendeLabel}
                 checked={erLøpende}
                 name={erLøpendeLabel}
                 onChange={onErLøpendeChange}
             />
-            <Sletteknapp onClick={props.slettPeriode} />
+            <Lukknapp
+                className="datointervall-input__slett-knapp"
+                onClick={props.slettPeriode}
+            />
         </div>
     );
 };

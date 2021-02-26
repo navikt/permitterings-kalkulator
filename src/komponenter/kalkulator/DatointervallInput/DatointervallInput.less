@@ -1,7 +1,28 @@
-.kalkulator__datovelgere {
-    align-items: flex-start;
-}
+@import '~nav-frontend-core/less/_variabler';
 
-.kalkulator__datovelgere-checkbox {
-    align-self: flex-end;
+.datointervall-input {
+    display: flex;
+
+    flex-direction: column;
+
+    margin: 1rem 0 1rem;
+
+    background-color: @navLysGra;
+    padding: 1rem;
+    border-radius: 0.25rem;
+
+    position: relative;
+
+    &__dato-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    &__datoinput {
+        margin-bottom: 1rem;
+    }
+    &__slett-knapp {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+    }
 }

@@ -99,7 +99,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                         leggTilNyPermitteringsperiode();
                     }}
                 >
-                    + legg til ny permitteringsperiode
+                    + Legg til ny periode
                 </Knapp>
             )}
         </div>
