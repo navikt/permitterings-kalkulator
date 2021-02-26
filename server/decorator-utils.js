@@ -53,6 +53,7 @@ const getMenu = () => {
 };
 
 const getMenuAndServeApp = () => {
+    console.log('Henter meny og starter app ...');
     mainCacheMeny.get(mainCacheKey, (err, response) => {
         if (!err && response !== undefined) {
             server.serveAppWithMenu(response);
