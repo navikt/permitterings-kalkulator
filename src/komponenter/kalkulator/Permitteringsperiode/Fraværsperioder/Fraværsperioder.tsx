@@ -130,7 +130,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 className={'kalkulator__legg-til-knapp'}
                 onClick={() => leggTilNyFraVærsPeriode()}
             >
-                + legg til ny fraværsperiode
+                + Legg til ny periode
             </Knapp>
         </div>
     );
