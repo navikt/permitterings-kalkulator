@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
+    DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
@@ -28,9 +29,9 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
-    const [tidslinjeObjekter, setTidslinjeObjekter] = useState(
-        konstruerStatiskTidslinje(props.allePermitteringerOgFraværesPerioder)
-    );
+    const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
+        DatoMedKategori[]
+    >([]);
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,

@@ -10,6 +10,7 @@ import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelP
 import {
     finnDato18MndTilbake,
     kuttAvDatoIntervallInnefor18mnd,
+    OversiktOverBrukteOgGjenværendeDager,
     sumPermitteringerOgFravær,
 } from '../utregninger';
 
@@ -25,15 +26,18 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         oversiktOverPerioderInnenfor18mnd,
         setOversiktOverPerioderInnenfor18mnd,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        andreFraværsperioder:
-            props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
+        andreFraværsperioder: [],
         permitteringer: [],
     });
 
     const [
         resultatUtregningAv18mndsPeriode,
         setResultatUtregningAv18mndsPeriode,
-    ] = useState(sumPermitteringerOgFravær(oversiktOverPerioderInnenfor18mnd));
+    ] = useState<OversiktOverBrukteOgGjenværendeDager>({
+        dagerPermittert: 0,
+        dagerAnnetFravær: 0,
+        dagerGjensående: 0,
+    });
 
     useEffect(() => {
         const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioder = {
@@ -55,7 +59,6 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
 
     useEffect(() => {
-        console.log('use effect her bruker tidslinje');
         setResultatUtregningAv18mndsPeriode(
             sumPermitteringerOgFravær(oversiktOverPerioderInnenfor18mnd)
         );

@@ -349,7 +349,6 @@ export const konstruerStatiskTidslinje = (
         GRENSERFOR18MNDPERIODE.datoFra,
         GRENSERFOR18MNDPERIODE.datoTil
     );
-    console.log('tidslinje konstruksjon');
     const startDato = GRENSERFOR18MNDPERIODE.datoFra;
     listeMedTidslinjeObjekter.push(
         finneKategori(startDato!!, allePermitteringerOgFravær)
