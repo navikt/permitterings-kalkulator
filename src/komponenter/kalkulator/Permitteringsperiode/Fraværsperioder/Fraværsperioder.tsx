@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../typer';
@@ -6,8 +6,8 @@ import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
     finn1DagFram,
-    finnSistePermitteringsdato,
-    finnTidligstePermitteringsdato,
+    finnSisteDato,
+    finnTidligsteDato,
 } from '../../utregninger';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
@@ -16,32 +16,36 @@ interface Props {
         allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    setIndeksLøpendeFraværsperiode: (indeks: number | undefined) => void;
-    indeksLøpendeFraværsperiode: undefined | number;
 }
 
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
-    const [antallFraværsperioder, setAntallFraværsperioder] = useState(0);
+    const antallFraværsperioder =
+        props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const leggTilNyFraVærsPeriode = () => {
-        setAntallFraværsperioder(antallFraværsperioder + 1);
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
         let startDatoIntervall: Date | undefined;
+        const tidligstePermitteringsdato = finnTidligsteDato(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
         if (antallFraværsperioder === 0) {
-            startDatoIntervall = finnTidligstePermitteringsdato(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            );
+            startDatoIntervall = tidligstePermitteringsdato;
         } else {
-            startDatoIntervall = finnSistePermitteringsdato(
-                props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            )!!;
+            startDatoIntervall =
+                finnSisteDato(
+                    props.allePermitteringerOgFraværesPerioder
+                        .andreFraværsperioder
+                ) || tidligstePermitteringsdato;
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push({
             datoFra: finn1DagFram(startDatoIntervall),
             datoTil: undefined,
         });
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvAllPermitteringsInfo
+        );
     };
 
     const oppdaterDatoIntervall = (
@@ -63,6 +67,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             return (
                 <DatoIntervallInput
                     erLøpendeLabel="Fraværet er fortsatt aktivt"
+                    key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder
                             .andreFraværsperioder[indeks]
@@ -70,10 +75,23 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                     setDatoIntervall={(datoIntervall) =>
                         oppdaterDatoIntervall(indeks, datoIntervall)
                     }
+                    slettPeriode={() => slettFraværsperiode(indeks)}
                 />
             );
         }
     );
+
+    const slettFraværsperiode = (indeks: number) => {
+        const kopiAvAllPermitteringsInfo = {
+            ...props.allePermitteringerOgFraværesPerioder,
+        };
+        if (kopiAvAllPermitteringsInfo.andreFraværsperioder.length > 1) {
+            kopiAvAllPermitteringsInfo.andreFraværsperioder.splice(indeks, 1);
+        }
+        props.setAllePermitteringerOgFraværesPerioder(
+            kopiAvAllPermitteringsInfo
+        );
+    };
 
     return (
         <div>
@@ -116,7 +134,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 className={'kalkulator__legg-til-knapp'}
                 onClick={() => leggTilNyFraVærsPeriode()}
             >
-                + legg til ny fraværsperiode
+                + Legg til ny periode
             </Knapp>
         </div>
     );

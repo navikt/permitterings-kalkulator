@@ -15,8 +15,8 @@ import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antalldagerGått,
     datoIntervallErDefinert,
-    finnDato18MndTilbake,
     finnUtOmDefinnesOverlappendePerioder,
+    getDefaultPermitteringsperiode,
     GRENSERFOR18MNDPERIODE,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
@@ -30,19 +30,9 @@ const Kalkulator = () => {
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [
-            { datoFra: finnDato18MndTilbake(new Date()), datoTil: undefined },
-        ],
+        permitteringer: [getDefaultPermitteringsperiode()],
         andreFraværsperioder: [],
     });
-    const [
-        indeksLøpendePermitteringsperiode,
-        setIndeksLøpendePermitteringsperiod,
-    ] = useState<number | undefined>(undefined);
-    const [
-        indeksLøpendeFraværsperiode,
-        setIndeksLøpendeFraværsperiode,
-    ] = useState<number | undefined>(undefined);
 
     const [
         sisteDagI18mndsPeriodeEndretAv,
@@ -93,13 +83,7 @@ const Kalkulator = () => {
         (permitteringsperiode, indeks) => {
             return (
                 <Permitteringsperiode
-                    indeksLøpendePermitteringsperiode={
-                        indeksLøpendePermitteringsperiode
-                    }
                     indeks={indeks}
-                    setIndeksLøpendePermitteringsperiode={
-                        setIndeksLøpendePermitteringsperiod
-                    }
                     allePermitteringerOgFraværesPerioder={
                         allePermitteringerOgFraværesPerioder
                     }
@@ -159,7 +143,7 @@ const Kalkulator = () => {
                                     </li>
                                     <li>Permittering grunnet streik</li>
                                     <li>
-                                        Perioder du betalr permitteringslønn
+                                        Perioder du betale permitteringslønn
                                     </li>
                                     <li>
                                         Klikk på lenken “- be om tilgang“ på
@@ -181,12 +165,6 @@ const Kalkulator = () => {
                     </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
-                            indeksLøpendeFraværsperiode={
-                                indeksLøpendeFraværsperiode
-                            }
-                            setIndeksLøpendeFraværsperiode={
-                                setIndeksLøpendeFraværsperiode
-                            }
                             setAllePermitteringerOgFraværesPerioder={
                                 setAllePermitteringerOgFraværesPerioder
                             }

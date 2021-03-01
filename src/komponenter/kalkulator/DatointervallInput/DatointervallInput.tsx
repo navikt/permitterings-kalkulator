@@ -3,25 +3,20 @@ import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
 import { ARBEIDSGIVERPERIODE2DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
-import { Radio } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import { finn1DagFram } from '../utregninger';
+import Lukknapp from 'nav-frontend-lukknapp';
 
 interface Props {
     datoIntervall: DatoIntervall;
     setDatoIntervall: (datoIntervall: DatoIntervall) => void;
     erLøpendeLabel: string;
+    slettPeriode: () => void;
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
-
-    const setErLøpende = (løpende: boolean) => {
-        setDatoIntervall({
-            ...datoIntervall,
-            erLøpende: løpende,
-        });
-    };
 
     const setTilDato = (dato: Date) =>
         setDatoIntervall({
@@ -47,16 +42,33 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
         });
     };
 
+    const onErLøpendeChange = () => {
+        const nyState = erLøpende
+            ? {
+                  erLøpende: false,
+              }
+            : {
+                  erLøpende: true,
+                  datoTil: ARBEIDSGIVERPERIODE2DATO,
+              };
+        setDatoIntervall({
+            ...datoIntervall,
+            ...nyState,
+        });
+    };
+
     return (
-        <div className={'kalkulator__datovelgere'}>
-            <Datovelger
-                value={datoIntervall.datoFra}
-                onChange={onFraDatoChange}
-                skalVareFoer={datoIntervall.datoTil}
-                overtekst="Første dag"
-            />
-            <div className="skjema-innhold__dato-velger-til">
+        <div className="datointervall-input">
+            <div className="datointervall-input__dato-wrapper">
                 <Datovelger
+                    className="datointervall-input__datoinput"
+                    value={datoIntervall.datoFra}
+                    onChange={onFraDatoChange}
+                    skalVareFoer={datoIntervall.datoTil}
+                    overtekst="Første dag"
+                />
+                <Datovelger
+                    className="datointervall-input__datoinput"
                     value={datoIntervall.datoTil}
                     onChange={(event) => setTilDato(event.currentTarget.value)}
                     disabled={erLøpende}
@@ -64,19 +76,16 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
-
-            <Radio
-                className={'kalkulator__datovelgere-checkbox'}
+            <Checkbox
+                className="datointervall-input__checkbox"
                 label={erLøpendeLabel}
-                checked={datoIntervall.erLøpende}
+                checked={erLøpende}
                 name={erLøpendeLabel}
-                onChange={() => {
-                    const nyStatus = !erLøpende;
-                    setErLøpende(!erLøpende);
-                    if (nyStatus) {
-                        setTilDato(ARBEIDSGIVERPERIODE2DATO);
-                    }
-                }}
+                onChange={onErLøpendeChange}
+            />
+            <Lukknapp
+                className="datointervall-input__slett-knapp"
+                onClick={props.slettPeriode}
             />
         </div>
     );

@@ -245,6 +245,11 @@ export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
     datoTil: maksGrenseFramoverITid,
 };
 
+export const getDefaultPermitteringsperiode = (): DatoIntervall => ({
+    datoFra: finnDato18MndTilbake(new Date()),
+    datoTil: undefined,
+});
+
 export const finnDato18MndFram = (dato: Date) => {
     let nyDato = new Date();
     nyDato.setFullYear(dato.getFullYear() + 1);
@@ -258,11 +263,9 @@ export const finnDato18MndFram = (dato: Date) => {
     return nyDato;
 };
 
-export const finnTidligstePermitteringsdato = (
-    datoIntervaller: DatoIntervall[]
-) => {
-    let tidligsteDato = datoIntervaller[0].datoFra!!;
-    datoIntervaller.forEach((datoIntervall) => {
+export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
+    let tidligsteDato = datointervall[0].datoFra!!;
+    datointervall.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
             if (!tidligsteDato) {
                 tidligsteDato = datoIntervall.datoFra;
@@ -275,15 +278,17 @@ export const finnTidligstePermitteringsdato = (
     return tidligsteDato;
 };
 
-export const finnSistePermitteringsdato = (datointervall: DatoIntervall[]) => {
+export const finnSisteDato = (
+    datointervall: DatoIntervall[]
+): Date | undefined => {
     let sisteDato = datointervall[0].datoTil;
-    datointervall.forEach((datoIntervall) => {
-        if (datoIntervall.datoTil) {
+    datointervall.forEach((intervall) => {
+        if (intervall.datoTil) {
             if (!sisteDato) {
-                sisteDato = datoIntervall.datoTil;
+                sisteDato = intervall.datoTil;
             }
-            if (sisteDato < datoIntervall.datoTil) {
-                sisteDato = datoIntervall.datoTil;
+            if (sisteDato < intervall.datoTil) {
+                sisteDato = intervall.datoTil;
             }
         }
     });
