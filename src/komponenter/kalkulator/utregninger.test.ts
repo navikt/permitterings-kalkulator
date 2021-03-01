@@ -6,7 +6,7 @@ import {
 import {
     antalldagerGått,
     finn1DagTilbake,
-    finnTidligstePermitteringsdato,
+    finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
@@ -29,7 +29,6 @@ test('Antal dager mellom to datoer', () => {
     const enDagIFebruar = new Date('2021-02-20');
     const nesteDagIFebruar = new Date('2021-02-21');
     const enDagIMars = new Date('2021-03-23');
-    const enDagIAugust = new Date('2020-08-15');
 
     expect(antalldagerGått(enDagIFebruar, enDagIFebruar)).toBe(1);
     expect(antalldagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
@@ -62,9 +61,8 @@ test('Summer antall fraværsdager i en permitteringsperiode', () => {
     const startFraværsIntervall1 = new Date('2021-03-01');
     const sluttFraværsIntervall1 = new Date('2021-03-15'); // 15 dager
 
-    // 1 dag, men hvorfor regnes dette som en dag da antallDagerGått returnerer 2?
     const startFraværsIntervall2 = new Date('2021-04-02');
-    const sluttFraværsIntervall2 = new Date('2021-04-02');
+    const sluttFraværsIntervall2 = new Date('2021-04-02'); // 1 dag
 
     const startFraværsIntervall3 = new Date('2021-04-29');
     const sluttFraværsIntervall3 = new Date('2021-05-07'); // 9 dager
@@ -125,7 +123,7 @@ test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', 
     };
 
     expect(
-        finnTidligstePermitteringsdato(
+        finnTidligsteDato(
             Array.of(
                 permitteringsPeriode1,
                 permitteringsPeriode2,
@@ -185,7 +183,7 @@ test('Sum av permitteringer og fravær', () => {
         new Date('2021-02-14')
     );
     expect(oversikt.dagerAnnetFravær).toBe(1); // Burde være 2? Vises som to i selve komponenten.
-    expect(oversikt.dagerGjensående).toBe(653); // Hm ?
+    expect(oversikt.dagerGjensående).toBe(650); // Hm ?
     expect(oversikt.dagerPermittert).toBe(64); // 65?
 });
 
