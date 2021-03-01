@@ -58,10 +58,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         let nyePermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];
-        console.log(
-            'gamlePermitteringer',
-            JSON.stringify(nyePermitteringsperioder)
-        );
         if (nyePermitteringsperioder.length > 1) {
             nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
@@ -71,10 +67,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             ...props.allePermitteringerOgFraværesPerioder,
             permitteringer: nyePermitteringsperioder,
         });
-        console.log(
-            'nyePermitteringer',
-            JSON.stringify(nyePermitteringsperioder)
-        );
     };
 
     return (
