@@ -112,6 +112,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
+        props.setEndringAv('tidslinje');
         if (datoOnDrag) {
             props.set18mndsPeriode(datoOnDrag);
         }
@@ -119,7 +120,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     const OnTidslinjeDrag = () => {
         setPosisjonsStylingDragElement('static');
-        props.setEndringAv('tidslinje');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
         htmlElementerForHverDato.forEach((objekt, indeks) => {

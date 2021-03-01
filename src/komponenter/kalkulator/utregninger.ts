@@ -32,8 +32,7 @@ export interface OversiktOverBrukteOgGjenværendeDager {
 }
 
 export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
-    sisteDag: Date
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder
 ): OversiktOverBrukteOgGjenværendeDager => {
     const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
         allePErmitteringerOgFraværsperioder
@@ -180,7 +179,6 @@ export const kuttAvDatoIntervallFørGittDato = (
             nyttDatoIntervall.datoTil = undefined;
         }
     }
-    skrivut(nyttDatoIntervall);
     return nyttDatoIntervall;
 };
 
@@ -304,7 +302,7 @@ export const datoErIEnkeltIntervall = (
 };
 
 export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
-    let bestårTest = true;
+    /*let bestårTest = true;
     tidsLinje.forEach((objekt, indeks) => {
         if (indeks > 0) {
             if (
@@ -339,6 +337,8 @@ export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
         }
     });
     return bestårTest;
+
+     */
 };
 
 export const konstruerStatiskTidslinje = (
@@ -349,6 +349,7 @@ export const konstruerStatiskTidslinje = (
         GRENSERFOR18MNDPERIODE.datoFra,
         GRENSERFOR18MNDPERIODE.datoTil
     );
+    console.log('tidslinje konstruksjon');
     const startDato = GRENSERFOR18MNDPERIODE.datoFra;
     listeMedTidslinjeObjekter.push(
         finneKategori(startDato!!, allePermitteringerOgFravær)
@@ -359,7 +360,6 @@ export const konstruerStatiskTidslinje = (
             finneKategori(nesteDag, allePermitteringerOgFravær)
         );
     }
-    console.log(testFunksjonAvTidslinje(listeMedTidslinjeObjekter));
     return listeMedTidslinjeObjekter;
 };
 
