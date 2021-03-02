@@ -4,9 +4,7 @@ require('console-stamp')(console, '[HH:MM:ss.l]');
 const express = require('express');
 const sanity = require('./sanity-utils');
 const template = require('./template');
-const {
-    injectDecoratorServerSide,
-} = require('@navikt/nav-dekoratoren-moduler/ssr');
+
 const path = require('path');
 
 const server = express();
@@ -19,11 +17,6 @@ const sendDataObj = (json) => ({
     data: json,
     env: [process.env.SANITY_PROJECT_ID, process.env.SANITY_DATASET],
 });
-
-const getHtmlWithDecorator = (filePath) =>
-    injectDecoratorServerSide({
-        filePath: filePath,
-    });
 
 const addHeadersForCertainRequests = () =>
     server.use((req, res, next) => {
