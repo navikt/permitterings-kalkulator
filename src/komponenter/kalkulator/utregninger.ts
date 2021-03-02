@@ -32,8 +32,7 @@ export interface OversiktOverBrukteOgGjenværendeDager {
 }
 
 export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
-    sisteDag: Date
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder
 ): OversiktOverBrukteOgGjenværendeDager => {
     const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
         allePErmitteringerOgFraværsperioder
@@ -180,7 +179,6 @@ export const kuttAvDatoIntervallFørGittDato = (
             nyttDatoIntervall.datoTil = undefined;
         }
     }
-    skrivut(nyttDatoIntervall);
     return nyttDatoIntervall;
 };
 
@@ -303,44 +301,6 @@ export const datoErIEnkeltIntervall = (
     return dato >= intervall.datoFra!! && dato <= intervall.datoTil!!;
 };
 
-export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
-    let bestårTest = true;
-    tidsLinje.forEach((objekt, indeks) => {
-        if (indeks > 0) {
-            if (
-                tidsLinje[indeks].dato.getDate() -
-                    tidsLinje[indeks - 1].dato.getDate() !==
-                1
-            ) {
-                if (tidsLinje[indeks].dato.getDate() !== 1) {
-                    bestårTest = false;
-                    console.log(
-                        'datoer som feiler test kategorier',
-                        tidsLinje[indeks].kategori,
-                        tidsLinje[indeks - 1].kategori
-                    );
-                }
-                if (
-                    tidsLinje[indeks].dato.getMonth() -
-                        tidsLinje[indeks - 1].dato.getMonth() !==
-                        1 &&
-                    tidsLinje[indeks].dato.getMonth() !== 0
-                ) {
-                    console.log(
-                        'datoer som feiler test kategorier',
-                        tidsLinje[indeks].kategori,
-                        tidsLinje[indeks - 1].kategori,
-                        skrivOmDato(tidsLinje[indeks].dato),
-                        skrivOmDato(tidsLinje[indeks - 1].dato)
-                    );
-                    bestårTest = false;
-                }
-            }
-        }
-    });
-    return bestårTest;
-};
-
 export const konstruerStatiskTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
 ) => {
@@ -359,7 +319,6 @@ export const konstruerStatiskTidslinje = (
             finneKategori(nesteDag, allePermitteringerOgFravær)
         );
     }
-    console.log(testFunksjonAvTidslinje(listeMedTidslinjeObjekter));
     return listeMedTidslinjeObjekter;
 };
 

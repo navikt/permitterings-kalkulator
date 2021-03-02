@@ -1,5 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
+    DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
@@ -28,9 +29,9 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
-    const [tidslinjeObjekter, setTidslinjeObjekter] = useState(
-        konstruerStatiskTidslinje(props.allePermitteringerOgFraværesPerioder)
-    );
+    const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
+        DatoMedKategori[]
+    >([]);
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
@@ -112,6 +113,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
+        props.setEndringAv('tidslinje');
         if (datoOnDrag) {
             props.set18mndsPeriode(datoOnDrag);
         }
@@ -119,7 +121,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     const OnTidslinjeDrag = () => {
         setPosisjonsStylingDragElement('static');
-        props.setEndringAv('tidslinje');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
         htmlElementerForHverDato.forEach((objekt, indeks) => {
