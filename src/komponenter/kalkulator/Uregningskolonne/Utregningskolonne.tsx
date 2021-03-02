@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 
@@ -30,14 +30,13 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         permitteringer: [],
     });
 
-    const [
-        resultatUtregningAv18mndsPeriode,
-        setResultatUtregningAv18mndsPeriode,
-    ] = useState<OversiktOverBrukteOgGjenværendeDager>({
-        dagerPermittert: 0,
-        dagerAnnetFravær: 0,
-        dagerGjensående: 0,
-    });
+    const resultatUtregningAv18mndsPeriode = useRef<OversiktOverBrukteOgGjenværendeDager>(
+        {
+            dagerPermittert: 0,
+            dagerAnnetFravær: 0,
+            dagerGjensående: 0,
+        }
+    );
 
     useEffect(() => {
         const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioder = {
@@ -56,13 +55,10 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
             }
         );
         setOversiktOverPerioderInnenfor18mnd(avkuttet18mndPerioder);
-    }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
-
-    useEffect(() => {
-        setResultatUtregningAv18mndsPeriode(
-            sumPermitteringerOgFravær(oversiktOverPerioderInnenfor18mnd)
+        resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFravær(
+            oversiktOverPerioderInnenfor18mnd
         );
-    }, [oversiktOverPerioderInnenfor18mnd]);
+    }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
 
     const enkeltUtregninger = oversiktOverPerioderInnenfor18mnd.permitteringer.map(
         (permitteringsperiode, indeks) => {
@@ -80,9 +76,10 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     );
 
     const heleUkerPermittert = Math.floor(
-        resultatUtregningAv18mndsPeriode.dagerPermittert / 7
+        resultatUtregningAv18mndsPeriode.current.dagerPermittert / 7
     );
-    const restIDager = resultatUtregningAv18mndsPeriode.dagerPermittert % 7;
+    const restIDager =
+        resultatUtregningAv18mndsPeriode.current.dagerPermittert % 7;
 
     return (
         <div className={'utregningskolonne'}>
@@ -92,9 +89,11 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
                 <Element>
                     {`${heleUkerPermittert} uker og ${restIDager} dager`}
                 </Element>
-                {resultatUtregningAv18mndsPeriode.dagerPermittert > 0 && (
+                {resultatUtregningAv18mndsPeriode.current.dagerPermittert >
+                    0 && (
                     <>
-                        {resultatUtregningAv18mndsPeriode.dagerPermittert >
+                        {resultatUtregningAv18mndsPeriode.current
+                            .dagerPermittert >
                             49 * 7 && (
                             <Element>
                                 {'Permitteringen overskrider 49 uker'}
