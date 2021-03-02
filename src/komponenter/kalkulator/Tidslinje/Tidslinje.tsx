@@ -3,9 +3,11 @@ import {
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
-import { DatoMedKategori } from '../typer';
 import './Tidslinje.less';
-import { AllePermitteringerOgFraværesPerioder } from '../typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoMedKategori,
+} from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';

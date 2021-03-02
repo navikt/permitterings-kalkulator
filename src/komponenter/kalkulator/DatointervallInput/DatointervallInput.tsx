@@ -1,10 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
-import { ARBEIDSGIVERPERIODE2DATO } from '../utregninger';
+import { ARBEIDSGIVERPERIODE2DATO, finn1DagFram } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
-import { finn1DagFram } from '../utregninger';
 import Lukknapp from 'nav-frontend-lukknapp';
 
 interface Props {

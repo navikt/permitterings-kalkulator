@@ -1,12 +1,15 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Topp.less';
-import { finnDato18MndFram, finnDato18MndTilbake } from '../utregninger';
+import {
+    finnDato18MndFram,
+    finnDato18MndTilbake,
+    GRENSERFOR18MNDPERIODE,
+} from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
-import { GRENSERFOR18MNDPERIODE } from '../utregninger';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
