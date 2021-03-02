@@ -6,7 +6,6 @@ const sanity = require('./sanity-utils');
 const template = require('./template');
 const { getHtmlWithDecorator } = require('./decorator-utils');
 const path = require('path');
-const helmet = require('helmet');
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -41,7 +40,7 @@ const addHeadersForCertainRequests = () =>
     });
 
 const startServer = () => {
-    server.use(helmet());
+    server.disable('x-powered-by');
     addHeadersForCertainRequests();
 
     server.get(`${BASE_PATH}/innhold/`, (req, res) => {
