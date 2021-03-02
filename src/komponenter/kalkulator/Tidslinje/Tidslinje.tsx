@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
+import { DatoMedKategori } from '../typer';
 import './Tidslinje.less';
 import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
