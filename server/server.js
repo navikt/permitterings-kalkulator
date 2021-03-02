@@ -4,13 +4,12 @@ require('console-stamp')(console, '[HH:MM:ss.l]');
 const express = require('express');
 const sanity = require('./sanity-utils');
 const template = require('./template');
-
+const { getHtmlWithDecorator } = require('./decorator-utils');
 const path = require('path');
 
 const server = express();
 const PORT = process.env.PORT || 3000;
 const buildPath = path.join(__dirname, '../build');
-
 const BASE_PATH = '/arbeidsgiver-permittering';
 
 const sendDataObj = (json) => ({

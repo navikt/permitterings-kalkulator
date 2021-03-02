@@ -4,10 +4,22 @@ const {
 
 const decoratorConfig = {
     env: process.env.NAIS_CLUSTER_NAME === 'prod-sbs' ? 'prod' : 'dev',
+    url: process.env.DECORATOR_URL || 'https://www-q1.nav.no/dekoratoren',
+    context: 'arbeidsgiver',
+    language: 'nb',
+    breadcrumbs: [
+        {
+            url: 'https://arbeidsgiver.nav.no/arbeidsgiver-permittering',
+            title: 'Veiviser for permittering',
+        },
+    ],
 };
+
+console.log('Bruker dekoratør med følgende config: ', decoratorConfig);
 
 const getHtmlWithDecorator = (filePath) =>
     injectDecoratorServerSide({
+        ...decoratorConfig,
         filePath: filePath,
     });
 
