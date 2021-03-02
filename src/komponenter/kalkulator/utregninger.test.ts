@@ -6,6 +6,7 @@ import {
 import {
     antalldagerGått,
     finn1DagTilbake,
+    finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
     kuttAvDatoIntervallInnefor18mnd,
@@ -132,6 +133,45 @@ test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', 
             )
         ).getTime()
     ).toBe(new Date('2021-01-10').getTime());
+});
+
+test('Finner den siste datoen fra en liste av flere permitteringsperioder', () => {
+    const startPermitteringsPeriode1 = new Date('2021-02-14');
+    const sluttPermitteringsPeriode1 = new Date('2021-03-02');
+    const startPermitteringsPeriode2 = new Date('2021-01-10');
+    const sluttPermitteringsPeriode2 = new Date('2021-01-25');
+    const startPermitteringsPeriode3 = new Date('2021-04-14');
+    const sluttPermitteringsPeriode3 = new Date('2021-04-28');
+    const startPermitteringsPeriode4 = new Date('2021-05-14');
+    const sluttPermitteringsPeriode4 = new Date('2021-06-02');
+
+    const permitteringsPeriode1: DatoIntervall = {
+        datoFra: startPermitteringsPeriode1,
+        datoTil: sluttPermitteringsPeriode1,
+    };
+    const permitteringsPeriode2: DatoIntervall = {
+        datoFra: startPermitteringsPeriode2,
+        datoTil: sluttPermitteringsPeriode2,
+    };
+    const permitteringsPeriode3: DatoIntervall = {
+        datoFra: startPermitteringsPeriode3,
+        datoTil: sluttPermitteringsPeriode3,
+    };
+    const permitteringsPeriode4: DatoIntervall = {
+        datoFra: startPermitteringsPeriode4,
+        datoTil: sluttPermitteringsPeriode4,
+    };
+
+    expect(
+        finnSisteDato(
+            Array.of(
+                permitteringsPeriode1,
+                permitteringsPeriode2,
+                permitteringsPeriode3,
+                permitteringsPeriode4
+            )
+        )?.getTime()
+    ).toBe(new Date('2021-06-02').getTime());
 });
 
 test('Sum av permitteringer og fravær', () => {
