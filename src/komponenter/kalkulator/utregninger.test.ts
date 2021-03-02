@@ -26,7 +26,7 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
-test('Antal dager mellom to datoer', () => {
+test('Antall dager mellom to datoer', () => {
     const enDagIFebruar = new Date('2021-02-20');
     const nesteDagIFebruar = new Date('2021-02-21');
     const enDagIMars = new Date('2021-03-23');
@@ -59,33 +59,21 @@ test('Tester om to datointervaller er overlappende. Samme slutt og startdato ska
 });
 
 test('Summer antall fraværsdager i en permitteringsperiode', () => {
-    const startFraværsIntervall1 = new Date('2021-03-01');
-    const sluttFraværsIntervall1 = new Date('2021-03-15'); // 15 dager
-
-    const startFraværsIntervall2 = new Date('2021-04-02');
-    const sluttFraværsIntervall2 = new Date('2021-04-02'); // 1 dag
-
-    const startFraværsIntervall3 = new Date('2021-04-29');
-    const sluttFraværsIntervall3 = new Date('2021-05-07'); // 9 dager
-
-    const startPermitteringsPeriode = new Date('2020-02-14');
-    const sluttPermitteringsPeriode = new Date('2021-06-02');
-
     const fraværsIntervall1: DatoIntervall = {
-        datoFra: startFraværsIntervall1,
-        datoTil: sluttFraværsIntervall1,
+        datoFra: new Date('2021-03-01'),
+        datoTil: new Date('2021-03-15'),
     };
     const fraværsIntervall2: DatoIntervall = {
-        datoFra: startFraværsIntervall2,
-        datoTil: sluttFraværsIntervall2,
+        datoFra: new Date('2021-04-02'),
+        datoTil: new Date('2021-04-02'),
     };
     const fraværsIntervall3: DatoIntervall = {
-        datoFra: startFraværsIntervall3,
-        datoTil: sluttFraværsIntervall3,
+        datoFra: new Date('2021-04-29'),
+        datoTil: new Date('2021-05-07'),
     };
     const permitteringsPeriode: DatoIntervall = {
-        datoFra: startPermitteringsPeriode,
-        datoTil: sluttPermitteringsPeriode,
+        datoFra: new Date('2020-02-14'),
+        datoTil: new Date('2021-06-02'),
     };
 
     expect(
@@ -219,8 +207,7 @@ test('Sum av permitteringer og fravær', () => {
     };
 
     const oversikt: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(
-        alle,
-        new Date('2021-02-14')
+        alle
     );
     expect(oversikt.dagerAnnetFravær).toBe(1); // Burde være 2? Vises som to i selve komponenten.
     expect(oversikt.dagerGjensående).toBe(650); // Hm ?
