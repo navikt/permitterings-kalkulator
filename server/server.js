@@ -68,7 +68,7 @@ const startServer = () => {
         res.sendStatus(200)
     );
 
-    server.get(BASE_PATH, async (req, res) => {
+    server.get(BASE_PATH + '/*', async (req, res) => {
         try {
             res.send(await getHtmlWithDecorator(buildPath + '/index.html'));
         } catch (e) {
