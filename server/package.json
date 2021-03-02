@@ -4,13 +4,22 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
+        "@navikt/nav-dekoratoren-moduler": "^1.2.2",
         "@sanity/client": "1.149.7",
+        "classnames": "^2.2.6",
         "console-stamp": "0.2.9",
         "dotenv": "8.2.0",
         "fs-extra": "8.1.0",
-        "helmet": "3.21.3",
+        "helmet": "^4.4.1",
+        "html-react-parser": "^1.2.4",
         "jsdom": "^16.4.0",
-        "node-cache": "4.2.0",
-        "node-fetch": "2.6.1"
+        "nav-frontend-ikoner-assets": "^2.0.10",
+        "nav-frontend-spinner": "^2.0.16",
+        "nav-frontend-spinner-style": "^1.0.2",
+        "node-cache": "^5.1.2",
+        "node-fetch": "^2.6.1",
+        "path": "^0.12.7",
+        "prop-types": "^15.7.2",
+        "react": "^17.0.1"
     }
 }
