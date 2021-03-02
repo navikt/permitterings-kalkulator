@@ -18,6 +18,7 @@
         "nav-frontend-spinner-style": "^1.0.2",
         "node-cache": "^5.1.2",
         "node-fetch": "^2.6.1",
+        "path": "^0.12.7",
         "prop-types": "^15.7.2",
         "react": "^17.0.1"
     }

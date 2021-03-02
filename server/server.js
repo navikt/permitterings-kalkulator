@@ -1,4 +1,5 @@
 require('./set-env-variables');
+require('console-stamp')(console, '[HH:MM:ss.l]');
 
 const express = require('express');
 const sanity = require('./sanity-utils');
@@ -24,7 +25,7 @@ const getHtmlWithDecorator = (filePath) =>
         filePath: filePath,
     });
 
-const leggPåHeadersForVisseKall = () =>
+const addHeadersForCertainRequests = () =>
     server.use((req, res, next) => {
         if (template.corsWhitelist.includes(req.headers.origin)) {
             res.header('Access-Control-Allow-Origin', req.headers.origin);
@@ -47,7 +48,7 @@ const leggPåHeadersForVisseKall = () =>
     });
 
 const startServer = () => {
-    leggPåHeadersForVisseKall();
+    addHeadersForCertainRequests();
 
     server.get(`${BASE_PATH}/innhold/`, (req, res) => {
         const cacheInnhold = sanity.mainCacheInnhold.get(
