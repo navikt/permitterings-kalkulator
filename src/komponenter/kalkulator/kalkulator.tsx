@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
@@ -17,20 +17,23 @@ import {
     datoIntervallErDefinert,
     finnUtOmDefinnesOverlappendePerioder,
     getDefaultPermitteringsperiode,
-    GRENSERFOR18MNDPERIODE,
+    finnGrenserFor18MNDPeriode,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { PermitteringContext } from '../ContextProvider';
 
 const Kalkulator = () => {
+    const { dagensDato } = useContext(PermitteringContext);
+
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [getDefaultPermitteringsperiode()],
+        permitteringer: [getDefaultPermitteringsperiode(dagensDato)],
         andreFraværsperioder: [],
     });
 
@@ -47,7 +50,7 @@ const Kalkulator = () => {
     );
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState(
-        new Date()
+        dagensDato
     );
 
     useEffect(() => {
@@ -197,8 +200,12 @@ const Kalkulator = () => {
                                         breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                             'kalkulator-tidslinje-wrapper',
                                             antalldagerGått(
-                                                GRENSERFOR18MNDPERIODE.datoFra,
-                                                GRENSERFOR18MNDPERIODE.datoTil
+                                                finnGrenserFor18MNDPeriode(
+                                                    dagensDato
+                                                ).datoFra,
+                                                finnGrenserFor18MNDPeriode(
+                                                    dagensDato
+                                                ).datoTil
                                             )
                                         )}
                                         sisteDagIPeriode={

@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
@@ -20,6 +25,8 @@ import {
     regnUtHorisontalAvstandMellomToElement,
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
+import { PermitteringContext } from '../../ContextProvider';
+
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Date) => void;
@@ -30,6 +37,7 @@ interface Props {
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
+    const { dagensDato } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
@@ -66,7 +74,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
-                props.allePermitteringerOgFraværesPerioder
+                props.allePermitteringerOgFraværesPerioder,
+                dagensDato
             )
         );
     }, [props.allePermitteringerOgFraværesPerioder]);

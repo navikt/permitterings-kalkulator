@@ -8,9 +8,9 @@ import {
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
-export const antalldagerGått = (fra?: Date, til?: Date) => {
+export const antalldagerGått = (fra?: Date, til?: Date, dagensDato?: Date) => {
     if (fra && til) {
-        const tilDato = til ? til : new Date();
+        const tilDato = til ? til : dagensDato ? dagensDato : new Date();
         const msGatt = tilDato.getTime() - fra.getTime();
         const dagerGått = msGatt / (1000 * 60 * 60 * 24);
         return Math.ceil(dagerGått + 1);
@@ -28,10 +28,12 @@ export const datoErFørMars = (dato: Date) => {
 };
 
 export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
+    dagensDato: Date
 ): OversiktOverBrukteOgGjenværendeDager => {
     const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
-        allePErmitteringerOgFraværsperioder
+        allePErmitteringerOgFraværsperioder,
+        dagensDato
     );
     let permittert = 0;
     let antallDagerFravær = 0;
@@ -57,10 +59,9 @@ export const sumPermitteringerOgFravær = (
 };
 
 //denne regner feil
-export const regnUtDatoAGP2 = (dagerBrukt: number) => {
+export const regnUtDatoAGP2 = (dagerBrukt: number, dagensDato: Date) => {
     const dagerIgjen = 210 - dagerBrukt;
-    const dagenDato = new Date();
-    const beregnetAGP2 = new Date(dagenDato);
+    const beregnetAGP2 = new Date(dagensDato);
     beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen);
     if (dagerIgjen > 0) {
         return beregnetAGP2;
@@ -227,24 +228,24 @@ export const finnDato18MndTilbake = (dato: Date) => {
     return nyDato;
 };
 
-/**
- * De her konstantene (eller hvertfall dagens dato) burde egentlig være "singletons"
- * eller ligge i en state sån at alle steder hvor man bruker "dagens dato" får eksakt den samme datoen
- */
-const dagensDato = new Date();
-const bakover18mnd = finnDato18MndTilbake(dagensDato);
-const maksGrenseIBakoverITid = new Date(bakover18mnd);
-maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
-const maksGrenseFramoverITid = new Date(dagensDato);
-maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
+export const finnGrenserFor18MNDPeriode = (dagensDato: Date): DatoIntervall => {
+    const bakover18mnd = finnDato18MndTilbake(dagensDato);
+    const maksGrenseIBakoverITid = new Date(bakover18mnd);
+    maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
+    const maksGrenseFramoverITid = new Date(dagensDato);
+    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
 
-export const GRENSERFOR18MNDPERIODE: DatoIntervall = {
-    datoFra: maksGrenseIBakoverITid,
-    datoTil: maksGrenseFramoverITid,
+    const intervall: DatoIntervall = {
+        datoFra: maksGrenseIBakoverITid,
+        datoTil: maksGrenseFramoverITid,
+    };
+    return intervall;
 };
 
-export const getDefaultPermitteringsperiode = (): DatoIntervall => ({
-    datoFra: finnDato18MndTilbake(new Date()),
+export const getDefaultPermitteringsperiode = (
+    dagensDato: Date
+): DatoIntervall => ({
+    datoFra: finnDato18MndTilbake(dagensDato),
     datoTil: undefined,
 });
 
@@ -308,14 +309,15 @@ export const datoErIEnkeltIntervall = (
 };
 
 export const konstruerStatiskTidslinje = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
+    dagensDato: Date
 ) => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
     const antallObjektITidslinje = antalldagerGått(
-        GRENSERFOR18MNDPERIODE.datoFra,
-        GRENSERFOR18MNDPERIODE.datoTil
+        finnGrenserFor18MNDPeriode(dagensDato).datoFra,
+        finnGrenserFor18MNDPeriode(dagensDato).datoTil
     );
-    const startDato = GRENSERFOR18MNDPERIODE.datoFra;
+    const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
         finneKategori(startDato!!, allePermitteringerOgFravær)
     );
