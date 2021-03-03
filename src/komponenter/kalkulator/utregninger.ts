@@ -81,16 +81,16 @@ export const inngårIPermitteringsperiode = (
             fraværsintervall.datoTil!! <= permitteringsintervall.datoTil!!;
 
         const fraværIHelePerioden =
-            fraværsintervall.datoFra!! < permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoTil!! > permitteringsintervall.datoTil!!;
+            fraværsintervall.datoFra!! <= permitteringsintervall.datoFra!! &&
+            fraværsintervall.datoTil!! >= permitteringsintervall.datoTil!!;
 
         const sisteDelInngår =
-            fraværsintervall.datoFra!! > permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoFra!! < permitteringsintervall.datoTil!!;
+            fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!! &&
+            fraværsintervall.datoFra!! <= permitteringsintervall.datoTil!!;
 
         const førsteDelInngår =
-            fraværsintervall.datoFra!! < permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoTil!! > permitteringsintervall.datoFra!!;
+            fraværsintervall.datoFra!! <= permitteringsintervall.datoFra!! &&
+            fraværsintervall.datoTil!! >= permitteringsintervall.datoFra!!;
 
         switch (true) {
             case helefraVærsperiodenInngår:
