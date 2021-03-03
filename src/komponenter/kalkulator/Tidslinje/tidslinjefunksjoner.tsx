@@ -1,9 +1,5 @@
-import {
-    antalldagerGått,
-    datointervallKategori,
-    DatoMedKategori,
-    finnDato18MndTilbake,
-} from '../utregninger';
+import { datointervallKategori, DatoMedKategori } from '../typer';
+import { antalldagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import { Undertekst } from 'nav-frontend-typografi';

@@ -2,15 +2,15 @@ import React, { FunctionComponent } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-    getDefaultPermitteringsperiode,
-} from '../kalkulator';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finn1DagFram, finnSisteDato } from '../utregninger';
+import {
+    finn1DagFram,
+    finnSisteDato,
+    getDefaultPermitteringsperiode,
+} from '../utregninger';
 
 interface Props {
     info: DatoIntervall;

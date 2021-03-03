@@ -1,11 +1,13 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
-    DatoMedKategori,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
-import { AllePermitteringerOgFraværesPerioder } from '../kalkulator';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoMedKategori,
+} from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
