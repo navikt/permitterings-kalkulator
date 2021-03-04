@@ -10,6 +10,7 @@ interface RepresentasjonAvPeriodeMedFarge {
     kategori: datointervallKategori;
     grenserTilFraværHøyre?: boolean;
     grenserTilFraværVenstre?: boolean;
+    key: number;
 }
 
 export const lagHTMLObjektForAlleDatoer = (
@@ -28,6 +29,7 @@ export const lagHTMLObjektForAlleDatoer = (
             : '';
         return (
             <div
+                key={indeks}
                 id={'kalkulator-tidslinjeobjekt-' + indeks}
                 style={style}
                 className={
@@ -37,7 +39,6 @@ export const lagHTMLObjektForAlleDatoer = (
                     skrivOmDato(objekt.dato) +
                     erÅrsmarkering
                 }
-                key={indeks}
             >
                 {erIdag && (
                     <div className={'tidslinje-dagens-dato-markør'}>
@@ -64,7 +65,7 @@ export const lagHTMLObjektForPeriodeMedFarge = (
 ) => {
     return representasjonAvPerioderMedFarge.map((objekt, indeks) => {
         let borderRadius = '0';
-        if (objekt.kategori === 0) {
+        if (objekt.kategori === 0 && indeks !== 0) {
             const grenserTilFraværVenstre =
                 objekt.kategori === 0 &&
                 representasjonAvPerioderMedFarge[indeks - 1].kategori === 2;
@@ -86,7 +87,7 @@ export const lagHTMLObjektForPeriodeMedFarge = (
             backgroundColor: finnFarge(objekt.kategori),
             borderRadius: borderRadius,
         };
-        return <div style={style} />;
+        return <div style={style} key={indeks} />;
     });
 };
 
@@ -156,6 +157,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
                 const fargeElement: RepresentasjonAvPeriodeMedFarge = {
                     antallDagerISekvens: rekkefølgeTeller,
                     kategori: tidslinjeObjekter[indeks - 1].kategori,
+                    key: indeks,
                 };
                 fargePerioder.push(fargeElement);
                 rekkefølgeTeller = 1;
@@ -164,6 +166,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
                 const fargeElement: RepresentasjonAvPeriodeMedFarge = {
                     antallDagerISekvens: rekkefølgeTeller,
                     kategori: tidslinjeObjekter[indeks].kategori,
+                    key: indeks,
                 };
                 fargePerioder.push(fargeElement);
             }
