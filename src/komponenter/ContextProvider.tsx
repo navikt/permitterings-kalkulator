@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import dayjs from 'dayjs';
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
@@ -61,7 +62,7 @@ const ContextProvider = (props: Props) => {
         sistOppdatert,
         settPermitteringInnhold,
         setSideSistOppdatert,
-        dagensDato: new Date(),
+        dagensDato: dayjs().startOf('date').toDate(),
     };
 
     useEffect(() => {
