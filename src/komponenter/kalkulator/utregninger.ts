@@ -8,13 +8,9 @@ import {
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
-export const antalldagerGått = (fra?: Date, til?: Date, dagensDato?: Date) => {
+export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
-        let tilDato = til || dagensDato;
-        if (!tilDato) {
-            tilDato = new Date();
-        }
-        const msGatt = tilDato.getTime() - fra.getTime();
+        const msGatt = til.getTime() - fra.getTime();
         const dagerGått = msGatt / (1000 * 60 * 60 * 24);
         return Math.ceil(dagerGått + 1);
     }
