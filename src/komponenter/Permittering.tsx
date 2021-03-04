@@ -50,7 +50,7 @@ const Permittering = () => {
                         <NarSkalJegUtbetaleLonn
                             className={permittering.className}
                             content={narSkalJegUtbetale}
-                            overskrift="Når skal jeg utbetale lønn?"
+                            overskrift="Lønnsplikt ved permittering"
                             id="narSkalJegUtbetaleLonn"
                         />
 

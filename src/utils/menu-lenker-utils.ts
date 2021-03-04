@@ -12,7 +12,7 @@ export const lenker: PermitteringsLenke[] = [
     },
     {
         hopplenke: '#narSkalJegUtbetaleLonn',
-        lenketekst: 'Når skal jeg utbetale lønn?',
+        lenketekst: 'Lønnsplikt ved permittering',
     },
     {
         hopplenke: '#permitteringsperioden',
