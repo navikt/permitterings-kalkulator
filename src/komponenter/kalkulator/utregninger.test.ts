@@ -1,6 +1,7 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
@@ -15,6 +16,7 @@ import {
     sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs from 'dayjs';
+import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');
@@ -28,10 +30,40 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
+export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
+    let bestårTest = true;
+    tidsLinje.forEach((objekt, indeks) => {
+        if (indeks > 0) {
+            if (
+                tidsLinje[indeks].dato.getDate() -
+                    tidsLinje[indeks - 1].dato.getDate() !==
+                1
+            ) {
+                if (tidsLinje[indeks].dato.getDate() !== 1) {
+                    bestårTest = false;
+                }
+                if (
+                    tidsLinje[indeks].dato.getMonth() -
+                        tidsLinje[indeks - 1].dato.getMonth() !==
+                        1 &&
+                    tidsLinje[indeks].dato.getMonth() !== 0
+                ) {
+                    bestårTest = false;
+                }
+            }
+        }
+    });
+    return bestårTest;
+};
+
 const tidslinje = konstruerStatiskTidslinje(
     { permitteringer: [], andreFraværsperioder: [] },
     dayjs().startOf('date').toDate()
 );
+test('tidslinje riktig konstruert', () => {
+    expect(testFunksjonAvTidslinje(tidslinje)).toBe(true);
+});
+
 test('Antall dager mellom to datoer', () => {
     for (let i = 0; i < 10; i++) {
         const tilfeldigIndeks = Math.floor(
