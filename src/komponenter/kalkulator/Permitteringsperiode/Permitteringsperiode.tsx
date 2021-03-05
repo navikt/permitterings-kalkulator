@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
@@ -11,6 +11,7 @@ import {
     finnSisteDato,
     getDefaultPermitteringsperiode,
 } from '../utregninger';
+import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
     info: DatoIntervall;
@@ -22,6 +23,7 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
+    const { dagensDato } = useContext(PermitteringContext);
     const leggTilNyPermitteringsperiode = () => {
         const sistRegistrerteDag = finnSisteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
@@ -29,7 +31,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             ? finnSisteDato(
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
-            : new Date();
+            : dagensDato;
         const nyPeriode: DatoIntervall = {
             datoFra: finn1DagFram(sistRegistrerteDag!!),
             datoTil: undefined,
@@ -61,7 +63,9 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         if (nyePermitteringsperioder.length > 1) {
             nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
-            nyePermitteringsperioder = [getDefaultPermitteringsperiode()];
+            nyePermitteringsperioder = [
+                getDefaultPermitteringsperiode(dagensDato),
+            ];
         }
         props.setAllePermitteringerOgFraværesPerioder({
             ...props.allePermitteringerOgFraværesPerioder,

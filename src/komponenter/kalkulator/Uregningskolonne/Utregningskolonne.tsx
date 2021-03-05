@@ -1,4 +1,10 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -12,6 +18,7 @@ import {
     kuttAvDatoIntervallInnefor18mnd,
     sumPermitteringerOgFravær,
 } from '../utregninger';
+import { PermitteringContext } from '../../ContextProvider';
 
 interface UtregningskolonneProps {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -28,6 +35,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         andreFraværsperioder: [],
         permitteringer: [],
     });
+    const { dagensDato } = useContext(PermitteringContext);
 
     const resultatUtregningAv18mndsPeriode = useRef<OversiktOverBrukteOgGjenværendeDager>(
         {
@@ -55,7 +63,8 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         );
         setOversiktOverPerioderInnenfor18mnd(avkuttet18mndPerioder);
         resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFravær(
-            oversiktOverPerioderInnenfor18mnd
+            oversiktOverPerioderInnenfor18mnd,
+            dagensDato
         );
     }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
 

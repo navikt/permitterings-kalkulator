@@ -207,7 +207,8 @@ test('Sum av permitteringer og fravær', () => {
     };
 
     const oversikt: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(
-        alle
+        alle,
+        new Date()
     );
     expect(oversikt.dagerAnnetFravær).toBe(1); // Burde være 2? Vises som to i selve komponenten.
     expect(oversikt.dagerGjensående).toBe(650); // Hm ?

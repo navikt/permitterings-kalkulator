@@ -1,15 +1,16 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import './Topp.less';
 import {
     finnDato18MndFram,
     finnDato18MndTilbake,
-    GRENSERFOR18MNDPERIODE,
+    finnGrenserFor18MNDPeriode,
 } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
+import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
@@ -20,19 +21,26 @@ interface Props {
 
 const Topp: FunctionComponent<Props> = (props) => {
     const [feilMelding, setFeilmelding] = useState('');
+    const { dagensDato } = useContext(PermitteringContext);
 
     const datoValidering = (dato: Date) => {
-        if (dato >= GRENSERFOR18MNDPERIODE.datoTil!!) {
+        if (dato >= finnGrenserFor18MNDPeriode(dagensDato).datoTil!!) {
             setFeilmelding(
-                'sett dato før ' + skrivOmDato(GRENSERFOR18MNDPERIODE.datoTil)
+                'sett dato før ' +
+                    skrivOmDato(finnGrenserFor18MNDPeriode(dagensDato).datoTil)
             );
             return false;
         }
-        if (finnDato18MndTilbake(dato) <= GRENSERFOR18MNDPERIODE.datoFra!!) {
+        if (
+            finnDato18MndTilbake(dato) <=
+            finnGrenserFor18MNDPeriode(dagensDato).datoFra!!
+        ) {
             setFeilmelding(
                 'sett dato før ' +
                     skrivOmDato(
-                        finnDato18MndFram(GRENSERFOR18MNDPERIODE.datoFra!!)
+                        finnDato18MndFram(
+                            finnGrenserFor18MNDPeriode(dagensDato).datoFra!!
+                        )
                     )
             );
             return false;
