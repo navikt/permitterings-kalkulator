@@ -124,6 +124,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
+        console.log(
+            dagensDato,
+            props.allePermitteringerOgFraværesPerioder.permitteringer[0].datoFra
+        );
         props.setEndringAv('tidslinje');
         if (datoOnDrag) {
             props.set18mndsPeriode(datoOnDrag);

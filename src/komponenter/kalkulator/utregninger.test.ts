@@ -9,10 +9,12 @@ import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
+    konstruerStatiskTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
     sumPermitteringerOgFravær,
 } from './utregninger';
+import dayjs from 'dayjs';
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');
@@ -26,14 +28,32 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
+const tidslinje = konstruerStatiskTidslinje(
+    { permitteringer: [], andreFraværsperioder: [] },
+    dayjs().startOf('date').toDate()
+);
 test('Antall dager mellom to datoer', () => {
+    for (let i = 0; i < 10; i++) {
+        const tilfeldigIndeks = Math.floor(
+            Math.random() * tidslinje.length + 1
+        );
+        const utregnetAntallDagerGått = antalldagerGått(
+            tidslinje[0].dato,
+            tidslinje[tilfeldigIndeks].dato
+        );
+        const riktigAntallDagerGått = tilfeldigIndeks + 1;
+        expect(utregnetAntallDagerGått).toBe(riktigAntallDagerGått);
+    }
+
     const enDagIFebruar = new Date('2021-02-20');
     const nesteDagIFebruar = new Date('2021-02-21');
     const enDagIMars = new Date('2021-03-23');
+    const enDagIMarsEtÅrSenere = new Date('2022-03-23');
 
     expect(antalldagerGått(enDagIFebruar, enDagIFebruar)).toBe(1);
     expect(antalldagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
     expect(antalldagerGått(enDagIFebruar, enDagIMars)).toBe(32);
+    expect(antalldagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
 });
 
 test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
