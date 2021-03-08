@@ -30,7 +30,9 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
-export const testFunksjonAvTidslinje = (tidsLinje: DatoMedKategori[]) => {
+export const sjekkOmDatoerErRiktigPlassertITidslinje = (
+    tidsLinje: DatoMedKategori[]
+) => {
     let bestårTest = true;
     tidsLinje.forEach((objekt, indeks) => {
         if (indeks > 0) {
@@ -61,7 +63,7 @@ const tidslinje = konstruerStatiskTidslinje(
     dayjs().startOf('date').toDate()
 );
 test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
-    expect(testFunksjonAvTidslinje(tidslinje)).toBe(true);
+    expect(sjekkOmDatoerErRiktigPlassertITidslinje(tidslinje)).toBe(true);
 });
 
 test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
