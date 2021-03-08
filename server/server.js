@@ -6,6 +6,7 @@ const sanity = require('./sanity-utils');
 const template = require('./template');
 const { getHtmlWithDecorator } = require('./decorator-utils');
 const path = require('path');
+const helmet = require('helmet');
 
 const server = express();
 const PORT = process.env.PORT || 3000;
@@ -40,7 +41,52 @@ const addHeadersForCertainRequests = () =>
     });
 
 const startServer = () => {
-    server.disable('x-powered-by');
+    server.use(
+        helmet({
+            contentSecurityPolicy: {
+                directives: {
+                    connectSrc: [
+                        "'self'",
+                        'https://*.nav.no',
+                        'https://*.psplugin.com',
+                        'https://*.hotjar.com',
+                        'https://www.google-analytics.com',
+                    ],
+                    defaultSrc: ["'none'"],
+                    fontSrc: [
+                        "'self'",
+                        'data:',
+                        'https://*.psplugin.com',
+                        'http://*.psplugin.com',
+                    ],
+                    frameSrc: [
+                        'https://player.vimeo.com',
+                        'https://*.hotjar.com',
+                    ],
+                    imgSrc: [
+                        "'self'",
+                        'data:',
+                        'https://*.nav.no',
+                        'https://www.google-analytics.com',
+                    ],
+                    manifestSrc: ["'self'"],
+                    scriptSrc: [
+                        "'self'",
+                        'https://*.nav.no',
+                        'https://www.googletagmanager.com',
+                        'https://www.google-analytics.com',
+                        'https://*.hotjar.com',
+                        'https://account.psplugin.com',
+                        "'unsafe-inline'",
+                        "'unsafe-eval'",
+                    ],
+                    styleSrc: ["'self'", 'https://*.nav.no', "'unsafe-inline'"],
+                },
+                reportOnly: true,
+            },
+        })
+    );
+
     addHeadersForCertainRequests();
 
     server.get(`${BASE_PATH}/innhold/`, (req, res) => {
