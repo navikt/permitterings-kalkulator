@@ -12,7 +12,7 @@ export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
         const msGatt = til.getTime() - fra.getTime();
         const dagerGått = msGatt / (1000 * 60 * 60 * 24);
-        return Math.ceil(dagerGått + 1);
+        return Math.round(dagerGått + 1);
     }
     return 0;
 };
@@ -215,7 +215,7 @@ export const kuttAvDatoIntervallInnefor18mnd = (
 };
 
 export const finnDato18MndTilbake = (dato: Date) => {
-    let nyDato = new Date();
+    let nyDato = new Date(dato);
     nyDato.setFullYear(dato.getFullYear() - 2);
     nyDato.setMonth(dato.getMonth() + 6);
     nyDato.setDate(dato.getDate() + 1);
@@ -249,7 +249,7 @@ export const getDefaultPermitteringsperiode = (
 });
 
 export const finnDato18MndFram = (dato: Date) => {
-    let nyDato = new Date();
+    let nyDato = new Date(dato);
     nyDato.setFullYear(dato.getFullYear() + 1);
     nyDato.setMonth(dato.getMonth() + 6);
     nyDato.setDate(dato.getDate() - 1);

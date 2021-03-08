@@ -1,6 +1,7 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
@@ -9,10 +10,13 @@ import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
+    konstruerStatiskTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
     sumPermitteringerOgFravær,
 } from './utregninger';
+import dayjs from 'dayjs';
+import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');
@@ -26,14 +30,62 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
+test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
+    const tidslinje = konstruerStatiskTidslinje(
+        { permitteringer: [], andreFraværsperioder: [] },
+        dayjs().startOf('date').toDate()
+    );
+    let bestårTest = true;
+    tidslinje.forEach((objekt, indeks) => {
+        if (indeks > 0) {
+            if (
+                tidslinje[indeks].dato.getDate() -
+                    tidslinje[indeks - 1].dato.getDate() !==
+                1
+            ) {
+                if (tidslinje[indeks].dato.getDate() !== 1) {
+                    bestårTest = false;
+                }
+                if (
+                    tidslinje[indeks].dato.getMonth() -
+                        tidslinje[indeks - 1].dato.getMonth() !==
+                        1 &&
+                    tidslinje[indeks].dato.getMonth() !== 0
+                ) {
+                    bestårTest = false;
+                }
+            }
+        }
+    });
+    expect(bestårTest).toBe(true);
+});
+
+test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
+    const tidslinje = konstruerStatiskTidslinje(
+        { permitteringer: [], andreFraværsperioder: [] },
+        dayjs().startOf('date').toDate()
+    );
+    for (let i = 0; i < 1000; i++) {
+        const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
+        const utregnetAntallDagerGått = antalldagerGått(
+            tidslinje[0].dato,
+            tidslinje[tilfeldigIndeks].dato
+        );
+        const riktigAntallDagerGått = tilfeldigIndeks + 1;
+        expect(utregnetAntallDagerGått).toBe(riktigAntallDagerGått);
+    }
+});
+
 test('Antall dager mellom to datoer', () => {
     const enDagIFebruar = new Date('2021-02-20');
     const nesteDagIFebruar = new Date('2021-02-21');
     const enDagIMars = new Date('2021-03-23');
+    const enDagIMarsEtÅrSenere = new Date('2022-03-23');
 
     expect(antalldagerGått(enDagIFebruar, enDagIFebruar)).toBe(1);
     expect(antalldagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
     expect(antalldagerGått(enDagIFebruar, enDagIMars)).toBe(32);
+    expect(antalldagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
 });
 
 test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
