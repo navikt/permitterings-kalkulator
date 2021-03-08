@@ -30,43 +30,41 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
     );
 });
 
-export const sjekkOmDatoerErRiktigPlassertITidslinje = (
-    tidsLinje: DatoMedKategori[]
-) => {
+test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
+    const tidslinje = konstruerStatiskTidslinje(
+        { permitteringer: [], andreFraværsperioder: [] },
+        dayjs().startOf('date').toDate()
+    );
     let bestårTest = true;
-    tidsLinje.forEach((objekt, indeks) => {
+    tidslinje.forEach((objekt, indeks) => {
         if (indeks > 0) {
             if (
-                tidsLinje[indeks].dato.getDate() -
-                    tidsLinje[indeks - 1].dato.getDate() !==
+                tidslinje[indeks].dato.getDate() -
+                    tidslinje[indeks - 1].dato.getDate() !==
                 1
             ) {
-                if (tidsLinje[indeks].dato.getDate() !== 1) {
+                if (tidslinje[indeks].dato.getDate() !== 1) {
                     bestårTest = false;
                 }
                 if (
-                    tidsLinje[indeks].dato.getMonth() -
-                        tidsLinje[indeks - 1].dato.getMonth() !==
+                    tidslinje[indeks].dato.getMonth() -
+                        tidslinje[indeks - 1].dato.getMonth() !==
                         1 &&
-                    tidsLinje[indeks].dato.getMonth() !== 0
+                    tidslinje[indeks].dato.getMonth() !== 0
                 ) {
                     bestårTest = false;
                 }
             }
         }
     });
-    return bestårTest;
-};
-
-const tidslinje = konstruerStatiskTidslinje(
-    { permitteringer: [], andreFraværsperioder: [] },
-    dayjs().startOf('date').toDate()
-);
-test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
-    expect(sjekkOmDatoerErRiktigPlassertITidslinje(tidslinje)).toBe(true);
+    expect(bestårTest).toBe(true);
 });
 
 test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
+    const tidslinje = konstruerStatiskTidslinje(
+        { permitteringer: [], andreFraværsperioder: [] },
+        dayjs().startOf('date').toDate()
+    );
     for (let i = 0; i < 1000; i++) {
         const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
         const utregnetAntallDagerGått = antalldagerGått(
