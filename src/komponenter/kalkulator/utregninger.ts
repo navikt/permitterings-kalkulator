@@ -215,7 +215,7 @@ export const kuttAvDatoIntervallInnefor18mnd = (
 };
 
 export const finnDato18MndTilbake = (dato: Date) => {
-    let nyDato = new Date(dato);
+    let nyDato = new Date();
     nyDato.setFullYear(dato.getFullYear() - 2);
     nyDato.setMonth(dato.getMonth() + 6);
     nyDato.setDate(dato.getDate() + 1);
@@ -249,7 +249,7 @@ export const getDefaultPermitteringsperiode = (
 });
 
 export const finnDato18MndFram = (dato: Date) => {
-    let nyDato = new Date(dato);
+    let nyDato = new Date();
     nyDato.setFullYear(dato.getFullYear() + 1);
     nyDato.setMonth(dato.getMonth() + 6);
     nyDato.setDate(dato.getDate() - 1);
