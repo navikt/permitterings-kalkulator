@@ -65,10 +65,8 @@ test('tidslinje riktig konstruert', () => {
 });
 
 test('Antall dager mellom to datoer', () => {
-    for (let i = 0; i < 10; i++) {
-        const tilfeldigIndeks = Math.floor(
-            Math.random() * tidslinje.length + 1
-        );
+    for (let i = 0; i < 600; i++) {
+        const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
         const utregnetAntallDagerGått = antalldagerGått(
             tidslinje[0].dato,
             tidslinje[tilfeldigIndeks].dato

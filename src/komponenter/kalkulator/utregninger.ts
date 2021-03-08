@@ -12,7 +12,7 @@ export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
         const msGatt = til.getTime() - fra.getTime();
         const dagerGått = msGatt / (1000 * 60 * 60 * 24);
-        return Math.ceil(dagerGått + 1);
+        return Math.round(dagerGått + 1);
     }
     return 0;
 };
