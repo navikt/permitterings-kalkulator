@@ -60,11 +60,11 @@ const tidslinje = konstruerStatiskTidslinje(
     { permitteringer: [], andreFraværsperioder: [] },
     dayjs().startOf('date').toDate()
 );
-test('tidslinje riktig konstruert', () => {
+test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
     expect(testFunksjonAvTidslinje(tidslinje)).toBe(true);
 });
 
-test('Antall dager mellom to datoer', () => {
+test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
     for (let i = 0; i < 1000; i++) {
         const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
         const utregnetAntallDagerGått = antalldagerGått(
@@ -74,7 +74,9 @@ test('Antall dager mellom to datoer', () => {
         const riktigAntallDagerGått = tilfeldigIndeks + 1;
         expect(utregnetAntallDagerGått).toBe(riktigAntallDagerGått);
     }
+});
 
+test('Antall dager mellom to datoer', () => {
     const enDagIFebruar = new Date('2021-02-20');
     const nesteDagIFebruar = new Date('2021-02-21');
     const enDagIMars = new Date('2021-03-23');
