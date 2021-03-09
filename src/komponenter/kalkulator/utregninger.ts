@@ -83,19 +83,22 @@ export const sumPermitteringerOgFravær = (
     return oversikt;
 };
 
+//AGP2FUNKSJONER
 export const finnDatoAGP2 = (
     tidslinje: DatoMedKategori[],
     tidligsteDatoAGP2: Date,
-    erLøpende: boolean
-) => {
+    erLøpende: boolean,
+    dagensDato: Date
+): Date | undefined => {
     const statusPermittering1muligAGP2 = finnOversiktOverBruktPermitteringIGittIntervall(
         tidligsteDatoAGP2,
         tidslinje
     );
-    const gjenVærendePermittering =
-        statusPermittering1muligAGP2.dagerPermittert -
-        statusPermittering1muligAGP2.dagerAnnetFravær;
-    if (gjenVærendePermittering > 30 * 7) {
+    const gjenVærendePermittering = finnGjenståendePermitteringsDager(
+        statusPermittering1muligAGP2
+    );
+    if (gjenVærendePermittering <= 0) {
+        console.log('case 1');
         return tidligsteDatoAGP2;
     }
     if (erLøpende) {
@@ -104,6 +107,20 @@ export const finnDatoAGP2 = (
             tidligsteDatoAGP2,
             gjenVærendePermittering
         );
+        console.log('case 2');
+    } else {
+        const oversikt = finnPeriodeForÅBrukeGjenståendeDager(
+            tidslinje,
+            tidligsteDatoAGP2,
+            dagensDato
+        );
+        console.log(
+            'case 3 informasjon: , du kan permittere ' +
+                oversikt?.gjenståendePermitteringsDager +
+                ' innen ' +
+                oversikt?.sluttDato
+        );
+        return oversikt?.sluttDato;
     }
 };
 
@@ -135,65 +152,94 @@ export interface InformasjonOmGjenståendeDagerOgPeriodeAGP2 {
     gjenståendePermitteringsDager: number;
 }
 
+const finnGjenståendePermitteringsDager = (
+    oversikt: OversiktOverBrukteOgGjenværendeDager
+) => {
+    return 7 * 30 - (oversikt.dagerPermittert - oversikt.dagerAnnetFravær);
+};
+
+//regner ut differansen i gjenstående permitteringsdager i forhold til antall dager man kan plassere permitteringsdatoene på
+//eksempel hvis man har 20 gjenstående permitteringsdager man kan bruke fordelt på 5 dager, returnerer funksjonen 20-5
+export const finnOverskuddAvMuligePermitteringsdager = (
+    sisteDagIAktuellPeriode: Date,
+    tidslinje: DatoMedKategori[],
+    oversiktOverBrukteDagerIPeriode: OversiktOverBrukteOgGjenværendeDager,
+    dagensDato: Date
+) => {
+    const ubrukteDagerIPeriode = finnGjenståendePermitteringsDager(
+        oversiktOverBrukteDagerIPeriode
+    );
+    const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antalldagerGått(
+        dagensDato,
+        sisteDagIAktuellPeriode
+    );
+    return (
+        ubrukteDagerIPeriode - dagerMellomDagensDatoOgSisteDagIAktuellPeriode
+    );
+};
+
 export const finnPeriodeForÅBrukeGjenståendeDager = (
     tidslinje: DatoMedKategori[],
     tidligsteDatoAGP2: Date,
-    gjenStåendeDager: number,
     dagensDato: Date
-): InformasjonOmGjenståendeDagerOgPeriodeAGP2 => {
+): InformasjonOmGjenståendeDagerOgPeriodeAGP2 | undefined => {
     const førstePermitteringInnenForTidligsteAGP2Periode = tidslinje.find(
         (datoMedKategori) =>
             datoMedKategori.kategori === 0 &&
             datoMedKategori.dato >= finnDato18MndTilbake(tidligsteDatoAGP2)
     );
+    if (førstePermitteringInnenForTidligsteAGP2Periode === undefined) {
+        return;
+    }
     const sisteDagIAktuellPeriode = finnDato18MndFram(
-        førstePermitteringInnenForTidligsteAGP2Periode!!.dato
+        førstePermitteringInnenForTidligsteAGP2Periode.dato
     );
-
     let oversiktOverBrukteDagerIPeriode = finnOversiktOverBruktPermitteringIGittIntervall(
-        førstePermitteringInnenForTidligsteAGP2Periode!.dato,
+        sisteDagIAktuellPeriode,
         tidslinje
     );
-
-    // differanse 1. jun og siste dag i aktuell 18 mnds-periode
-    let dagerMellomDagensDatoOgSisteDagiMuligPeriode = antalldagerGått(
-        dagensDato,
-        sisteDagIAktuellPeriode
+    let overskuddAvPermitteringsdagerItidsintervall = finnOverskuddAvMuligePermitteringsdager(
+        sisteDagIAktuellPeriode,
+        tidslinje,
+        oversiktOverBrukteDagerIPeriode,
+        dagensDato
     );
-    let ubrukteDagerIPeriode =
-        7 * 30 -
-        (oversiktOverBrukteDagerIPeriode.dagerPermittert -
-            oversiktOverBrukteDagerIPeriode.dagerAnnetFravær);
-    let overskuddAvPermitteringdagerMuligÅBrukeIPeriode =
-        ubrukteDagerIPeriode - dagerMellomDagensDatoOgSisteDagiMuligPeriode;
-    while (overskuddAvPermitteringdagerMuligÅBrukeIPeriode > 0) {
+    while (overskuddAvPermitteringsdagerItidsintervall > 0) {
         sisteDagIAktuellPeriode.setDate(
             sisteDagIAktuellPeriode.getDate() +
-                overskuddAvPermitteringdagerMuligÅBrukeIPeriode
+                overskuddAvPermitteringsdagerItidsintervall
         );
-        oversiktOverBrukteDagerIPeriode = finnOversiktOverBruktPermitteringIGittIntervall(
-            førstePermitteringInnenForTidligsteAGP2Periode!.dato,
+        let oversiktOverBrukteDagerIPeriode = finnOversiktOverBruktPermitteringIGittIntervall(
+            sisteDagIAktuellPeriode,
             tidslinje
         );
-        dagerMellomDagensDatoOgSisteDagiMuligPeriode = antalldagerGått(
-            dagensDato,
+        overskuddAvPermitteringsdagerItidsintervall = finnOverskuddAvMuligePermitteringsdager(
+            sisteDagIAktuellPeriode,
+            tidslinje,
+            oversiktOverBrukteDagerIPeriode,
+            dagensDato
+        );
+        console.log(
+            'brukte dager: ' +
+                oversiktOverBrukteDagerIPeriode.dagerPermittert +
+                ' ',
+            'overskudd permitteringsdager: ' +
+                overskuddAvPermitteringsdagerItidsintervall,
             sisteDagIAktuellPeriode
         );
-        ubrukteDagerIPeriode =
-            7 * 30 -
-            (oversiktOverBrukteDagerIPeriode.dagerPermittert -
-                oversiktOverBrukteDagerIPeriode.dagerAnnetFravær);
-        overskuddAvPermitteringdagerMuligÅBrukeIPeriode =
-            ubrukteDagerIPeriode - dagerMellomDagensDatoOgSisteDagiMuligPeriode;
     }
     return {
         sluttDato: sisteDagIAktuellPeriode,
-        gjenståendePermitteringsDager: ubrukteDagerIPeriode,
+        gjenståendePermitteringsDager: finnGjenståendePermitteringsDager(
+            oversiktOverBrukteDagerIPeriode
+        ),
     };
 };
 
+//AGP2FUNKSJONER SLUTT
+
 export const finnOversiktOverBruktPermitteringIGittIntervall = (
-    tidligsteDatoAGP2: Date,
+    sisteDatoIAktuellPeriode: Date,
     tidslinje: DatoMedKategori[]
 ) => {
     let permittert = 0;
@@ -201,8 +247,8 @@ export const finnOversiktOverBruktPermitteringIGittIntervall = (
     let gjenståendeDager = 0;
     tidslinje.forEach((dag) => {
         if (
-            dag.dato >= finnDato18MndTilbake(tidligsteDatoAGP2) &&
-            dag.dato <= tidligsteDatoAGP2
+            dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
+            dag.dato <= sisteDatoIAktuellPeriode
         ) {
             if (dag.kategori === 0) {
                 permittert++;
@@ -220,6 +266,13 @@ export const finnOversiktOverBruktPermitteringIGittIntervall = (
         dagerGjensående: gjenståendeDager,
         dagerAnnetFravær: antallDagerFravær,
     };
+    console.log(
+        oversikt.dagerPermittert +
+            ' dager permittert fra ' +
+            skrivOmDato(finnDato18MndTilbake(sisteDatoIAktuellPeriode)) +
+            '-' +
+            skrivOmDato(sisteDatoIAktuellPeriode)
+    );
     return oversikt;
 };
 
@@ -407,7 +460,7 @@ export const finnGrenserFor18MNDPeriode = (dagensDato: Date): DatoIntervall => {
     const maksGrenseIBakoverITid = new Date(bakover18mnd);
     maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
     const maksGrenseFramoverITid = new Date(dagensDato);
-    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
+    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 168);
 
     const intervall: DatoIntervall = {
         datoFra: maksGrenseIBakoverITid,

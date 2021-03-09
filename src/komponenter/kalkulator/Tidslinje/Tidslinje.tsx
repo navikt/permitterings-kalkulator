@@ -6,6 +6,7 @@ import React, {
 } from 'react';
 import {
     finnDato18MndTilbake,
+    finnDatoAGP2,
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
@@ -37,7 +38,8 @@ interface Props {
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
+    const { dagensDato, tidligsteDatoAGP2 } = useContext(PermitteringContext);
+    const [datoAGP3, setDatoAGP3] = useState<Date | undefined>(undefined);
     const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
@@ -87,6 +89,21 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
+        const dato = finnDatoAGP2(
+            tidslinjeObjekter,
+            tidligsteDatoAGP2,
+            false,
+            dagensDato
+        );
+        tidslinjeObjekter.length &&
+            console.log(
+                tidslinjeObjekter[tidslinjeObjekter.length - 1].dato +
+                    'siste dato'
+            );
+        setDatoAGP3(dato);
+    }, [tidslinjeObjekter]);
+
+    useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
             tidslinjeObjekter,
             props.breddeAvDatoObjektIProsent,
@@ -124,13 +141,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
-        props.setEndringAv('tidslinje');
         if (datoOnDrag) {
             props.set18mndsPeriode(datoOnDrag);
         }
     };
 
     const OnTidslinjeDrag = () => {
+        props.setEndringAv('tidslinje');
         setPosisjonsStylingDragElement('static');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
