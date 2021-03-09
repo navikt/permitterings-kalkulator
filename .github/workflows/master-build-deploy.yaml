@@ -1,52 +1,24 @@
 name: Bygg og deploy til master branch
 
-on:
-  push:
-    branches:
-      - 'master'
+on: [push]
 
 env:
   APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
 
 jobs:
-  bygg:
-    name: Bygg
+  compile-test-and-build:
+    name: Build and run tests
     runs-on: ubuntu-latest
     steps:
-      - name: Lukk deployment-issues
-        uses: actions/github-script@0.5.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            github.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: ['deploy']
-            }).then(response => {
-              response.data.forEach(issue => {
-                github.issues.update({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  issue_number: issue.number,
-                  state: 'closed'
-                });
-              });
-            });
-
       - name: Sjekk ut kode
         uses: actions/checkout@v2
-
       - name: Installer avhengigheter (yarn ci)
         run: |
           yarn install --frozen-lockfile
-
       - name: Enhetstesting av applikasjon
         run: yarn test-ci
-
       - name: Bygg (yarn run build)
         run: yarn run build
-
       - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $APP_IMAGE .
@@ -59,41 +31,37 @@ jobs:
       - name: Sett miljøvariabel for app IMAGE
         run: echo "IMAGE_CURRENT=$APP_IMAGE:$COMMIT" >> $GITHUB_ENV
 
-      - name: Generere nais variabler for dev
-        run: |
-          cat > nais/dev-env.yaml << EOF
-          ingress:
-            - https://arbeidsgiver-q.nav.no/arbeidsgiver-permittering
-          EOF
+    deploy-to-dev-sbs:
+        name: Deploy to dev-sbs
+        if: github.ref == 'refs/heads/master'
+        needs: compile-test-and-build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: nais/deploy/actions/deploy@v1
+              env:
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: dev-sbs
+                  RESOURCE: nais/nais.yaml
+                  PRINT_PAYLOAD: true
+                  VARS: nais/dev-env.yaml
+                  IMAGE: ${{ env.APP_IMAGE }}
+                  REF: ${{ env.COMMIT }}
 
-      - name: Deploy til dev-sbs
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-sbs
-          RESOURCE: nais/nais.yaml
-          PRINT_PAYLOAD: true
-          VARS: nais/dev-env.yaml
-          IMAGE: ${{ env.APP_IMAGE }}
-          REF: ${{ env.COMMIT }}
-
-      - name: Generere nais variabler for prod
-        run: |
-          cat > nais/prod-env.yaml << EOF
-          ingress:
-            - https://arbeidsgiver.nav.no/arbeidsgiver-permittering
-          EOF
-
-      - name: Deploy til prod-sbs
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-sbs
-          RESOURCE: nais/nais.yaml
-          PRINT_PAYLOAD: true
-          VARS: nais/prod-env.yaml
-          IMAGE: ${{ env.APP_IMAGE }}
-          REF: ${{ env.COMMIT }}
-
-
+    deploy-to-prod-sbs:
+        name: Deploy to prod-sbs
+        if: github.ref == 'refs/heads/master'
+        needs: compile-test-and-build
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - uses: nais/deploy/actions/deploy@v1
+              env:
+                  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                  CLUSTER: prod-sbs
+                  RESOURCE: nais/nais.yaml
+                  PRINT_PAYLOAD: true
+                  VARS: nais/prod-env.yaml
+                  IMAGE: ${{ env.APP_IMAGE }}
+                  REF: ${{ env.COMMIT }}
 
