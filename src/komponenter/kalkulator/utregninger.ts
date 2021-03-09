@@ -6,8 +6,6 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 
-export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
-
 export const antalldagerGått = (fra?: Date, til?: Date) => {
     if (fra && til) {
         const msGatt = til.getTime() - fra.getTime();
@@ -21,9 +19,19 @@ export const antallUkerRundetOpp = (antallDager: number) => {
     return Math.ceil(antallDager / 7);
 };
 
-export const datoErFørMars = (dato: Date) => {
-    const førsteMars = new Date('2021-03-01');
-    return dato.getTime() < førsteMars.getTime();
+export const resultatAvAGP2TidligsteDato = (
+    tidligsteDatoAGP2: Date,
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
+    dagensDato: Date
+): OversiktOverBrukteOgGjenværendeDager => {
+    const permitteringerInnenforAktuellPeriode = kuttAvDatoIntervallInnenfor18mndHeleListen(
+        tidligsteDatoAGP2,
+        allePErmitteringerOgFraværsperioder
+    );
+    return sumPermitteringerOgFravær(
+        permitteringerInnenforAktuellPeriode,
+        dagensDato
+    );
 };
 
 export const sumPermitteringerOgFravær = (
@@ -55,17 +63,6 @@ export const sumPermitteringerOgFravær = (
         dagerAnnetFravær: antallDagerFravær,
     };
     return oversikt;
-};
-
-//denne regner feil
-export const regnUtDatoAGP2 = (dagerBrukt: number, dagensDato: Date) => {
-    const dagerIgjen = 210 - dagerBrukt;
-    const beregnetAGP2 = new Date(dagensDato);
-    beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen);
-    if (dagerIgjen > 0) {
-        return beregnetAGP2;
-    }
-    return ARBEIDSGIVERPERIODE2DATO;
 };
 
 export const inngårIPermitteringsperiode = (
@@ -199,6 +196,26 @@ export const kuttAvDatoIntervallEtterGittDato = (
     return nyttDatoIntervall;
 };
 
+export const kuttAvDatoIntervallInnenfor18mndHeleListen = (
+    sluttDatoPeriode: Date,
+    allePermitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder
+) => {
+    const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioder = {
+        andreFraværsperioder:
+            allePermitteringerOgFraværsperioder.andreFraværsperioder,
+        permitteringer: [],
+    };
+    allePermitteringerOgFraværsperioder.permitteringer.forEach((periode) => {
+        const kuttetDatoIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
+            periode,
+            finnDato18MndTilbake(sluttDatoPeriode),
+            sluttDatoPeriode
+        );
+        avkuttet18mndPerioder.permitteringer.push(kuttetDatoIntervall);
+    });
+    return avkuttet18mndPerioder;
+};
+
 export const kuttAvDatoIntervallInnefor18mnd = (
     datoIntevall: DatoIntervall,
     startdato: Date,
@@ -260,6 +277,10 @@ export const finnDato18MndFram = (dato: Date) => {
     }
     return nyDato;
 };
+
+export const regnUtAGP2 = (
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
+) => {};
 
 export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
     let tidligsteDato = datointervall[0].datoFra!!;

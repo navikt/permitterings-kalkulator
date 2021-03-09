@@ -1,10 +1,11 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
-import { ARBEIDSGIVERPERIODE2DATO, finn1DagFram } from '../utregninger';
+import { finn1DagFram } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
+import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -14,6 +15,8 @@ interface Props {
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
+    const { tidligsteDatoAGP2 } = useContext(PermitteringContext);
+
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
 
@@ -48,7 +51,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
               }
             : {
                   erLøpende: true,
-                  datoTil: ARBEIDSGIVERPERIODE2DATO,
+                  datoTil: tidligsteDatoAGP2,
               };
         setDatoIntervall({
             ...datoIntervall,

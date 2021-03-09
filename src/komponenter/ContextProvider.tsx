@@ -24,6 +24,7 @@ export interface Context {
     settPermitteringInnhold: SettPermitteringInnhold;
     setSideSistOppdatert: SettSideSistOppdatert;
     dagensDato: Date;
+    tidligsteDatoAGP2: Date;
 }
 
 export const PermitteringContext = React.createContext({} as Context);
@@ -63,6 +64,7 @@ const ContextProvider = (props: Props) => {
         settPermitteringInnhold,
         setSideSistOppdatert,
         dagensDato: dayjs().startOf('date').toDate(),
+        tidligsteDatoAGP2: new Date('2021-06-01'),
     };
 
     useEffect(() => {

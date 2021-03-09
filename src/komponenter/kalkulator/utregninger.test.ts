@@ -1,7 +1,6 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
-    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
