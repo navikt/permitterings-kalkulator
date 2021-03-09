@@ -7,6 +7,7 @@ import React, {
 import {
     finnDato18MndTilbake,
     finnDatoAGP2,
+    InformasjonOmGjenståendeDagerOgPeriodeAGP2,
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
@@ -37,6 +38,40 @@ interface Props {
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
+const skrivTekst = (
+    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2
+): string => {
+    switch (true) {
+        case info.sluttDato === undefined:
+            return 'ikke tilstrekkelig data';
+        case info.type === 0:
+            return (
+                'treffer AGP2 1.juni, brukt: ' +
+                info.brukteDager +
+                ' permittert'
+            );
+        case info.type === 1:
+            return (
+                'dersom du har løpende permittering fram til ' +
+                skrivOmDato(info.sluttDato) +
+                ' faller AGP2 på denne datoen. Nå har du per 1. juni brukt ' +
+                info.brukteDager +
+                'dager'
+            );
+
+        case info.type === 2:
+            return (
+                'Nå har du per 1. juni brukt ' +
+                info.brukteDager +
+                ' dager. Du kan permittere i ' +
+                info.gjenståendePermitteringsDager +
+                ' dager fra i dag til ' +
+                skrivOmDato(info.sluttDato)
+            );
+    }
+    return '';
+};
+
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const { dagensDato, tidligsteDatoAGP2 } = useContext(PermitteringContext);
     const [datoAGP3, setDatoAGP3] = useState<Date | undefined>(undefined);
@@ -54,6 +89,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
+    const [tekst, setTekst] = useState('');
 
     const [
         posisjonsStylingDragElement,
@@ -89,19 +125,18 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        const dato = finnDatoAGP2(
+        const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
+            (permittering) => permittering.erLøpende
+        );
+        const infoAGP2 = finnDatoAGP2(
             tidslinjeObjekter,
             tidligsteDatoAGP2,
-            false,
+            finnesLøpende !== undefined,
             dagensDato
         );
-        tidslinjeObjekter.length &&
-            console.log(
-                tidslinjeObjekter[tidslinjeObjekter.length - 1].dato +
-                    'siste dato'
-            );
-        setDatoAGP3(dato);
-    }, [tidslinjeObjekter]);
+        tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
+        setTekst(skrivTekst(infoAGP2));
+    }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
@@ -223,6 +258,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         {htmlElementerForHverDato}
                     </div>
                     <Fargeforklaringer />
+                    <Normaltekst
+                        className={'kalkulator__tidslinje-agp2-forklaring'}
+                    >
+                        {tekst}
+                    </Normaltekst>
                 </>
             )}
         </div>
