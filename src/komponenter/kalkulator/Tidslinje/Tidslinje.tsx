@@ -31,6 +31,7 @@ import {
     finnInformasjonAGP2,
     InformasjonOmGjenståendeDagerOgPeriodeAGP2,
 } from '../beregningerForAGP2';
+import dayjs from 'dayjs';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -138,9 +139,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         );
         const infoAGP2 = finnInformasjonAGP2(
             tidslinjeObjekter,
-            tidligsteDatoAGP2,
+            dayjs(tidligsteDatoAGP2),
             finnesLøpende !== undefined,
-            dagensDato,
+            dayjs(dagensDato),
             210
         );
         tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
