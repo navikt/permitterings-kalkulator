@@ -25,10 +25,6 @@ jobs:
       - name: Bygg (yarn run build)
         run: yarn run build
 
-      # Cache docker images
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-
       - name: Bygg, tag og push Docker-image
         run: |
           docker build --tag $APP_IMAGE .
@@ -73,5 +69,4 @@ jobs:
                 VARS: nais/prod-env.yaml
                 IMAGE: ${{ env.APP_IMAGE }}
                 REF: ${{ env.COMMIT }}
-
 
