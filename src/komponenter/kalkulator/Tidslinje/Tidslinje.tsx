@@ -6,8 +6,6 @@ import React, {
 } from 'react';
 import {
     finnDato18MndTilbake,
-    finnDatoAGP2,
-    InformasjonOmGjenståendeDagerOgPeriodeAGP2,
     konstruerStatiskTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
@@ -28,6 +26,10 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
+import {
+    finnInformasjonAGP2,
+    InformasjonOmGjenståendeDagerOgPeriodeAGP2,
+} from '../beregningerForAGP2';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -61,7 +63,11 @@ const skrivTekst = (
 
         case info.type === 2:
             return (
-                'Nå har du per 1. juni brukt ' +
+                'I perioden ' +
+                skrivOmDato(finnDato18MndTilbake(info.sluttDato!!)) +
+                ' - ' +
+                skrivOmDato(info.sluttDato) +
+                ' er det permittert: ' +
                 info.brukteDager +
                 ' dager. Du kan permittere i ' +
                 info.gjenståendePermitteringsDager +
@@ -128,7 +134,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
-        const infoAGP2 = finnDatoAGP2(
+        const infoAGP2 = finnInformasjonAGP2(
             tidslinjeObjekter,
             tidligsteDatoAGP2,
             finnesLøpende !== undefined,
