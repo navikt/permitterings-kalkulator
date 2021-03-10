@@ -4,6 +4,7 @@ import './index.css';
 import './index.less';
 import App from './App';
 import NavFrontendSpinner from 'nav-frontend-spinner';
+import './dayjs-config';
 
 ReactDOM.render(
     <Suspense fallback={<NavFrontendSpinner />}>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import React, { useEffect, useRef, useState } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
@@ -24,6 +24,7 @@ export interface Context {
     settPermitteringInnhold: SettPermitteringInnhold;
     setSideSistOppdatert: SettSideSistOppdatert;
     dagensDato: Date;
+    dagensDatoDayjs: Dayjs;
 }
 
 export const PermitteringContext = React.createContext({} as Context);
@@ -39,6 +40,8 @@ const ContextProvider = (props: Props) => {
     const [sistOppdatert, setSistOppdatert] = useState<SistOppdatert | null>(
         null
     );
+
+    const [dagensDato] = useState<Dayjs>(dayjs().startOf('date'));
 
     const settPermitteringInnhold = <
         K extends keyof NonNullable<PermitteringInnhold>,
@@ -62,7 +65,8 @@ const ContextProvider = (props: Props) => {
         sistOppdatert,
         settPermitteringInnhold,
         setSideSistOppdatert,
-        dagensDato: dayjs().startOf('date').toDate(),
+        dagensDato: dagensDato.toDate(),
+        dagensDatoDayjs: dagensDato,
     };
 
     useEffect(() => {
