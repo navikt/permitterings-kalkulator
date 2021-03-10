@@ -1,53 +1,61 @@
-import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { Collapse } from 'react-collapse';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { Input, Label } from 'nav-frontend-skjema';
 import { guid } from 'nav-frontend-js-utils';
 import {
-    datoValidering,
     LABELS,
     MONTHS,
-    skrivOmDato,
-    skrivOmDatoStreng,
     WEEKDAYS_LONG,
     WEEKDAYS_SHORT,
 } from './datofunksjoner';
 import kalender from './kalender.svg';
 import './Datovelger.less';
+import dayjs, { Dayjs } from 'dayjs';
+import { PermitteringContext } from '../ContextProvider';
+import { datoValidering, formaterDato } from './datofunksjoner-dayjs';
 
 interface Props {
     overtekst: string;
-    value?: Date;
-    onChange: (event: any) => void;
+    value?: Dayjs;
+    onChange: (event: { currentTarget: { value: Dayjs } }) => void;
     disabled?: boolean;
-    skalVareEtter?: Date;
-    skalVareFoer?: Date;
+    skalVareEtter?: Dayjs;
+    skalVareFoer?: Dayjs;
     className?: string;
     tjenesteBestemtFeilmelding?: string;
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
+
     const datepickernode = useRef<HTMLDivElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
-    const selectedDate = new Date(props.value || new Date());
-    const [tempDate, setTempDate] = useState(skrivOmDato(selectedDate));
+    const selectedDate: Dayjs = props.value || dagensDatoDayjs;
+    const [tempDate, setTempDate] = useState(formaterDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
 
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
         if (props.value) {
-            return editing ? tempDate : skrivOmDato(selectedDate);
+            return editing ? tempDate : formaterDato(selectedDate);
         } else {
             return 'dd.mm.yyyy';
         }
     };
 
-    const onDatoClick = (day: Date) => {
+    const onDatoClick = (date: Dayjs) => {
         const nyFeilmelding = datoValidering(
-            day,
+            date,
             props.skalVareEtter,
             props.skalVareFoer
         );
@@ -56,7 +64,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         } else {
             props.onChange({
                 currentTarget: {
-                    value: day,
+                    value: date,
                 },
             });
             setFeilMelding('');
@@ -66,8 +74,9 @@ const Datovelger: FunctionComponent<Props> = (props) => {
 
     const inputOnBlur = (event: any) => {
         setEditing(false);
-        const newDato = skrivOmDatoStreng(event.currentTarget.value);
-        if (newDato) {
+        const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
+        // TODO test
+        if (newDato.isValid()) {
             onDatoClick(newDato);
         } else {
             setFeilMelding('dd.mm.yyyy');
@@ -146,10 +155,10 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             <Collapse isOpened={erApen}>
                 <DayPicker
                     className={'datofelt__collapse'}
-                    selectedDays={selectedDate}
-                    month={selectedDate}
+                    selectedDays={selectedDate.toDate()}
+                    month={selectedDate.toDate()}
                     firstDayOfWeek={1}
-                    onDayClick={(day) => onDatoClick(day)}
+                    onDayClick={(day) => onDatoClick(dayjs(day))}
                     months={MONTHS['no']}
                     weekdaysLong={WEEKDAYS_LONG['no']}
                     weekdaysShort={WEEKDAYS_SHORT['no']}

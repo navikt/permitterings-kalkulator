@@ -11,6 +11,7 @@ import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
 import { PermitteringContext } from '../../ContextProvider';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
@@ -23,7 +24,8 @@ const Topp: FunctionComponent<Props> = (props) => {
     const [feilMelding, setFeilmelding] = useState('');
     const { dagensDato } = useContext(PermitteringContext);
 
-    const datoValidering = (dato: Date) => {
+    const datoValidering = (datoDayjs: Dayjs) => {
+        const dato = datoDayjs.toDate();
         if (dato >= finnGrenserFor18MNDPeriode(dagensDato).datoTil!!) {
             setFeilmelding(
                 'sett dato før ' +
@@ -88,11 +90,13 @@ const Topp: FunctionComponent<Props> = (props) => {
                     overtekst={'Siste dag i perioden'}
                     onChange={(event) => {
                         if (datoValidering(event.currentTarget.value)) {
-                            props.set18mndsPeriode(event.currentTarget.value);
+                            props.set18mndsPeriode(
+                                event.currentTarget.value.toDate()
+                            );
                             props.setEndringAv('datovelger');
                         }
                     }}
-                    value={props.sisteDagIPeriode}
+                    value={dayjs(props.sisteDagIPeriode)}
                 />
             </div>
             <div className={'kalkulator__velg-ny-periode-info'}>

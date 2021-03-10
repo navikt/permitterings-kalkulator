@@ -16,6 +16,8 @@ export const skrivOmDato = (dato?: Date) => {
     return '';
 };
 
+export const formaterDato = (dato: Dayjs): string => dato.format('DD.MM.YYYY');
+
 export const skrivOmDatoStreng = (datoStreng: string) => {
     const parts = datoStreng.split('.');
     const year = parseInt(parts[2]);
@@ -28,15 +30,15 @@ export const skrivOmDatoStreng = (datoStreng: string) => {
     }
 };
 
-export const datoValidering = (day?: Date, after?: Date, before?: Date) => {
+export const datoValidering = (day?: Dayjs, after?: Dayjs, before?: Dayjs) => {
     if (day) {
         if (after) {
-            if (day.getTime() < after.getTime()) {
+            if (day.isBefore(after)) {
                 return 'Til-dato må være etter fra-dato';
             }
         }
         if (before) {
-            if (day.getTime() > before.getTime()) {
+            if (day.isAfter(before)) {
                 return 'Fra-dato må være før til-dato';
             }
         }
