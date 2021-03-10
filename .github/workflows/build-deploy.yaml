@@ -1,4 +1,4 @@
-name: Bygg og deploy til master branch
+name: Bygg alle brancher. Deploy master branch
 
 on: [push]
 
