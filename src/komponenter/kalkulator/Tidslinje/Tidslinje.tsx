@@ -27,6 +27,7 @@ import {
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
 import {
+    ArbeidsgiverPeriode2Resulatet,
     finnInformasjonAGP2,
     InformasjonOmGjenståendeDagerOgPeriodeAGP2,
 } from '../beregningerForAGP2';
@@ -46,13 +47,13 @@ const skrivTekst = (
     switch (true) {
         case info.sluttDato === undefined:
             return 'ikke tilstrekkelig data';
-        case info.type === 0:
+        case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
             return (
                 'treffer AGP2 1.juni, brukt: ' +
                 info.brukteDager +
                 ' permittert'
             );
-        case info.type === 1:
+        case info.type === ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
             return (
                 'dersom du har løpende permittering fram til ' +
                 skrivOmDato(info.sluttDato) +
@@ -61,7 +62,8 @@ const skrivTekst = (
                 'dager'
             );
 
-        case info.type === 2:
+        case info.type ===
+            ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
             return (
                 'I perioden ' +
                 skrivOmDato(finnDato18MndTilbake(info.sluttDato!!)) +
@@ -138,7 +140,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             tidslinjeObjekter,
             tidligsteDatoAGP2,
             finnesLøpende !== undefined,
-            dagensDato
+            dagensDato,
+            210
         );
         tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
         setTekst(skrivTekst(infoAGP2));
