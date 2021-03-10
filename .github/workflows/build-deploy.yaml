@@ -32,9 +32,6 @@ jobs:
       - name: Sett miljøvariabel COMMIT
         run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Sett miljøvariabel for app IMAGE
-        run: echo "IMAGE_CURRENT=$APP_IMAGE:$COMMIT" >> $GITHUB_ENV
-
   deploy-to-dev-sbs:
       name: Deploy to dev-sbs
       if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/forenkle-workflow'
