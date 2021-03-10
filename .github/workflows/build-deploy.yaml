@@ -34,7 +34,7 @@ jobs:
 
   deploy-to-dev-sbs:
       name: Deploy to dev-sbs
-      if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/forenkle-workflow'
+      if: github.ref == 'refs/heads/master'
       needs: compile-test-and-build
       runs-on: ubuntu-latest
       steps:
