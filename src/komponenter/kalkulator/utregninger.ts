@@ -303,21 +303,7 @@ export const finnDato18MndTilbakeDayjs = (datoDayjs: Dayjs): Dayjs => {
     return dayjs(nyDato);
 };
 
-export const finnGrenserFor18MNDPeriode = (dagensDato: Date): DatoIntervall => {
-    const bakover18mnd = finnDato18MndTilbake(dagensDato);
-    const maksGrenseIBakoverITid = new Date(bakover18mnd);
-    maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
-    const maksGrenseFramoverITid = new Date(dagensDato);
-    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
-
-    const intervall: DatoIntervall = {
-        datoFra: maksGrenseIBakoverITid,
-        datoTil: maksGrenseFramoverITid,
-    };
-    return intervall;
-};
-
-export const finnGrenserFor18MNDPeriodeDayjs = (
+export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
 ): DatoIntervallDayjs => {
     const bakover18mnd = finnDato18MndTilbakeDayjs(dagensDato);
@@ -418,10 +404,10 @@ export const konstruerStatiskTidslinje = (
 ): DatoMedKategoriDayjs[] => {
     const listeMedTidslinjeObjekter: DatoMedKategoriDayjs[] = [];
     const antallObjektITidslinje = antallDagerGåttDayjs(
-        finnGrenserFor18MNDPeriodeDayjs(dagensDato).datoFra,
-        finnGrenserFor18MNDPeriodeDayjs(dagensDato).datoTil
+        finnGrenserFor18MNDPeriode(dagensDato).datoFra,
+        finnGrenserFor18MNDPeriode(dagensDato).datoTil
     );
-    const startDato = finnGrenserFor18MNDPeriodeDayjs(dagensDato).datoFra;
+    const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
         finneKategoriDayjs(startDato!, allePermitteringerOgFravær)
     );

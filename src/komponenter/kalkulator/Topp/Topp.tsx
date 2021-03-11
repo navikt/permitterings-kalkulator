@@ -3,7 +3,7 @@ import './Topp.less';
 import {
     finnDato18MndFramDayjs,
     finnDato18MndTilbakeDayjs,
-    finnGrenserFor18MNDPeriodeDayjs,
+    finnGrenserFor18MNDPeriode,
 } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Datovelger from '../../Datovelger/Datovelger';
@@ -25,23 +25,18 @@ const Topp: FunctionComponent<Props> = (props) => {
     const { dagensDatoDayjs } = useContext(PermitteringContext);
 
     const datoValidering = (dato: Dayjs) => {
-        if (
-            dato.isSame(
-                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs).datoTil!
-            )
-        ) {
+        if (dato.isSame(finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoTil!)) {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(
-                        finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs)
-                            .datoTil!
+                        finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoTil!
                     )
             );
             return false;
         }
         if (
             finnDato18MndTilbakeDayjs(dato).isSameOrBefore(
-                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs).datoFra!
+                finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoFra!
             )
         ) {
             setFeilmelding(
@@ -49,7 +44,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                     formaterDato(
                         dayjs(
                             finnDato18MndFramDayjs(
-                                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs)
+                                finnGrenserFor18MNDPeriode(dagensDatoDayjs)
                                     .datoFra!
                             )
                         )

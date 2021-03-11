@@ -12,21 +12,17 @@ import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
-    AllePermitteringerOgFraværesPerioder,
     AllePermitteringerOgFraværesPerioderDayjs,
     tilAllePermitteringerOgFraværesPerioder,
     tilAllePermitteringerOgFraværesPerioderDayjs,
     tilDatoIntervall,
 } from './typer';
 import {
-    antalldagerGått,
+    antallDagerGåttDayjs,
     datoIntervallErDefinert,
-    finnUtOmDefinnesOverlappendePerioder,
-    getDefaultPermitteringsperiode,
     finnGrenserFor18MNDPeriode,
     finnUtOmDefinnesOverlappendePerioderDayjs,
-    finnGrenserFor18MNDPeriodeDayjs,
-    antallDagerGåttDayjs,
+    getDefaultPermitteringsperiode,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -223,10 +219,10 @@ const Kalkulator = () => {
                                         breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                             'kalkulator-tidslinje-wrapper',
                                             antallDagerGåttDayjs(
-                                                finnGrenserFor18MNDPeriodeDayjs(
+                                                finnGrenserFor18MNDPeriode(
                                                     dagensDatoDayjs
                                                 ).datoFra,
-                                                finnGrenserFor18MNDPeriodeDayjs(
+                                                finnGrenserFor18MNDPeriode(
                                                     dagensDatoDayjs
                                                 ).datoTil
                                             )

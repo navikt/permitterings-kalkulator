@@ -10,7 +10,7 @@ import {
     antallDagerGåttDayjs,
     finn1DagTilbake,
     finnDato18MndTilbake,
-    finnGrenserFor18MNDPeriodeDayjs,
+    finnGrenserFor18MNDPeriode,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
@@ -363,7 +363,7 @@ const finnGrenserFor18MNDPeriodeDayjsOld = (
 test('test2', () => {
     const dagensDato = dayjs();
     const intervallOld = finnGrenserFor18MNDPeriodeDayjsOld(dagensDato);
-    const intervallNew = finnGrenserFor18MNDPeriodeDayjs(dagensDato);
+    const intervallNew = finnGrenserFor18MNDPeriode(dagensDato);
     console.log('old', intervallOld.datoFra?.toISOString());
     console.log('new', intervallNew.datoFra?.toISOString());
 
