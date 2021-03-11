@@ -1,16 +1,12 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
-    DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
-    tilDatoIntervallDayjs,
 } from './typer';
 import {
     antalldagerGått,
     antallDagerGåttDayjs,
     finn1DagTilbake,
-    finnDato18MndTilbake,
-    finnGrenserFor18MNDPeriode,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
@@ -341,32 +337,4 @@ test('test', () => {
             expect(resDate).toEqual(resDayjs);
         }
     });
-});
-
-const finnGrenserFor18MNDPeriodeDayjsOld = (
-    dagensDatoDayjs: Dayjs
-): DatoIntervallDayjs => {
-    const dagensDato = dagensDatoDayjs.toDate();
-    const bakover18mnd = finnDato18MndTilbake(dagensDato);
-    const maksGrenseIBakoverITid = new Date(bakover18mnd);
-    maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
-    const maksGrenseFramoverITid = new Date(dagensDato);
-    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
-
-    const intervall: DatoIntervall = {
-        datoFra: maksGrenseIBakoverITid,
-        datoTil: maksGrenseFramoverITid,
-    };
-    return tilDatoIntervallDayjs(intervall);
-};
-
-test('test2', () => {
-    const dagensDato = dayjs();
-    const intervallOld = finnGrenserFor18MNDPeriodeDayjsOld(dagensDato);
-    const intervallNew = finnGrenserFor18MNDPeriode(dagensDato);
-    console.log('old', intervallOld.datoFra?.toISOString());
-    console.log('new', intervallNew.datoFra?.toISOString());
-
-    expect(intervallNew.datoFra).toEqual(intervallOld.datoFra);
-    expect(intervallNew.datoTil).toEqual(intervallOld.datoTil);
 });

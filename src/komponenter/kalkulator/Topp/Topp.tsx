@@ -2,7 +2,7 @@ import React, { FunctionComponent, useContext, useState } from 'react';
 import './Topp.less';
 import {
     finnDato18MndFramDayjs,
-    finnDato18MndTilbakeDayjs,
+    finnDato18MndTilbake,
     finnGrenserFor18MNDPeriode,
 } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
@@ -35,7 +35,7 @@ const Topp: FunctionComponent<Props> = (props) => {
             return false;
         }
         if (
-            finnDato18MndTilbakeDayjs(dato).isSameOrBefore(
+            finnDato18MndTilbake(dato).isSameOrBefore(
                 finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoFra!
             )
         ) {
@@ -80,7 +80,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                     <Normaltekst>første dag:</Normaltekst>
                     <Normaltekst>
                         {formaterDato(
-                            finnDato18MndTilbakeDayjs(props.sisteDagIPeriode)
+                            finnDato18MndTilbake(props.sisteDagIPeriode)
                         )}
                     </Normaltekst>
                 </div>
@@ -119,11 +119,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                         {`Dagen du har valgt som sluttdato for perioden er ${formaterDato(
                             dayjs(props.sisteDagIPeriode)
                         )}. 18 måneders perioden er tidsrommet fra og med ${formaterDato(
-                            dayjs(
-                                finnDato18MndTilbakeDayjs(
-                                    props.sisteDagIPeriode
-                                )
-                            )
+                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
                         )} til og med ${formaterDato(
                             dayjs(props.sisteDagIPeriode)
                         )} .`}

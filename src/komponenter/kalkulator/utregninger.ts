@@ -276,20 +276,7 @@ export const kuttAvDatoIntervallInnefor18mndDayjs = (
     );
 };
 
-export const finnDato18MndTilbake = (dato: Date) => {
-    let nyDato = new Date(dato);
-    nyDato.setFullYear(dato.getFullYear() - 2);
-    nyDato.setMonth(dato.getMonth() + 6);
-    nyDato.setDate(dato.getDate() + 1);
-    if (nyDato.getDate() < dato.getDate()) {
-        const førsteDatoINyMåned = new Date(nyDato);
-        førsteDatoINyMåned.setDate(1);
-        nyDato = førsteDatoINyMåned;
-    }
-    return nyDato;
-};
-
-export const finnDato18MndTilbakeDayjs = (datoDayjs: Dayjs): Dayjs => {
+export const finnDato18MndTilbake = (datoDayjs: Dayjs): Dayjs => {
     const dato = datoDayjs.toDate();
     let nyDato = new Date(dato);
     nyDato.setFullYear(dato.getFullYear() - 2);
@@ -306,7 +293,7 @@ export const finnDato18MndTilbakeDayjs = (datoDayjs: Dayjs): Dayjs => {
 export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
 ): DatoIntervallDayjs => {
-    const bakover18mnd = finnDato18MndTilbakeDayjs(dagensDato);
+    const bakover18mnd = finnDato18MndTilbake(dagensDato);
     const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
 
@@ -319,7 +306,7 @@ export const finnGrenserFor18MNDPeriode = (
 export const getDefaultPermitteringsperiode = (
     dagensDato: Dayjs
 ): DatoIntervallDayjs => ({
-    datoFra: finnDato18MndTilbakeDayjs(dagensDato),
+    datoFra: finnDato18MndTilbake(dagensDato),
     datoTil: undefined,
 });
 

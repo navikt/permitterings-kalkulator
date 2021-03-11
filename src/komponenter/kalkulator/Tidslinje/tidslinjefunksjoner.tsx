@@ -135,7 +135,10 @@ export const regnUtPosisjonFraVenstreGittSluttdato = (
     return (
         (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
             1 -
-            antalldagerGått(finnDato18MndTilbake(sluttDato), sluttDato)) *
+            antalldagerGått(
+                finnDato18MndTilbake(dayjs(sluttDato)).toDate(),
+                sluttDato
+            )) *
         breddePerElementIProsent
     );
 };

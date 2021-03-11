@@ -8,9 +8,7 @@ import React, {
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
-    AllePermitteringerOgFraværesPerioder,
     AllePermitteringerOgFraværesPerioderDayjs,
-    DatoIntervall,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
     tilAllePermitteringerOgFraværesPerioder,
@@ -19,10 +17,7 @@ import {
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
     finnDato18MndTilbake,
-    finnDato18MndTilbakeDayjs,
-    kuttAvDatoIntervallInnefor18mnd,
     kuttAvDatoIntervallInnefor18mndDayjs,
-    sumPermitteringerOgFravær,
     sumPermitteringerOgFraværDayjs,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
@@ -63,7 +58,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
             (periode) => {
                 const kuttetDatoIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mndDayjs(
                     periode,
-                    finnDato18MndTilbakeDayjs(props.sisteDagIPeriode),
+                    finnDato18MndTilbake(props.sisteDagIPeriode),
                     props.sisteDagIPeriode
                 );
                 avkuttet18mndPerioder.permitteringer.push(kuttetDatoIntervall);

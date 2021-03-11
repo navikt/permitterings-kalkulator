@@ -194,10 +194,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             />
                             <Normaltekst className={'venstre-dato '}>
                                 {formaterDato(
-                                    dayjs(
-                                        finnDato18MndTilbake(
-                                            datoVisesPaDragElement
-                                        )
+                                    finnDato18MndTilbake(
+                                        dayjs(datoVisesPaDragElement)
                                     )
                                 )}
                             </Normaltekst>
