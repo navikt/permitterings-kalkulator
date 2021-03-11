@@ -2,7 +2,12 @@ import React, { FunctionComponent, useContext } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoIntervall,
+    tilDatoIntervall,
+    tilDatoIntervallDayjs,
+} from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
@@ -76,12 +81,14 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
-                datoIntervall={
+                datoIntervall={tilDatoIntervallDayjs(
                     props.allePermitteringerOgFraværesPerioder.permitteringer[
                         props.indeks
                     ]
+                )}
+                setDatoIntervall={(intervall) =>
+                    oppdaterDatoIntervall(tilDatoIntervall(intervall))
                 }
-                setDatoIntervall={oppdaterDatoIntervall}
                 erLøpendeLabel="Permitteringen er fortsatt aktiv"
                 slettPeriode={slettPeriode}
             />

@@ -1,7 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoIntervall,
+    tilDatoIntervall,
+    tilDatoIntervallDayjs,
+} from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
@@ -68,12 +73,15 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 <DatoIntervallInput
                     erLøpendeLabel="Fraværet er fortsatt aktivt"
                     key={indeks}
-                    datoIntervall={
+                    datoIntervall={tilDatoIntervallDayjs(
                         props.allePermitteringerOgFraværesPerioder
                             .andreFraværsperioder[indeks]
-                    }
+                    )}
                     setDatoIntervall={(datoIntervall) =>
-                        oppdaterDatoIntervall(indeks, datoIntervall)
+                        oppdaterDatoIntervall(
+                            indeks,
+                            tilDatoIntervall(datoIntervall)
+                        )
                     }
                     slettPeriode={() => slettFraværsperiode(indeks)}
                 />
