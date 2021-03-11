@@ -1,9 +1,9 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 import './Topp.less';
 import {
-    finnDato18MndFram,
-    finnDato18MndTilbake,
-    finnGrenserFor18MNDPeriode,
+    finnDato18MndFramDayjs,
+    finnDato18MndTilbakeDayjs,
+    finnGrenserFor18MNDPeriodeDayjs,
 } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import Datovelger from '../../Datovelger/Datovelger';
@@ -14,37 +14,43 @@ import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
-    set18mndsPeriode: (dato: Date) => void;
-    sisteDagIPeriode: Date;
+    set18mndsPeriode: (dato: Dayjs) => void;
+    sisteDagIPeriode: Dayjs;
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
 const Topp: FunctionComponent<Props> = (props) => {
     const [feilMelding, setFeilmelding] = useState('');
-    const { dagensDato } = useContext(PermitteringContext);
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
 
-    const datoValidering = (datoDayjs: Dayjs) => {
-        const dato = datoDayjs.toDate();
-        if (dato >= finnGrenserFor18MNDPeriode(dagensDato).datoTil!) {
+    const datoValidering = (dato: Dayjs) => {
+        if (
+            dato.isSame(
+                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs).datoTil!
+            )
+        ) {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(
-                        dayjs(finnGrenserFor18MNDPeriode(dagensDato).datoTil)
+                        finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs)
+                            .datoTil!
                     )
             );
             return false;
         }
         if (
-            finnDato18MndTilbake(dato) <=
-            finnGrenserFor18MNDPeriode(dagensDato).datoFra!!
+            finnDato18MndTilbakeDayjs(dato).isSameOrBefore(
+                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs).datoFra!
+            )
         ) {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(
                         dayjs(
-                            finnDato18MndFram(
-                                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
+                            finnDato18MndFramDayjs(
+                                finnGrenserFor18MNDPeriodeDayjs(dagensDatoDayjs)
+                                    .datoFra!
                             )
                         )
                     )
@@ -79,7 +85,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                     <Normaltekst>første dag:</Normaltekst>
                     <Normaltekst>
                         {formaterDato(
-                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
+                            finnDato18MndTilbakeDayjs(props.sisteDagIPeriode)
                         )}
                     </Normaltekst>
                 </div>
@@ -94,9 +100,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                     overtekst={'Siste dag i perioden'}
                     onChange={(event) => {
                         if (datoValidering(event.currentTarget.value)) {
-                            props.set18mndsPeriode(
-                                event.currentTarget.value.toDate()
-                            );
+                            props.set18mndsPeriode(event.currentTarget.value);
                             props.setEndringAv('datovelger');
                         }
                     }}
@@ -120,7 +124,11 @@ const Topp: FunctionComponent<Props> = (props) => {
                         {`Dagen du har valgt som sluttdato for perioden er ${formaterDato(
                             dayjs(props.sisteDagIPeriode)
                         )}. 18 måneders perioden er tidsrommet fra og med ${formaterDato(
-                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
+                            dayjs(
+                                finnDato18MndTilbakeDayjs(
+                                    props.sisteDagIPeriode
+                                )
+                            )
                         )} til og med ${formaterDato(
                             dayjs(props.sisteDagIPeriode)
                         )} .`}

@@ -127,9 +127,9 @@ const Kalkulator = () => {
                         Få oversikt over permitteringsperioder
                     </Systemtittel>
                     <Topp
-                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
+                        sisteDagIPeriode={sisteDagI18mndsPeriode}
                         set18mndsPeriode={(dato) =>
-                            setSisteDagI18mndsPeriode(dayjs(dato))
+                            setSisteDagI18mndsPeriode(dato)
                         }
                         setEndringAv={setsteDagI18mndsPeriodeEndretAv}
                         endringAv={sisteDagI18mndsPeriodeEndretAv}
