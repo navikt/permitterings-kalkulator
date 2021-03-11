@@ -1,9 +1,12 @@
 import {
     AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFraværesPerioderDayjs,
     DatoIntervall,
     DatoIntervallDayjs,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
+    tilAllePermitteringerOgFraværesPerioder,
+    tilAllePermitteringerOgFraværesPerioderDayjs,
     tilDatoIntervall,
     tilDatoIntervallDayjs,
 } from './typer';
@@ -35,6 +38,18 @@ export const antallUkerRundetOpp = (antallDager: number) => {
 export const datoErFørMars = (dato: Date) => {
     const førsteMars = new Date('2021-03-01');
     return dato.getTime() < førsteMars.getTime();
+};
+
+export const sumPermitteringerOgFraværDayjs = (
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioderDayjs,
+    dagensDato: Dayjs
+): OversiktOverBrukteOgGjenværendeDager => {
+    return sumPermitteringerOgFravær(
+        tilAllePermitteringerOgFraværesPerioder(
+            allePErmitteringerOgFraværsperioder
+        ),
+        dagensDato.toDate()
+    );
 };
 
 export const sumPermitteringerOgFravær = (
@@ -241,6 +256,22 @@ export const kuttAvDatoIntervallInnefor18mnd = (
     return kuttAvDatoIntervallEtterGittDato(
         sluttDato,
         datoIntervallEtterStartperiode
+    );
+};
+export const kuttAvDatoIntervallInnefor18mndDayjs = (
+    datoIntevall: DatoIntervallDayjs,
+    startdato: Dayjs,
+    sluttDato: Dayjs
+): DatoIntervallDayjs => {
+    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
+        startdato.toDate(),
+        tilDatoIntervall(datoIntevall)
+    );
+    return tilDatoIntervallDayjs(
+        kuttAvDatoIntervallEtterGittDato(
+            sluttDato.toDate(),
+            datoIntervallEtterStartperiode
+        )
     );
 };
 

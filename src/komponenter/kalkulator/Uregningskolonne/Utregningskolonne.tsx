@@ -9,20 +9,28 @@ import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFraværesPerioderDayjs,
     DatoIntervall,
+    DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
+    tilAllePermitteringerOgFraværesPerioder,
+    tilDatoIntervall,
 } from '../typer';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
     finnDato18MndTilbake,
+    finnDato18MndTilbakeDayjs,
     kuttAvDatoIntervallInnefor18mnd,
+    kuttAvDatoIntervallInnefor18mndDayjs,
     sumPermitteringerOgFravær,
+    sumPermitteringerOgFraværDayjs,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
+import { Dayjs } from 'dayjs';
 
 interface UtregningskolonneProps {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    sisteDagIPeriode: Date;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    sisteDagIPeriode: Dayjs;
 }
 
 const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
@@ -31,11 +39,11 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     const [
         oversiktOverPerioderInnenfor18mnd,
         setOversiktOverPerioderInnenfor18mnd,
-    ] = useState<AllePermitteringerOgFraværesPerioder>({
+    ] = useState<AllePermitteringerOgFraværesPerioderDayjs>({
         andreFraværsperioder: [],
         permitteringer: [],
     });
-    const { dagensDato } = useContext(PermitteringContext);
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
 
     const resultatUtregningAv18mndsPeriode = useRef<OversiktOverBrukteOgGjenværendeDager>(
         {
@@ -46,25 +54,25 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     );
 
     useEffect(() => {
-        const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioder = {
+        const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioderDayjs = {
             andreFraværsperioder:
                 props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
             permitteringer: [],
         };
         props.allePermitteringerOgFraværesPerioder.permitteringer.forEach(
             (periode) => {
-                const kuttetDatoIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
+                const kuttetDatoIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mndDayjs(
                     periode,
-                    finnDato18MndTilbake(props.sisteDagIPeriode),
+                    finnDato18MndTilbakeDayjs(props.sisteDagIPeriode),
                     props.sisteDagIPeriode
                 );
                 avkuttet18mndPerioder.permitteringer.push(kuttetDatoIntervall);
             }
         );
         setOversiktOverPerioderInnenfor18mnd(avkuttet18mndPerioder);
-        resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFravær(
+        resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFraværDayjs(
             oversiktOverPerioderInnenfor18mnd,
-            dagensDato
+            dagensDatoDayjs
         );
     }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
 
@@ -72,11 +80,13 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         (permitteringsperiode, indeks) => {
             return (
                 <UtregningAvEnkelPeriode
-                    permitteringsperiode={permitteringsperiode}
+                    permitteringsperiode={tilDatoIntervall(
+                        permitteringsperiode
+                    )}
                     indeks={indeks}
-                    allePermitteringerOgFraværesPerioder={
+                    allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
                         oversiktOverPerioderInnenfor18mnd
-                    }
+                    )}
                     key={indeks}
                 />
             );

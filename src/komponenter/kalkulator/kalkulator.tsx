@@ -263,10 +263,10 @@ const Kalkulator = () => {
                 </div>
                 <div className={'kalkulator__utregningskolonne'}>
                     <Utregningskolonne
-                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
-                        allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
+                        sisteDagIPeriode={sisteDagI18mndsPeriode}
+                        allePermitteringerOgFraværesPerioder={
                             allePermitteringerOgFraværesPerioder
-                        )}
+                        }
                     />
                 </div>
             </div>
