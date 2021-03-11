@@ -37,6 +37,7 @@ export const finnInformasjonAGP2 = (
         tidligsteDatoAGP2.toDate(), // 1. juni
         tidslinje
     );
+    console.log(statusPermittering1muligAGP2);
     const antallBruktePermitteringsdagerPer1Juni = finnBruktePermitteringsDager(
         tidslinje,
         tidligsteDatoAGP2.toDate()
