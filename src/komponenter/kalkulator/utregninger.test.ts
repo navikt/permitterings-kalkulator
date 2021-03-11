@@ -32,24 +32,24 @@ test('Finn dato en dag tilbake fra angitt dato', () => {
 test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
     const tidslinje = konstruerStatiskTidslinje(
         { permitteringer: [], andreFraværsperioder: [] },
-        dayjs().startOf('date').toDate()
+        dayjs().startOf('date')
     );
     let bestårTest = true;
     tidslinje.forEach((objekt, indeks) => {
         if (indeks > 0) {
             if (
-                tidslinje[indeks].dato.getDate() -
-                    tidslinje[indeks - 1].dato.getDate() !==
+                tidslinje[indeks].dato.date() -
+                    tidslinje[indeks - 1].dato.date() !==
                 1
             ) {
-                if (tidslinje[indeks].dato.getDate() !== 1) {
+                if (tidslinje[indeks].dato.date() !== 1) {
                     bestårTest = false;
                 }
                 if (
-                    tidslinje[indeks].dato.getMonth() -
-                        tidslinje[indeks - 1].dato.getMonth() !==
+                    tidslinje[indeks].dato.month() -
+                        tidslinje[indeks - 1].dato.month() !==
                         1 &&
-                    tidslinje[indeks].dato.getMonth() !== 0
+                    tidslinje[indeks].dato.month() !== 0
                 ) {
                     bestårTest = false;
                 }
@@ -62,11 +62,11 @@ test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () =>
 test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
     const tidslinje = konstruerStatiskTidslinje(
         { permitteringer: [], andreFraværsperioder: [] },
-        dayjs().startOf('date').toDate()
+        dayjs().startOf('date')
     );
     for (let i = 0; i < 1000; i++) {
         const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
-        const utregnetAntallDagerGått = antalldagerGått(
+        const utregnetAntallDagerGått = antallDagerGåttDayjs(
             tidslinje[0].dato,
             tidslinje[tilfeldigIndeks].dato
         );

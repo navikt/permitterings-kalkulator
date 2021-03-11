@@ -26,7 +26,7 @@ export const antalldagerGått = (fra?: Date, til?: Date) => {
 
 export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
-        return til.diff(fra, 'days');
+        return til.diff(fra, 'days') + 1;
     } else {
         return 0;
     }
@@ -45,7 +45,7 @@ export const sumPermitteringerOgFraværDayjs = (
     allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioderDayjs,
     dagensDato: Dayjs
 ): OversiktOverBrukteOgGjenværendeDager => {
-    const statusAlleDager18mndLsite = konstruerStatiskTidslinjeDayjs(
+    const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
         allePErmitteringerOgFraværsperioder,
         dagensDato
     );
@@ -76,31 +76,12 @@ export const sumPermitteringerOgFravær = (
     allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Date
 ): OversiktOverBrukteOgGjenværendeDager => {
-    const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
-        allePErmitteringerOgFraværsperioder,
-        dagensDato
+    return sumPermitteringerOgFraværDayjs(
+        tilAllePermitteringerOgFraværesPerioderDayjs(
+            allePErmitteringerOgFraværsperioder
+        ),
+        dayjs(dagensDato)
     );
-    let permittert = 0;
-    let antallDagerFravær = 0;
-    let gjenståendeDager = 0;
-    statusAlleDager18mndLsite.forEach((dag) => {
-        if (dag.kategori === 0) {
-            permittert++;
-        }
-        if (dag.kategori === 1) {
-            gjenståendeDager++;
-        }
-        if (dag.kategori === 2) {
-            antallDagerFravær++;
-        }
-    });
-
-    const oversikt: OversiktOverBrukteOgGjenværendeDager = {
-        dagerPermittert: permittert,
-        dagerGjensående: gjenståendeDager,
-        dagerAnnetFravær: antallDagerFravær,
-    };
-    return oversikt;
 };
 
 //denne regner feil
@@ -436,28 +417,6 @@ export const datoErIEnkeltIntervall = (
 };
 
 export const konstruerStatiskTidslinje = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Date
-) => {
-    const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-    const antallObjektITidslinje = antalldagerGått(
-        finnGrenserFor18MNDPeriode(dagensDato).datoFra,
-        finnGrenserFor18MNDPeriode(dagensDato).datoTil
-    );
-    const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
-    listeMedTidslinjeObjekter.push(
-        finneKategori(startDato!!, allePermitteringerOgFravær)
-    );
-    for (let dag = 1; dag < antallObjektITidslinje; dag++) {
-        const nesteDag = finn1DagFram(listeMedTidslinjeObjekter[dag - 1].dato);
-        listeMedTidslinjeObjekter.push(
-            finneKategori(nesteDag, allePermitteringerOgFravær)
-        );
-    }
-    return listeMedTidslinjeObjekter;
-};
-
-export const konstruerStatiskTidslinjeDayjs = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioderDayjs,
     dagensDato: Dayjs
 ): DatoMedKategoriDayjs[] => {

@@ -12,6 +12,7 @@ import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
+    tilAllePermitteringerOgFraværesPerioderDayjs,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
@@ -75,9 +76,14 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
-                props.allePermitteringerOgFraværesPerioder,
-                dagensDato
-            )
+                tilAllePermitteringerOgFraværesPerioderDayjs(
+                    props.allePermitteringerOgFraværesPerioder
+                ),
+                dayjs(dagensDato)
+            ).map((datoMedKategoriDayjs) => ({
+                ...datoMedKategoriDayjs,
+                dato: datoMedKategoriDayjs.dato.toDate(),
+            }))
         );
     }, [props.allePermitteringerOgFraværesPerioder]);
 
