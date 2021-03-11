@@ -1,6 +1,7 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
@@ -267,23 +268,23 @@ test('Sum av permitteringer og fravær', () => {
 });
 
 test('Kutt av datoer for en permitteringsperiode', () => {
-    const startIntervall = new Date('2020-02-14');
-    const sluttIntervall = new Date('2020-05-02');
+    const startIntervall = dayjs('2020-02-14');
+    const sluttIntervall = dayjs('2020-05-02');
 
-    const intervall: DatoIntervall = {
+    const intervall: DatoIntervallDayjs = {
         datoFra: startIntervall,
         datoTil: sluttIntervall,
     };
-    const startKuttDato = new Date('2020-03-02');
-    const sluttKuttDato = new Date('2020-04-20');
+    const startKuttDato = dayjs('2020-03-02');
+    const sluttKuttDato = dayjs('2020-04-20');
 
-    const nyttIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
+    const nyttIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mnd(
         intervall,
         startKuttDato,
         sluttKuttDato
     );
-    expect(nyttIntervall.datoFra).toBe(startKuttDato);
-    expect(nyttIntervall.datoTil).toBe(sluttKuttDato);
+    expect(nyttIntervall.datoFra).toEqual(startKuttDato);
+    expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
 });
 
 const randomDate = (): Date => {

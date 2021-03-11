@@ -246,20 +246,6 @@ export const kuttAvDatoIntervallEtterGittDato = (
 };
 
 export const kuttAvDatoIntervallInnefor18mnd = (
-    datoIntevall: DatoIntervall,
-    startdato: Date,
-    sluttDato: Date
-) => {
-    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
-        startdato,
-        datoIntevall
-    );
-    return kuttAvDatoIntervallEtterGittDato(
-        sluttDato,
-        datoIntervallEtterStartperiode
-    );
-};
-export const kuttAvDatoIntervallInnefor18mndDayjs = (
     datoIntevall: DatoIntervallDayjs,
     startdato: Dayjs,
     sluttDato: Dayjs
@@ -309,19 +295,6 @@ export const getDefaultPermitteringsperiode = (
     datoFra: finnDato18MndTilbake(dagensDato),
     datoTil: undefined,
 });
-
-export const finnDato18MndFram = (dato: Date) => {
-    let nyDato = new Date(dato);
-    nyDato.setFullYear(dato.getFullYear() + 1);
-    nyDato.setMonth(dato.getMonth() + 6);
-    nyDato.setDate(dato.getDate() - 1);
-    if (nyDato.getDate() + 1 < dato.getDate()) {
-        const førsteDatoINyMåned = new Date(nyDato);
-        førsteDatoINyMåned.setDate(1);
-        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!;
-    }
-    return nyDato;
-};
 
 export const finnDato18MndFramDayjs = (datoDayjs: Dayjs) => {
     const dato = datoDayjs.toDate();

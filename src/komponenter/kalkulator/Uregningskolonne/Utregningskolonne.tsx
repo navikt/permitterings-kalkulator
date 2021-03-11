@@ -17,7 +17,7 @@ import {
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
     finnDato18MndTilbake,
-    kuttAvDatoIntervallInnefor18mndDayjs,
+    kuttAvDatoIntervallInnefor18mnd,
     sumPermitteringerOgFraværDayjs,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
@@ -56,7 +56,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         };
         props.allePermitteringerOgFraværesPerioder.permitteringer.forEach(
             (periode) => {
-                const kuttetDatoIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mndDayjs(
+                const kuttetDatoIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mnd(
                     periode,
                     finnDato18MndTilbake(props.sisteDagIPeriode),
                     props.sisteDagIPeriode
