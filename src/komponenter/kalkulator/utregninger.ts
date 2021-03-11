@@ -396,12 +396,12 @@ export const konstruerStatiskTidslinje = (
     );
     const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
-        finneKategoriDayjs(startDato!, allePermitteringerOgFravær)
+        finneKategori(startDato!, allePermitteringerOgFravær)
     );
     for (let dag = 1; dag < antallObjektITidslinje; dag++) {
         const nesteDag = listeMedTidslinjeObjekter[dag - 1].dato.add(1, 'day');
         listeMedTidslinjeObjekter.push(
-            finneKategoriDayjs(nesteDag, allePermitteringerOgFravær)
+            finneKategori(nesteDag, allePermitteringerOgFravær)
         );
     }
     return listeMedTidslinjeObjekter;
@@ -421,36 +421,6 @@ const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
 };
 
 const finneKategori = (
-    dato: Date,
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
-): DatoMedKategori => {
-    const erFraVærsDato = finnesIIntervaller(
-        dato,
-        allePermitteringerOgFraværesPerioder.andreFraværsperioder
-    );
-    const erPermittert = finnesIIntervaller(
-        dato,
-        allePermitteringerOgFraværesPerioder.permitteringer
-    );
-    if (erFraVærsDato && erPermittert) {
-        return {
-            kategori: 2,
-            dato: dato,
-        };
-    }
-    if (erPermittert) {
-        return {
-            kategori: 0,
-            dato: dato,
-        };
-    }
-    return {
-        kategori: 1,
-        dato: dato,
-    };
-};
-
-const finneKategoriDayjs = (
     datoDayjs: Dayjs,
     allePermitteringerOgFraværesPerioderDayjs: AllePermitteringerOgFraværesPerioderDayjs
 ): DatoMedKategoriDayjs => {
