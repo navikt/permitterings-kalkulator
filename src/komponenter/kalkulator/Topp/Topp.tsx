@@ -6,12 +6,12 @@ import {
     finnGrenserFor18MNDPeriode,
 } from '../utregninger';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
 import { PermitteringContext } from '../../ContextProvider';
 import dayjs, { Dayjs } from 'dayjs';
+import { formaterDato } from '../../Datovelger/datofunksjoner-dayjs';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;
@@ -26,10 +26,12 @@ const Topp: FunctionComponent<Props> = (props) => {
 
     const datoValidering = (datoDayjs: Dayjs) => {
         const dato = datoDayjs.toDate();
-        if (dato >= finnGrenserFor18MNDPeriode(dagensDato).datoTil!!) {
+        if (dato >= finnGrenserFor18MNDPeriode(dagensDato).datoTil!) {
             setFeilmelding(
                 'sett dato før ' +
-                    skrivOmDato(finnGrenserFor18MNDPeriode(dagensDato).datoTil)
+                    formaterDato(
+                        dayjs(finnGrenserFor18MNDPeriode(dagensDato).datoTil)
+                    )
             );
             return false;
         }
@@ -39,9 +41,11 @@ const Topp: FunctionComponent<Props> = (props) => {
         ) {
             setFeilmelding(
                 'sett dato før ' +
-                    skrivOmDato(
-                        finnDato18MndFram(
-                            finnGrenserFor18MNDPeriode(dagensDato).datoFra!!
+                    formaterDato(
+                        dayjs(
+                            finnDato18MndFram(
+                                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
+                            )
                         )
                     )
             );
@@ -74,8 +78,8 @@ const Topp: FunctionComponent<Props> = (props) => {
                 <div className={'kalkulator__18mnd-illustrasjon-første-dag'}>
                     <Normaltekst>første dag:</Normaltekst>
                     <Normaltekst>
-                        {skrivOmDato(
-                            finnDato18MndTilbake(props.sisteDagIPeriode)
+                        {formaterDato(
+                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
                         )}
                     </Normaltekst>
                 </div>
@@ -113,11 +117,13 @@ const Topp: FunctionComponent<Props> = (props) => {
                     </Normaltekst>
                     <br />
                     <Normaltekst>
-                        {`Dagen du har valgt som sluttdato for perioden er ${skrivOmDato(
-                            props.sisteDagIPeriode
-                        )}. 18 måneders perioden er tidsrommet fra og med ${skrivOmDato(
-                            finnDato18MndTilbake(props.sisteDagIPeriode)
-                        )} til og med ${skrivOmDato(props.sisteDagIPeriode)} .`}
+                        {`Dagen du har valgt som sluttdato for perioden er ${formaterDato(
+                            dayjs(props.sisteDagIPeriode)
+                        )}. 18 måneders perioden er tidsrommet fra og med ${formaterDato(
+                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
+                        )} til og med ${formaterDato(
+                            dayjs(props.sisteDagIPeriode)
+                        )} .`}
                     </Normaltekst>
                 </div>
             </div>

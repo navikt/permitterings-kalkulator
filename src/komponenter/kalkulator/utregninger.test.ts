@@ -1,7 +1,6 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
-    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
@@ -16,7 +15,6 @@ import {
     sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs from 'dayjs';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');

@@ -14,7 +14,6 @@ import {
     DatoMedKategori,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
@@ -26,6 +25,8 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
+import { formaterDato } from '../../Datovelger/datofunksjoner-dayjs';
+import dayjs from 'dayjs';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -186,13 +187,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                                 className={'kalkulator__draggable-kant høyre'}
                             />
                             <Normaltekst className={'venstre-dato '}>
-                                {skrivOmDato(
-                                    finnDato18MndTilbake(datoVisesPaDragElement)
+                                {formaterDato(
+                                    dayjs(
+                                        finnDato18MndTilbake(
+                                            datoVisesPaDragElement
+                                        )
+                                    )
                                 )}
                             </Normaltekst>
 
                             <Normaltekst className={'høyre-dato'}>
-                                {skrivOmDato(datoVisesPaDragElement)}
+                                {formaterDato(dayjs(datoVisesPaDragElement))}
                             </Normaltekst>
                         </div>
                     </Draggable>

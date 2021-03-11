@@ -1,9 +1,10 @@
 import { datointervallKategori, DatoMedKategori } from '../typer';
 import { antalldagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
+import { formaterDato } from '../../Datovelger/datofunksjoner-dayjs';
+import dayjs from 'dayjs';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
@@ -13,6 +14,11 @@ interface RepresentasjonAvPeriodeMedFarge {
     key: number;
 }
 
+const erLike = (date1: Date, date2: Date): boolean =>
+    date1.getFullYear() === date2.getFullYear() &&
+    date1.getMonth() === date2.getMonth() &&
+    date1.getDate() === date2.getDate();
+
 export const lagHTMLObjektForAlleDatoer = (
     tidslinjeObjekter: DatoMedKategori[],
     breddePerElement: number
@@ -21,8 +27,7 @@ export const lagHTMLObjektForAlleDatoer = (
         const style: React.CSSProperties = {
             width: breddePerElement.toString() + '%',
         };
-        const erIdagBoolean =
-            skrivOmDato(objekt.dato) === skrivOmDato(new Date());
+        const erIdagBoolean = erLike(objekt.dato, new Date());
         const erIdag = erIdagBoolean ? ' dagens-dato' : '';
         const erÅrsmarkering = erÅrsMarkering(objekt.dato)
             ? ' årsmarkering'
@@ -36,7 +41,7 @@ export const lagHTMLObjektForAlleDatoer = (
                     'kalkulator__tidslinjeobjekt' +
                     erIdag +
                     ' ' +
-                    skrivOmDato(objekt.dato) +
+                    formaterDato(dayjs(objekt.dato)) +
                     erÅrsmarkering
                 }
             >
@@ -47,7 +52,7 @@ export const lagHTMLObjektForAlleDatoer = (
                         >
                             I dag
                             <br />
-                            {skrivOmDato(new Date())}
+                            {formaterDato(dayjs())}
                         </Undertekst>
                         <div className={'tidslinje-dagens-dato-strek'} />
                         <div className={'tidslinje-dagens-dato-sirkel'} />
@@ -115,7 +120,7 @@ export const finnIndeksForDato = (
 ) => {
     let indeksDato = 0;
     tidslinjeobjekt.forEach((objekt, indeks) => {
-        if (skrivOmDato(dato) === skrivOmDato(objekt.dato)) {
+        if (erLike(dato, objekt.dato)) {
             indeksDato = indeks;
         }
     });

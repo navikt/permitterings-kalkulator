@@ -1,14 +1,21 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import { Element, Normaltekst, Systemtittel } from 'nav-frontend-typografi';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
-import { finnDato18MndFram, finnDato18MndTilbake } from './utregninger';
+import {
+    finnDato18MndFramDayjs,
+    finnDato18MndTilbakeDayjs,
+} from './utregninger';
+import { PermitteringContext } from '../ContextProvider';
+import { formaterDato } from '../Datovelger/datofunksjoner-dayjs';
+import { Dayjs } from 'dayjs';
 
 interface Props {
-    førsteDagI18mndsPeriode: undefined | Date;
+    førsteDagI18mndsPeriode: undefined | Dayjs;
 }
 
 const KalkulatorInfoTekst: FunctionComponent<Props> = (props) => {
     const { førsteDagI18mndsPeriode } = props;
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
+
     return (
         <>
             <Systemtittel>Få oversikt over permitteringsperioder</Systemtittel>
@@ -21,23 +28,24 @@ const KalkulatorInfoTekst: FunctionComponent<Props> = (props) => {
                 startdato fra din første permittering.
                 <span className="typo-element">
                     <br />
-                    Dagens dato er {skrivOmDato(new Date())}. 18 måneder bakover
-                    fra i dag er {skrivOmDato(finnDato18MndTilbake(new Date()))}
-                    . 18 måneder framover er{' '}
-                    {skrivOmDato(finnDato18MndFram(new Date()))}.
+                    Dagens dato er {formaterDato(dagensDatoDayjs)}. 18 måneder
+                    bakover fra i dag er{' '}
+                    {formaterDato(finnDato18MndTilbakeDayjs(dagensDatoDayjs))}.
+                    18 måneder framover er{' '}
+                    {formaterDato(finnDato18MndFramDayjs(dagensDatoDayjs))}.
                 </span>
             </Normaltekst>
             {førsteDagI18mndsPeriode && (
                 <>
                     <Element>
-                        Testdato er {skrivOmDato(førsteDagI18mndsPeriode)}. 18
+                        Testdato er {formaterDato(førsteDagI18mndsPeriode)}. 18
                         måneder bakover fra testdato er{' '}
-                        {skrivOmDato(
-                            finnDato18MndTilbake(førsteDagI18mndsPeriode)
+                        {formaterDato(
+                            finnDato18MndTilbakeDayjs(førsteDagI18mndsPeriode)
                         )}
                         . 18 måneder framover er{' '}
-                        {skrivOmDato(
-                            finnDato18MndFram(førsteDagI18mndsPeriode)
+                        {formaterDato(
+                            finnDato18MndFramDayjs(førsteDagI18mndsPeriode)
                         )}
                     </Element>
                 </>

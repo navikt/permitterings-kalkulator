@@ -1,10 +1,10 @@
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
+import dayjs, { Dayjs } from 'dayjs';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
@@ -227,6 +227,20 @@ export const finnDato18MndTilbake = (dato: Date) => {
     return nyDato;
 };
 
+export const finnDato18MndTilbakeDayjs = (datoDayjs: Dayjs): Dayjs => {
+    const dato = datoDayjs.toDate();
+    let nyDato = new Date(dato);
+    nyDato.setFullYear(dato.getFullYear() - 2);
+    nyDato.setMonth(dato.getMonth() + 6);
+    nyDato.setDate(dato.getDate() + 1);
+    if (nyDato.getDate() < dato.getDate()) {
+        const førsteDatoINyMåned = new Date(nyDato);
+        førsteDatoINyMåned.setDate(1);
+        nyDato = førsteDatoINyMåned;
+    }
+    return dayjs(nyDato);
+};
+
 export const finnGrenserFor18MNDPeriode = (dagensDato: Date): DatoIntervall => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
     const maksGrenseIBakoverITid = new Date(bakover18mnd);
@@ -259,6 +273,20 @@ export const finnDato18MndFram = (dato: Date) => {
         nyDato = finn1DagTilbake(førsteDatoINyMåned)!!;
     }
     return nyDato;
+};
+
+export const finnDato18MndFramDayjs = (datoDayjs: Dayjs) => {
+    const dato = datoDayjs.toDate();
+    let nyDato = new Date(dato);
+    nyDato.setFullYear(dato.getFullYear() + 1);
+    nyDato.setMonth(dato.getMonth() + 6);
+    nyDato.setDate(dato.getDate() - 1);
+    if (nyDato.getDate() + 1 < dato.getDate()) {
+        const førsteDatoINyMåned = new Date(nyDato);
+        førsteDatoINyMåned.setDate(1);
+        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!;
+    }
+    return dayjs(nyDato);
 };
 
 export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
@@ -387,10 +415,6 @@ export const flytt18mndsperiode1dag = (
         allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
     });
     return allePermitteringerOgFravær;
-};
-
-const skrivut = (intervall: DatoIntervall) => {
-    console.log(skrivOmDato(intervall.datoFra), skrivOmDato(intervall.datoTil));
 };
 
 export const finn1DagFram = (dato: Date) => {
