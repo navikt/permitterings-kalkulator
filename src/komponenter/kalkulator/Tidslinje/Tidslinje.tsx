@@ -25,8 +25,8 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-import { formaterDato } from '../../Datovelger/datofunksjoner-dayjs';
 import dayjs from 'dayjs';
+import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

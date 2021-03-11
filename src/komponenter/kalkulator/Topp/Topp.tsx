@@ -11,7 +11,7 @@ import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
 import { PermitteringContext } from '../../ContextProvider';
 import dayjs, { Dayjs } from 'dayjs';
-import { formaterDato } from '../../Datovelger/datofunksjoner-dayjs';
+import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     set18mndsPeriode: (dato: Date) => void;

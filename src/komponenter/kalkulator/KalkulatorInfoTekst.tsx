@@ -5,8 +5,8 @@ import {
     finnDato18MndTilbakeDayjs,
 } from './utregninger';
 import { PermitteringContext } from '../ContextProvider';
-import { formaterDato } from '../Datovelger/datofunksjoner-dayjs';
 import { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 interface Props {
     førsteDagI18mndsPeriode: undefined | Dayjs;

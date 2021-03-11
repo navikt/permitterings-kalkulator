@@ -11,6 +11,8 @@ import 'react-day-picker/lib/style.css';
 import { Input, Label } from 'nav-frontend-skjema';
 import { guid } from 'nav-frontend-js-utils';
 import {
+    datoValidering,
+    formaterDato,
     LABELS,
     MONTHS,
     WEEKDAYS_LONG,
@@ -20,7 +22,6 @@ import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
 import { PermitteringContext } from '../ContextProvider';
-import { datoValidering, formaterDato } from './datofunksjoner-dayjs';
 
 interface Props {
     overtekst: string;
