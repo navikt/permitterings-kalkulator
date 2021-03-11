@@ -1,8 +1,11 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatoIntervallDayjs,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
+    tilDatoIntervall,
+    tilDatoIntervallDayjs,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -15,6 +18,14 @@ export const antalldagerGått = (fra?: Date, til?: Date) => {
         return Math.round(dagerGått + 1);
     }
     return 0;
+};
+
+export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
+    if (fra && til) {
+        return til.diff(fra) + 1;
+    } else {
+        return 0;
+    }
 };
 
 export const antallUkerRundetOpp = (antallDager: number) => {
@@ -154,6 +165,25 @@ export const finnUtOmDefinnesOverlappendePerioder = (
     return finnesOverLapp;
 };
 
+export const finnUtOmDefinnesOverlappendePerioderDayjs = (
+    perioderDayjs: DatoIntervallDayjs[]
+): boolean => {
+    const perioder = perioderDayjs.map((periode) => tilDatoIntervall(periode));
+    let finnesOverLapp = false;
+    perioder.forEach((periode) => {
+        if (datoIntervallErDefinert(periode)) {
+            perioder.forEach((periode2) => {
+                if (datoIntervallErDefinert(periode2) && periode !== periode2) {
+                    if (inngårIPermitteringsperiode(periode, periode2) > 0) {
+                        finnesOverLapp = true;
+                    }
+                }
+            });
+        }
+    });
+    return finnesOverLapp;
+};
+
 export const kuttAvDatoIntervallFørGittDato = (
     gittDato: Date,
     tidsIntervall: DatoIntervall
@@ -255,10 +285,27 @@ export const finnGrenserFor18MNDPeriode = (dagensDato: Date): DatoIntervall => {
     return intervall;
 };
 
+export const finnGrenserFor18MNDPeriodeDayjs = (
+    dagensDatoDayjs: Dayjs
+): DatoIntervallDayjs => {
+    const dagensDato = dagensDatoDayjs.toDate();
+    const bakover18mnd = finnDato18MndTilbake(dagensDato);
+    const maksGrenseIBakoverITid = new Date(bakover18mnd);
+    maksGrenseIBakoverITid.setDate(maksGrenseIBakoverITid.getDate() - 56);
+    const maksGrenseFramoverITid = new Date(dagensDato);
+    maksGrenseFramoverITid.setDate(maksGrenseFramoverITid.getDate() + 112);
+
+    const intervall: DatoIntervall = {
+        datoFra: maksGrenseIBakoverITid,
+        datoTil: maksGrenseFramoverITid,
+    };
+    return tilDatoIntervallDayjs(intervall);
+};
+
 export const getDefaultPermitteringsperiode = (
-    dagensDato: Date
-): DatoIntervall => ({
-    datoFra: finnDato18MndTilbake(dagensDato),
+    dagensDato: Dayjs
+): DatoIntervallDayjs => ({
+    datoFra: finnDato18MndTilbakeDayjs(dagensDato),
     datoTil: undefined,
 });
 
@@ -321,7 +368,9 @@ export const finnSisteDato = (
     return sisteDato;
 };
 
-export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
+export const datoIntervallErDefinert = (
+    datoIntervall: DatoIntervall | DatoIntervallDayjs
+) => {
     return (
         datoIntervall.datoFra !== undefined &&
         datoIntervall.datoTil !== undefined

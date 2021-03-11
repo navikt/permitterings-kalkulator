@@ -11,7 +11,10 @@ import {
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
-import { AllePermitteringerOgFraværesPerioder } from './typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    tilDatoIntervall,
+} from './typer';
 import {
     antalldagerGått,
     datoIntervallErDefinert,
@@ -27,13 +30,15 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
 
 const Kalkulator = () => {
-    const { dagensDato } = useContext(PermitteringContext);
+    const { dagensDato, dagensDatoDayjs } = useContext(PermitteringContext);
 
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [getDefaultPermitteringsperiode(dagensDato)],
+        permitteringer: [
+            tilDatoIntervall(getDefaultPermitteringsperiode(dagensDatoDayjs)),
+        ],
         andreFraværsperioder: [],
     });
 
