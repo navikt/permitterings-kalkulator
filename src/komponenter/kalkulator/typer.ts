@@ -70,6 +70,11 @@ export interface DatoMedKategori {
     kategori: datointervallKategori;
 }
 
+export interface DatoMedKategoriDayjs {
+    dato: Dayjs;
+    kategori: datointervallKategori;
+}
+
 export interface OversiktOverBrukteOgGjenværendeDager {
     dagerPermittert: number;
     dagerAnnetFravær: number;
