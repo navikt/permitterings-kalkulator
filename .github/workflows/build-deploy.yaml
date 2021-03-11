@@ -1,0 +1,70 @@
+name: Bygg alle brancher. Deploy master branch
+
+on: [push]
+
+env:
+  APP_IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+
+jobs:
+  compile-test-and-build:
+    name: Build and run tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v2
+
+      - name: Installer avhengigheter (yarn ci)
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Enhetstesting av applikasjon
+        run: yarn test-ci
+
+      - name: Bygg (yarn run build)
+        run: yarn run build
+
+      - name: Bygg, tag og push Docker-image
+        run: |
+          docker build --tag $APP_IMAGE .
+          echo ${{ secrets.GHCR_PUSH_TOKEN }} | docker login ghcr.io -u ${{ secrets.GHCR_PUSH_USERNAME }} --password-stdin
+          docker push $APP_IMAGE
+
+      - name: Sett miljøvariabel COMMIT
+        run: echo "COMMIT=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+  deploy-to-dev-sbs:
+      name: Deploy to dev-sbs
+      # Redigér her hvis du vil deploye en branch til dev. F.eks. slik:
+      # if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/<navn-på-branch>'
+      if: github.ref == 'refs/heads/master'
+      needs: compile-test-and-build
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v2
+          - uses: nais/deploy/actions/deploy@v1
+            env:
+                APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                CLUSTER: dev-sbs
+                RESOURCE: nais/nais.yaml
+                PRINT_PAYLOAD: true
+                VARS: nais/dev-env.yaml
+                IMAGE: ${{ env.APP_IMAGE }}
+                REF: ${{ env.COMMIT }}
+
+  deploy-to-prod-sbs:
+      name: Deploy to prod-sbs
+      if: github.ref == 'refs/heads/master'
+      needs: compile-test-and-build
+      runs-on: ubuntu-latest
+      steps:
+          - uses: actions/checkout@v2
+          - uses: nais/deploy/actions/deploy@v1
+            env:
+                APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+                CLUSTER: prod-sbs
+                RESOURCE: nais/nais.yaml
+                PRINT_PAYLOAD: true
+                VARS: nais/prod-env.yaml
+                IMAGE: ${{ env.APP_IMAGE }}
+                REF: ${{ env.COMMIT }}
+
