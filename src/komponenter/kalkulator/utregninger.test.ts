@@ -5,6 +5,7 @@ import {
 } from './typer';
 import {
     antalldagerGått,
+    antallDagerGåttDayjs,
     finn1DagTilbake,
     finnSisteDato,
     finnTidligsteDato,
@@ -14,7 +15,7 @@ import {
     summerFraværsdagerIPermitteringsperiode,
     sumPermitteringerOgFravær,
 } from './utregninger';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');
@@ -283,4 +284,57 @@ test('Kutt av datoer for en permitteringsperiode', () => {
     );
     expect(nyttIntervall.datoFra).toBe(startKuttDato);
     expect(nyttIntervall.datoTil).toBe(sluttKuttDato);
+});
+
+const randomDate = (): Date => {
+    const start = new Date('2019-01-01');
+    const end = new Date('2021-11-25');
+    return new Date(
+        start.getTime() + Math.random() * (end.getTime() - start.getTime())
+    );
+};
+const randomDates = (antall: number): Dayjs[] => {
+    const dates = [];
+    for (let i = 0; i < antall; i++) {
+        dates.push(dayjs(randomDate()).startOf('day'));
+    }
+    return dates;
+};
+const tilDayjs = (dates: Date[]): Dayjs[] => dates.map((date) => dayjs(date));
+
+test('test', () => {
+    const dates1 = randomDates(100);
+    const dates2 = randomDates(100);
+
+    // Ikke like 2019-09-12T21:16:57.847Z 2020-11-27T21:39:43.166Z 443 441
+    // Ikke like 2020-03-05T11:26:19.132Z 2020-03-16T10:25:11.777Z 12 10
+    //     Ikke like 2020-10-11T23:16:12.018Z 2020-11-03T23:54:50.824Z 24 22
+    //     Ikke like 2021-08-03T22:48:40.031Z 2021-08-15T17:20:11.470Z 13 11
+
+    //const date1 = new Date('2019-09-12T21:16:57.847Z');
+    //const date2 = new Date('2020-11-27T21:39:43.166Z');
+
+    const date1 = new Date('2021-08-03');
+    const date2 = new Date('2021-08-15');
+
+    const res1 = antalldagerGått(date1, date2);
+    const res2 = antallDagerGåttDayjs(dayjs(date1), dayjs(date2));
+    //expect(res1).toEqual(res2);
+
+    dates1.forEach((date1, index) => {
+        const date2 = dates2[index];
+        const resDate = antalldagerGått(date1.toDate(), date2.toDate());
+        const resDayjs = antallDagerGåttDayjs(date1, date2);
+        if (resDate >= 0) {
+            if (resDate !== resDayjs)
+                console.log(
+                    'Ikke like',
+                    date1.toString(),
+                    date2.toString(),
+                    resDate,
+                    resDayjs
+                );
+            expect(resDate).toEqual(resDayjs);
+        }
+    });
 });

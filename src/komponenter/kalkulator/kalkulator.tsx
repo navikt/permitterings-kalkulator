@@ -13,6 +13,9 @@ import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import {
     AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFraværesPerioderDayjs,
+    tilAllePermitteringerOgFraværesPerioder,
+    tilAllePermitteringerOgFraværesPerioderDayjs,
     tilDatoIntervall,
 } from './typer';
 import {
@@ -21,6 +24,9 @@ import {
     finnUtOmDefinnesOverlappendePerioder,
     getDefaultPermitteringsperiode,
     finnGrenserFor18MNDPeriode,
+    finnUtOmDefinnesOverlappendePerioderDayjs,
+    finnGrenserFor18MNDPeriodeDayjs,
+    antallDagerGåttDayjs,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -28,17 +34,16 @@ import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
+import dayjs, { Dayjs } from 'dayjs';
 
 const Kalkulator = () => {
-    const { dagensDato, dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
 
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
-    ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [
-            tilDatoIntervall(getDefaultPermitteringsperiode(dagensDatoDayjs)),
-        ],
+    ] = useState<AllePermitteringerOgFraværesPerioderDayjs>({
+        permitteringer: [getDefaultPermitteringsperiode(dagensDatoDayjs)],
         andreFraværsperioder: [],
     });
 
@@ -50,17 +55,18 @@ const Kalkulator = () => {
         beskjedOverlappendePermittering,
         setBeskjedOverlappendePermittering,
     ] = useState('');
-    const [beskjedOverlappendeFravær, setBeskjedOverlappendeFravær] = useState(
-        ''
-    );
+    const [
+        beskjedOverlappendeFravær,
+        setBeskjedOverlappendeFravær,
+    ] = useState<string>('');
 
-    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState(
-        dagensDato
+    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
+        dagensDatoDayjs
     );
 
     useEffect(() => {
         if (
-            finnUtOmDefinnesOverlappendePerioder(
+            finnUtOmDefinnesOverlappendePerioderDayjs(
                 allePermitteringerOgFraværesPerioder.permitteringer
             )
         ) {
@@ -71,7 +77,7 @@ const Kalkulator = () => {
             setBeskjedOverlappendePermittering('');
         }
         if (
-            finnUtOmDefinnesOverlappendePerioder(
+            finnUtOmDefinnesOverlappendePerioderDayjs(
                 allePermitteringerOgFraværesPerioder.andreFraværsperioder
             )
         ) {
@@ -92,12 +98,16 @@ const Kalkulator = () => {
             return (
                 <Permitteringsperiode
                     indeks={indeks}
-                    allePermitteringerOgFraværesPerioder={
+                    allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
                         allePermitteringerOgFraværesPerioder
-                    }
-                    info={permitteringsperiode}
-                    setAllePermitteringerOgFraværesPerioder={
-                        setAllePermitteringerOgFraværesPerioder
+                    )}
+                    info={tilDatoIntervall(permitteringsperiode)}
+                    setAllePermitteringerOgFraværesPerioder={(perioder) =>
+                        setAllePermitteringerOgFraværesPerioder(
+                            tilAllePermitteringerOgFraværesPerioderDayjs(
+                                perioder
+                            )
+                        )
                     }
                     key={indeks.toString()}
                 />
@@ -117,8 +127,10 @@ const Kalkulator = () => {
                         Få oversikt over permitteringsperioder
                     </Systemtittel>
                     <Topp
-                        sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        set18mndsPeriode={setSisteDagI18mndsPeriode}
+                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
+                        set18mndsPeriode={(dato) =>
+                            setSisteDagI18mndsPeriode(dayjs(dato))
+                        }
                         setEndringAv={setsteDagI18mndsPeriodeEndretAv}
                         endringAv={sisteDagI18mndsPeriodeEndretAv}
                     />
@@ -173,12 +185,18 @@ const Kalkulator = () => {
                     </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
-                            setAllePermitteringerOgFraværesPerioder={
-                                setAllePermitteringerOgFraværesPerioder
+                            setAllePermitteringerOgFraværesPerioder={(
+                                perioder
+                            ) =>
+                                setAllePermitteringerOgFraværesPerioder(
+                                    tilAllePermitteringerOgFraværesPerioderDayjs(
+                                        perioder
+                                    )
+                                )
                             }
-                            allePermitteringerOgFraværesPerioder={
+                            allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
                                 allePermitteringerOgFraværesPerioder
-                            }
+                            )}
                         />
                         <Element className={'kalkulator__feilmelding'}>
                             {beskjedOverlappendeFravær}
@@ -204,24 +222,24 @@ const Kalkulator = () => {
                                         }
                                         breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                             'kalkulator-tidslinje-wrapper',
-                                            antalldagerGått(
-                                                finnGrenserFor18MNDPeriode(
-                                                    dagensDato
+                                            antallDagerGåttDayjs(
+                                                finnGrenserFor18MNDPeriodeDayjs(
+                                                    dagensDatoDayjs
                                                 ).datoFra,
-                                                finnGrenserFor18MNDPeriode(
-                                                    dagensDato
+                                                finnGrenserFor18MNDPeriodeDayjs(
+                                                    dagensDatoDayjs
                                                 ).datoTil
                                             )
                                         )}
-                                        sisteDagIPeriode={
-                                            sisteDagI18mndsPeriode
+                                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
+                                        set18mndsPeriode={(dato) =>
+                                            setSisteDagI18mndsPeriode(
+                                                dayjs(dato)
+                                            )
                                         }
-                                        set18mndsPeriode={
-                                            setSisteDagI18mndsPeriode
-                                        }
-                                        allePermitteringerOgFraværesPerioder={
+                                        allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
                                             allePermitteringerOgFraværesPerioder
-                                        }
+                                        )}
                                     />
                                 </>
                             )}
@@ -245,10 +263,10 @@ const Kalkulator = () => {
                 </div>
                 <div className={'kalkulator__utregningskolonne'}>
                     <Utregningskolonne
-                        sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        allePermitteringerOgFraværesPerioder={
+                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
+                        allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
                             allePermitteringerOgFraværesPerioder
-                        }
+                        )}
                     />
                 </div>
             </div>

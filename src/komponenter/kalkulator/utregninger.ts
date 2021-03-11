@@ -22,7 +22,7 @@ export const antalldagerGått = (fra?: Date, til?: Date) => {
 
 export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
-        return til.diff(fra) + 1;
+        return til.diff(fra, 'days');
     } else {
         return 0;
     }
