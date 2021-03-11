@@ -75,7 +75,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const inputOnBlur = (event: any) => {
         setEditing(false);
         const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
-        // TODO test
         if (newDato.isValid()) {
             onDatoClick(newDato);
         } else {

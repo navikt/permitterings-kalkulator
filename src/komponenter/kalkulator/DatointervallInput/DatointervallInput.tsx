@@ -5,7 +5,7 @@ import { ARBEIDSGIVERPERIODE2DATO, finn1DagFram } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -24,16 +24,16 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             datoTil: dato,
         });
 
-    const onFraDatoChange = (event: any) => {
-        const eventDato: Date = event.currentTarget.value;
+    const onFraDatoChange = (event: { currentTarget: { value: Dayjs } }) => {
+        const eventDato: Dayjs = event.currentTarget.value;
 
         const nyttDatoIntervall = !!datoIntervall.datoTil
             ? {
-                  datoFra: eventDato,
+                  datoFra: eventDato.toDate(),
               }
             : {
-                  datoFra: eventDato,
-                  datoTil: finn1DagFram(eventDato),
+                  datoFra: eventDato.toDate(),
+                  datoTil: eventDato.add(1, 'day').toDate(),
               };
 
         setDatoIntervall({
