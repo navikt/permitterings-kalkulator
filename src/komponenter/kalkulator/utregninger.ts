@@ -484,23 +484,6 @@ const finneKategoriDayjs = (
     };
 };
 
-export const flytt18mndsperiode1dag = (
-    tidligereStartDato: Date,
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
-) => {
-    const nyStartDag = finn1DagFram(tidligereStartDato);
-    const sluttDato = finnDato18MndFram(nyStartDag);
-    allePermitteringerOgFravær.permitteringer.forEach((periode, indeks) => {
-        const kuttetTidsintervall = kuttAvDatoIntervallInnefor18mnd(
-            periode,
-            nyStartDag,
-            sluttDato
-        );
-        allePermitteringerOgFravær.permitteringer[indeks] = kuttetTidsintervall;
-    });
-    return allePermitteringerOgFravær;
-};
-
 export const finn1DagFram = (dato: Date) => {
     const enDagFram = new Date(dato);
     enDagFram.setDate(enDagFram.getDate() + 1);
