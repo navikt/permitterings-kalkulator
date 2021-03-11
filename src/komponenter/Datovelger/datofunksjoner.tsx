@@ -1,5 +1,3 @@
-import { Dayjs } from 'dayjs';
-
 export const skrivOmDato = (dato?: Date) => {
     if (dato) {
         const year = dato.getFullYear().toString();

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
@@ -7,9 +7,9 @@ import { scrollIntoView } from '../utils/scrollIntoView';
 import { setEnv } from '../sanity-blocks/serializer';
 import {
     PermitteringInnhold,
+    setPermitteringInnholdFraNokkelVerdi,
     SettPermitteringInnhold,
     SettSideSistOppdatert,
-    setPermitteringInnholdFraNokkelVerdi,
 } from './ContextTypes';
 
 interface Props {
