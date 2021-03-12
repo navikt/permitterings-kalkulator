@@ -37,7 +37,7 @@ export const lagHTMLObjektForAlleDatoer = (
                     'kalkulator__tidslinjeobjekt' +
                     erIdag +
                     ' ' +
-                    formaterDato(dayjs(objekt.dato)) +
+                    formaterDato(objekt.dato) +
                     erÅrsmarkering
                 }
             >
@@ -48,7 +48,7 @@ export const lagHTMLObjektForAlleDatoer = (
                         >
                             I dag
                             <br />
-                            {formaterDato(dayjs())}
+                            {formaterDato(dagensDato)}
                         </Undertekst>
                         <div className={'tidslinje-dagens-dato-strek'} />
                         <div className={'tidslinje-dagens-dato-sirkel'} />

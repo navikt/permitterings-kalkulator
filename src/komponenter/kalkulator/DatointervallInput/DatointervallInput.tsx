@@ -5,7 +5,7 @@ import { ARBEIDSGIVERPERIODE2_DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -62,20 +62,18 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             <div className="datointervall-input__dato-wrapper">
                 <Datovelger
                     className="datointervall-input__datoinput"
-                    value={dayjs(datoIntervall.datoFra)}
+                    value={datoIntervall.datoFra}
                     onChange={onFraDatoChange}
-                    skalVareFoer={dayjs(datoIntervall.datoTil)}
+                    skalVareFoer={datoIntervall.datoTil}
                     overtekst="Første dag"
                 />
                 <Datovelger
                     className="datointervall-input__datoinput"
-                    value={
-                        datoIntervall.datoTil && dayjs(datoIntervall.datoTil)
-                    }
+                    value={datoIntervall.datoTil}
                     onChange={(event) => setTilDato(event.currentTarget.value)}
                     disabled={erLøpende}
                     overtekst="Siste dag"
-                    skalVareEtter={dayjs(datoIntervall.datoFra)}
+                    skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
             <Checkbox

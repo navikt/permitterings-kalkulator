@@ -25,7 +25,7 @@ import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 const Kalkulator = () => {
     const { dagensDato } = useContext(PermitteringContext);
@@ -219,10 +219,8 @@ const Kalkulator = () => {
                                         sisteDagIPeriode={
                                             sisteDagI18mndsPeriode
                                         }
-                                        set18mndsPeriode={(dato) =>
-                                            setSisteDagI18mndsPeriode(
-                                                dayjs(dato)
-                                            )
+                                        set18mndsPeriode={
+                                            setSisteDagI18mndsPeriode
                                         }
                                         allePermitteringerOgFraværesPerioder={
                                             allePermitteringerOgFraværesPerioder

@@ -297,17 +297,17 @@ const finneKategori = (
     if (erFraVærsDato && erPermittert) {
         return {
             kategori: 2,
-            dato: dayjs(dato),
+            dato: dato,
         };
     }
     if (erPermittert) {
         return {
             kategori: 0,
-            dato: dayjs(dato),
+            dato: dato,
         };
     }
     return {
         kategori: 1,
-        dato: dayjs(dato),
+        dato: dato,
     };
 };

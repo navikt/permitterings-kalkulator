@@ -25,7 +25,7 @@ import {
     regnUtPosisjonFraVenstreGittSluttdatoDayjs,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
@@ -189,14 +189,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             />
                             <Normaltekst className={'venstre-dato '}>
                                 {formaterDato(
-                                    finnDato18MndTilbake(
-                                        dayjs(datoVisesPaDragElement)
-                                    )
+                                    finnDato18MndTilbake(datoVisesPaDragElement)
                                 )}
                             </Normaltekst>
 
                             <Normaltekst className={'høyre-dato'}>
-                                {formaterDato(dayjs(datoVisesPaDragElement))}
+                                {formaterDato(datoVisesPaDragElement)}
                             </Normaltekst>
                         </div>
                     </Draggable>

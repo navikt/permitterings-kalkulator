@@ -10,7 +10,7 @@ import Datovelger from '../../Datovelger/Datovelger';
 import kalender from './kalender.svg';
 import Lenke from 'nav-frontend-lenker';
 import { PermitteringContext } from '../../ContextProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
@@ -42,10 +42,8 @@ const Topp: FunctionComponent<Props> = (props) => {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(
-                        dayjs(
-                            finnDato18MndFram(
-                                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
-                            )
+                        finnDato18MndFram(
+                            finnGrenserFor18MNDPeriode(dagensDato).datoFra!
                         )
                     )
             );
@@ -98,7 +96,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                             props.setEndringAv('datovelger');
                         }
                     }}
-                    value={dayjs(props.sisteDagIPeriode)}
+                    value={props.sisteDagIPeriode}
                 />
             </div>
             <div className={'kalkulator__velg-ny-periode-info'}>
@@ -116,11 +114,11 @@ const Topp: FunctionComponent<Props> = (props) => {
                     <br />
                     <Normaltekst>
                         {`Dagen du har valgt som sluttdato for perioden er ${formaterDato(
-                            dayjs(props.sisteDagIPeriode)
+                            props.sisteDagIPeriode
                         )}. 18 måneders perioden er tidsrommet fra og med ${formaterDato(
-                            dayjs(finnDato18MndTilbake(props.sisteDagIPeriode))
+                            finnDato18MndTilbake(props.sisteDagIPeriode)
                         )} til og med ${formaterDato(
-                            dayjs(props.sisteDagIPeriode)
+                            props.sisteDagIPeriode
                         )} .`}
                     </Normaltekst>
                 </div>
