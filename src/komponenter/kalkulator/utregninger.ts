@@ -5,7 +5,6 @@ import {
     DatoIntervallDayjs,
     DatoMedKategoriDayjs,
     OversiktOverBrukteOgGjenværendeDager,
-    tilAllePermitteringerOgFraværesPerioder,
     tilAllePermitteringerOgFraværesPerioderDayjs,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
@@ -306,12 +305,12 @@ export const konstruerStatiskTidslinje = (
     return listeMedTidslinjeObjekter;
 };
 
-const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
+const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervallDayjs[]) => {
     let finnes = false;
     perioder.forEach((periode) => {
         if (
             datoIntervallErDefinert(periode) &&
-            datoErIEnkeltIntervall(dato, periode)
+            dato.isBetween(periode.datoFra!, periode.datoTil!, null, '[]')
         ) {
             finnes = true;
         }
@@ -320,13 +319,9 @@ const finnesIIntervaller = (dato: Date, perioder: DatoIntervall[]) => {
 };
 
 const finneKategori = (
-    datoDayjs: Dayjs,
-    allePermitteringerOgFraværesPerioderDayjs: AllePermitteringerOgFraværesPerioderDayjs
+    dato: Dayjs,
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs
 ): DatoMedKategoriDayjs => {
-    const dato = datoDayjs.toDate();
-    const allePermitteringerOgFraværesPerioder = tilAllePermitteringerOgFraværesPerioder(
-        allePermitteringerOgFraværesPerioderDayjs
-    );
     const erFraVærsDato = finnesIIntervaller(
         dato,
         allePermitteringerOgFraværesPerioder.andreFraværsperioder
