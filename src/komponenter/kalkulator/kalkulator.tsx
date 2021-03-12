@@ -11,7 +11,7 @@ import {
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
-import { AllePermitteringerOgFraværesPerioderDayjs } from './typer';
+import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antallDagerGåttDayjs,
     datoIntervallErDefinert,
@@ -33,7 +33,7 @@ const Kalkulator = () => {
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
-    ] = useState<AllePermitteringerOgFraværesPerioderDayjs>({
+    ] = useState<AllePermitteringerOgFraværesPerioder>({
         permitteringer: [getDefaultPermitteringsperiode(dagensDatoDayjs)],
         andreFraværsperioder: [],
     });

@@ -7,36 +7,9 @@ export enum datointervallKategori {
 }
 
 export interface AllePermitteringerOgFraværesPerioder {
-    permitteringer: DatoIntervall[];
-    andreFraværsperioder: DatoIntervall[];
-}
-
-export interface AllePermitteringerOgFraværesPerioderDayjs {
     permitteringer: DatoIntervallDayjs[];
     andreFraværsperioder: DatoIntervallDayjs[];
 }
-
-export const tilAllePermitteringerOgFraværesPerioder = (
-    perioder: AllePermitteringerOgFraværesPerioderDayjs
-): AllePermitteringerOgFraværesPerioder => ({
-    permitteringer: perioder.permitteringer.map((periode) =>
-        tilDatoIntervall(periode)
-    ),
-    andreFraværsperioder: perioder.andreFraværsperioder.map((periode) =>
-        tilDatoIntervall(periode)
-    ),
-});
-
-export const tilAllePermitteringerOgFraværesPerioderDayjs = (
-    perioder: AllePermitteringerOgFraværesPerioder
-): AllePermitteringerOgFraværesPerioderDayjs => ({
-    permitteringer: perioder.permitteringer.map((periode) =>
-        tilDatoIntervallDayjs(periode)
-    ),
-    andreFraværsperioder: perioder.andreFraværsperioder.map((periode) =>
-        tilDatoIntervallDayjs(periode)
-    ),
-});
 
 export interface DatoIntervall {
     datoFra: Date | undefined;

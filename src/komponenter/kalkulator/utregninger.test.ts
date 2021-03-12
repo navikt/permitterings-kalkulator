@@ -1,5 +1,5 @@
 import {
-    AllePermitteringerOgFraværesPerioderDayjs,
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
@@ -250,7 +250,7 @@ test('Sum av permitteringer og fravær', () => {
         datoTil: sluttPermitteringsPeriode4,
     };
 
-    const alle: AllePermitteringerOgFraværesPerioderDayjs = {
+    const alle: AllePermitteringerOgFraværesPerioder = {
         permitteringer: Array.of(
             permitteringsPeriode1,
             permitteringsPeriode2,

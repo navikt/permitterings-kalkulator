@@ -3,7 +3,7 @@ import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
 import {
-    AllePermitteringerOgFraværesPerioderDayjs,
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervallDayjs,
 } from '../typer';
 
@@ -15,9 +15,9 @@ import { PermitteringContext } from '../../ContextProvider';
 interface Props {
     info: DatoIntervallDayjs;
     indeks: number;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
 }
 

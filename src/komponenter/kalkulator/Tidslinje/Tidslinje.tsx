@@ -11,10 +11,7 @@ import {
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
-    AllePermitteringerOgFraværesPerioderDayjs,
-    DatoMedKategori,
     DatoMedKategoriDayjs,
-    tilAllePermitteringerOgFraværesPerioderDayjs,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
@@ -25,7 +22,6 @@ import {
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
     regnUtHorisontalAvstandMellomToElement,
-    regnUtPosisjonFraVenstreGittSluttdato,
     regnUtPosisjonFraVenstreGittSluttdatoDayjs,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
@@ -33,7 +29,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Dayjs) => void;
     sisteDagIPeriode: Dayjs;
     breddeAvDatoObjektIProsent: number;

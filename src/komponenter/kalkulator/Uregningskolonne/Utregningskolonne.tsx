@@ -8,11 +8,9 @@ import React, {
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
-    AllePermitteringerOgFraværesPerioderDayjs,
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
-    tilAllePermitteringerOgFraværesPerioder,
-    tilDatoIntervall,
 } from '../typer';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
@@ -24,7 +22,7 @@ import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 
 interface UtregningskolonneProps {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     sisteDagIPeriode: Dayjs;
 }
 
@@ -34,7 +32,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     const [
         oversiktOverPerioderInnenfor18mnd,
         setOversiktOverPerioderInnenfor18mnd,
-    ] = useState<AllePermitteringerOgFraværesPerioderDayjs>({
+    ] = useState<AllePermitteringerOgFraværesPerioder>({
         andreFraværsperioder: [],
         permitteringer: [],
     });
@@ -49,7 +47,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     );
 
     useEffect(() => {
-        const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioderDayjs = {
+        const avkuttet18mndPerioder: AllePermitteringerOgFraværesPerioder = {
             andreFraværsperioder:
                 props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
             permitteringer: [],

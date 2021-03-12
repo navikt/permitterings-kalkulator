@@ -1,11 +1,8 @@
 import {
     AllePermitteringerOgFraværesPerioder,
-    AllePermitteringerOgFraværesPerioderDayjs,
-    DatoIntervall,
     DatoIntervallDayjs,
     DatoMedKategoriDayjs,
     OversiktOverBrukteOgGjenværendeDager,
-    tilAllePermitteringerOgFraværesPerioderDayjs,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -33,7 +30,7 @@ export const antallUkerRundetOpp = (antallDager: number) => {
 };
 
 export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioderDayjs,
+    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ): OversiktOverBrukteOgGjenværendeDager => {
     const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
@@ -255,9 +252,7 @@ export const finnSisteDato = (
     return sisteDato;
 };
 
-export const datoIntervallErDefinert = (
-    datoIntervall: DatoIntervall | DatoIntervallDayjs
-) => {
+export const datoIntervallErDefinert = (datoIntervall: DatoIntervallDayjs) => {
     return (
         datoIntervall.datoFra !== undefined &&
         datoIntervall.datoTil !== undefined
@@ -265,7 +260,7 @@ export const datoIntervallErDefinert = (
 };
 
 export const konstruerStatiskTidslinje = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioderDayjs,
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ): DatoMedKategoriDayjs[] => {
     const listeMedTidslinjeObjekter: DatoMedKategoriDayjs[] = [];
@@ -301,7 +296,7 @@ const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervallDayjs[]) => {
 
 const finneKategori = (
     dato: Dayjs,
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
 ): DatoMedKategoriDayjs => {
     const erFraVærsDato = finnesIIntervaller(
         dato,

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
-    AllePermitteringerOgFraværesPerioderDayjs,
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervallDayjs,
 } from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
@@ -13,9 +13,9 @@ import { Dayjs } from 'dayjs';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
     ) => void;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
