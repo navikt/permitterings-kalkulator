@@ -93,7 +93,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
-        if (datoOnDrag && datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
+        if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
                 tidslinjeObjekter,
                 props.breddeAvDatoObjektIProsent,

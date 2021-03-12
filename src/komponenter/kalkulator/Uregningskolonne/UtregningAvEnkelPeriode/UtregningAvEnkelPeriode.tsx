@@ -22,17 +22,15 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
     const [antall, setAntall] = useState(0);
 
     useEffect(() => {
-        const antallDager = props.permitteringsperiode.datoFra
-            ? antallDagerGått(
-                  props.permitteringsperiode.datoFra!,
-                  props.permitteringsperiode.datoTil
-              )
-            : 0;
+        const antallDagerPermittert = antallDagerGått(
+            props.permitteringsperiode.datoFra,
+            props.permitteringsperiode.datoTil
+        );
         const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(
             props.permitteringsperiode,
             props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
         );
-        const svar = antallDager - fraværIPerioden;
+        const svar = antallDagerPermittert - fraværIPerioden;
         setAntall(svar);
     }, [props, antall]);
 

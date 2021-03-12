@@ -93,8 +93,8 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                     info={permitteringsperiode}
-                    setAllePermitteringerOgFraværesPerioder={(perioder) =>
-                        setAllePermitteringerOgFraværesPerioder(perioder)
+                    setAllePermitteringerOgFraværesPerioder={
+                        setAllePermitteringerOgFraværesPerioder
                     }
                     key={indeks.toString()}
                 />
@@ -115,9 +115,7 @@ const Kalkulator = () => {
                     </Systemtittel>
                     <Topp
                         sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        set18mndsPeriode={(dato) =>
-                            setSisteDagI18mndsPeriode(dato)
-                        }
+                        set18mndsPeriode={setSisteDagI18mndsPeriode}
                         setEndringAv={setsteDagI18mndsPeriodeEndretAv}
                         endringAv={sisteDagI18mndsPeriodeEndretAv}
                     />
@@ -172,12 +170,8 @@ const Kalkulator = () => {
                     </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
-                            setAllePermitteringerOgFraværesPerioder={(
-                                perioder
-                            ) =>
-                                setAllePermitteringerOgFraværesPerioder(
-                                    perioder
-                                )
+                            setAllePermitteringerOgFraværesPerioder={
+                                setAllePermitteringerOgFraværesPerioder
                             }
                             allePermitteringerOgFraværesPerioder={
                                 allePermitteringerOgFraværesPerioder

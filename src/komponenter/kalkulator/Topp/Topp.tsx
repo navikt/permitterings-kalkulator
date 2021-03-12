@@ -25,29 +25,15 @@ const Topp: FunctionComponent<Props> = (props) => {
     const { dagensDato } = useContext(PermitteringContext);
 
     const datoValidering = (dato: Dayjs) => {
-        if (
-            dato.isSameOrAfter(finnGrenserFor18MNDPeriode(dagensDato).datoTil!)
-        ) {
-            setFeilmelding(
-                'sett dato før ' +
-                    formaterDato(
-                        finnGrenserFor18MNDPeriode(dagensDato).datoTil!
-                    )
-            );
+        const { datoFra, datoTil } = finnGrenserFor18MNDPeriode(dagensDato);
+
+        if (dato.isSameOrAfter(datoTil!)) {
+            setFeilmelding('sett dato før ' + formaterDato(datoTil!));
             return false;
         }
-        if (
-            finnDato18MndTilbake(dato).isSameOrBefore(
-                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
-            )
-        ) {
+        if (finnDato18MndTilbake(dato).isSameOrBefore(datoFra!)) {
             setFeilmelding(
-                'sett dato før ' +
-                    formaterDato(
-                        finnDato18MndFram(
-                            finnGrenserFor18MNDPeriode(dagensDato).datoFra!
-                        )
-                    )
+                'sett dato før ' + formaterDato(finnDato18MndFram(datoFra!))
             );
             return false;
         } else {
