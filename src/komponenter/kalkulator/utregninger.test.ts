@@ -3,6 +3,8 @@ import {
     DatoIntervall,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
+    tilDatoIntervall,
+    tilDatoIntervallDayjs,
 } from './typer';
 import {
     antalldagerGått,
@@ -11,10 +13,14 @@ import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
+    inngårIPermitteringsperiode,
+    getAntallOverlappendeDager,
     konstruerStatiskTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
     sumPermitteringerOgFravær,
+    summerFraværsdagerIPermitteringsperiodeDayjs,
+    finnUtOmDefinnesOverlappendePerioderDayjs,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
 import { configureDayJS } from '../../dayjs-config';
@@ -80,59 +86,59 @@ test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 100
 });
 
 test('Antall dager mellom to datoer', () => {
-    const enDagIFebruar = new Date('2021-02-20');
-    const nesteDagIFebruar = new Date('2021-02-21');
-    const enDagIMars = new Date('2021-03-23');
-    const enDagIMarsEtÅrSenere = new Date('2022-03-23');
+    const enDagIFebruar = dayjs('2021-02-20');
+    const nesteDagIFebruar = dayjs('2021-02-21');
+    const enDagIMars = dayjs('2021-03-23');
+    const enDagIMarsEtÅrSenere = dayjs('2022-03-23');
 
-    expect(antalldagerGått(enDagIFebruar, enDagIFebruar)).toBe(1);
-    expect(antalldagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
-    expect(antalldagerGått(enDagIFebruar, enDagIMars)).toBe(32);
-    expect(antalldagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
+    expect(antallDagerGåttDayjs(enDagIFebruar, enDagIFebruar)).toBe(1);
+    expect(antallDagerGåttDayjs(enDagIFebruar, nesteDagIFebruar)).toBe(2);
+    expect(antallDagerGåttDayjs(enDagIFebruar, enDagIMars)).toBe(32);
+    expect(antallDagerGåttDayjs(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
 });
 
 test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
-    const startIntervall1 = new Date('2021-03-01');
-    const sluttIntervall1 = new Date('2021-04-15');
+    const startIntervall1 = dayjs('2021-03-01');
+    const sluttIntervall1 = dayjs('2021-04-15');
 
-    const startIntervall2 = new Date('2021-04-15');
-    const sluttIntervall2 = new Date('2021-05-15');
+    const startIntervall2 = dayjs('2021-04-15');
+    const sluttIntervall2 = dayjs('2021-05-15');
 
-    const periode1: DatoIntervall = {
+    const periode1: DatoIntervallDayjs = {
         datoFra: startIntervall1,
         datoTil: sluttIntervall1,
     };
 
-    const periode2: DatoIntervall = {
+    const periode2: DatoIntervallDayjs = {
         datoFra: startIntervall2,
         datoTil: sluttIntervall2,
     };
 
     expect(
-        finnUtOmDefinnesOverlappendePerioder(Array.of(periode1, periode2))
+        finnUtOmDefinnesOverlappendePerioderDayjs(Array.of(periode1, periode2))
     ).toBe(true);
 });
 
 test('Summer antall fraværsdager i en permitteringsperiode', () => {
-    const fraværsIntervall1: DatoIntervall = {
-        datoFra: new Date('2021-03-01'),
-        datoTil: new Date('2021-03-15'),
+    const fraværsIntervall1: DatoIntervallDayjs = {
+        datoFra: dayjs('2021-03-01'),
+        datoTil: dayjs('2021-03-15'),
     };
-    const fraværsIntervall2: DatoIntervall = {
-        datoFra: new Date('2021-04-02'),
-        datoTil: new Date('2021-04-02'),
+    const fraværsIntervall2: DatoIntervallDayjs = {
+        datoFra: dayjs('2021-04-02'),
+        datoTil: dayjs('2021-04-02'),
     };
-    const fraværsIntervall3: DatoIntervall = {
-        datoFra: new Date('2021-04-29'),
-        datoTil: new Date('2021-05-07'),
+    const fraværsIntervall3: DatoIntervallDayjs = {
+        datoFra: dayjs('2021-04-29'),
+        datoTil: dayjs('2021-05-07'),
     };
-    const permitteringsPeriode: DatoIntervall = {
-        datoFra: new Date('2020-02-14'),
-        datoTil: new Date('2021-06-02'),
+    const permitteringsPeriode: DatoIntervallDayjs = {
+        datoFra: dayjs('2020-02-14'),
+        datoTil: dayjs('2021-06-02'),
     };
 
     expect(
-        summerFraværsdagerIPermitteringsperiode(
+        summerFraværsdagerIPermitteringsperiodeDayjs(
             permitteringsPeriode,
             Array.of(fraværsIntervall1, fraværsIntervall2, fraværsIntervall3)
         )
@@ -307,38 +313,56 @@ const randomDates = (antall: number): Dayjs[] => {
 const tilDayjs = (dates: Date[]): Dayjs[] => dates.map((date) => dayjs(date));
 
 test('test', () => {
-    const dates1 = randomDates(100);
-    const dates2 = randomDates(100);
-
-    // Ikke like 2019-09-12T21:16:57.847Z 2020-11-27T21:39:43.166Z 443 441
-    // Ikke like 2020-03-05T11:26:19.132Z 2020-03-16T10:25:11.777Z 12 10
-    //     Ikke like 2020-10-11T23:16:12.018Z 2020-11-03T23:54:50.824Z 24 22
-    //     Ikke like 2021-08-03T22:48:40.031Z 2021-08-15T17:20:11.470Z 13 11
-
-    //const date1 = new Date('2019-09-12T21:16:57.847Z');
-    //const date2 = new Date('2020-11-27T21:39:43.166Z');
+    const dates1 = randomDates(1000);
+    const dates2 = randomDates(1000);
 
     const date1 = new Date('2021-08-03');
     const date2 = new Date('2021-08-15');
 
     const res1 = antalldagerGått(date1, date2);
     const res2 = antallDagerGåttDayjs(dayjs(date1), dayjs(date2));
-    //expect(res1).toEqual(res2);
 
     dates1.forEach((date1, index) => {
         const date2 = dates2[index];
         const resDate = antalldagerGått(date1.toDate(), date2.toDate());
         const resDayjs = antallDagerGåttDayjs(date1, date2);
-        if (resDate >= 0) {
-            if (resDate !== resDayjs)
-                console.log(
-                    'Ikke like',
-                    date1.toString(),
-                    date2.toString(),
-                    resDate,
-                    resDayjs
-                );
-            expect(resDate).toEqual(resDayjs);
-        }
+        expect(resDate).toEqual(resDayjs);
     });
+});
+function getRandomInt(min: number, max: number) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
+}
+test('test2', () => {
+    for (let i = 0; i < 1000; i++) {
+        const perm = dayjs(randomDate()).startOf('date');
+        const permintervall = {
+            datoFra: perm,
+            datoTil: perm.add(getRandomInt(1, 500), 'days'),
+            erLøpende: undefined,
+        };
+        const fravær = dayjs(randomDate()).startOf('date');
+        const fraværsintervall = {
+            datoFra: fravær,
+            datoTil: fravær.add(getRandomInt(1, 500), 'days'),
+            erLøpende: undefined,
+        };
+        const resultatOld = inngårIPermitteringsperiode(
+            tilDatoIntervall(permintervall),
+            tilDatoIntervall(fraværsintervall)
+        );
+        const resultatNew = getAntallOverlappendeDager(
+            permintervall,
+            fraværsintervall
+        );
+        if (resultatNew !== resultatOld) {
+            console.log('permittering', tilDatoIntervall(permintervall));
+            console.log('fravær', tilDatoIntervall(fraværsintervall));
+            console.log(
+                'resultater new/old ' + resultatNew + '/' + resultatOld
+            );
+            //expect(resultatNew).toEqual(resultatOld);
+        }
+    }
 });

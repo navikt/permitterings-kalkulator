@@ -10,6 +10,7 @@ import {
     tilDatoIntervall,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
@@ -140,6 +141,34 @@ export const inngårIPermitteringsperiode = (
     return 0;
 };
 
+export const getAntallOverlappendeDager = (
+    permitteringsintervall: DatoIntervallDayjs,
+    fraværsintervall: DatoIntervallDayjs
+) => {
+    if (
+        !datoIntervallErDefinert(permitteringsintervall) ||
+        !datoIntervallErDefinert(fraværsintervall)
+    ) {
+    }
+    let antallOverlappendeDager = 0;
+    for (
+        let fraværsdag = fraværsintervall.datoFra;
+        fraværsdag?.isSameOrBefore(fraværsintervall.datoTil!);
+        fraværsdag = fraværsdag.add(1, 'day')
+    ) {
+        const fraværsdagLiggerIPermitteringsperiode = fraværsdag?.isBetween(
+            permitteringsintervall.datoFra!,
+            permitteringsintervall.datoTil!,
+            null,
+            '[]'
+        );
+        if (fraværsdagLiggerIPermitteringsperiode) {
+            antallOverlappendeDager++;
+        }
+    }
+    return antallOverlappendeDager;
+};
+
 //denne er bra
 export const summerFraværsdagerIPermitteringsperiode = (
     permitteringsperiode: DatoIntervall,
@@ -149,6 +178,21 @@ export const summerFraværsdagerIPermitteringsperiode = (
     fraværsperioder.forEach(
         (periode) =>
             (antallFraværsdagerIPeriode += inngårIPermitteringsperiode(
+                permitteringsperiode,
+                periode
+            ))
+    );
+    return antallFraværsdagerIPeriode;
+};
+
+export const summerFraværsdagerIPermitteringsperiodeDayjs = (
+    permitteringsperiode: DatoIntervallDayjs,
+    fraværsperioder: DatoIntervallDayjs[]
+) => {
+    let antallFraværsdagerIPeriode = 0;
+    fraværsperioder.forEach(
+        (periode) =>
+            (antallFraværsdagerIPeriode += getAntallOverlappendeDager(
                 permitteringsperiode,
                 periode
             ))
