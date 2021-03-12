@@ -75,13 +75,11 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         (permitteringsperiode, indeks) => {
             return (
                 <UtregningAvEnkelPeriode
-                    permitteringsperiode={tilDatoIntervall(
-                        permitteringsperiode
-                    )}
+                    permitteringsperiode={permitteringsperiode}
                     indeks={indeks}
-                    allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
+                    allePermitteringerOgFraværesPerioder={
                         oversiktOverPerioderInnenfor18mnd
-                    )}
+                    }
                     key={indeks}
                 />
             );
