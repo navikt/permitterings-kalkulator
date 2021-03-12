@@ -7,7 +7,7 @@ import {
 } from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDatoDayjs, finnTidligsteDatoDayjs } from '../../utregninger';
+import { finnSisteDato, finnTidligsteDato } from '../../utregninger';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { Dayjs } from 'dayjs';
 
@@ -27,14 +27,14 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             ...props.allePermitteringerOgFraværesPerioder,
         };
         let startDatoIntervall: Dayjs | undefined;
-        const tidligstePermitteringsdato = finnTidligsteDatoDayjs(
+        const tidligstePermitteringsdato = finnTidligsteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
         if (antallFraværsperioder === 0) {
             startDatoIntervall = tidligstePermitteringsdato;
         } else {
             startDatoIntervall =
-                finnSisteDatoDayjs(
+                finnSisteDato(
                     props.allePermitteringerOgFraværesPerioder
                         .andreFraværsperioder
                 ) || tidligstePermitteringsdato;

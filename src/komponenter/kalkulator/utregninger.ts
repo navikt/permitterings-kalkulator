@@ -220,7 +220,7 @@ export const getDefaultPermitteringsperiode = (
     datoTil: undefined,
 });
 
-export const finnDato18MndFramDayjs = (datoDayjs: Dayjs) => {
+export const finnDato18MndFram = (datoDayjs: Dayjs) => {
     const dato = datoDayjs.toDate();
     let nyDato = new Date(dato);
     nyDato.setFullYear(dato.getFullYear() + 1);
@@ -234,7 +234,7 @@ export const finnDato18MndFramDayjs = (datoDayjs: Dayjs) => {
     return dayjs(nyDato);
 };
 
-export const finnTidligsteDatoDayjs = (
+export const finnTidligsteDato = (
     datointervall: DatoIntervallDayjs[]
 ): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
@@ -251,22 +251,7 @@ export const finnTidligsteDatoDayjs = (
     return tidligsteDato;
 };
 
-export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
-    let tidligsteDato = datointervall[0].datoFra!!;
-    datointervall.forEach((datoIntervall) => {
-        if (datoIntervall.datoFra) {
-            if (!tidligsteDato) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-            if (tidligsteDato > datoIntervall.datoFra) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-        }
-    });
-    return tidligsteDato;
-};
-
-export const finnSisteDatoDayjs = (
+export const finnSisteDato = (
     datointervall: DatoIntervallDayjs[]
 ): Dayjs | undefined => {
     let sisteDato = datointervall[0].datoTil;
@@ -276,23 +261,6 @@ export const finnSisteDatoDayjs = (
                 sisteDato = intervall.datoTil;
             }
             if (sisteDato.isBefore(intervall.datoTil)) {
-                sisteDato = intervall.datoTil;
-            }
-        }
-    });
-    return sisteDato;
-};
-
-export const finnSisteDato = (
-    datointervall: DatoIntervall[]
-): Date | undefined => {
-    let sisteDato = datointervall[0].datoTil;
-    datointervall.forEach((intervall) => {
-        if (intervall.datoTil) {
-            if (!sisteDato) {
-                sisteDato = intervall.datoTil;
-            }
-            if (sisteDato < intervall.datoTil) {
                 sisteDato = intervall.datoTil;
             }
         }

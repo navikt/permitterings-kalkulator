@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useState } from 'react';
 import './Topp.less';
 import {
-    finnDato18MndFramDayjs,
+    finnDato18MndFram,
     finnDato18MndTilbake,
     finnGrenserFor18MNDPeriode,
 } from '../utregninger';
@@ -43,7 +43,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                 'sett dato før ' +
                     formaterDato(
                         dayjs(
-                            finnDato18MndFramDayjs(
+                            finnDato18MndFram(
                                 finnGrenserFor18MNDPeriode(dagensDatoDayjs)
                                     .datoFra!
                             )

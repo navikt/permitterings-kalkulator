@@ -9,10 +9,7 @@ import {
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import {
-    finnSisteDatoDayjs,
-    getDefaultPermitteringsperiode,
-} from '../utregninger';
+import { finnSisteDato, getDefaultPermitteringsperiode } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
@@ -27,10 +24,10 @@ interface Props {
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const { dagensDatoDayjs } = useContext(PermitteringContext);
     const leggTilNyPermitteringsperiode = () => {
-        const sistRegistrerteDag = finnSisteDatoDayjs(
+        const sistRegistrerteDag = finnSisteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         )
-            ? finnSisteDatoDayjs(
+            ? finnSisteDato(
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
             : dagensDatoDayjs;
