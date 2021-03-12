@@ -9,7 +9,7 @@ import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
+    DatoIntervall,
     OversiktOverBrukteOgGjenværendeDager,
 } from '../typer';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
@@ -54,7 +54,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         };
         props.allePermitteringerOgFraværesPerioder.permitteringer.forEach(
             (periode) => {
-                const kuttetDatoIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mnd(
+                const kuttetDatoIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
                     periode,
                     finnDato18MndTilbake(props.sisteDagIPeriode),
                     props.sisteDagIPeriode

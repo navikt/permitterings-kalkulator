@@ -1,6 +1,6 @@
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
+    DatoIntervall,
     DatoMedKategoriDayjs,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
@@ -72,8 +72,8 @@ export const regnUtDatoAGP2 = (dagerBrukt: number, dagensDato: Date) => {
 };
 
 export const getAntallOverlappendeDager = (
-    intervall1: DatoIntervallDayjs,
-    intervall2: DatoIntervallDayjs
+    intervall1: DatoIntervall,
+    intervall2: DatoIntervall
 ) => {
     if (
         !datoIntervallErDefinert(intervall1) ||
@@ -96,8 +96,8 @@ export const getAntallOverlappendeDager = (
 };
 
 export const summerFraværsdagerIPermitteringsperiodeDayjs = (
-    permitteringsperiode: DatoIntervallDayjs,
-    fraværsperioder: DatoIntervallDayjs[]
+    permitteringsperiode: DatoIntervall,
+    fraværsperioder: DatoIntervall[]
 ) => {
     let antallFraværsdagerIPeriode = 0;
     fraværsperioder.forEach(
@@ -111,7 +111,7 @@ export const summerFraværsdagerIPermitteringsperiodeDayjs = (
 };
 
 export const finnUtOmDefinnesOverlappendePerioderDayjs = (
-    perioder: DatoIntervallDayjs[]
+    perioder: DatoIntervall[]
 ): boolean => {
     let finnesOverLapp = false;
     perioder.forEach((periode) => {
@@ -130,8 +130,8 @@ export const finnUtOmDefinnesOverlappendePerioderDayjs = (
 
 export const kuttAvDatoIntervallFørGittDato = (
     gittDato: Dayjs,
-    tidsIntervall: DatoIntervallDayjs
-): DatoIntervallDayjs => {
+    tidsIntervall: DatoIntervall
+): DatoIntervall => {
     const { datoFra, datoTil } = tidsIntervall;
     if (!datoFra || !datoTil) return tidsIntervall;
     if (gittDato.isBefore(datoFra)) return tidsIntervall;
@@ -142,8 +142,8 @@ export const kuttAvDatoIntervallFørGittDato = (
 
 export const kuttAvDatoIntervallEtterGittDato = (
     gittDato: Dayjs,
-    tidsIntervall: DatoIntervallDayjs
-): DatoIntervallDayjs => {
+    tidsIntervall: DatoIntervall
+): DatoIntervall => {
     const { datoFra, datoTil } = tidsIntervall;
     if (datoTil?.isAfter(gittDato)) {
         if (datoFra?.isSameOrAfter(gittDato)) {
@@ -156,10 +156,10 @@ export const kuttAvDatoIntervallEtterGittDato = (
 };
 
 export const kuttAvDatoIntervallInnefor18mnd = (
-    datoIntevall: DatoIntervallDayjs,
+    datoIntevall: DatoIntervall,
     startdato: Dayjs,
     sluttDato: Dayjs
-): DatoIntervallDayjs => {
+): DatoIntervall => {
     const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
         startdato,
         datoIntevall
@@ -186,7 +186,7 @@ export const finnDato18MndTilbake = (datoDayjs: Dayjs): Dayjs => {
 
 export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
-): DatoIntervallDayjs => {
+): DatoIntervall => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
     const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
@@ -199,7 +199,7 @@ export const finnGrenserFor18MNDPeriode = (
 
 export const getDefaultPermitteringsperiode = (
     dagensDato: Dayjs
-): DatoIntervallDayjs => ({
+): DatoIntervall => ({
     datoFra: finnDato18MndTilbake(dagensDato),
     datoTil: undefined,
 });
@@ -218,9 +218,7 @@ export const finnDato18MndFram = (datoDayjs: Dayjs) => {
     return dayjs(nyDato);
 };
 
-export const finnTidligsteDato = (
-    datointervall: DatoIntervallDayjs[]
-): Dayjs => {
+export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
     datointervall.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
@@ -236,7 +234,7 @@ export const finnTidligsteDato = (
 };
 
 export const finnSisteDato = (
-    datointervall: DatoIntervallDayjs[]
+    datointervall: DatoIntervall[]
 ): Dayjs | undefined => {
     let sisteDato = datointervall[0].datoTil;
     datointervall.forEach((intervall) => {
@@ -252,7 +250,7 @@ export const finnSisteDato = (
     return sisteDato;
 };
 
-export const datoIntervallErDefinert = (datoIntervall: DatoIntervallDayjs) => {
+export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     return (
         datoIntervall.datoFra !== undefined &&
         datoIntervall.datoTil !== undefined
@@ -281,7 +279,7 @@ export const konstruerStatiskTidslinje = (
     return listeMedTidslinjeObjekter;
 };
 
-const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervallDayjs[]) => {
+const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
     let finnes = false;
     perioder.forEach((periode) => {
         if (

@@ -3,7 +3,7 @@ import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
+    DatoIntervall,
 } from '../../typer';
 import {
     antallDagerGåttDayjs,
@@ -12,7 +12,7 @@ import {
 
 interface UtregningAvEnkelPeriodeProps {
     indeks: number;
-    permitteringsperiode: DatoIntervallDayjs;
+    permitteringsperiode: DatoIntervall;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 

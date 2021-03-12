@@ -3,7 +3,7 @@ import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
+    DatoIntervall,
 } from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
@@ -50,7 +50,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
 
     const oppdaterDatoIntervall = (
         indeks: number,
-        datoIntervall: DatoIntervallDayjs
+        datoIntervall: DatoIntervall
     ) => {
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,

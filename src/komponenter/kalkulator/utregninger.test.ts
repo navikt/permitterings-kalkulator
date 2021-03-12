@@ -1,6 +1,6 @@
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
+    DatoIntervall,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
@@ -97,12 +97,12 @@ test('Tester om to datointervaller er overlappende. Samme slutt og startdato ska
     const startIntervall2 = dayjs('2021-04-15');
     const sluttIntervall2 = dayjs('2021-05-15');
 
-    const periode1: DatoIntervallDayjs = {
+    const periode1: DatoIntervall = {
         datoFra: startIntervall1,
         datoTil: sluttIntervall1,
     };
 
-    const periode2: DatoIntervallDayjs = {
+    const periode2: DatoIntervall = {
         datoFra: startIntervall2,
         datoTil: sluttIntervall2,
     };
@@ -113,19 +113,19 @@ test('Tester om to datointervaller er overlappende. Samme slutt og startdato ska
 });
 
 test('Summer antall fraværsdager i en permitteringsperiode', () => {
-    const fraværsIntervall1: DatoIntervallDayjs = {
+    const fraværsIntervall1: DatoIntervall = {
         datoFra: dayjs('2021-03-01'),
         datoTil: dayjs('2021-03-15'),
     };
-    const fraværsIntervall2: DatoIntervallDayjs = {
+    const fraværsIntervall2: DatoIntervall = {
         datoFra: dayjs('2021-04-02'),
         datoTil: dayjs('2021-04-02'),
     };
-    const fraværsIntervall3: DatoIntervallDayjs = {
+    const fraværsIntervall3: DatoIntervall = {
         datoFra: dayjs('2021-04-29'),
         datoTil: dayjs('2021-05-07'),
     };
-    const permitteringsPeriode: DatoIntervallDayjs = {
+    const permitteringsPeriode: DatoIntervall = {
         datoFra: dayjs('2020-02-14'),
         datoTil: dayjs('2021-06-02'),
     };
@@ -148,19 +148,19 @@ test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', 
     const startPermitteringsPeriode4 = dayjs('2021-05-14');
     const sluttPermitteringsPeriode4 = dayjs('2021-06-02');
 
-    const permitteringsPeriode1: DatoIntervallDayjs = {
+    const permitteringsPeriode1: DatoIntervall = {
         datoFra: startPermitteringsPeriode1,
         datoTil: sluttPermitteringsPeriode1,
     };
-    const permitteringsPeriode2: DatoIntervallDayjs = {
+    const permitteringsPeriode2: DatoIntervall = {
         datoFra: startPermitteringsPeriode2,
         datoTil: sluttPermitteringsPeriode2,
     };
-    const permitteringsPeriode3: DatoIntervallDayjs = {
+    const permitteringsPeriode3: DatoIntervall = {
         datoFra: startPermitteringsPeriode3,
         datoTil: sluttPermitteringsPeriode3,
     };
-    const permitteringsPeriode4: DatoIntervallDayjs = {
+    const permitteringsPeriode4: DatoIntervall = {
         datoFra: startPermitteringsPeriode4,
         datoTil: sluttPermitteringsPeriode4,
     };
@@ -187,19 +187,19 @@ test('Finner den siste datoen fra en liste av flere permitteringsperioder', () =
     const startPermitteringsPeriode4 = dayjs('2021-05-14');
     const sluttPermitteringsPeriode4 = dayjs('2021-06-02');
 
-    const permitteringsPeriode1: DatoIntervallDayjs = {
+    const permitteringsPeriode1: DatoIntervall = {
         datoFra: startPermitteringsPeriode1,
         datoTil: sluttPermitteringsPeriode1,
     };
-    const permitteringsPeriode2: DatoIntervallDayjs = {
+    const permitteringsPeriode2: DatoIntervall = {
         datoFra: startPermitteringsPeriode2,
         datoTil: sluttPermitteringsPeriode2,
     };
-    const permitteringsPeriode3: DatoIntervallDayjs = {
+    const permitteringsPeriode3: DatoIntervall = {
         datoFra: startPermitteringsPeriode3,
         datoTil: sluttPermitteringsPeriode3,
     };
-    const permitteringsPeriode4: DatoIntervallDayjs = {
+    const permitteringsPeriode4: DatoIntervall = {
         datoFra: startPermitteringsPeriode4,
         datoTil: sluttPermitteringsPeriode4,
     };
@@ -219,7 +219,7 @@ test('Finner den siste datoen fra en liste av flere permitteringsperioder', () =
 test('Sum av permitteringer og fravær', () => {
     const startFraværsIntervall1 = dayjs('2020-03-01');
     const sluttFraværsIntervall1 = dayjs('2020-03-15'); // 15 dager
-    const fraværsPeriode: DatoIntervallDayjs = {
+    const fraværsPeriode: DatoIntervall = {
         datoFra: startFraværsIntervall1,
         datoTil: sluttFraværsIntervall1,
     };
@@ -233,19 +233,19 @@ test('Sum av permitteringer og fravær', () => {
     const startPermitteringsPeriode4 = dayjs('2020-05-14');
     const sluttPermitteringsPeriode4 = dayjs('2020-06-02');
 
-    const permitteringsPeriode1: DatoIntervallDayjs = {
+    const permitteringsPeriode1: DatoIntervall = {
         datoFra: startPermitteringsPeriode1,
         datoTil: sluttPermitteringsPeriode1,
     };
-    const permitteringsPeriode2: DatoIntervallDayjs = {
+    const permitteringsPeriode2: DatoIntervall = {
         datoFra: startPermitteringsPeriode2,
         datoTil: sluttPermitteringsPeriode2,
     };
-    const permitteringsPeriode3: DatoIntervallDayjs = {
+    const permitteringsPeriode3: DatoIntervall = {
         datoFra: startPermitteringsPeriode3,
         datoTil: sluttPermitteringsPeriode3,
     };
-    const permitteringsPeriode4: DatoIntervallDayjs = {
+    const permitteringsPeriode4: DatoIntervall = {
         datoFra: startPermitteringsPeriode4,
         datoTil: sluttPermitteringsPeriode4,
     };
@@ -273,14 +273,14 @@ test('Kutt av datoer for en permitteringsperiode', () => {
     const startIntervall = dayjs('2020-02-14');
     const sluttIntervall = dayjs('2020-05-02');
 
-    const intervall: DatoIntervallDayjs = {
+    const intervall: DatoIntervall = {
         datoFra: startIntervall,
         datoTil: sluttIntervall,
     };
     const startKuttDato = dayjs('2020-03-02');
     const sluttKuttDato = dayjs('2020-04-20');
 
-    const nyttIntervall: DatoIntervallDayjs = kuttAvDatoIntervallInnefor18mnd(
+    const nyttIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
         intervall,
         startKuttDato,
         sluttKuttDato

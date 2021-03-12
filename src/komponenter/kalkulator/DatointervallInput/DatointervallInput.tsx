@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
-import { DatoIntervallDayjs } from '../typer';
+import { DatoIntervall } from '../typer';
 import { ARBEIDSGIVERPERIODE2DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
@@ -8,8 +8,8 @@ import Lukknapp from 'nav-frontend-lukknapp';
 import dayjs, { Dayjs } from 'dayjs';
 
 interface Props {
-    datoIntervall: DatoIntervallDayjs;
-    setDatoIntervall: (datoIntervall: DatoIntervallDayjs) => void;
+    datoIntervall: DatoIntervall;
+    setDatoIntervall: (datoIntervall: DatoIntervall) => void;
     erLøpendeLabel: string;
     slettPeriode: () => void;
 }

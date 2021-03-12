@@ -2,10 +2,7 @@ import React, { FunctionComponent, useContext } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervallDayjs,
-} from '../typer';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
@@ -13,7 +10,7 @@ import { finnSisteDato, getDefaultPermitteringsperiode } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
-    info: DatoIntervallDayjs;
+    info: DatoIntervall;
     indeks: number;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     setAllePermitteringerOgFraværesPerioder: (
@@ -31,7 +28,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
             : dagensDatoDayjs;
-        const nyPeriode: DatoIntervallDayjs = {
+        const nyPeriode: DatoIntervall = {
             datoFra: sistRegistrerteDag!.add(1, 'day'),
             datoTil: undefined,
         };
@@ -45,7 +42,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (datoIntervall: DatoIntervallDayjs) => {
+    const oppdaterDatoIntervall = (datoIntervall: DatoIntervall) => {
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];
