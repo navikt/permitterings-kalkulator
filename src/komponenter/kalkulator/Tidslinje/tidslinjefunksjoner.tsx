@@ -1,13 +1,5 @@
-import {
-    datointervallKategori,
-    DatoMedKategori,
-    DatoMedKategoriDayjs,
-} from '../typer';
-import {
-    antalldagerGått,
-    antallDagerGåttDayjs,
-    finnDato18MndTilbake,
-} from '../utregninger';
+import { datointervallKategori, DatoMedKategoriDayjs } from '../typer';
+import { antallDagerGåttDayjs, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
@@ -125,19 +117,6 @@ export const finnBreddeAvObjekt = (id: string) => {
 };
 
 export const finnIndeksForDato = (
-    dato: Date,
-    tidslinjeobjekt: DatoMedKategori[]
-) => {
-    let indeksDato = 0;
-    tidslinjeobjekt.forEach((objekt, indeks) => {
-        if (erLike(dato, objekt.dato)) {
-            indeksDato = indeks;
-        }
-    });
-    return indeksDato;
-};
-
-export const finnIndeksForDatoDayjs = (
     dato: Dayjs,
     tidslinjeobjekt: DatoMedKategoriDayjs[]
 ) => {
@@ -150,29 +129,13 @@ export const finnIndeksForDatoDayjs = (
     return indeksDato;
 };
 
-export const regnUtPosisjonFraVenstreGittSluttdato = (
-    tidslinjeObjekter: DatoMedKategori[],
-    breddePerElementIProsent: number,
-    sluttDato: Date
-) => {
-    return (
-        (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
-            1 -
-            antalldagerGått(
-                finnDato18MndTilbake(dayjs(sluttDato)).toDate(),
-                sluttDato
-            )) *
-        breddePerElementIProsent
-    );
-};
-
 export const regnUtPosisjonFraVenstreGittSluttdatoDayjs = (
     tidslinjeObjekter: DatoMedKategoriDayjs[],
     breddePerElementIProsent: number,
     sluttDato: Dayjs
 ) => {
     return (
-        (finnIndeksForDatoDayjs(sluttDato, tidslinjeObjekter) +
+        (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
             1 -
             antallDagerGåttDayjs(finnDato18MndTilbake(sluttDato), sluttDato)) *
         breddePerElementIProsent
