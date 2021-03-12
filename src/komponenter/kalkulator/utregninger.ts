@@ -7,10 +7,8 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
     tilAllePermitteringerOgFraværesPerioder,
     tilAllePermitteringerOgFraværesPerioderDayjs,
-    tilDatoIntervall,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
-import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
@@ -89,100 +87,28 @@ export const regnUtDatoAGP2 = (dagerBrukt: number, dagensDato: Date) => {
     return ARBEIDSGIVERPERIODE2DATO;
 };
 
-export const inngårIPermitteringsperiode = (
-    permitteringsintervall: DatoIntervall,
-    fraværsintervall: DatoIntervall
-) => {
-    if (
-        datoIntervallErDefinert(permitteringsintervall) &&
-        datoIntervallErDefinert(fraværsintervall)
-    ) {
-        const helefraVærsperiodenInngår =
-            fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoTil!! <= permitteringsintervall.datoTil!!;
-
-        const fraværIHelePerioden =
-            fraværsintervall.datoFra!! <= permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoTil!! >= permitteringsintervall.datoTil!!;
-
-        const sisteDelInngår =
-            fraværsintervall.datoFra!! >= permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoFra!! <= permitteringsintervall.datoTil!!;
-
-        const førsteDelInngår =
-            fraværsintervall.datoFra!! <= permitteringsintervall.datoFra!! &&
-            fraværsintervall.datoTil!! >= permitteringsintervall.datoFra!!;
-
-        switch (true) {
-            case helefraVærsperiodenInngår:
-                return antalldagerGått(
-                    fraværsintervall.datoFra!!,
-                    fraværsintervall.datoTil
-                );
-            case fraværIHelePerioden:
-                return antalldagerGått(
-                    permitteringsintervall.datoFra!!,
-                    permitteringsintervall.datoTil
-                );
-            case sisteDelInngår:
-                return antalldagerGått(
-                    fraværsintervall.datoFra!!,
-                    permitteringsintervall.datoTil
-                );
-            case førsteDelInngår:
-                return antalldagerGått(
-                    permitteringsintervall.datoFra!!,
-                    fraværsintervall.datoTil
-                );
-            default:
-                return 0;
-        }
-    }
-    return 0;
-};
-
 export const getAntallOverlappendeDager = (
-    permitteringsintervall: DatoIntervallDayjs,
-    fraværsintervall: DatoIntervallDayjs
+    intervall1: DatoIntervallDayjs,
+    intervall2: DatoIntervallDayjs
 ) => {
     if (
-        !datoIntervallErDefinert(permitteringsintervall) ||
-        !datoIntervallErDefinert(fraværsintervall)
+        !datoIntervallErDefinert(intervall1) ||
+        !datoIntervallErDefinert(intervall2)
     ) {
     }
     let antallOverlappendeDager = 0;
     for (
-        let fraværsdag = fraværsintervall.datoFra;
-        fraværsdag?.isSameOrBefore(fraværsintervall.datoTil!);
-        fraværsdag = fraværsdag.add(1, 'day')
+        let dag = intervall2.datoFra;
+        dag?.isSameOrBefore(intervall2.datoTil!);
+        dag = dag.add(1, 'day')
     ) {
-        const fraværsdagLiggerIPermitteringsperiode = fraværsdag?.isBetween(
-            permitteringsintervall.datoFra!,
-            permitteringsintervall.datoTil!,
-            null,
-            '[]'
-        );
-        if (fraværsdagLiggerIPermitteringsperiode) {
+        if (
+            dag?.isBetween(intervall1.datoFra!, intervall1.datoTil!, null, '[]')
+        ) {
             antallOverlappendeDager++;
         }
     }
     return antallOverlappendeDager;
-};
-
-//denne er bra
-export const summerFraværsdagerIPermitteringsperiode = (
-    permitteringsperiode: DatoIntervall,
-    fraværsperioder: DatoIntervall[]
-) => {
-    let antallFraværsdagerIPeriode = 0;
-    fraværsperioder.forEach(
-        (periode) =>
-            (antallFraværsdagerIPeriode += inngårIPermitteringsperiode(
-                permitteringsperiode,
-                periode
-            ))
-    );
-    return antallFraværsdagerIPeriode;
 };
 
 export const summerFraværsdagerIPermitteringsperiodeDayjs = (
@@ -200,34 +126,15 @@ export const summerFraværsdagerIPermitteringsperiodeDayjs = (
     return antallFraværsdagerIPeriode;
 };
 
-export const finnUtOmDefinnesOverlappendePerioder = (
-    perioder: DatoIntervall[]
-) => {
-    let finnesOverLapp = false;
-    perioder.forEach((periode) => {
-        if (datoIntervallErDefinert(periode)) {
-            perioder.forEach((periode2) => {
-                if (datoIntervallErDefinert(periode2) && periode !== periode2) {
-                    if (inngårIPermitteringsperiode(periode, periode2) > 0) {
-                        finnesOverLapp = true;
-                    }
-                }
-            });
-        }
-    });
-    return finnesOverLapp;
-};
-
 export const finnUtOmDefinnesOverlappendePerioderDayjs = (
-    perioderDayjs: DatoIntervallDayjs[]
+    perioder: DatoIntervallDayjs[]
 ): boolean => {
-    const perioder = perioderDayjs.map((periode) => tilDatoIntervall(periode));
     let finnesOverLapp = false;
     perioder.forEach((periode) => {
         if (datoIntervallErDefinert(periode)) {
             perioder.forEach((periode2) => {
                 if (datoIntervallErDefinert(periode2) && periode !== periode2) {
-                    if (inngårIPermitteringsperiode(periode, periode2) > 0) {
+                    if (getAntallOverlappendeDager(periode, periode2) > 0) {
                         finnesOverLapp = true;
                     }
                 }

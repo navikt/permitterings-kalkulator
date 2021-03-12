@@ -2,18 +2,18 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import './UtregningAvEnkelPeriode.less';
 import { Element, Undertekst } from 'nav-frontend-typografi';
 import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
+    AllePermitteringerOgFraværesPerioderDayjs,
+    DatoIntervallDayjs,
 } from '../../typer';
 import {
-    antalldagerGått,
-    summerFraværsdagerIPermitteringsperiode,
+    antallDagerGåttDayjs,
+    summerFraværsdagerIPermitteringsperiodeDayjs,
 } from '../../utregninger';
 
 interface UtregningAvEnkelPeriodeProps {
     indeks: number;
-    permitteringsperiode: DatoIntervall;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    permitteringsperiode: DatoIntervallDayjs;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
 }
 
 const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> = (
@@ -23,12 +23,12 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
 
     useEffect(() => {
         const antallDagerGått = props.permitteringsperiode.datoFra
-            ? antalldagerGått(
-                  props.permitteringsperiode.datoFra!!,
+            ? antallDagerGåttDayjs(
+                  props.permitteringsperiode.datoFra!,
                   props.permitteringsperiode.datoTil
               )
             : 0;
-        const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(
+        const fraværIPerioden = summerFraværsdagerIPermitteringsperiodeDayjs(
             props.permitteringsperiode,
             props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
         );
@@ -48,7 +48,7 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
                 <div className={'utregningskolonne__enkelperiode-utregning'}>
                     <Undertekst>
                         {props.permitteringsperiode.datoFra
-                            ? antalldagerGått(
+                            ? antallDagerGåttDayjs(
                                   props.permitteringsperiode.datoFra,
                                   props.permitteringsperiode.datoTil
                               )
@@ -57,7 +57,7 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
                     <div className={'utregningskolonne__ledd'}>
                         <Undertekst>-</Undertekst>
                         <Undertekst>
-                            {summerFraværsdagerIPermitteringsperiode(
+                            {summerFraværsdagerIPermitteringsperiodeDayjs(
                                 props.permitteringsperiode,
                                 props.allePermitteringerOgFraværesPerioder
                                     .andreFraværsperioder

@@ -3,8 +3,6 @@ import {
     DatoIntervall,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
-    tilDatoIntervall,
-    tilDatoIntervallDayjs,
 } from './typer';
 import {
     antalldagerGått,
@@ -12,15 +10,11 @@ import {
     finn1DagTilbake,
     finnSisteDato,
     finnTidligsteDato,
-    finnUtOmDefinnesOverlappendePerioder,
-    inngårIPermitteringsperiode,
-    getAntallOverlappendeDager,
+    finnUtOmDefinnesOverlappendePerioderDayjs,
     konstruerStatiskTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
-    summerFraværsdagerIPermitteringsperiode,
-    sumPermitteringerOgFravær,
     summerFraværsdagerIPermitteringsperiodeDayjs,
-    finnUtOmDefinnesOverlappendePerioderDayjs,
+    sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
 import { configureDayJS } from '../../dayjs-config';
@@ -334,35 +328,3 @@ function getRandomInt(min: number, max: number) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min) + min); //The maximum is exclusive and the minimum is inclusive
 }
-test('test2', () => {
-    for (let i = 0; i < 1000; i++) {
-        const perm = dayjs(randomDate()).startOf('date');
-        const permintervall = {
-            datoFra: perm,
-            datoTil: perm.add(getRandomInt(1, 500), 'days'),
-            erLøpende: undefined,
-        };
-        const fravær = dayjs(randomDate()).startOf('date');
-        const fraværsintervall = {
-            datoFra: fravær,
-            datoTil: fravær.add(getRandomInt(1, 500), 'days'),
-            erLøpende: undefined,
-        };
-        const resultatOld = inngårIPermitteringsperiode(
-            tilDatoIntervall(permintervall),
-            tilDatoIntervall(fraværsintervall)
-        );
-        const resultatNew = getAntallOverlappendeDager(
-            permintervall,
-            fraværsintervall
-        );
-        if (resultatNew !== resultatOld) {
-            console.log('permittering', tilDatoIntervall(permintervall));
-            console.log('fravær', tilDatoIntervall(fraværsintervall));
-            console.log(
-                'resultater new/old ' + resultatNew + '/' + resultatOld
-            );
-            //expect(resultatNew).toEqual(resultatOld);
-        }
-    }
-});
