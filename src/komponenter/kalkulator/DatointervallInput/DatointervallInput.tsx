@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
-import { ARBEIDSGIVERPERIODE2DATO } from '../utregninger';
+import { ARBEIDSGIVERPERIODE2_DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
@@ -49,7 +49,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
               }
             : {
                   erLøpende: true,
-                  datoTil: dayjs(ARBEIDSGIVERPERIODE2DATO),
+                  datoTil: ARBEIDSGIVERPERIODE2_DATO,
               };
         setDatoIntervall({
             ...datoIntervall,

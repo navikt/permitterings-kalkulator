@@ -6,7 +6,7 @@ import {
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
 
-export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
+export const ARBEIDSGIVERPERIODE2_DATO: Dayjs = dayjs('2021-03-01');
 
 export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
