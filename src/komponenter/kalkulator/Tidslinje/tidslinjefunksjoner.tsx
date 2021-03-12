@@ -187,5 +187,5 @@ const finnFarge = (kategori: datointervallKategori) => {
 };
 
 export const erFørsteJanuar = (date: Dayjs) => {
-    return date.month() === 1 && date.date() === 1;
+    return date.month() === 0 && date.date() === 1;
 };
