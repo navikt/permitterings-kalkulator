@@ -234,6 +234,23 @@ export const finnDato18MndFramDayjs = (datoDayjs: Dayjs) => {
     return dayjs(nyDato);
 };
 
+export const finnTidligsteDatoDayjs = (
+    datointervall: DatoIntervallDayjs[]
+): Dayjs => {
+    let tidligsteDato = datointervall[0].datoFra!;
+    datointervall.forEach((datoIntervall) => {
+        if (datoIntervall.datoFra) {
+            if (!tidligsteDato) {
+                tidligsteDato = datoIntervall.datoFra;
+            }
+            if (tidligsteDato.isAfter(datoIntervall.datoFra)) {
+                tidligsteDato = datoIntervall.datoFra;
+            }
+        }
+    });
+    return tidligsteDato;
+};
+
 export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
     let tidligsteDato = datointervall[0].datoFra!!;
     datointervall.forEach((datoIntervall) => {
@@ -247,6 +264,23 @@ export const finnTidligsteDato = (datointervall: DatoIntervall[]) => {
         }
     });
     return tidligsteDato;
+};
+
+export const finnSisteDatoDayjs = (
+    datointervall: DatoIntervallDayjs[]
+): Dayjs | undefined => {
+    let sisteDato = datointervall[0].datoTil;
+    datointervall.forEach((intervall) => {
+        if (intervall.datoTil) {
+            if (!sisteDato) {
+                sisteDato = intervall.datoTil;
+            }
+            if (sisteDato.isBefore(intervall.datoTil)) {
+                sisteDato = intervall.datoTil;
+            }
+        }
+    });
+    return sisteDato;
 };
 
 export const finnSisteDato = (

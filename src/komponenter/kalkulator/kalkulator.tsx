@@ -94,16 +94,12 @@ const Kalkulator = () => {
             return (
                 <Permitteringsperiode
                     indeks={indeks}
-                    allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
+                    allePermitteringerOgFraværesPerioder={
                         allePermitteringerOgFraværesPerioder
-                    )}
-                    info={tilDatoIntervall(permitteringsperiode)}
+                    }
+                    info={permitteringsperiode}
                     setAllePermitteringerOgFraværesPerioder={(perioder) =>
-                        setAllePermitteringerOgFraværesPerioder(
-                            tilAllePermitteringerOgFraværesPerioderDayjs(
-                                perioder
-                            )
-                        )
+                        setAllePermitteringerOgFraværesPerioder(perioder)
                     }
                     key={indeks.toString()}
                 />

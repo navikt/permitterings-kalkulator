@@ -3,42 +3,39 @@ import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
 import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-    tilDatoIntervall,
-    tilDatoIntervallDayjs,
+    AllePermitteringerOgFraværesPerioderDayjs,
+    DatoIntervallDayjs,
 } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
-    finn1DagFram,
-    finnSisteDato,
+    finnSisteDatoDayjs,
     getDefaultPermitteringsperiode,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
-    info: DatoIntervall;
+    info: DatoIntervallDayjs;
     indeks: number;
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
     setAllePermitteringerOgFraværesPerioder: (
-        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+        allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs
     ) => void;
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
-    const { dagensDato, dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
     const leggTilNyPermitteringsperiode = () => {
-        const sistRegistrerteDag = finnSisteDato(
+        const sistRegistrerteDag = finnSisteDatoDayjs(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         )
-            ? finnSisteDato(
+            ? finnSisteDatoDayjs(
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
-            : dagensDato;
-        const nyPeriode: DatoIntervall = {
-            datoFra: finn1DagFram(sistRegistrerteDag!!),
+            : dagensDatoDayjs;
+        const nyPeriode: DatoIntervallDayjs = {
+            datoFra: sistRegistrerteDag!.add(1, 'day'),
             datoTil: undefined,
         };
 
@@ -51,7 +48,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (datoIntervall: DatoIntervall) => {
+    const oppdaterDatoIntervall = (datoIntervall: DatoIntervallDayjs) => {
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];
@@ -69,9 +66,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
             nyePermitteringsperioder = [
-                tilDatoIntervall(
-                    getDefaultPermitteringsperiode(dagensDatoDayjs)
-                ),
+                getDefaultPermitteringsperiode(dagensDatoDayjs),
             ];
         }
         props.setAllePermitteringerOgFraværesPerioder({
@@ -83,13 +78,13 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
-                datoIntervall={tilDatoIntervallDayjs(
+                datoIntervall={
                     props.allePermitteringerOgFraværesPerioder.permitteringer[
                         props.indeks
                     ]
-                )}
+                }
                 setDatoIntervall={(intervall) =>
-                    oppdaterDatoIntervall(tilDatoIntervall(intervall))
+                    oppdaterDatoIntervall(intervall)
                 }
                 erLøpendeLabel="Permitteringen er fortsatt aktiv"
                 slettPeriode={slettPeriode}
