@@ -8,15 +8,6 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export const ARBEIDSGIVERPERIODE2DATO = new Date('2021-03-01');
 
-export const antalldagerGått = (fra?: Date, til?: Date) => {
-    if (fra && til) {
-        const msGatt = til.getTime() - fra.getTime();
-        const dagerGått = msGatt / (1000 * 60 * 60 * 24);
-        return Math.round(dagerGått + 1);
-    }
-    return 0;
-};
-
 export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
         return til.diff(fra, 'days') + 1;
@@ -58,17 +49,6 @@ export const sumPermitteringerOgFravær = (
         dagerAnnetFravær: antallDagerFravær,
     };
     return oversikt;
-};
-
-//denne regner feil
-export const regnUtDatoAGP2 = (dagerBrukt: number, dagensDato: Date) => {
-    const dagerIgjen = 210 - dagerBrukt;
-    const beregnetAGP2 = new Date(dagensDato);
-    beregnetAGP2.setDate(beregnetAGP2.getDate() + dagerIgjen);
-    if (dagerIgjen > 0) {
-        return beregnetAGP2;
-    }
-    return ARBEIDSGIVERPERIODE2DATO;
 };
 
 export const getAntallOverlappendeDager = (
@@ -204,6 +184,15 @@ export const getDefaultPermitteringsperiode = (
     datoTil: undefined,
 });
 
+const finn1DagTilbake = (dato?: Date) => {
+    if (dato) {
+        const enDagTilbake = new Date(dato);
+        enDagTilbake.setDate(enDagTilbake.getDate() - 1);
+        return enDagTilbake;
+    }
+    return undefined;
+};
+
 export const finnDato18MndFram = (datoDayjs: Dayjs) => {
     const dato = datoDayjs.toDate();
     let nyDato = new Date(dato);
@@ -320,13 +309,4 @@ const finneKategori = (
         kategori: 1,
         dato: dayjs(dato),
     };
-};
-
-export const finn1DagTilbake = (dato?: Date) => {
-    if (dato) {
-        const enDagTilbake = new Date(dato);
-        enDagTilbake.setDate(enDagTilbake.getDate() - 1);
-        return enDagTilbake;
-    }
-    return undefined;
 };

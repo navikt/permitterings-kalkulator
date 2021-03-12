@@ -4,9 +4,7 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
-    antalldagerGått,
     antallDagerGåttDayjs,
-    finn1DagTilbake,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioderDayjs,
@@ -15,22 +13,10 @@ import {
     summerFraværsdagerIPermitteringsperiodeDayjs,
     sumPermitteringerOgFravær,
 } from './utregninger';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { configureDayJS } from '../../dayjs-config';
 
 configureDayJS();
-
-test('Finn dato en dag tilbake fra angitt dato', () => {
-    const enDag = new Date('2021-03-01');
-    expect(finn1DagTilbake(enDag)?.getDate()).toBe(
-        new Date('2021-02-28').getDate()
-    );
-
-    const enDagEkstra = new Date('2020-03-01');
-    expect(finn1DagTilbake(enDagEkstra)?.getDate()).toBe(
-        new Date('2020-02-29').getDate()
-    );
-});
 
 test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
     const tidslinje = konstruerStatiskTidslinje(
