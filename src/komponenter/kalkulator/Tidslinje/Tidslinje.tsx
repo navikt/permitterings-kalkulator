@@ -22,7 +22,7 @@ import {
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
     regnUtHorisontalAvstandMellomToElement,
-    regnUtPosisjonFraVenstreGittSluttdatoDayjs,
+    regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
@@ -47,7 +47,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
-        regnUtPosisjonFraVenstreGittSluttdatoDayjs(
+        regnUtPosisjonFraVenstreGittSluttdato(
             tidslinjeObjekter,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
@@ -77,10 +77,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             konstruerStatiskTidslinje(
                 props.allePermitteringerOgFraværesPerioder,
                 dagensDato
-            ).map((datoMedKategori) => ({
-                ...datoMedKategori,
-                dato: datoMedKategori.dato,
-            }))
+            )
         );
     }, [props.allePermitteringerOgFraværesPerioder]);
 
@@ -91,13 +88,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdatoDayjs(
+        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
             tidslinjeObjekter,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
         if (datoOnDrag && datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
-            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdatoDayjs(
+            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
                 tidslinjeObjekter,
                 props.breddeAvDatoObjektIProsent,
                 datoOnDrag

@@ -25,7 +25,9 @@ const Topp: FunctionComponent<Props> = (props) => {
     const { dagensDato } = useContext(PermitteringContext);
 
     const datoValidering = (dato: Dayjs) => {
-        if (dato.isSame(finnGrenserFor18MNDPeriode(dagensDato).datoTil!)) {
+        if (
+            dato.isSameOrAfter(finnGrenserFor18MNDPeriode(dagensDato).datoTil!)
+        ) {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(

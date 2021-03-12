@@ -4,13 +4,13 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
-    antallDagerGåttDayjs,
+    antallDagerGått,
     finnSisteDato,
     finnTidligsteDato,
-    finnUtOmDefinnesOverlappendePerioderDayjs,
+    finnUtOmDefinnesOverlappendePerioder,
     konstruerStatiskTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
-    summerFraværsdagerIPermitteringsperiodeDayjs,
+    summerFraværsdagerIPermitteringsperiode,
     sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs from 'dayjs';
@@ -55,7 +55,7 @@ test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 100
     );
     for (let i = 0; i < 1000; i++) {
         const tilfeldigIndeks = Math.floor(Math.random() * tidslinje.length);
-        const utregnetAntallDagerGått = antallDagerGåttDayjs(
+        const utregnetAntallDagerGått = antallDagerGått(
             tidslinje[0].dato,
             tidslinje[tilfeldigIndeks].dato
         );
@@ -70,10 +70,10 @@ test('Antall dager mellom to datoer', () => {
     const enDagIMars = dayjs('2021-03-23');
     const enDagIMarsEtÅrSenere = dayjs('2022-03-23');
 
-    expect(antallDagerGåttDayjs(enDagIFebruar, enDagIFebruar)).toBe(1);
-    expect(antallDagerGåttDayjs(enDagIFebruar, nesteDagIFebruar)).toBe(2);
-    expect(antallDagerGåttDayjs(enDagIFebruar, enDagIMars)).toBe(32);
-    expect(antallDagerGåttDayjs(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
+    expect(antallDagerGått(enDagIFebruar, enDagIFebruar)).toBe(1);
+    expect(antallDagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
+    expect(antallDagerGått(enDagIFebruar, enDagIMars)).toBe(32);
+    expect(antallDagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
 });
 
 test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
@@ -94,7 +94,7 @@ test('Tester om to datointervaller er overlappende. Samme slutt og startdato ska
     };
 
     expect(
-        finnUtOmDefinnesOverlappendePerioderDayjs(Array.of(periode1, periode2))
+        finnUtOmDefinnesOverlappendePerioder(Array.of(periode1, periode2))
     ).toBe(true);
 });
 
@@ -117,7 +117,7 @@ test('Summer antall fraværsdager i en permitteringsperiode', () => {
     };
 
     expect(
-        summerFraværsdagerIPermitteringsperiodeDayjs(
+        summerFraværsdagerIPermitteringsperiode(
             permitteringsPeriode,
             Array.of(fraværsIntervall1, fraværsIntervall2, fraværsIntervall3)
         )

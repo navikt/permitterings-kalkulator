@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from 'dayjs';
 
 export const ARBEIDSGIVERPERIODE2_DATO: Dayjs = dayjs('2021-03-01');
 
-export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
+export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
         return til.diff(fra, 'days') + 1;
     } else {
@@ -76,7 +76,7 @@ export const getAntallOverlappendeDager = (
     return antallOverlappendeDager;
 };
 
-export const summerFraværsdagerIPermitteringsperiodeDayjs = (
+export const summerFraværsdagerIPermitteringsperiode = (
     permitteringsperiode: DatoIntervall,
     fraværsperioder: DatoIntervall[]
 ) => {
@@ -91,7 +91,7 @@ export const summerFraværsdagerIPermitteringsperiodeDayjs = (
     return antallFraværsdagerIPeriode;
 };
 
-export const finnUtOmDefinnesOverlappendePerioderDayjs = (
+export const finnUtOmDefinnesOverlappendePerioder = (
     perioder: DatoIntervall[]
 ): boolean => {
     let finnesOverLapp = false;
@@ -252,7 +252,7 @@ export const konstruerStatiskTidslinje = (
     dagensDato: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-    const antallObjektITidslinje = antallDagerGåttDayjs(
+    const antallObjektITidslinje = antallDagerGått(
         finnGrenserFor18MNDPeriode(dagensDato).datoFra,
         finnGrenserFor18MNDPeriode(dagensDato).datoTil
     );

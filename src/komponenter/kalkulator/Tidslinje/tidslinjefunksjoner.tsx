@@ -1,5 +1,5 @@
 import { datointervallKategori, DatoMedKategori } from '../typer';
-import { antallDagerGåttDayjs, finnDato18MndTilbake } from '../utregninger';
+import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
@@ -123,7 +123,7 @@ export const finnIndeksForDato = (
     return indeksDato;
 };
 
-export const regnUtPosisjonFraVenstreGittSluttdatoDayjs = (
+export const regnUtPosisjonFraVenstreGittSluttdato = (
     tidslinjeObjekter: DatoMedKategori[],
     breddePerElementIProsent: number,
     sluttDato: Dayjs
@@ -131,7 +131,7 @@ export const regnUtPosisjonFraVenstreGittSluttdatoDayjs = (
     return (
         (finnIndeksForDato(sluttDato, tidslinjeObjekter) +
             1 -
-            antallDagerGåttDayjs(finnDato18MndTilbake(sluttDato), sluttDato)) *
+            antallDagerGått(finnDato18MndTilbake(sluttDato), sluttDato)) *
         breddePerElementIProsent
     );
 };

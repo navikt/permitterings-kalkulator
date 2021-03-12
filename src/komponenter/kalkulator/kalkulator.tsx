@@ -13,10 +13,10 @@ import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
-    antallDagerGåttDayjs,
+    antallDagerGått,
     datoIntervallErDefinert,
     finnGrenserFor18MNDPeriode,
-    finnUtOmDefinnesOverlappendePerioderDayjs,
+    finnUtOmDefinnesOverlappendePerioder,
     getDefaultPermitteringsperiode,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
@@ -57,7 +57,7 @@ const Kalkulator = () => {
 
     useEffect(() => {
         if (
-            finnUtOmDefinnesOverlappendePerioderDayjs(
+            finnUtOmDefinnesOverlappendePerioder(
                 allePermitteringerOgFraværesPerioder.permitteringer
             )
         ) {
@@ -68,7 +68,7 @@ const Kalkulator = () => {
             setBeskjedOverlappendePermittering('');
         }
         if (
-            finnUtOmDefinnesOverlappendePerioderDayjs(
+            finnUtOmDefinnesOverlappendePerioder(
                 allePermitteringerOgFraværesPerioder.andreFraværsperioder
             )
         ) {
@@ -207,7 +207,7 @@ const Kalkulator = () => {
                                         }
                                         breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                             'kalkulator-tidslinje-wrapper',
-                                            antallDagerGåttDayjs(
+                                            antallDagerGått(
                                                 finnGrenserFor18MNDPeriode(
                                                     dagensDato
                                                 ).datoFra,
