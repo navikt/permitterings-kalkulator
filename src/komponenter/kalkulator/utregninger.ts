@@ -3,13 +3,11 @@ import {
     AllePermitteringerOgFraværesPerioderDayjs,
     DatoIntervall,
     DatoIntervallDayjs,
-    DatoMedKategori,
     DatoMedKategoriDayjs,
     OversiktOverBrukteOgGjenværendeDager,
     tilAllePermitteringerOgFraværesPerioder,
     tilAllePermitteringerOgFraværesPerioderDayjs,
     tilDatoIntervall,
-    tilDatoIntervallDayjs,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
 
@@ -34,11 +32,6 @@ export const antallDagerGåttDayjs = (fra?: Dayjs, til?: Dayjs) => {
 
 export const antallUkerRundetOpp = (antallDager: number) => {
     return Math.ceil(antallDager / 7);
-};
-
-export const datoErFørMars = (dato: Date) => {
-    const førsteMars = new Date('2021-03-01');
-    return dato.getTime() < førsteMars.getTime();
 };
 
 export const sumPermitteringerOgFraværDayjs = (
