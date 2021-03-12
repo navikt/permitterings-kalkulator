@@ -11,7 +11,7 @@ import {
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoMedKategoriDayjs,
+    DatoMedKategori,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
@@ -41,7 +41,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const { dagensDatoDayjs } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
-        DatoMedKategoriDayjs[]
+        DatoMedKategori[]
     >([]);
     const [
         absoluttPosisjonFraVenstreDragElement,

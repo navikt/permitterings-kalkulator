@@ -1,4 +1,4 @@
-import { datointervallKategori, DatoMedKategoriDayjs } from '../typer';
+import { datointervallKategori, DatoMedKategori } from '../typer';
 import { antallDagerGåttDayjs, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
@@ -20,50 +20,48 @@ const erLike = (date1: Date, date2: Date): boolean =>
     date1.getDate() === date2.getDate();
 
 export const lagHTMLObjektForAlleDatoer = (
-    tidslinjeObjekter: DatoMedKategoriDayjs[],
+    tidslinjeObjekter: DatoMedKategori[],
     breddePerElement: number
 ) => {
-    return tidslinjeObjekter.map(
-        (objekt: DatoMedKategoriDayjs, indeks: number) => {
-            const style: React.CSSProperties = {
-                width: breddePerElement.toString() + '%',
-            };
-            const erIdagBoolean = objekt.dato.isSame(dayjs(), 'day'); // TODO Dagens dato må tas inn som parameter
-            const erIdag = erIdagBoolean ? ' dagens-dato' : '';
-            const erÅrsmarkering = erFørsteJanuar(objekt.dato)
-                ? ' årsmarkering'
-                : '';
-            return (
-                <div
-                    key={indeks}
-                    id={'kalkulator-tidslinjeobjekt-' + indeks}
-                    style={style}
-                    className={
-                        'kalkulator__tidslinjeobjekt' +
-                        erIdag +
-                        ' ' +
-                        formaterDato(dayjs(objekt.dato)) +
-                        erÅrsmarkering
-                    }
-                >
-                    {erIdag && (
-                        <div className={'tidslinje-dagens-dato-markør'}>
-                            <Undertekst
-                                className={'tidslinje-dagens-dato-markør-tekst'}
-                            >
-                                I dag
-                                <br />
-                                {formaterDato(dayjs())}
-                            </Undertekst>
-                            <div className={'tidslinje-dagens-dato-strek'} />
-                            <div className={'tidslinje-dagens-dato-sirkel'} />
-                        </div>
-                    )}
-                    {erÅrsmarkering && <Årsmarkør dato={objekt.dato} />}
-                </div>
-            );
-        }
-    );
+    return tidslinjeObjekter.map((objekt: DatoMedKategori, indeks: number) => {
+        const style: React.CSSProperties = {
+            width: breddePerElement.toString() + '%',
+        };
+        const erIdagBoolean = objekt.dato.isSame(dayjs(), 'day'); // TODO Dagens dato må tas inn som parameter
+        const erIdag = erIdagBoolean ? ' dagens-dato' : '';
+        const erÅrsmarkering = erFørsteJanuar(objekt.dato)
+            ? ' årsmarkering'
+            : '';
+        return (
+            <div
+                key={indeks}
+                id={'kalkulator-tidslinjeobjekt-' + indeks}
+                style={style}
+                className={
+                    'kalkulator__tidslinjeobjekt' +
+                    erIdag +
+                    ' ' +
+                    formaterDato(dayjs(objekt.dato)) +
+                    erÅrsmarkering
+                }
+            >
+                {erIdag && (
+                    <div className={'tidslinje-dagens-dato-markør'}>
+                        <Undertekst
+                            className={'tidslinje-dagens-dato-markør-tekst'}
+                        >
+                            I dag
+                            <br />
+                            {formaterDato(dayjs())}
+                        </Undertekst>
+                        <div className={'tidslinje-dagens-dato-strek'} />
+                        <div className={'tidslinje-dagens-dato-sirkel'} />
+                    </div>
+                )}
+                {erÅrsmarkering && <Årsmarkør dato={objekt.dato} />}
+            </div>
+        );
+    });
 };
 
 export const lagHTMLObjektForPeriodeMedFarge = (
@@ -118,7 +116,7 @@ export const finnBreddeAvObjekt = (id: string) => {
 
 export const finnIndeksForDato = (
     dato: Dayjs,
-    tidslinjeobjekt: DatoMedKategoriDayjs[]
+    tidslinjeobjekt: DatoMedKategori[]
 ) => {
     let indeksDato = 0;
     tidslinjeobjekt.forEach((objekt, indeks) => {
@@ -130,7 +128,7 @@ export const finnIndeksForDato = (
 };
 
 export const regnUtPosisjonFraVenstreGittSluttdatoDayjs = (
-    tidslinjeObjekter: DatoMedKategoriDayjs[],
+    tidslinjeObjekter: DatoMedKategori[],
     breddePerElementIProsent: number,
     sluttDato: Dayjs
 ) => {
@@ -149,7 +147,7 @@ export const fraPixelTilProsent = (idContainer: string, antallBarn: number) => {
 };
 
 export const lagObjektForRepresentasjonAvPerioderMedFarge = (
-    tidslinjeObjekter: DatoMedKategoriDayjs[]
+    tidslinjeObjekter: DatoMedKategori[]
 ) => {
     const fargePerioder: RepresentasjonAvPeriodeMedFarge[] = [];
     let rekkefølgeTeller = 1;
@@ -190,10 +188,6 @@ const finnFarge = (kategori: datointervallKategori) => {
         return '#E3B0AB';
     }
     return 'transParent';
-};
-
-export const erÅrsMarkering = (dato: Date) => {
-    return dato.getMonth() === 0 && dato.getDate() === 1;
 };
 
 export const erFørsteJanuar = (date: Dayjs) => {

@@ -1,7 +1,7 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
-    DatoMedKategoriDayjs,
+    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import dayjs, { Dayjs } from 'dayjs';
@@ -260,8 +260,8 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
 export const konstruerStatiskTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
-): DatoMedKategoriDayjs[] => {
-    const listeMedTidslinjeObjekter: DatoMedKategoriDayjs[] = [];
+): DatoMedKategori[] => {
+    const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
     const antallObjektITidslinje = antallDagerGåttDayjs(
         finnGrenserFor18MNDPeriode(dagensDato).datoFra,
         finnGrenserFor18MNDPeriode(dagensDato).datoTil
@@ -295,7 +295,7 @@ const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
 const finneKategori = (
     dato: Dayjs,
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
-): DatoMedKategoriDayjs => {
+): DatoMedKategori => {
     const erFraVærsDato = finnesIIntervaller(
         dato,
         allePermitteringerOgFraværesPerioder.andreFraværsperioder

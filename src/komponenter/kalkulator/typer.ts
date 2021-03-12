@@ -18,11 +18,6 @@ export interface DatoIntervall {
 }
 
 export interface DatoMedKategori {
-    dato: Date;
-    kategori: datointervallKategori;
-}
-
-export interface DatoMedKategoriDayjs {
     dato: Dayjs;
     kategori: datointervallKategori;
 }
