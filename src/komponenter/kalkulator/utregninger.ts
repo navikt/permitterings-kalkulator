@@ -59,6 +59,7 @@ export const getAntallOverlappendeDager = (
         !datoIntervallErDefinert(intervall1) ||
         !datoIntervallErDefinert(intervall2)
     ) {
+        return 0;
     }
     let antallOverlappendeDager = 0;
     for (

@@ -16,13 +16,14 @@ interface RepresentasjonAvPeriodeMedFarge {
 
 export const lagHTMLObjektForAlleDatoer = (
     tidslinjeObjekter: DatoMedKategori[],
-    breddePerElement: number
+    breddePerElement: number,
+    dagensDato: Dayjs
 ) => {
     return tidslinjeObjekter.map((objekt: DatoMedKategori, indeks: number) => {
         const style: React.CSSProperties = {
             width: breddePerElement.toString() + '%',
         };
-        const erIdagBoolean = objekt.dato.isSame(dayjs(), 'day'); // TODO Dagens dato må tas inn som parameter
+        const erIdagBoolean = objekt.dato.isSame(dagensDato, 'day');
         const erIdag = erIdagBoolean ? ' dagens-dato' : '';
         const erÅrsmarkering = erFørsteJanuar(objekt.dato)
             ? ' årsmarkering'

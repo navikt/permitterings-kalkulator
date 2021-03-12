@@ -117,7 +117,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeObjekter,
-        props.breddeAvDatoObjektIProsent
+        props.breddeAvDatoObjektIProsent,
+        dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
         lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeObjekter),
