@@ -44,10 +44,11 @@ interface Props {
 }
 
 const skrivTekst = (
-    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2
+    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2,
+    tidligsteDatoAGP2: Date
 ): string => {
     switch (true) {
-        case info.sluttDato === undefined:
+        case info.sluttDato!! <= new Date('2021-06-02'):
             return 'ikke tilstrekkelig data';
         case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
             return (
@@ -147,7 +148,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             210
         );
         tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
-        setTekst(skrivTekst(infoAGP2));
+        setTekst(skrivTekst(infoAGP2, tidligsteDatoAGP2));
     }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
