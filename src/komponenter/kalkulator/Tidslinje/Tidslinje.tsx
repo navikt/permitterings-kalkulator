@@ -11,7 +11,9 @@ import {
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
+    AllePermitteringerOgFraværesPerioderDayjs,
     DatoMedKategori,
+    DatoMedKategoriDayjs,
     tilAllePermitteringerOgFraværesPerioderDayjs,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -24,31 +26,32 @@ import {
     lagObjektForRepresentasjonAvPerioderMedFarge,
     regnUtHorisontalAvstandMellomToElement,
     regnUtPosisjonFraVenstreGittSluttdato,
+    regnUtPosisjonFraVenstreGittSluttdatoDayjs,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    set18mndsPeriode: (dato: Date) => void;
-    sisteDagIPeriode: Date;
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioderDayjs;
+    set18mndsPeriode: (dato: Dayjs) => void;
+    sisteDagIPeriode: Dayjs;
     breddeAvDatoObjektIProsent: number;
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
-    const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
+    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
-        DatoMedKategori[]
+        DatoMedKategoriDayjs[]
     >([]);
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
-        regnUtPosisjonFraVenstreGittSluttdato(
+        regnUtPosisjonFraVenstreGittSluttdatoDayjs(
             tidslinjeObjekter,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
@@ -76,13 +79,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
-                tilAllePermitteringerOgFraværesPerioderDayjs(
-                    props.allePermitteringerOgFraværesPerioder
-                ),
-                dayjs(dagensDato)
-            ).map((datoMedKategoriDayjs) => ({
-                ...datoMedKategoriDayjs,
-                dato: datoMedKategoriDayjs.dato.toDate(),
+                props.allePermitteringerOgFraværesPerioder,
+                dagensDatoDayjs
+            ).map((datoMedKategori) => ({
+                ...datoMedKategori,
+                dato: datoMedKategori.dato,
             }))
         );
     }, [props.allePermitteringerOgFraværesPerioder]);
@@ -94,16 +95,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
+        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdatoDayjs(
             tidslinjeObjekter,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
-        if (
-            datoOnDrag &&
-            datoOnDrag.toDateString() !== props.sisteDagIPeriode.toDateString()
-        ) {
-            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
+        if (datoOnDrag && datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
+            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdatoDayjs(
                 tidslinjeObjekter,
                 props.breddeAvDatoObjektIProsent,
                 datoOnDrag

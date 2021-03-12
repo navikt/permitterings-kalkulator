@@ -11,10 +11,7 @@ import {
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
-import {
-    AllePermitteringerOgFraværesPerioderDayjs,
-    tilAllePermitteringerOgFraværesPerioder,
-} from './typer';
+import { AllePermitteringerOgFraværesPerioderDayjs } from './typer';
 import {
     antallDagerGåttDayjs,
     datoIntervallErDefinert,
@@ -219,15 +216,17 @@ const Kalkulator = () => {
                                                 ).datoTil
                                             )
                                         )}
-                                        sisteDagIPeriode={sisteDagI18mndsPeriode.toDate()}
+                                        sisteDagIPeriode={
+                                            sisteDagI18mndsPeriode
+                                        }
                                         set18mndsPeriode={(dato) =>
                                             setSisteDagI18mndsPeriode(
                                                 dayjs(dato)
                                             )
                                         }
-                                        allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
+                                        allePermitteringerOgFraværesPerioder={
                                             allePermitteringerOgFraværesPerioder
-                                        )}
+                                        }
                                     />
                                 </>
                             )}
