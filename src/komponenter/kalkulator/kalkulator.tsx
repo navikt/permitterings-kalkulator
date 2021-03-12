@@ -14,8 +14,6 @@ import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværspe
 import {
     AllePermitteringerOgFraværesPerioderDayjs,
     tilAllePermitteringerOgFraværesPerioder,
-    tilAllePermitteringerOgFraværesPerioderDayjs,
-    tilDatoIntervall,
 } from './typer';
 import {
     antallDagerGåttDayjs,
@@ -181,14 +179,12 @@ const Kalkulator = () => {
                                 perioder
                             ) =>
                                 setAllePermitteringerOgFraværesPerioder(
-                                    tilAllePermitteringerOgFraværesPerioderDayjs(
-                                        perioder
-                                    )
+                                    perioder
                                 )
                             }
-                            allePermitteringerOgFraværesPerioder={tilAllePermitteringerOgFraværesPerioder(
+                            allePermitteringerOgFraværesPerioder={
                                 allePermitteringerOgFraværesPerioder
-                            )}
+                            }
                         />
                         <Element className={'kalkulator__feilmelding'}>
                             {beskjedOverlappendeFravær}
