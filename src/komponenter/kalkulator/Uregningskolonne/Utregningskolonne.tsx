@@ -18,7 +18,7 @@ import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelP
 import {
     finnDato18MndTilbake,
     kuttAvDatoIntervallInnefor18mnd,
-    sumPermitteringerOgFraværDayjs,
+    sumPermitteringerOgFravær,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
@@ -65,7 +65,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
             }
         );
         setOversiktOverPerioderInnenfor18mnd(avkuttet18mndPerioder);
-        resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFraværDayjs(
+        resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFravær(
             oversiktOverPerioderInnenfor18mnd,
             dagensDatoDayjs
         );

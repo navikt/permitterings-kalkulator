@@ -32,7 +32,7 @@ export const antallUkerRundetOpp = (antallDager: number) => {
     return Math.ceil(antallDager / 7);
 };
 
-export const sumPermitteringerOgFraværDayjs = (
+export const sumPermitteringerOgFravær = (
     allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioderDayjs,
     dagensDato: Dayjs
 ): OversiktOverBrukteOgGjenværendeDager => {
@@ -61,18 +61,6 @@ export const sumPermitteringerOgFraværDayjs = (
         dagerAnnetFravær: antallDagerFravær,
     };
     return oversikt;
-};
-
-export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Date
-): OversiktOverBrukteOgGjenværendeDager => {
-    return sumPermitteringerOgFraværDayjs(
-        tilAllePermitteringerOgFraværesPerioderDayjs(
-            allePErmitteringerOgFraværsperioder
-        ),
-        dayjs(dagensDato)
-    );
 };
 
 //denne regner feil
@@ -276,13 +264,6 @@ export const datoIntervallErDefinert = (
     );
 };
 
-export const datoErIEnkeltIntervall = (
-    dato: Date,
-    intervall: DatoIntervall
-) => {
-    return dato >= intervall.datoFra!! && dato <= intervall.datoTil!!;
-};
-
 export const konstruerStatiskTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioderDayjs,
     dagensDato: Dayjs
@@ -346,12 +327,6 @@ const finneKategori = (
         kategori: 1,
         dato: dayjs(dato),
     };
-};
-
-export const finn1DagFram = (dato: Date) => {
-    const enDagFram = new Date(dato);
-    enDagFram.setDate(enDagFram.getDate() + 1);
-    return enDagFram;
 };
 
 export const finn1DagTilbake = (dato?: Date) => {

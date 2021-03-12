@@ -1,6 +1,5 @@
 import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
+    AllePermitteringerOgFraværesPerioderDayjs,
     DatoIntervallDayjs,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
@@ -218,40 +217,40 @@ test('Finner den siste datoen fra en liste av flere permitteringsperioder', () =
 });
 
 test('Sum av permitteringer og fravær', () => {
-    const startFraværsIntervall1 = new Date('2020-03-01');
-    const sluttFraværsIntervall1 = new Date('2020-03-15'); // 15 dager
-    const fraværsPeriode: DatoIntervall = {
+    const startFraværsIntervall1 = dayjs('2020-03-01');
+    const sluttFraværsIntervall1 = dayjs('2020-03-15'); // 15 dager
+    const fraværsPeriode: DatoIntervallDayjs = {
         datoFra: startFraværsIntervall1,
         datoTil: sluttFraværsIntervall1,
     };
 
-    const startPermitteringsPeriode1 = new Date('2020-02-14');
-    const sluttPermitteringsPeriode1 = new Date('2020-03-02');
-    const startPermitteringsPeriode2 = new Date('2020-01-10');
-    const sluttPermitteringsPeriode2 = new Date('2020-01-25');
-    const startPermitteringsPeriode3 = new Date('2020-04-14');
-    const sluttPermitteringsPeriode3 = new Date('2020-04-28');
-    const startPermitteringsPeriode4 = new Date('2020-05-14');
-    const sluttPermitteringsPeriode4 = new Date('2020-06-02');
+    const startPermitteringsPeriode1 = dayjs('2020-02-14');
+    const sluttPermitteringsPeriode1 = dayjs('2020-03-02');
+    const startPermitteringsPeriode2 = dayjs('2020-01-10');
+    const sluttPermitteringsPeriode2 = dayjs('2020-01-25');
+    const startPermitteringsPeriode3 = dayjs('2020-04-14');
+    const sluttPermitteringsPeriode3 = dayjs('2020-04-28');
+    const startPermitteringsPeriode4 = dayjs('2020-05-14');
+    const sluttPermitteringsPeriode4 = dayjs('2020-06-02');
 
-    const permitteringsPeriode1: DatoIntervall = {
+    const permitteringsPeriode1: DatoIntervallDayjs = {
         datoFra: startPermitteringsPeriode1,
         datoTil: sluttPermitteringsPeriode1,
     };
-    const permitteringsPeriode2: DatoIntervall = {
+    const permitteringsPeriode2: DatoIntervallDayjs = {
         datoFra: startPermitteringsPeriode2,
         datoTil: sluttPermitteringsPeriode2,
     };
-    const permitteringsPeriode3: DatoIntervall = {
+    const permitteringsPeriode3: DatoIntervallDayjs = {
         datoFra: startPermitteringsPeriode3,
         datoTil: sluttPermitteringsPeriode3,
     };
-    const permitteringsPeriode4: DatoIntervall = {
+    const permitteringsPeriode4: DatoIntervallDayjs = {
         datoFra: startPermitteringsPeriode4,
         datoTil: sluttPermitteringsPeriode4,
     };
 
-    const alle: AllePermitteringerOgFraværesPerioder = {
+    const alle: AllePermitteringerOgFraværesPerioderDayjs = {
         permitteringer: Array.of(
             permitteringsPeriode1,
             permitteringsPeriode2,
@@ -263,7 +262,7 @@ test('Sum av permitteringer og fravær', () => {
 
     const oversikt: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(
         alle,
-        new Date()
+        dayjs()
     );
     expect(oversikt.dagerAnnetFravær).toBe(1); // Burde være 2? Vises som to i selve komponenten.
     expect(oversikt.dagerGjensående).toBe(650); // Hm ?
