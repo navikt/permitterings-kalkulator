@@ -3,7 +3,7 @@ import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface RepresentasjonAvPeriodeMedFarge {
