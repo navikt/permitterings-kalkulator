@@ -38,7 +38,7 @@ interface Props {
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
@@ -76,7 +76,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
                 props.allePermitteringerOgFraværesPerioder,
-                dagensDatoDayjs
+                dagensDato
             ).map((datoMedKategori) => ({
                 ...datoMedKategori,
                 dato: datoMedKategori.dato,

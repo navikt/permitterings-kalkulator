@@ -19,7 +19,7 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
     const leggTilNyPermitteringsperiode = () => {
         const sistRegistrerteDag = finnSisteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
@@ -27,7 +27,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             ? finnSisteDato(
                   props.allePermitteringerOgFraværesPerioder.permitteringer
               )
-            : dagensDatoDayjs;
+            : dagensDato;
         const nyPeriode: DatoIntervall = {
             datoFra: sistRegistrerteDag!.add(1, 'day'),
             datoTil: undefined,
@@ -60,7 +60,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
             nyePermitteringsperioder = [
-                getDefaultPermitteringsperiode(dagensDatoDayjs),
+                getDefaultPermitteringsperiode(dagensDato),
             ];
         }
         props.setAllePermitteringerOgFraværesPerioder({

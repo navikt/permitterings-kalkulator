@@ -28,13 +28,13 @@ import { PermitteringContext } from '../ContextProvider';
 import dayjs, { Dayjs } from 'dayjs';
 
 const Kalkulator = () => {
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
 
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [getDefaultPermitteringsperiode(dagensDatoDayjs)],
+        permitteringer: [getDefaultPermitteringsperiode(dagensDato)],
         andreFraværsperioder: [],
     });
 
@@ -52,7 +52,7 @@ const Kalkulator = () => {
     ] = useState<string>('');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        dagensDatoDayjs
+        dagensDato
     );
 
     useEffect(() => {
@@ -209,10 +209,10 @@ const Kalkulator = () => {
                                             'kalkulator-tidslinje-wrapper',
                                             antallDagerGåttDayjs(
                                                 finnGrenserFor18MNDPeriode(
-                                                    dagensDatoDayjs
+                                                    dagensDato
                                                 ).datoFra,
                                                 finnGrenserFor18MNDPeriode(
-                                                    dagensDatoDayjs
+                                                    dagensDato
                                                 ).datoTil
                                             )
                                         )}

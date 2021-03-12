@@ -35,12 +35,12 @@ interface Props {
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
 
     const datepickernode = useRef<HTMLDivElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
-    const selectedDate: Dayjs = props.value || dagensDatoDayjs;
+    const selectedDate: Dayjs = props.value || dagensDato;
     const [tempDate, setTempDate] = useState(formaterDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
 

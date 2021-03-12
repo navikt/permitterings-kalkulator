@@ -36,7 +36,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         andreFraværsperioder: [],
         permitteringer: [],
     });
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
 
     const resultatUtregningAv18mndsPeriode = useRef<OversiktOverBrukteOgGjenværendeDager>(
         {
@@ -65,7 +65,7 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         setOversiktOverPerioderInnenfor18mnd(avkuttet18mndPerioder);
         resultatUtregningAv18mndsPeriode.current = sumPermitteringerOgFravær(
             oversiktOverPerioderInnenfor18mnd,
-            dagensDatoDayjs
+            dagensDato
         );
     }, [props.allePermitteringerOgFraværesPerioder, props.sisteDagIPeriode]);
 

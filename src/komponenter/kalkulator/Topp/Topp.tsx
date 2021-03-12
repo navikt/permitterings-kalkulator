@@ -22,21 +22,21 @@ interface Props {
 
 const Topp: FunctionComponent<Props> = (props) => {
     const [feilMelding, setFeilmelding] = useState('');
-    const { dagensDatoDayjs } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
 
     const datoValidering = (dato: Dayjs) => {
-        if (dato.isSame(finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoTil!)) {
+        if (dato.isSame(finnGrenserFor18MNDPeriode(dagensDato).datoTil!)) {
             setFeilmelding(
                 'sett dato før ' +
                     formaterDato(
-                        finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoTil!
+                        finnGrenserFor18MNDPeriode(dagensDato).datoTil!
                     )
             );
             return false;
         }
         if (
             finnDato18MndTilbake(dato).isSameOrBefore(
-                finnGrenserFor18MNDPeriode(dagensDatoDayjs).datoFra!
+                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
             )
         ) {
             setFeilmelding(
@@ -44,8 +44,7 @@ const Topp: FunctionComponent<Props> = (props) => {
                     formaterDato(
                         dayjs(
                             finnDato18MndFram(
-                                finnGrenserFor18MNDPeriode(dagensDatoDayjs)
-                                    .datoFra!
+                                finnGrenserFor18MNDPeriode(dagensDato).datoFra!
                             )
                         )
                     )
