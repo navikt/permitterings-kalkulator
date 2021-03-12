@@ -17,6 +17,9 @@ import {
     sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
+import { configureDayJS } from '../../dayjs-config';
+
+configureDayJS();
 
 test('Finn dato en dag tilbake fra angitt dato', () => {
     const enDag = new Date('2021-03-01');

@@ -201,48 +201,30 @@ export const finnUtOmDefinnesOverlappendePerioderDayjs = (
 };
 
 export const kuttAvDatoIntervallFørGittDato = (
-    gittDato: Date,
-    tidsIntervall: DatoIntervall
-) => {
-    const nyttDatoIntervall: DatoIntervall = {
-        datoFra: tidsIntervall.datoFra,
-        datoTil: tidsIntervall.datoTil,
-    };
-    // @ts-ignore
-    if (
-        datoIntervallErDefinert(tidsIntervall) &&
-        tidsIntervall.datoFra!! < gittDato
-    ) {
-        // @ts-ignore
-        if (tidsIntervall.datoTil >= gittDato) {
-            nyttDatoIntervall.datoFra = gittDato;
-        } else {
-            nyttDatoIntervall.datoFra = undefined;
-            nyttDatoIntervall.datoTil = undefined;
-        }
-    }
-    return nyttDatoIntervall;
+    gittDato: Dayjs,
+    tidsIntervall: DatoIntervallDayjs
+): DatoIntervallDayjs => {
+    const { datoFra, datoTil } = tidsIntervall;
+    if (!datoFra || !datoTil) return tidsIntervall;
+    if (gittDato.isBefore(datoFra)) return tidsIntervall;
+    if (gittDato.isAfter(datoTil))
+        return { datoFra: undefined, datoTil: undefined };
+    return { datoFra: gittDato, datoTil };
 };
 
 export const kuttAvDatoIntervallEtterGittDato = (
-    gittDato: Date,
-    tidsIntervall: DatoIntervall
-) => {
-    const nyttDatoIntervall: DatoIntervall = {
-        datoFra: tidsIntervall.datoFra,
-        datoTil: tidsIntervall.datoTil,
-    };
-    // @ts-ignore
-    if (tidsIntervall.datoTil > gittDato) {
-        // @ts-ignore
-        if (tidsIntervall.datoFra >= gittDato) {
-            nyttDatoIntervall.datoFra = undefined;
-            nyttDatoIntervall.datoTil = undefined;
+    gittDato: Dayjs,
+    tidsIntervall: DatoIntervallDayjs
+): DatoIntervallDayjs => {
+    const { datoFra, datoTil } = tidsIntervall;
+    if (datoTil?.isAfter(gittDato)) {
+        if (datoFra?.isSameOrAfter(gittDato)) {
+            return { datoFra: undefined, datoTil: undefined };
         } else {
-            nyttDatoIntervall.datoTil = gittDato;
+            return { datoFra, datoTil: gittDato };
         }
     }
-    return nyttDatoIntervall;
+    return tidsIntervall;
 };
 
 export const kuttAvDatoIntervallInnefor18mnd = (
@@ -251,14 +233,12 @@ export const kuttAvDatoIntervallInnefor18mnd = (
     sluttDato: Dayjs
 ): DatoIntervallDayjs => {
     const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
-        startdato.toDate(),
-        tilDatoIntervall(datoIntevall)
+        startdato,
+        datoIntevall
     );
-    return tilDatoIntervallDayjs(
-        kuttAvDatoIntervallEtterGittDato(
-            sluttDato.toDate(),
-            datoIntervallEtterStartperiode
-        )
+    return kuttAvDatoIntervallEtterGittDato(
+        sluttDato,
+        datoIntervallEtterStartperiode
     );
 };
 
