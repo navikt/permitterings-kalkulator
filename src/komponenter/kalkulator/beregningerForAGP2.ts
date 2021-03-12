@@ -106,7 +106,11 @@ export const finnDatoAGP2LøpendePermittering = (
         tidslinje,
         potensiellDatoForAGP2
     );
-
+    // når man krysser av på løpende permittering tror jeg staten "løpende" settes før nye datoer. Resulterer i at denne funksjonen kalles med 0 permitteringsdager
+    if (antallDagerPermittert === 0) {
+        return tidligsteDatoAGP2;
+    }
+    let antallDagerForskyving = 0;
     while (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         const antallDagerTilNesteGjett =
             antallDagerFørAGP2Inntreffer - antallDagerPermittert;
@@ -114,10 +118,14 @@ export const finnDatoAGP2LøpendePermittering = (
             antallDagerTilNesteGjett,
             'days'
         );
+        antallDagerForskyving += antallDagerTilNesteGjett;
 
+        const dagerPermittertUtenLøpendePermittering = finnBruktePermitteringsDager(
+            tidslinje,
+            potensiellDatoForAGP2
+        );
         antallDagerPermittert =
-            finnBruktePermitteringsDager(tidslinje, potensiellDatoForAGP2) +
-            antallDagerTilNesteGjett;
+            dagerPermittertUtenLøpendePermittering + antallDagerForskyving;
     }
     return potensiellDatoForAGP2.add(1, 'day');
 };
@@ -166,7 +174,6 @@ export const finnDatoForTidligste18mndsPeriode = (
             tidslinje
         );
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
-            console.log('prøver å finne ny permitteringsperiode');
             const nestePermitteringsstart:
                 | DatoMedKategori
                 | undefined = finnPermitteringsDatoEtterGittDato(
@@ -263,7 +270,6 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     dato: Date,
     tidslinje: DatoMedKategori[]
 ) => {
-    console.log('prøver å finne ny permitteringsperiode-funksjon');
     const indeksITidslinje = tidslinje.findIndex(
         (datoMedKategori) =>
             skrivOmDato(datoMedKategori.dato) === skrivOmDato(dato)

@@ -5,6 +5,7 @@ import React, {
     useState,
 } from 'react';
 import {
+    antalldagerGått,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
@@ -137,6 +138,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
+        // her hender det at løpende-funksjonen kalles
         const infoAGP2 = finnInformasjonAGP2(
             tidslinjeObjekter,
             dayjs(tidligsteDatoAGP2),
