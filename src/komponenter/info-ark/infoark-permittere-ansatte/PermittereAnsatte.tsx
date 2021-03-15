@@ -70,23 +70,6 @@ const PermittereAnsatte = (props: Props) => {
                           }
                       )
                     : null}
-                <div className={cls.element('video-frame')}>
-                    <iframe
-                        aria-label="video"
-                        aria-labelledby="Permittering - informasjonsvideo for arbeidsgivere"
-                        src="https://player.vimeo.com/video/398208025"
-                        style={{
-                            borderRadius: '4px',
-                        }}
-                        width="100%"
-                        height="260"
-                        frameBorder="0"
-                        allow="autoplay; fullscreen"
-                        allowFullScreen
-                        title="Permitteringsvideo for arbeidsgivere"
-                        onTimeUpdate={skrivTilMalingVideoBlirSpilt}
-                    />
-                </div>
             </div>
         </Infoseksjon>
     );
