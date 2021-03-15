@@ -2,10 +2,7 @@ import React from 'react';
 import BEMHelper from '../../../utils/bem';
 import KnappBase from 'nav-frontend-knapper';
 import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import {
-    skrivTilMalingBesokerSideGaTilSkjema,
-    skrivTilMalingVideoBlirSpilt,
-} from '../../../utils/amplitudeUtils';
+import { skrivTilMalingBesokerSideGaTilSkjema } from '../../../utils/amplitudeUtils';
 import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
 import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
 import Infoseksjon from '../../infoseksjon/Infoseksjon';
