@@ -29,8 +29,6 @@ export enum TypoStyle {
     Normal = 'normal',
 }
 
-// Serializer Types.
-
 interface SerializerNodeTypes {
     node: BlockType | EkspanderbartpanelType | FargeEditor | FargetTekst;
     children: React.ReactElement[] | string[];
