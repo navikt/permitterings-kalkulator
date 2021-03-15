@@ -151,19 +151,11 @@ export const kuttAvDatoIntervallInnefor18mnd = (
     );
 };
 
-export const finnDato18MndTilbake = (datoDayjs: Dayjs): Dayjs => {
-    const dato = datoDayjs.toDate();
-    let nyDato = new Date(dato);
-    nyDato.setFullYear(dato.getFullYear() - 2);
-    nyDato.setMonth(dato.getMonth() + 6);
-    nyDato.setDate(dato.getDate() + 1);
-    if (nyDato.getDate() < dato.getDate()) {
-        const førsteDatoINyMåned = new Date(nyDato);
-        førsteDatoINyMåned.setDate(1);
-        nyDato = førsteDatoINyMåned;
-    }
-    return dayjs(nyDato);
-};
+export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
+    dato.subtract(18, 'months').add(1, 'day');
+
+export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
+    dato.add(18, 'months').subtract(1, 'day');
 
 export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
@@ -184,29 +176,6 @@ export const getDefaultPermitteringsperiode = (
     datoFra: finnDato18MndTilbake(dagensDato),
     datoTil: undefined,
 });
-
-const finn1DagTilbake = (dato?: Date) => {
-    if (dato) {
-        const enDagTilbake = new Date(dato);
-        enDagTilbake.setDate(enDagTilbake.getDate() - 1);
-        return enDagTilbake;
-    }
-    return undefined;
-};
-
-export const finnDato18MndFram = (datoDayjs: Dayjs) => {
-    const dato = datoDayjs.toDate();
-    let nyDato = new Date(dato);
-    nyDato.setFullYear(dato.getFullYear() + 1);
-    nyDato.setMonth(dato.getMonth() + 6);
-    nyDato.setDate(dato.getDate() - 1);
-    if (nyDato.getDate() + 1 < dato.getDate()) {
-        const førsteDatoINyMåned = new Date(nyDato);
-        førsteDatoINyMåned.setDate(1);
-        nyDato = finn1DagTilbake(førsteDatoINyMåned)!!;
-    }
-    return dayjs(nyDato);
-};
 
 export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
