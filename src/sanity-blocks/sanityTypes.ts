@@ -24,7 +24,7 @@ export interface SistOppdatert {
     _updatedAt: string;
 }
 
-type ContentType = BlockType | EkspanderbartpanelType | FargetTekst;
+type ContentType = BlockType | EkspanderbartpanelType | FargetTekst | Iframe;
 
 interface CommonContentType {
     _key: string;
@@ -35,6 +35,10 @@ export interface BlockType extends CommonContentType {
     children: Children[];
     markDefs: {}[];
     style: TypoStyle;
+}
+
+export interface Iframe extends CommonContentType {
+    url: string;
 }
 
 export interface EkspanderbartpanelType extends CommonContentType {

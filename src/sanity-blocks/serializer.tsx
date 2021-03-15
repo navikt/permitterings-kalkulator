@@ -16,8 +16,10 @@ import {
     FargeMerknad,
     FargetTekst,
     Highlighted,
+    Iframe,
 } from './sanityTypes';
 import BlockContent from '@sanity/block-content-to-react';
+import { skrivTilMalingVideoBlirSpilt } from '../utils/amplitudeUtils';
 
 export enum TypoStyle {
     H1 = 'h1',
@@ -30,7 +32,12 @@ export enum TypoStyle {
 }
 
 interface SerializerNodeTypes {
-    node: BlockType | EkspanderbartpanelType | FargeEditor | FargetTekst;
+    node:
+        | BlockType
+        | EkspanderbartpanelType
+        | FargeEditor
+        | FargetTekst
+        | Iframe;
     children: React.ReactElement[] | string[];
     options: {
         imageOptions: {};
@@ -39,6 +46,10 @@ interface SerializerNodeTypes {
 
 interface BlockTypeNode extends SerializerNodeTypes {
     node: BlockType;
+}
+
+interface IframeNode extends SerializerNodeTypes {
+    node: Iframe;
 }
 
 interface EkspanderbartPanelNode extends SerializerNodeTypes {
@@ -61,6 +72,31 @@ const typoComponents = {
     [TypoStyle.H5]: Ingress,
     [TypoStyle.H6]: Element,
     [TypoStyle.Normal]: Normaltekst,
+};
+
+const videoSerializer = (iframe: IframeNode) => {
+    const url = iframe.node.url;
+    return url ? (
+        <div className="permittering__video-frame">
+            <iframe
+                aria-label="video"
+                aria-labelledby="Permittering - informasjonsvideo for arbeidsgivere"
+                src={url}
+                style={{
+                    borderRadius: '4px',
+                }}
+                width="100%"
+                height="260"
+                frameBorder="0"
+                allow="autoplay; fullscreen"
+                allowFullScreen
+                title="Permitteringsvideo for arbeidsgivere"
+                onTimeUpdate={skrivTilMalingVideoBlirSpilt}
+            />
+        </div>
+    ) : (
+        <div />
+    );
 };
 
 const ekspanderbartpanelSerializer = (panel: EkspanderbartPanelNode) => {
@@ -161,6 +197,7 @@ export const serializers = {
         ekspanderbartpanel: ekspanderbartpanelSerializer,
         fargetTekst: fargetTekstSerializer,
         fargeEditor: fargeEditorSerializer,
+        iframe: videoSerializer,
     },
     marks: {
         highlightGreen: (props: Highlighted) => (
