@@ -32,16 +32,18 @@ const Topp: FunctionComponent = () => {
                     </Normaltekst>
                 </ul>
             </div>
-            <Stegindikator
-                aktivtSteg={-1}
-                steg={[
-                    { label: 'Legg til permittering', index: 0 },
-                    { label: 'Legg til evt. fravær', index: 1 },
-                    { label: 'Se resultatet', index: 2 },
-                ]}
-                onChange={() => {}}
-                visLabel
-            />
+            <div className="topp__stegindikator">
+                <Stegindikator
+                    aktivtSteg={-1}
+                    steg={[
+                        { label: 'Legg til permittering', index: 0 },
+                        { label: 'Legg til evt. fravær', index: 1 },
+                        { label: 'Se resultatet', index: 2 },
+                    ]}
+                    onChange={() => {}}
+                    visLabel
+                />
+            </div>
         </div>
     );
 };
