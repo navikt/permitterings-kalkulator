@@ -61,7 +61,7 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Infotekst
                 className="permitteringsperioder__infotekst"
                 imgSrc={kalenderSvg}
-                imgAlt="Kalenderikon"
+                imgAlt="Kalender"
             >
                 <Normaltekst>
                     Periodene skal <strong>ikke</strong> inneholde dagene du har

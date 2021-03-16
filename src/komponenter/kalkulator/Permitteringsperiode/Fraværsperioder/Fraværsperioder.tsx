@@ -1,15 +1,20 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './Fraværsperioder.less';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
 } from '../../typer';
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDato, finnTidligsteDato } from '../../utregninger';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import {
+    finnSisteDato,
+    finnTidligsteDato,
+    finnUtOmDefinnesOverlappendePerioder,
+} from '../../utregninger';
 import { Dayjs } from 'dayjs';
+import { Infotekst } from '../../Infotekst/Infotekst';
+import timeglassSvg from './timeglass.svg';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
@@ -21,6 +26,25 @@ interface Props {
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
     const antallFraværsperioder =
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
+
+    const [
+        beskjedOverlappendeFravær,
+        setBeskjedOverlappendeFravær,
+    ] = useState<string>('');
+
+    useEffect(() => {
+        if (
+            finnUtOmDefinnesOverlappendePerioder(
+                props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
+            )
+        ) {
+            setBeskjedOverlappendeFravær(
+                'Du kan ikke ha overlappende fraværsperioder'
+            );
+        } else {
+            setBeskjedOverlappendeFravær('');
+        }
+    }, [props.allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
     const leggTilNyFraVærsPeriode = () => {
         const kopiAvAllPermitteringsInfo = {
@@ -94,48 +118,32 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
     };
 
     return (
-        <div>
-            <Undertittel className={'kalkulator__fraværsperioder__tittel'}>
-                3. Legg inn eventuelle fravær den permitterte har hatt
+        <div className="fraværsperioder">
+            <Undertittel tag="h2" className="fraværsperioder__tittel">
+                2. Legg inn eventuelle fravær under permitteringen
             </Undertittel>
-            <Ekspanderbartpanel
-                tittel={
-                    <Normaltekst>
-                        <strong>Om fraværsperioder</strong>
+            <Infotekst imgSrc={timeglassSvg} imgAlt="Timeglass">
+                <Element>Følgende fravær skal legges inn</Element>
+                <ul className="fraværsperioder__infotekst-liste">
+                    <Normaltekst tag="li">
+                        100&nbsp;% sykmelding (gjelder også deltidsstillinger)
                     </Normaltekst>
-                }
-            >
-                <Normaltekst>
-                    Følgende fravær trekkes fra i beregningen av antall uker
-                    permittert
-                    <ul>
-                        <li>100% sykmelding</li>
-                        <li>Ferieavvikling</li>
-                        <li>Permisjon</li>
-                    </ul>
-                    <br />
-                    <strong>
-                        {' '}
-                        Følgende fravær påvirker ikke beregningen og skal ikke
-                        fylles inn
-                    </strong>
-                    <ul>
-                        <li>Gradert sykmelding</li>
-                        <li>Gradert permisjon</li>
-                    </ul>
-                    <br />
-                    Dette gjelder uavhengig av stillingenes størrelse og
-                    permitteringsgrad. Hvis en arbeidstaker er 100% sykmeldt fra
-                    en deltidsstilling er dette et heldtidsfravær.
-                </Normaltekst>
-            </Ekspanderbartpanel>
+                    <Normaltekst tag="li">
+                        100&nbsp;% permisjon (gjelder også deltidsstillinger)
+                    </Normaltekst>
+                    <Normaltekst tag="li">Ferieavvikling</Normaltekst>
+                </ul>
+            </Infotekst>
             {fraVærsperiodeElementer}
             <Knapp
-                className={'kalkulator__legg-til-knapp'}
+                className="fraværsperioder__legg-til-knapp"
                 onClick={() => leggTilNyFraVærsPeriode()}
             >
                 + Legg til ny periode
             </Knapp>
+            <Element className="fraværsperioder__feilmelding">
+                {beskjedOverlappendeFravær}
+            </Element>
         </div>
     );
 };

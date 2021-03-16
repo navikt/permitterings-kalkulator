@@ -37,28 +37,9 @@ const Kalkulator = () => {
         setsteDagI18mndsPeriodeEndretAv,
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
-    const [
-        beskjedOverlappendeFravær,
-        setBeskjedOverlappendeFravær,
-    ] = useState<string>('');
-
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         dagensDato
     );
-
-    useEffect(() => {
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
-                allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            )
-        ) {
-            setBeskjedOverlappendeFravær(
-                'Du kan ikke ha overlappende fraværsperioder'
-            );
-        } else {
-            setBeskjedOverlappendeFravær('');
-        }
-    }, [allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
     return (
         <div className={'kalkulator-bakgrunn'}>
@@ -81,18 +62,15 @@ const Kalkulator = () => {
                             setAllePermitteringerOgFraværesPerioder
                         }
                     />
+                    <Fraværsperioder
+                        setAllePermitteringerOgFraværesPerioder={
+                            setAllePermitteringerOgFraværesPerioder
+                        }
+                        allePermitteringerOgFraværesPerioder={
+                            allePermitteringerOgFraværesPerioder
+                        }
+                    />
                     <div className={'kalkulator__fraværsperioder'}>
-                        <Fraværsperioder
-                            setAllePermitteringerOgFraværesPerioder={
-                                setAllePermitteringerOgFraværesPerioder
-                            }
-                            allePermitteringerOgFraværesPerioder={
-                                allePermitteringerOgFraværesPerioder
-                            }
-                        />
-                        <Element className={'kalkulator__feilmelding'}>
-                            {beskjedOverlappendeFravær}
-                        </Element>
                         <div
                             className={'kalkulator__tidslinje-wrapper'}
                             id={'kalkulator-tidslinje-wrapper'}
