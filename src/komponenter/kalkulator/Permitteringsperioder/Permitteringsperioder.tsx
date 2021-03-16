@@ -5,6 +5,7 @@ import Permitteringsperiode from '../Permitteringsperiode/Permitteringsperiode';
 import { finnUtOmDefinnesOverlappendePerioder } from '../utregninger';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
+import { Infotekst } from '../Infotekst/Infotekst';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -57,17 +58,16 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Undertittel tag="h2">
                 2. Legg inn permitteringsperiode for arbeidstaker
             </Undertittel>
-            <div className="permitteringsperioder__infotekst">
-                <img
-                    src={kalenderSvg}
-                    alt="Kalenderikon"
-                    className="permitteringsperioder__infotekst-ikon"
-                />
+            <Infotekst
+                className="permitteringsperioder__infotekst"
+                imgSrc={kalenderSvg}
+                imgAlt="Kalenderikon"
+            >
                 <Normaltekst>
                     Periodene skal <strong>ikke</strong> inneholde dagene du har
                     lønnsplikt, eller permitteringer grunnet streik.
                 </Normaltekst>
-            </div>
+            </Infotekst>
             {permitteringsobjekter}
             <Element className={'kalkulator__feilmelding'}>
                 {beskjedOverlappendePermittering}
