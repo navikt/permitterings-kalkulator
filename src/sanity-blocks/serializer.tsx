@@ -113,7 +113,7 @@ const fargeEditorSerializer = (panel: FargeEditorNode) => {
     const bakgrunnsfarge: string = panel.node.color
         ? panel.node.color.hex
         : '#ffffff';
-    return (
+    return panel.node.innhold ? (
         <div
             style={{
                 backgroundColor: bakgrunnsfarge,
@@ -133,6 +133,8 @@ const fargeEditorSerializer = (panel: FargeEditorNode) => {
                 );
             })}
         </div>
+    ) : (
+        <div />
     );
 };
 
