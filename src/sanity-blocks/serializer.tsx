@@ -1,4 +1,4 @@
-import TypografiBase, {
+import {
     Element,
     Ingress,
     Innholdstittel,
@@ -114,13 +114,14 @@ const typoComponents = {
 const veilederpanelSerializer = (panel: VeilederPanelNode) => {
     const kompakt = panel.node.kompakt;
     const plakat = panel.node.plakat;
+    const plakatType = plakat ? 'plakat' : 'normal';
     const fargetema = panel.node.paneltype ? panel.node.paneltype[0] : 'normal';
     return panel.node.innhold ? (
         <div>
             <Veilederpanel
                 svg={<Veileder />}
                 kompakt={kompakt}
-                type={plakat ? 'plakat' : 'normal'}
+                type={plakatType}
                 fargetema={fargetema as VeilederPanelFargeTema}
             >
                 {panel.node.innhold.map((block: any, index: any) => {
@@ -147,16 +148,7 @@ const lesmerSerializer = (panel: LesMerNode) => {
             apneTekst={panel.node.apnetekst || ''}
             lukkTekst={panel.node.lukktekst || ''}
         >
-            {panel.node.innhold.map((block, index) => {
-                return (
-                    <React.Fragment key={index}>
-                        <BlockContent
-                            blocks={block}
-                            serializers={serializers}
-                        />
-                    </React.Fragment>
-                );
-            })}
+            {getBlockContentFromList(panel.node.innhold)}
         </Lesmerpanel>
     ) : (
         <div />
@@ -254,21 +246,24 @@ const fargeEditorSerializer = (panel: FargeEditorNode) => {
                 borderRadius: '4px',
             }}
         >
-            {panel.node.innhold.map((block, index) => {
-                return (
-                    <React.Fragment key={index}>
-                        <BlockContent
-                            blocks={block}
-                            serializers={serializers}
-                        />
-                    </React.Fragment>
-                );
-            })}
+            {getBlockContentFromList(panel.node.innhold)}
         </div>
     ) : (
         <div />
     );
 };
+
+const getBlockContentFromList = (node: BlockType[]) => (
+    <>
+        {node.map((block, index) => {
+            return (
+                <React.Fragment key={index}>
+                    <BlockContent blocks={block} serializers={serializers} />
+                </React.Fragment>
+            );
+        })}
+    </>
+);
 
 const fargetTekstSerializer = (fargeTekst: FargeTekstNode) => {
     const bakgrunn: string = fargeTekst.node.farge
