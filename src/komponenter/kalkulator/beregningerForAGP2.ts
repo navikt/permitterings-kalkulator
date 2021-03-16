@@ -20,7 +20,7 @@ export enum ArbeidsgiverPeriode2Resulatet {
     IKKE_LØPENDE_IKKE_NÅDD_AGP2 = 'IKKE_LØPENDE_IKKE_NÅDD_AGP2',
 }
 
-export interface InformasjonOmGjenståendeDagerOgPeriodeAGP2 {
+export interface InformasjonOmAGP2Status {
     // 18mndperiode: datointervall
     sluttDato: Dayjs | undefined;
     gjenståendePermitteringsDager: number;
@@ -35,7 +35,7 @@ export const finnInformasjonAGP2 = (
     erLøpende: boolean,
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-): InformasjonOmGjenståendeDagerOgPeriodeAGP2 => {
+): InformasjonOmAGP2Status => {
     const statusPermittering1muligAGP2 = finnOversiktOverPermitteringOgFraværGitt18mnd(
         tidligsteDatoAGP2, // 1. juni
         tidslinje
@@ -59,7 +59,6 @@ export const finnInformasjonAGP2 = (
         };
     }
     if (erLøpende) {
-        // TODO OBS: Denne datoen kan være etter tidslinjen! må sjekkes
         const datoAGP2 = finnDatoAGP2LøpendePermittering(
             tidslinje,
             tidligsteDatoAGP2,
@@ -133,11 +132,6 @@ export const finnDatoAGP2LøpendePermittering = (
     return potensiellDatoForAGP2.add(1, 'day');
 };
 
-//case3
-/*
-returnerer den tidligste permitteringsdatoen som er slik at AGP2 kan forekomme i 18mnds-perioden som starter med denne datoen
-TODO burde finne/teste en case hvor denne datoen _ikke_ er første permitteringsdato
- */
 export const finnDatoForTidligste18mndsPeriode = (
     tidslinje: DatoMedKategori[],
     tidligsteDatoAGP2: Dayjs,
@@ -228,18 +222,17 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
             }
         }
     });
-    const oversikt: OversiktOverBrukteOgGjenværendeDager = {
+    return {
         dagerPermittert: permittert,
         dagerGjensående: gjenståendeDager,
         dagerAnnetFravær: antallDagerFravær,
     };
-    return oversikt;
 };
 
 export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     sisteDagIAktuellPeriode: Dayjs,
     tidslinje: DatoMedKategori[],
-    dagensDato: Dayjs, // todo hva om man legger inn permitteringer i fremtiden?
+    dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ) => {
     const ubrukteDagerIPeriode =

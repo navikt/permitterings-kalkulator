@@ -30,7 +30,7 @@ import { formaterDato } from '../../Datovelger/datofunksjoner';
 import {
     ArbeidsgiverPeriode2Resulatet,
     finnInformasjonAGP2,
-    InformasjonOmGjenståendeDagerOgPeriodeAGP2,
+    InformasjonOmAGP2Status,
 } from '../beregningerForAGP2';
 import dayjs from 'dayjs';
 
@@ -43,9 +43,7 @@ interface Props {
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
-const skrivTekst = (
-    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2
-): string => {
+const skrivTekst = (info: InformasjonOmAGP2Status): string => {
     switch (true) {
         case info.sluttDato?.isSameOrBefore(dayjs('2021-06-02')):
             return 'ikke tilstrekkelig data';
@@ -85,7 +83,6 @@ const skrivTekst = (
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
-    const [datoAGP3, setDatoAGP3] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
     >([]);
@@ -146,7 +143,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             dagensDato,
             210
         );
-        tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
         setTekst(skrivTekst(infoAGP2));
     }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 

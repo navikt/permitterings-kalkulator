@@ -2,7 +2,6 @@ import React, {
     FunctionComponent,
     useContext,
     useEffect,
-    useRef,
     useState,
 } from 'react';
 import './Utregningskolonne.less';
