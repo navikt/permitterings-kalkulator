@@ -155,7 +155,7 @@ export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
     dato.subtract(18, 'months').add(1, 'day');
 
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
-    dato.add(18, 'months').subtract(1, 'day');
+    dato.subtract(1, 'day').add(18, 'months');
 
 export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
