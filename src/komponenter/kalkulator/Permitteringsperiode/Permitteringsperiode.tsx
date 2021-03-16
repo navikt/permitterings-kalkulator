@@ -6,11 +6,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import {
-    finn1DagFram,
-    finnSisteDato,
-    getDefaultPermitteringsperiode,
-} from '../utregninger';
+import { finnSisteDato, getDefaultPermitteringsperiode } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
@@ -33,7 +29,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
               )
             : dagensDato;
         const nyPeriode: DatoIntervall = {
-            datoFra: finn1DagFram(sistRegistrerteDag!!),
+            datoFra: sistRegistrerteDag!.add(1, 'day'),
             datoTil: undefined,
         };
 
@@ -81,7 +77,9 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                         props.indeks
                     ]
                 }
-                setDatoIntervall={oppdaterDatoIntervall}
+                setDatoIntervall={(intervall) =>
+                    oppdaterDatoIntervall(intervall)
+                }
                 erLøpendeLabel="Permitteringen er fortsatt aktiv"
                 slettPeriode={slettPeriode}
             />

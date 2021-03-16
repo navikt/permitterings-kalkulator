@@ -1,22 +1,25 @@
 import React, { FunctionComponent } from 'react';
 import './Årsmarkør.less';
 import { Undertekst } from 'nav-frontend-typografi';
+import { Dayjs } from 'dayjs';
 
 interface Props {
-    dato: Date
+    dato: Dayjs;
 }
 
-
-const Årsmarkør: FunctionComponent<Props> = (
-    props
-) => {
-
+const Årsmarkør: FunctionComponent<Props> = (props) => {
     return (
         <div className={'kalkulator__tidslinje-årsmarkering'}>
-            <div className={'kalkulator__tidslinje-årsmarkering-vertikal-sylinder'}/>
-            <div className={'kalkulator__tidslinje-årsmarkering-nedre-sirkel'}/>
+            <div
+                className={
+                    'kalkulator__tidslinje-årsmarkering-vertikal-sylinder'
+                }
+            />
+            <div
+                className={'kalkulator__tidslinje-årsmarkering-nedre-sirkel'}
+            />
             <Undertekst className={'kalkulator__tidslinje-årsmarkering-tekst'}>
-                {props.dato.getFullYear()}
+                {props.dato.year()}
             </Undertekst>
         </div>
     );

@@ -1,10 +1,11 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
-import { ARBEIDSGIVERPERIODE2DATO, finn1DagFram } from '../utregninger';
+import { ARBEIDSGIVERPERIODE2_DATO } from '../utregninger';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
+import { Dayjs } from 'dayjs';
 
 interface Props {
     datoIntervall: DatoIntervall;
@@ -17,14 +18,14 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
 
-    const setTilDato = (dato: Date) =>
+    const setTilDato = (dato: Dayjs) =>
         setDatoIntervall({
             ...datoIntervall,
             datoTil: dato,
         });
 
-    const onFraDatoChange = (event: any) => {
-        const eventDato: Date = event.currentTarget.value;
+    const onFraDatoChange = (event: { currentTarget: { value: Dayjs } }) => {
+        const eventDato: Dayjs = event.currentTarget.value;
 
         const nyttDatoIntervall = !!datoIntervall.datoTil
             ? {
@@ -32,7 +33,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
               }
             : {
                   datoFra: eventDato,
-                  datoTil: finn1DagFram(eventDato),
+                  datoTil: eventDato.add(1, 'day'),
               };
 
         setDatoIntervall({
@@ -48,7 +49,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
               }
             : {
                   erLøpende: true,
-                  datoTil: ARBEIDSGIVERPERIODE2DATO,
+                  datoTil: ARBEIDSGIVERPERIODE2_DATO,
               };
         setDatoIntervall({
             ...datoIntervall,

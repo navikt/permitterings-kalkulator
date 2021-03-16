@@ -14,7 +14,6 @@ import {
     DatoMedKategori,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
@@ -26,11 +25,13 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
+import { Dayjs } from 'dayjs';
+import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    set18mndsPeriode: (dato: Date) => void;
-    sisteDagIPeriode: Date;
+    set18mndsPeriode: (dato: Dayjs) => void;
+    sisteDagIPeriode: Dayjs;
     breddeAvDatoObjektIProsent: number;
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
@@ -38,7 +39,7 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const { dagensDato } = useContext(PermitteringContext);
-    const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
+    const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
     >([]);
@@ -92,10 +93,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
-        if (
-            datoOnDrag &&
-            datoOnDrag.toDateString() !== props.sisteDagIPeriode.toDateString()
-        ) {
+        if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
                 tidslinjeObjekter,
                 props.breddeAvDatoObjektIProsent,
@@ -116,7 +114,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeObjekter,
-        props.breddeAvDatoObjektIProsent
+        props.breddeAvDatoObjektIProsent,
+        dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
         lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeObjekter),
@@ -186,13 +185,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                                 className={'kalkulator__draggable-kant høyre'}
                             />
                             <Normaltekst className={'venstre-dato '}>
-                                {skrivOmDato(
+                                {formaterDato(
                                     finnDato18MndTilbake(datoVisesPaDragElement)
                                 )}
                             </Normaltekst>
 
                             <Normaltekst className={'høyre-dato'}>
-                                {skrivOmDato(datoVisesPaDragElement)}
+                                {formaterDato(datoVisesPaDragElement)}
                             </Normaltekst>
                         </div>
                     </Draggable>

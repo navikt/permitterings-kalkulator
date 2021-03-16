@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs';
+
 export enum datointervallKategori {
     PERMITTERT,
     ARBEIDER,
@@ -10,13 +12,13 @@ export interface AllePermitteringerOgFraværesPerioder {
 }
 
 export interface DatoIntervall {
-    datoFra: Date | undefined;
-    datoTil: Date | undefined;
+    datoFra: Dayjs | undefined;
+    datoTil: Dayjs | undefined;
     erLøpende?: boolean;
 }
 
 export interface DatoMedKategori {
-    dato: Date;
+    dato: Dayjs;
     kategori: datointervallKategori;
 }
 
