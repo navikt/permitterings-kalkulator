@@ -1,4 +1,4 @@
-import {
+import TypografiBase, {
     Element,
     Ingress,
     Innholdstittel,
@@ -8,6 +8,7 @@ import {
     Undertittel,
 } from 'nav-frontend-typografi';
 import React from 'react';
+import { ReactComponent as Veileder } from '../assets/ikoner/veileder.svg';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import {
     BlockType,
@@ -17,9 +18,16 @@ import {
     FargetTekst,
     Highlighted,
     Iframe,
+    EnkeltKnapp,
+    LesMerType,
+    VeilederPanelType,
+    KnappeParType,
 } from './sanityTypes';
 import BlockContent from '@sanity/block-content-to-react';
+import Veilederpanel from 'nav-frontend-veilederpanel';
+import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { skrivTilMalingVideoBlirSpilt } from '../utils/amplitudeUtils';
+import KnappBase from 'nav-frontend-knapper';
 
 export enum TypoStyle {
     H1 = 'h1',
@@ -31,17 +39,34 @@ export enum TypoStyle {
     Normal = 'normal',
 }
 
+type VeilederPanelFargeTema =
+    | 'normal'
+    | 'info'
+    | 'suksess'
+    | 'advarsel'
+    | 'feilmelding';
+
+type KnappBaseType = 'standard' | 'hoved' | 'fare' | 'flat';
+
 interface SerializerNodeTypes {
     node:
         | BlockType
         | EkspanderbartpanelType
         | FargeEditor
         | FargetTekst
-        | Iframe;
+        | Iframe
+        | VeilederPanelType
+        | LesMerType
+        | EnkeltKnapp
+        | KnappeParType;
     children: React.ReactElement[] | string[];
     options: {
         imageOptions: {};
     };
+}
+
+interface LesMerNode extends SerializerNodeTypes {
+    node: LesMerType;
 }
 
 interface BlockTypeNode extends SerializerNodeTypes {
@@ -64,6 +89,18 @@ interface FargeEditorNode extends SerializerNodeTypes {
     node: FargeEditor;
 }
 
+interface VeilederPanelNode extends SerializerNodeTypes {
+    node: VeilederPanelType;
+}
+
+interface KnappNode extends SerializerNodeTypes {
+    node: EnkeltKnapp;
+}
+
+interface KnappeParNode extends SerializerNodeTypes {
+    node: KnappeParType;
+}
+
 const typoComponents = {
     [TypoStyle.H1]: Sidetittel,
     [TypoStyle.H2]: Innholdstittel,
@@ -72,6 +109,101 @@ const typoComponents = {
     [TypoStyle.H5]: Ingress,
     [TypoStyle.H6]: Element,
     [TypoStyle.Normal]: Normaltekst,
+};
+
+const veilederpanelSerializer = (panel: VeilederPanelNode) => {
+    const kompakt = panel.node.kompakt;
+    const plakat = panel.node.plakat;
+    const fargetema = panel.node.paneltype ? panel.node.paneltype[0] : 'normal';
+    return panel.node.innhold ? (
+        <div>
+            <Veilederpanel
+                svg={<Veileder />}
+                kompakt={kompakt}
+                type={plakat ? 'plakat' : 'normal'}
+                fargetema={fargetema as VeilederPanelFargeTema}
+            >
+                {panel.node.innhold.map((block: any, index: any) => {
+                    return (
+                        <React.Fragment key={index}>
+                            <BlockContent
+                                blocks={block}
+                                serializers={serializers}
+                            />
+                        </React.Fragment>
+                    );
+                })}
+            </Veilederpanel>
+        </div>
+    ) : (
+        <div />
+    );
+};
+
+const lesmerSerializer = (panel: LesMerNode) => {
+    return panel.node.innhold ? (
+        <Lesmerpanel
+            intro={panel.node.introduksjonstekst || ''}
+            apneTekst={panel.node.apnetekst || ''}
+            lukkTekst={panel.node.lukktekst || ''}
+        >
+            {panel.node.innhold.map((block, index) => {
+                return (
+                    <React.Fragment key={index}>
+                        <BlockContent
+                            blocks={block}
+                            serializers={serializers}
+                        />
+                    </React.Fragment>
+                );
+            })}
+        </Lesmerpanel>
+    ) : (
+        <div />
+    );
+};
+
+interface KnappProps {
+    type: KnappBaseType;
+    url: string;
+    tekst: string;
+}
+
+const GetKnapp = (props: KnappProps) => {
+    return (
+        <KnappBase
+            type={props.type}
+            onClick={() => (window.location.href = props.url)}
+        >
+            {props.tekst}
+        </KnappBase>
+    );
+};
+
+const getButtonValues = (value: any, objectKey: string): KnappProps => {
+    const tekst = value.node[objectKey].tekst || '';
+    const url = value.node[objectKey].url || '';
+    const type = value.node[objectKey].buttontype
+        ? (value.node[objectKey].buttontype[0] as KnappBaseType)
+        : 'standard';
+
+    return { type, url, tekst };
+};
+
+const enkeltknappSerializer = (props: KnappNode) => {
+    const knapp = getButtonValues(props, 'knappen');
+    return <>{GetKnapp({ ...knapp })}</>;
+};
+
+const knapperSerializer = (props: KnappeParNode) => {
+    const knapp = getButtonValues(props, 'knappen');
+    const knappTo = getButtonValues(props, 'knappto');
+    return (
+        <div style={{ display: 'flex', marginBottom: '1.5rem' }}>
+            <div style={{ marginRight: '1rem' }}>{GetKnapp({ ...knapp })}</div>
+            <div>{GetKnapp({ ...knappTo })}</div>
+        </div>
+    );
 };
 
 const videoSerializer = (iframe: IframeNode) => {
@@ -194,6 +326,10 @@ const serializeCheck = (block: BlockTypeNode) => {
 
 export const serializers = {
     types: {
+        knapper: knapperSerializer,
+        enkeltknapp: enkeltknappSerializer,
+        veilederpanel: veilederpanelSerializer,
+        lesmer: lesmerSerializer,
         block: serializeCheck,
         image: imageSerializer,
         ekspanderbartpanel: ekspanderbartpanelSerializer,
