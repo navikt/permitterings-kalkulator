@@ -27,6 +27,12 @@ import {
 import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
+import {
+    ArbeidsgiverPeriode2Resulatet,
+    finnInformasjonAGP2,
+    InformasjonOmAGP2Status,
+} from '../beregningerForAGP2';
+import dayjs from 'dayjs';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -37,9 +43,46 @@ interface Props {
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
 
+const skrivTekst = (info: InformasjonOmAGP2Status): string => {
+    switch (true) {
+        case info.sluttDato?.isSameOrBefore(dayjs('2021-06-02')):
+            return 'ikke tilstrekkelig data';
+        case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
+            return (
+                'treffer AGP2 1.juni, brukt: ' +
+                info.brukteDager +
+                ' permittert'
+            );
+        case info.type === ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
+            return (
+                'dersom du har løpende permittering fram til ' +
+                formaterDato(info.sluttDato!) +
+                ' faller AGP2 på denne datoen. Nå har du per 1. juni brukt ' +
+                info.brukteDager +
+                'dager'
+            );
+
+        case info.type ===
+            ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
+            return (
+                'I perioden ' +
+                formaterDato(finnDato18MndTilbake(info.sluttDato!)) +
+                ' - ' +
+                formaterDato(info.sluttDato!) +
+                ' er det permittert: ' +
+                info.brukteDager +
+                ' dager. Du kan permittere i ' +
+                info.gjenståendePermitteringsDager +
+                ' dager fra i dag til ' +
+                formaterDato(info.sluttDato!)
+            );
+    }
+    return '';
+};
+
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
     >([]);
@@ -53,6 +96,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
+    const [tekst, setTekst] = useState('');
 
     const [
         posisjonsStylingDragElement,
@@ -86,6 +130,21 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             setPosisjonsStylingDragElement('absolute');
         }
     }, [props.endringAv]);
+
+    useEffect(() => {
+        const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
+            (permittering) => permittering.erLøpende
+        );
+        // her hender det at løpende-funksjonen kalles
+        const infoAGP2 = finnInformasjonAGP2(
+            tidslinjeObjekter,
+            innføringsdatoAGP2,
+            finnesLøpende !== undefined,
+            dagensDato,
+            210
+        );
+        setTekst(skrivTekst(infoAGP2));
+    }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
@@ -123,13 +182,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDragRelease = () => {
-        props.setEndringAv('tidslinje');
         if (datoOnDrag) {
             props.set18mndsPeriode(datoOnDrag);
         }
     };
 
     const OnTidslinjeDrag = () => {
+        props.setEndringAv('tidslinje');
         setPosisjonsStylingDragElement('static');
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
@@ -205,6 +264,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         {htmlElementerForHverDato}
                     </div>
                     <Fargeforklaringer />
+                    <Normaltekst
+                        className={'kalkulator__tidslinje-agp2-forklaring'}
+                    >
+                        {tekst}
+                    </Normaltekst>
                 </>
             )}
         </div>

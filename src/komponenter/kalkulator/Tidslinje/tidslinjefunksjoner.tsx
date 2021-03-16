@@ -71,6 +71,7 @@ export const lagHTMLObjektForPeriodeMedFarge = (
                 objekt.kategori === 0 &&
                 representasjonAvPerioderMedFarge[indeks - 1].kategori === 2;
             const grenserTilFraværHøyre =
+                objekt.kategori &&
                 objekt.kategori === 0 &&
                 representasjonAvPerioderMedFarge[indeks + 1].kategori === 2;
             if (grenserTilFraværVenstre) {

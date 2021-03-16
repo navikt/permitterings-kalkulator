@@ -4,9 +4,7 @@ import {
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
-import dayjs, { Dayjs } from 'dayjs';
-
-export const ARBEIDSGIVERPERIODE2_DATO: Dayjs = dayjs('2021-03-01');
+import { Dayjs } from 'dayjs';
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
