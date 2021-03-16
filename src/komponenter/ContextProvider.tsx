@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
+import * as Sentry from '@sentry/react';
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
-import { fetchsanityJSON, isProduction } from '../utils/fetch-utils';
+import { fetchsanityJSON } from '../utils/fetch-utils';
 import { skrivTilMalingBesokerSide } from '../utils/amplitudeUtils';
 import { scrollIntoView } from '../utils/scrollIntoView';
 import { setEnv } from '../sanity-blocks/serializer';
@@ -68,8 +69,7 @@ const ContextProvider = (props: Props) => {
     };
 
     useEffect(() => {
-        const url = isProduction();
-        fetchsanityJSON(url)
+        fetchsanityJSON()
             .then((res) => {
                 setEnv(res.env);
                 res.data.forEach((item) => {
@@ -81,7 +81,10 @@ const ContextProvider = (props: Props) => {
                     );
                 });
             })
-            .catch((err) => console.warn(err));
+            .catch((err) => {
+                Sentry.captureException(err);
+                console.warn(err);
+            });
         skrivTilMalingBesokerSide();
         scrollIntoView();
     }, []);

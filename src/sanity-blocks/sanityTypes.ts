@@ -1,8 +1,9 @@
 import { PermitteringInnhold } from '../komponenter/ContextTypes';
+import { TypoStyle } from './serializer';
 
 export interface SanityBlockTypes {
     author: object;
-    content: Context[];
+    content: ContentType[];
     priority: number;
     publishedAt: string;
     title: string;
@@ -23,17 +24,63 @@ export interface SistOppdatert {
     _updatedAt: string;
 }
 
-interface Context {
-    children: Children[];
-    markDefs: [];
-    style: string;
+type ContentType = BlockType | EkspanderbartpanelType | FargetTekst | Iframe;
+
+interface CommonContentType {
     _key: string;
     _type: string;
 }
 
-interface Children {
+export interface BlockType extends CommonContentType {
+    children: Children[];
+    markDefs: {}[];
+    style: TypoStyle;
+}
+
+export interface Iframe extends CommonContentType {
+    url: string;
+}
+
+export interface EkspanderbartpanelType extends CommonContentType {
+    overskrift: string;
+    innhold: string;
+}
+
+export interface FargeEditor extends CommonContentType {
+    color: Farge | undefined;
+    innhold: BlockType[];
+}
+
+export interface FargetTekst extends CommonContentType {
+    farge: Farge | undefined;
+    innhold: string;
+}
+
+export interface FargeMerknad extends CommonContentType {
+    children: string[];
+    mark: Farge | undefined;
+}
+
+export interface Highlighted extends CommonContentType {
+    children: string[];
+    mark: string;
+    markKey: string;
+}
+
+export interface Children extends CommonContentType {
     marks: [];
     text: string;
-    _key: string;
+}
+
+interface Farge {
     _type: string;
+    alpha: number;
+    hex: string;
+    rgb: {
+        _type: string;
+        a: number;
+        r: number;
+        g: number;
+        b: number;
+    };
 }
