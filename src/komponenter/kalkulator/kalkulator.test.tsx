@@ -16,7 +16,7 @@ test('Tester at kalkulator renderes med basic innhold', () => {
     expect(permitteringsElement).toBeInTheDocument();
 
     const fraværsElement = getByText(
-        /Legg inn eventuelle fravær den permitterte har hatt/i
+        /Legg inn eventuelle fravær under permitteringen/i
     );
     expect(fraværsElement).toBeInTheDocument();
 });
