@@ -1,61 +1,15 @@
 @import '~nav-frontend-core/less/_variabler';
 
-.kalkulator {
-    &__topp {
-        display: flex;
-        flex-direction: column;
-        position: relative;
+.topp {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+
+    &__liste {
+        margin-top: 0;
     }
 
     &__generell-info {
         margin: 1.5rem 0 1.5rem;
-    }
-
-    &__18mnd-illustrasjon-tekst {
-        text-align: center;
-        color: white;
-    }
-
-    &__18mnd-illustrasjon-første-dag {
-        margin-bottom: 1.5rem;
-    }
-
-    &__18mnd-illustrasjon {
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 1rem;
-
-        .initial-datovelger {
-            margin-right: 0;
-            margin-bottom: 2rem;
-        }
-    }
-
-    &__18mnd-linje {
-        background-color: @navBla;
-        border-radius: 8px;
-        height: 1.5rem;
-        margin: 0 1rem 0 1rem;
-        display: flex;
-        width: 60%;
-        align-self: center;
-        justify-content: center;
-        align-items: center;
-    }
-
-    &__velg-ny-periode-info {
-        display: flex;
-        border: 1px solid @navGra20;
-        border-radius: 4px;
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
-        align-items: flex-start;
-    }
-
-    &__ikon-kalender {
-        margin-right: 1.5rem;
-        margin-top: 0.5rem;
     }
 }

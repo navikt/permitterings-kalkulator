@@ -9,6 +9,7 @@ import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
 import { PermitteringContext } from './ContextProvider';
+import { Sidetittel } from 'nav-frontend-typografi';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
@@ -27,7 +28,9 @@ const Permittering = () => {
 
     return (
         <div className={permittering.className}>
-            <Banner classname="banner" center={true} />
+            <Banner classname="banner" center={true}>
+                Veiviser for permittering
+            </Banner>
             <div className={permittering.element('container')}>
                 <div
                     className={permittering.element('wrapper')}

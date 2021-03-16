@@ -2,13 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import {
-    Element,
-    Normaltekst,
-    Systemtittel,
-    Undertittel,
-} from 'nav-frontend-typografi';
-import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
+import { Element, Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
@@ -22,10 +16,10 @@ import {
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
+import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 
 const Kalkulator = () => {
     const { dagensDato } = useContext(PermitteringContext);
@@ -42,10 +36,7 @@ const Kalkulator = () => {
         sisteDagI18mndsPeriodeEndretAv,
         setsteDagI18mndsPeriodeEndretAv,
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
-    const [
-        beskjedOverlappendePermittering,
-        setBeskjedOverlappendePermittering,
-    ] = useState('');
+
     const [
         beskjedOverlappendeFravær,
         setBeskjedOverlappendeFravær,
@@ -58,17 +49,6 @@ const Kalkulator = () => {
     useEffect(() => {
         if (
             finnUtOmDefinnesOverlappendePerioder(
-                allePermitteringerOgFraværesPerioder.permitteringer
-            )
-        ) {
-            setBeskjedOverlappendePermittering(
-                'Du kan ikke ha overlappende permitteringsperioder'
-            );
-        } else {
-            setBeskjedOverlappendePermittering('');
-        }
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
                 allePermitteringerOgFraværesPerioder.andreFraværsperioder
             )
         ) {
@@ -78,96 +58,29 @@ const Kalkulator = () => {
         } else {
             setBeskjedOverlappendeFravær('');
         }
-    }, [
-        allePermitteringerOgFraværesPerioder,
-        beskjedOverlappendeFravær,
-        beskjedOverlappendePermittering,
-    ]);
-
-    const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map(
-        (permitteringsperiode, indeks) => {
-            return (
-                <Permitteringsperiode
-                    indeks={indeks}
-                    allePermitteringerOgFraværesPerioder={
-                        allePermitteringerOgFraværesPerioder
-                    }
-                    info={permitteringsperiode}
-                    setAllePermitteringerOgFraværesPerioder={
-                        setAllePermitteringerOgFraværesPerioder
-                    }
-                    key={indeks.toString()}
-                />
-            );
-        }
-    );
+    }, [allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
     return (
         <div className={'kalkulator-bakgrunn'}>
-            <Banner classname={'banner'} />
+            <Banner classname={'banner'}>Permitteringskalkulator</Banner>
             <div className={'kalkulator'}>
                 <div
                     className={'kalkulator__utfyllingskolonne'}
                     id={'kalkulator-utfyllingskolonne'}
                 >
                     <Systemtittel>
-                        Få oversikt over permitteringsperioder
+                        Lurer du på når du skal utbetale lønn under
+                        permittering?
                     </Systemtittel>
-                    <Topp
-                        sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        set18mndsPeriode={setSisteDagI18mndsPeriode}
-                        setEndringAv={setsteDagI18mndsPeriodeEndretAv}
-                        endringAv={sisteDagI18mndsPeriodeEndretAv}
+                    <Topp />
+                    <Permitteringsperioder
+                        allePermitteringerOgFraværesPerioder={
+                            allePermitteringerOgFraværesPerioder
+                        }
+                        setAllePermitteringerOgFraværesPerioder={
+                            setAllePermitteringerOgFraværesPerioder
+                        }
                     />
-                    <div className={'kalkulator__permitteringsobjekter'}>
-                        <Undertittel>
-                            2. Legg inn permitteringsperiode for arbeidstaker
-                        </Undertittel>
-                        <Normaltekst className={'kalkulator__etter-lønnplikt'}>
-                            Fra første dag etter lønnsplikt
-                        </Normaltekst>
-                        <Ekspanderbartpanel
-                            tittel={
-                                <Normaltekst>
-                                    <strong>
-                                        Om permittering og lønnsplikt
-                                    </strong>
-                                </Normaltekst>
-                            }
-                        >
-                            <Normaltekst>
-                                Dette skal du{' '}
-                                <strong>
-                                    {' '}
-                                    ikke legge inn som permitteringsperiode
-                                </strong>
-                                <ul>
-                                    <li>
-                                        Arbeidsperioder i full stilling i mer
-                                        enn 6 uker sammenhengende
-                                    </li>
-                                    <li>Permittering grunnet streik</li>
-                                    <li>
-                                        Perioder du betale permitteringslønn
-                                    </li>
-                                    <li>
-                                        Klikk på lenken “- be om tilgang“ på
-                                        tjenesten du trenger. Du kommer nå til
-                                        Altinn.
-                                    </li>
-                                </ul>
-                                <strong> Om lønnsplikt</strong>
-                                <br />
-                                Som arbeidsgiver skal du betale lønn til dine
-                                permitterte i lønnspliktperioden. Disse dagene
-                                telles ikke med i beregningen.
-                            </Normaltekst>
-                        </Ekspanderbartpanel>
-                        {permitteringsobjekter}
-                        <Element className={'kalkulator__feilmelding'}>
-                            {beskjedOverlappendePermittering}
-                        </Element>
-                    </div>
                     <div className={'kalkulator__fraværsperioder'}>
                         <Fraværsperioder
                             setAllePermitteringerOgFraværesPerioder={
