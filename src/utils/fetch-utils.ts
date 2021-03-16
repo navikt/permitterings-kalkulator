@@ -7,14 +7,16 @@ interface Innhold {
 
 export const BASE_URL = '/arbeidsgiver-permittering';
 
-export const isProduction = (): string =>
-    process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
+export const isProduction = (): boolean =>
+    process.env.NODE_ENV === 'production';
 
 const fetchdata: (url: string) => Promise<Response> = (url) => {
     return fetch(url, { method: 'GET' });
 };
 
-export const fetchsanityJSON = async (url: string): Promise<Innhold> => {
+export const fetchsanityJSON = async (): Promise<Innhold> => {
+    const url =
+        process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3001';
     const response = await fetchdata(`${url}${BASE_URL}/innhold`);
     await status(response);
     return response.json();

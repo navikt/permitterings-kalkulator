@@ -15,10 +15,10 @@ const VanligeSporsmalHopplenker = (props: Props) => {
     return (
         <>
             <div>
-                {props.content.map((lenke) => {
+                {props.content.map((lenke, index) => {
                     return (
                         <div
-                            key={lenke._id}
+                            key={index}
                             className={cls.element('lenke-modifier')}
                         >
                             <Normaltekst>
