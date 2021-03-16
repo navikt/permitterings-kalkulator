@@ -5,7 +5,6 @@ import React, {
     useState,
 } from 'react';
 import {
-    antalldagerGått,
     finnDato18MndTilbake,
     konstruerStatiskTidslinje,
 } from '../utregninger';
@@ -15,7 +14,6 @@ import {
     DatoMedKategori,
 } from '../typer';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { skrivOmDato } from '../../Datovelger/datofunksjoner';
 import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
@@ -27,6 +25,8 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
+import { Dayjs } from 'dayjs';
+import { formaterDato } from '../../Datovelger/datofunksjoner';
 import {
     ArbeidsgiverPeriode2Resulatet,
     finnInformasjonAGP2,
@@ -36,8 +36,8 @@ import dayjs from 'dayjs';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    set18mndsPeriode: (dato: Date) => void;
-    sisteDagIPeriode: Date;
+    set18mndsPeriode: (dato: Dayjs) => void;
+    sisteDagIPeriode: Dayjs;
     breddeAvDatoObjektIProsent: number;
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
@@ -45,10 +45,10 @@ interface Props {
 
 const skrivTekst = (
     info: InformasjonOmGjenståendeDagerOgPeriodeAGP2,
-    tidligsteDatoAGP2: Date
+    tidligsteDatoAGP2: Dayjs
 ): string => {
     switch (true) {
-        case info.sluttDato!! <= new Date('2021-06-02'):
+        case info.sluttDato?.isSameOrBefore(dayjs('2021-06-02')):
             return 'ikke tilstrekkelig data';
         case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
             return (
@@ -59,7 +59,7 @@ const skrivTekst = (
         case info.type === ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
             return (
                 'dersom du har løpende permittering fram til ' +
-                skrivOmDato(info.sluttDato) +
+                formaterDato(info.sluttDato!) +
                 ' faller AGP2 på denne datoen. Nå har du per 1. juni brukt ' +
                 info.brukteDager +
                 'dager'
@@ -69,24 +69,24 @@ const skrivTekst = (
             ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
             return (
                 'I perioden ' +
-                skrivOmDato(finnDato18MndTilbake(info.sluttDato!!)) +
+                formaterDato(finnDato18MndTilbake(info.sluttDato!)) +
                 ' - ' +
-                skrivOmDato(info.sluttDato) +
+                formaterDato(info.sluttDato!) +
                 ' er det permittert: ' +
                 info.brukteDager +
                 ' dager. Du kan permittere i ' +
                 info.gjenståendePermitteringsDager +
                 ' dager fra i dag til ' +
-                skrivOmDato(info.sluttDato)
+                formaterDato(info.sluttDato!)
             );
     }
     return '';
 };
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
+    const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const { dagensDato, tidligsteDatoAGP2 } = useContext(PermitteringContext);
-    const [datoAGP3, setDatoAGP3] = useState<Date | undefined>(undefined);
-    const [datoOnDrag, setDatoOnDrag] = useState<Date | undefined>(undefined);
+    const [datoAGP3, setDatoAGP3] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
     >([]);
@@ -142,9 +142,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         // her hender det at løpende-funksjonen kalles
         const infoAGP2 = finnInformasjonAGP2(
             tidslinjeObjekter,
-            dayjs(tidligsteDatoAGP2),
+            tidligsteDatoAGP2,
             finnesLøpende !== undefined,
-            dayjs(dagensDato),
+            dagensDato,
             210
         );
         tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
@@ -157,10 +157,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
-        if (
-            datoOnDrag &&
-            datoOnDrag.toDateString() !== props.sisteDagIPeriode.toDateString()
-        ) {
+        if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
                 tidslinjeObjekter,
                 props.breddeAvDatoObjektIProsent,
@@ -181,7 +178,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeObjekter,
-        props.breddeAvDatoObjektIProsent
+        props.breddeAvDatoObjektIProsent,
+        dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
         lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeObjekter),
@@ -251,13 +249,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                                 className={'kalkulator__draggable-kant høyre'}
                             />
                             <Normaltekst className={'venstre-dato '}>
-                                {skrivOmDato(
+                                {formaterDato(
                                     finnDato18MndTilbake(datoVisesPaDragElement)
                                 )}
                             </Normaltekst>
 
                             <Normaltekst className={'høyre-dato'}>
-                                {skrivOmDato(datoVisesPaDragElement)}
+                                {formaterDato(datoVisesPaDragElement)}
                             </Normaltekst>
                         </div>
                     </Draggable>

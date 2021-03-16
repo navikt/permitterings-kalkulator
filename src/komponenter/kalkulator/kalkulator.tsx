@@ -13,11 +13,11 @@ import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
-    antalldagerGått,
+    antallDagerGått,
     datoIntervallErDefinert,
+    finnGrenserFor18MNDPeriode,
     finnUtOmDefinnesOverlappendePerioder,
     getDefaultPermitteringsperiode,
-    finnGrenserFor18MNDPeriode,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -25,6 +25,7 @@ import Topp from './Topp/Topp';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
+import { Dayjs } from 'dayjs';
 
 const Kalkulator = () => {
     const { dagensDato } = useContext(PermitteringContext);
@@ -45,11 +46,12 @@ const Kalkulator = () => {
         beskjedOverlappendePermittering,
         setBeskjedOverlappendePermittering,
     ] = useState('');
-    const [beskjedOverlappendeFravær, setBeskjedOverlappendeFravær] = useState(
-        ''
-    );
+    const [
+        beskjedOverlappendeFravær,
+        setBeskjedOverlappendeFravær,
+    ] = useState<string>('');
 
-    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState(
+    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         dagensDato
     );
 
@@ -199,7 +201,7 @@ const Kalkulator = () => {
                                         }
                                         breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                             'kalkulator-tidslinje-wrapper',
-                                            antalldagerGått(
+                                            antallDagerGått(
                                                 finnGrenserFor18MNDPeriode(
                                                     dagensDato
                                                 ).datoFra,

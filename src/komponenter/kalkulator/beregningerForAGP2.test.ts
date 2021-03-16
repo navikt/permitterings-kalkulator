@@ -1,5 +1,5 @@
 import { AllePermitteringerOgFraværesPerioder } from './typer';
-import { konstruerStatiskTidslinje } from './utregninger';
+import { finnDato18MndTilbake, konstruerStatiskTidslinje } from './utregninger';
 import dayjs from 'dayjs';
 import { finnInformasjonAGP2 } from './beregningerForAGP2';
 
@@ -36,7 +36,7 @@ test('relevant 18-mnds periode begynnter ved andre permitteringsperiode', () => 
         permitteringer: [
             {
                 datoFra: new Date('2019-11-20'),
-                datoTil: new Date('2020-01-06'),
+                datoTil: new Date('2020-01-30'),
             },
             {
                 datoFra: new Date('2020-04-21'),
@@ -57,7 +57,9 @@ test('relevant 18-mnds periode begynnter ved andre permitteringsperiode', () => 
         dagensDato,
         210
     );
-    expect(informasjonOmAGP2.sluttDato).toEqual(new Date('2021-10-21'));
+    expect(finnDato18MndTilbake(informasjonOmAGP2.sluttDato!)).toEqual(
+        new Date('2020-04-21')
+    );
     expect(informasjonOmAGP2.brukteDager).toBe(41);
 });
 

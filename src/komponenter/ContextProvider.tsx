@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import * as Sentry from '@sentry/react';
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
 import { fetchsanityJSON } from '../utils/fetch-utils';
@@ -8,9 +8,9 @@ import { scrollIntoView } from '../utils/scrollIntoView';
 import { setEnv } from '../sanity-blocks/serializer';
 import {
     PermitteringInnhold,
+    setPermitteringInnholdFraNokkelVerdi,
     SettPermitteringInnhold,
     SettSideSistOppdatert,
-    setPermitteringInnholdFraNokkelVerdi,
 } from './ContextTypes';
 
 interface Props {
@@ -24,8 +24,8 @@ export interface Context {
     sistOppdatert: SistOppdatert | null;
     settPermitteringInnhold: SettPermitteringInnhold;
     setSideSistOppdatert: SettSideSistOppdatert;
-    dagensDato: Date;
-    tidligsteDatoAGP2: Date;
+    dagensDato: Dayjs;
+    tidligsteDatoAGP2: Dayjs;
 }
 
 export const PermitteringContext = React.createContext({} as Context);
@@ -41,6 +41,8 @@ const ContextProvider = (props: Props) => {
     const [sistOppdatert, setSistOppdatert] = useState<SistOppdatert | null>(
         null
     );
+
+    const [dagensDato] = useState<Dayjs>(dayjs().startOf('date'));
 
     const settPermitteringInnhold = <
         K extends keyof NonNullable<PermitteringInnhold>,
@@ -64,8 +66,8 @@ const ContextProvider = (props: Props) => {
         sistOppdatert,
         settPermitteringInnhold,
         setSideSistOppdatert,
-        dagensDato: dayjs().startOf('date').toDate(),
-        tidligsteDatoAGP2: new Date('2021-06-01'),
+        dagensDato: dagensDato,
+        tidligsteDatoAGP2: dayjs('2021-06-01'),
     };
 
     useEffect(() => {

@@ -19,10 +19,11 @@ import {
     sumPermitteringerOgFravær,
 } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
+import { Dayjs } from 'dayjs';
 
 interface UtregningskolonneProps {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    sisteDagIPeriode: Date;
+    sisteDagIPeriode: Dayjs;
 }
 
 const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (

@@ -4,12 +4,12 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import {
-    antalldagerGått,
+    antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
-import { skrivOmDato } from '../Datovelger/datofunksjoner';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 //merknader vi trenger sammenligningsfunksjoner for å sjekek at to datoer er like
 //vi trenger å håndtere at datoene faller utenfor gitt intervall
@@ -22,7 +22,7 @@ export enum ArbeidsgiverPeriode2Resulatet {
 
 export interface InformasjonOmGjenståendeDagerOgPeriodeAGP2 {
     // 18mndperiode: datointervall
-    sluttDato: Date | undefined;
+    sluttDato: Dayjs | undefined;
     gjenståendePermitteringsDager: number;
     brukteDager: number; // 210-brukteDager
     type: ArbeidsgiverPeriode2Resulatet;
@@ -50,7 +50,7 @@ export const finnInformasjonAGP2 = (
     if (antallGjenværendeDagerFørAGP2Per1Juni <= 0) {
         //case1
         return {
-            sluttDato: tidligsteDatoAGP2.toDate(),
+            sluttDato: tidligsteDatoAGP2,
             brukteDager:
                 statusPermittering1muligAGP2.dagerPermittert -
                 statusPermittering1muligAGP2.dagerAnnetFravær,
@@ -66,7 +66,7 @@ export const finnInformasjonAGP2 = (
             antallDagerFørAGP2Inntreffer
         );
         return {
-            sluttDato: datoAGP2.subtract(1, 'day').toDate(),
+            sluttDato: datoAGP2,
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerPer1Juni,
@@ -76,8 +76,8 @@ export const finnInformasjonAGP2 = (
     } else {
         const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
             tidslinje,
-            dayjs(tidligsteDatoAGP2),
-            dayjs(dagensDato),
+            tidligsteDatoAGP2,
+            dagensDato,
             antallDagerFørAGP2Inntreffer
         );
         const antallBruktePermitteringsdagerIPerioden = finnBruktePermitteringsDager(
@@ -85,7 +85,7 @@ export const finnInformasjonAGP2 = (
             sisteDatoIPerioden
         );
         return {
-            sluttDato: sisteDatoIPerioden.toDate(),
+            sluttDato: sisteDatoIPerioden,
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
@@ -144,7 +144,7 @@ export const finnDatoForTidligste18mndsPeriode = (
     const førstePermitteringStart:
         | DatoMedKategori
         | undefined = finnPermitteringsDatoEtterGittDato(
-        finnDato18MndTilbake(tidligsteDatoAGP2.toDate()),
+        finnDato18MndTilbake(tidligsteDatoAGP2),
         tidslinje
     );
     if (!førstePermitteringStart) return tidligsteDatoAGP2;
@@ -170,16 +170,18 @@ export const finnDatoForTidligste18mndsPeriode = (
 
         //sjekker om startdatoen i det nye intervallet er en permitteringsdato
         const indeksDatoBegynnelsenAv18mndsPeriode = returnerIndeksAvDatoHvisIkkePermitteringsdato(
-            finnDato18MndTilbake(potensiellSisteDatoIIntervall.toDate()),
+            finnDato18MndTilbake(potensiellSisteDatoIIntervall),
             tidslinje
         );
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
+            console.log('forsøker a finne ny permitteringintervall');
             const nestePermitteringsstart:
                 | DatoMedKategori
                 | undefined = finnPermitteringsDatoEtterGittDato(
                 tidslinje[indeksDatoBegynnelsenAv18mndsPeriode].dato,
                 tidslinje
             );
+            console.log(nestePermitteringsstart);
             // return ved ingen relevante permitteringsintervall igjen
             if (!nestePermitteringsstart) return tidligsteDatoAGP2;
             potensiellSisteDatoIIntervall = dayjs(
@@ -208,9 +210,8 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
     let gjenståendeDager = 0;
     tidslinje.forEach((dag) => {
         if (
-            dag.dato >=
-                finnDato18MndTilbake(sisteDatoIAktuellPeriode.toDate()) &&
-            dag.dato <= sisteDatoIAktuellPeriode.toDate()
+            dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
+            dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
         ) {
             if (dag.kategori === 0) {
                 permittert++;
@@ -240,15 +241,15 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     const ubrukteDagerIPeriode =
         antallDagerFørAGP2Inntreffer -
         finnBruktePermitteringsDager(tidslinje, sisteDagIAktuellPeriode);
-    const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antalldagerGått(
-        dagensDato.toDate(),
-        sisteDagIAktuellPeriode.toDate()
+    const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antallDagerGått(
+        dagensDato,
+        sisteDagIAktuellPeriode
     );
     console.log(
         'ubrukte dager: ' + ubrukteDagerIPeriode,
         'dager mellom dagens dato og sluttdato: ' +
             dagerMellomDagensDatoOgSisteDagIAktuellPeriode,
-        'sluttdato: ' + skrivOmDato(sisteDagIAktuellPeriode.toDate())
+        'sluttdato: ' + formaterDato(sisteDagIAktuellPeriode)
     );
     return (
         ubrukteDagerIPeriode - dagerMellomDagensDatoOgSisteDagIAktuellPeriode
@@ -267,12 +268,11 @@ const finnBruktePermitteringsDager = (
 };
 
 const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
-    dato: Date,
+    dato: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {
-    const indeksITidslinje = tidslinje.findIndex(
-        (datoMedKategori) =>
-            skrivOmDato(datoMedKategori.dato) === skrivOmDato(dato)
+    const indeksITidslinje = tidslinje.findIndex((datoMedKategori) =>
+        datoMedKategori.dato.isSame(dato, 'date')
     );
     if (
         indeksITidslinje > 0 &&
@@ -284,12 +284,12 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
 };
 
 const finnPermitteringsDatoEtterGittDato = (
-    skalVæreEtter: Date,
+    skalVæreEtter: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {
     return tidslinje.find(
         (datoMedKategori) =>
             datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
-            datoMedKategori.dato >= skalVæreEtter
+            datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
     );
 };
