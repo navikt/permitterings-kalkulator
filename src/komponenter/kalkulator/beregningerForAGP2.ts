@@ -107,9 +107,12 @@ export const finnDatoAGP2LøpendePermittering = (
         potensiellDatoForAGP2
     );
     // når man krysser av på løpende permittering tror jeg staten "løpende" settes før nye datoer. Resulterer i at denne funksjonen kalles med 0 permitteringsdager
-    if (antallDagerPermittert === 0) {
+    /*if (antallDagerPermittert === 0) {
+        console.log(' null dager permittert')
         return tidligsteDatoAGP2;
     }
+
+     */
     let antallDagerForskyving = 0;
     while (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         const antallDagerTilNesteGjett =
@@ -174,14 +177,15 @@ export const finnDatoForTidligste18mndsPeriode = (
             tidslinje
         );
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
-            console.log('forsøker a finne ny permitteringintervall');
+            console.log(
+                'Forsøker å finne nytt permitteringintervall når gammelt utgår'
+            );
             const nestePermitteringsstart:
                 | DatoMedKategori
                 | undefined = finnPermitteringsDatoEtterGittDato(
                 tidslinje[indeksDatoBegynnelsenAv18mndsPeriode].dato,
                 tidslinje
             );
-            console.log(nestePermitteringsstart);
             // return ved ingen relevante permitteringsintervall igjen
             if (!nestePermitteringsstart) return tidligsteDatoAGP2;
             potensiellSisteDatoIIntervall = dayjs(
@@ -244,12 +248,6 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antallDagerGått(
         dagensDato,
         sisteDagIAktuellPeriode
-    );
-    console.log(
-        'ubrukte dager: ' + ubrukteDagerIPeriode,
-        'dager mellom dagens dato og sluttdato: ' +
-            dagerMellomDagensDatoOgSisteDagIAktuellPeriode,
-        'sluttdato: ' + formaterDato(sisteDagIAktuellPeriode)
     );
     return (
         ubrukteDagerIPeriode - dagerMellomDagensDatoOgSisteDagIAktuellPeriode

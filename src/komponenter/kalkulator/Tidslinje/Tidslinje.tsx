@@ -44,8 +44,7 @@ interface Props {
 }
 
 const skrivTekst = (
-    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2,
-    tidligsteDatoAGP2: Dayjs
+    info: InformasjonOmGjenståendeDagerOgPeriodeAGP2
 ): string => {
     switch (true) {
         case info.sluttDato?.isSameOrBefore(dayjs('2021-06-02')):
@@ -85,7 +84,7 @@ const skrivTekst = (
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
-    const { dagensDato, tidligsteDatoAGP2 } = useContext(PermitteringContext);
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
     const [datoAGP3, setDatoAGP3] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
         DatoMedKategori[]
@@ -142,13 +141,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         // her hender det at løpende-funksjonen kalles
         const infoAGP2 = finnInformasjonAGP2(
             tidslinjeObjekter,
-            tidligsteDatoAGP2,
+            innføringsdatoAGP2,
             finnesLøpende !== undefined,
             dagensDato,
             210
         );
         tidslinjeObjekter.length && setDatoAGP3(infoAGP2.sluttDato);
-        setTekst(skrivTekst(infoAGP2, tidligsteDatoAGP2));
+        setTekst(skrivTekst(infoAGP2));
     }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {

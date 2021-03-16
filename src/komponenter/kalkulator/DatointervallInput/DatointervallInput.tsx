@@ -15,7 +15,7 @@ interface Props {
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
-    const { tidligsteDatoAGP2 } = useContext(PermitteringContext);
+    const { innføringsdatoAGP2 } = useContext(PermitteringContext);
 
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
@@ -51,7 +51,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
               }
             : {
                   erLøpende: true,
-                  datoTil: tidligsteDatoAGP2,
+                  datoTil: innføringsdatoAGP2,
               };
         setDatoIntervall({
             ...datoIntervall,
