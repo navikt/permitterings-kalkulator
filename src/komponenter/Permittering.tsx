@@ -68,7 +68,7 @@ const Permittering = () => {
                         <InformasjonTilAnsatte
                             className={permittering.className}
                             content={informasjonTilAnsatte}
-                            overskrift="Informasjon til Ansatte"
+                            overskrift="Informasjon til ansatte"
                             id="infotilansatte"
                         />
 
