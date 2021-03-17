@@ -11,7 +11,7 @@ import { configureDayJS } from '../../dayjs-config';
 configureDayJS();
 
 test('dato for AGP2-grense', () => {
-    const tidligsteDatoAgp2 = dayjs('2021-06-01');
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
         permitteringer: [
             {
@@ -28,7 +28,7 @@ test('dato for AGP2-grense', () => {
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
-        tidligsteDatoAgp2,
+        innføringsdatoAGP2,
         false,
         dagensDato,
         210
@@ -37,14 +37,14 @@ test('dato for AGP2-grense', () => {
         dayjs('2019-12-02'),
         dayjs('2020-06-29')
     );
-    expect(informasjonOmAGP2.sluttDato).toEqual(tidligsteDatoAgp2);
+    expect(informasjonOmAGP2.sluttDato).toEqual(innføringsdatoAGP2);
     expect(informasjonOmAGP2.brukteDager).toBe(
         antallDagerIPermitteringsperiode
     );
 });
 
 test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
-    const tidligsteDatoAgp2 = dayjs('2021-06-01');
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
         permitteringer: [
             {
@@ -65,7 +65,7 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
-        tidligsteDatoAgp2,
+        innføringsdatoAGP2,
         false,
         dagensDato,
         210
@@ -83,7 +83,7 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
 });
 
 test('skal returnere at man kan ha løpende permittering til 10. november', () => {
-    const tidligsteDatoAgp2 = dayjs('2021-06-01');
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
         permitteringer: [
             {
@@ -100,7 +100,7 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
-        tidligsteDatoAgp2,
+        innføringsdatoAGP2,
         true,
         dagensDato,
         210
@@ -109,7 +109,7 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
 });
 
 test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ved telling av løpende permittering', () => {
-    const tidligsteDatoAgp2 = dayjs('2021-06-01');
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
         permitteringer: [
             {
@@ -130,7 +130,7 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
-        tidligsteDatoAgp2,
+        innføringsdatoAGP2,
         true,
         dagensDato,
         210
