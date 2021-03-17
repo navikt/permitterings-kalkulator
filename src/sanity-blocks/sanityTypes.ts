@@ -41,6 +41,35 @@ export interface Iframe extends CommonContentType {
     url: string;
 }
 
+export interface VeilederPanelType extends CommonContentType {
+    innhold: BlockType[];
+    kompakt: boolean;
+    paneltype: string[];
+    plakat: boolean;
+}
+
+export interface LesMerType extends CommonContentType {
+    apnetekst: string;
+    innhold: BlockType[];
+    introduksjonstekst: string;
+    lukktekst: string;
+}
+
+interface KnappeType extends CommonContentType {
+    buttontype: string[];
+    tekst: string;
+    url: string;
+}
+
+export interface EnkeltKnapp extends CommonContentType {
+    knappen: KnappeType;
+}
+
+export interface KnappeParType extends CommonContentType {
+    knappen: KnappeType;
+    knappto: KnappeType;
+}
+
 export interface EkspanderbartpanelType extends CommonContentType {
     overskrift: string;
     innhold: string;
