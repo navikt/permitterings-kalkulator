@@ -15,6 +15,8 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringContext } from '../../../ContextProvider';
 import { datointervallKategori, DatoMedKategori } from '../../typer';
 import { finnDato18MndTilbake } from '../../utregninger';
+import Lenke from 'nav-frontend-lenker';
+import lampeikon from './lampeikon.svg';
 
 interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;
@@ -103,11 +105,11 @@ const tekstCase3 = (
                         info.gjenståendePermitteringsDager
                     )}
                      innen 
-                    ${formaterDato(info.sluttDato!)}, 
+                    ${formaterDato(sisteDagAvRelevantIntervall)}, 
                      før Arbeidsgiverperiode 2 inntreffer.`;
     const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
         tidslinje,
-        info.sluttDato!
+        sisteDagAvRelevantIntervall!
     );
     return (
         <div>
@@ -164,7 +166,7 @@ const tekstOmPermitteringPåInnføringsdato = (
     if (erPermittertVedInnføring) {
         return 'Arbeidsgiverperiode 2 inntreffer 1.juni';
     }
-    return 'Dersom den ansatte er permittert 1. juni vil Arbeidsgiverperiode 2 inntreffe på denne datoen';
+    return 'Dersom den ansatte er permittert 1. juni vil Arbeidsgiverperiode 2 inntreffe på denne datoen.';
 };
 
 const genererTekst = (
@@ -214,11 +216,16 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     return (
         <>
             <div className={'kalkulator__tidslinje-utregningstekst-container'}>
+                <img
+                    className={'kalkulator__tidslinje-lampeikon'}
+                    src={lampeikon}
+                    alt={''}
+                />
                 <Normaltekst>
                     {beskrivelseAvInput(props.informasjonOmAGP2Status)}
                 </Normaltekst>
                 <br />
-                <Element>{tekst}</Element>
+                {tekst}
                 <br />
                 <Normaltekst>
                     Dersom du vil vite mer om når AGP2 inntreffer ved framtidige
@@ -226,6 +233,22 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     permitteringer framover i tid. Kalkulatoren vil da regne ut
                     når (og hvis) Arbeidsgiverperiode 2 inntreffer.
                 </Normaltekst>
+                <div className={'kalkulator__informasjonslenker'}>
+                    <Lenke
+                        href={
+                            'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn'
+                        }
+                    >
+                        Les mer om Arbeidsgiverperiode 2
+                    </Lenke>
+                    <Lenke
+                        href={
+                            'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/'
+                        }
+                    >
+                        Tilbake til permitteringsveiviseren
+                    </Lenke>
+                </div>
             </div>
         </>
     );
