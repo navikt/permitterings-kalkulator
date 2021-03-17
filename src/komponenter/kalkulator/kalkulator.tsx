@@ -2,11 +2,7 @@ import React, { useContext, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import {
-    Innholdstittel,
-    Systemtittel,
-    Undertittel,
-} from 'nav-frontend-typografi';
+import { Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
@@ -19,7 +15,6 @@ import {
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
-import AlertStripe from 'nav-frontend-alertstriper';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
