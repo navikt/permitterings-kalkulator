@@ -110,9 +110,11 @@ const Meny = () => {
                                                   key={index}
                                               >
                                                   <Lenke
-                                                      href={element.hopplenke}
+                                                      href={'#'.concat(
+                                                          element.id
+                                                      )}
                                                   >
-                                                      {element.lenketekst}
+                                                      {element.navn}
                                                   </Lenke>
                                               </Normaltekst>
                                           );

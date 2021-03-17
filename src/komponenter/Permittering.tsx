@@ -2,14 +2,15 @@ import React, { useContext } from 'react';
 import BEMHelper from '../utils/bem';
 import Banner from './banner/Banner';
 import Meny from './meny/Meny';
-import PermittereAnsatte from './info-ark/infoark-permittere-ansatte/PermittereAnsatte';
-import Ipermitteringsperioden from './info-ark/infoark-ipermitteringsperioden/Ipermitteringsperioden';
-import VanligeSporsmal from './info-ark/infoark-vanlige-sporsmaal/VanligeSporsmal';
+import PermittereAnsatte from './seksjoner/PermittereAnsatte';
+import Ipermitteringsperioden from './seksjoner/Ipermitteringsperioden';
+import VanligeSporsmal from './seksjoner/infoark-vanlige-sporsmaal/VanligeSporsmal';
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
-import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
+import NarSkalJegUtbetaleLonn from './seksjoner/NarSkalJegUtbetaleLonn';
 import { PermitteringContext } from './ContextProvider';
-import InformasjonTilAnsatte from './info-ark/infoark-informasjon-til-ansatte/InformasjonTilAnsatte';
+import InformasjonTilAnsatte from './seksjoner/InformasjonTilAnsatte';
+import { lenker, PermitteringsLenke } from '../utils/menu-lenker-utils';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
@@ -19,13 +20,13 @@ const Permittering = () => {
         PermitteringContext
     );
 
-    const {
-        hvordanPermittere,
-        narSkalJegUtbetale,
-        iPermitteringsperioden,
-        informasjonTilAnsatte,
-        vanligeSpr,
-    } = permitteringInnhold;
+    const componentMap = {
+        hvordanPermittere: PermittereAnsatte,
+        narSkalJegUtbetale: NarSkalJegUtbetaleLonn,
+        iPermitteringsperioden: Ipermitteringsperioden,
+        informasjonTilAnsatte: InformasjonTilAnsatte,
+        vanligeSpr: VanligeSporsmal,
+    };
 
     return (
         <div className={permittering.className}>
@@ -43,41 +44,23 @@ const Permittering = () => {
                             className={permitteringClassName}
                             content={sistOppdatert}
                         />
+                        {lenker.map(
+                            (seksjon: PermitteringsLenke, index: number) => {
+                                const Component = componentMap[seksjon.id];
 
-                        <PermittereAnsatte
-                            className={permittering.className}
-                            content={hvordanPermittere}
-                            overskrift="Hvordan permittere ansatte?"
-                            id="hvordanPermittere"
-                        />
-
-                        <NarSkalJegUtbetaleLonn
-                            className={permittering.className}
-                            content={narSkalJegUtbetale}
-                            overskrift="Lønnsplikt ved permittering"
-                            id="narSkalJegUtbetaleLonn"
-                        />
-
-                        <Ipermitteringsperioden
-                            className={permittering.className}
-                            content={iPermitteringsperioden}
-                            overskrift="I permitteringsperioden"
-                            id="permitteringsperioden"
-                        />
-
-                        <InformasjonTilAnsatte
-                            className={permittering.className}
-                            content={informasjonTilAnsatte}
-                            overskrift="Informasjon til ansatte"
-                            id="infotilansatte"
-                        />
-
-                        <VanligeSporsmal
-                            className={permittering.className}
-                            content={vanligeSpr}
-                            overskrift="Vanlige spørsmål"
-                            id="vanligSpr"
-                        />
+                                return (
+                                    <Component
+                                        className={permittering.className}
+                                        content={
+                                            permitteringInnhold[seksjon.id]
+                                        }
+                                        navn={seksjon.navn}
+                                        id={seksjon.id}
+                                        key={index}
+                                    />
+                                );
+                            }
+                        )}
                     </div>
                 </div>
             </div>
