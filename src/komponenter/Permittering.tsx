@@ -9,7 +9,6 @@ import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
 import { PermitteringContext } from './ContextProvider';
-import { Sidetittel } from 'nav-frontend-typografi';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');

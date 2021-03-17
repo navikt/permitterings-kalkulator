@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Element, Systemtittel, Undertittel } from 'nav-frontend-typografi';
+import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
@@ -10,7 +10,6 @@ import {
     antallDagerGått,
     datoIntervallErDefinert,
     finnGrenserFor18MNDPeriode,
-    finnUtOmDefinnesOverlappendePerioder,
     getDefaultPermitteringsperiode,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
