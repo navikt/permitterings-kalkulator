@@ -69,66 +69,57 @@ const Kalkulator = () => {
                             allePermitteringerOgFraværesPerioder
                         }
                     />
-                    <div className={'kalkulator__fraværsperioder'}>
-                        <div
-                            className={'kalkulator__tidslinje-wrapper'}
-                            id={'kalkulator-tidslinje-wrapper'}
-                        >
-                            {datoIntervallErDefinert(
-                                allePermitteringerOgFraværesPerioder
-                                    .permitteringer[0]
-                            ) && (
-                                <>
-                                    <Undertittel>
-                                        4. Beregningen vises i tidslinje
-                                    </Undertittel>
-                                    <Tidslinje
-                                        setEndringAv={
-                                            setsteDagI18mndsPeriodeEndretAv
-                                        }
-                                        endringAv={
-                                            sisteDagI18mndsPeriodeEndretAv
-                                        }
-                                        breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                            'kalkulator-tidslinje-wrapper',
-                                            antallDagerGått(
-                                                finnGrenserFor18MNDPeriode(
-                                                    dagensDato
-                                                ).datoFra,
-                                                finnGrenserFor18MNDPeriode(
-                                                    dagensDato
-                                                ).datoTil
-                                            )
-                                        )}
-                                        sisteDagIPeriode={
-                                            sisteDagI18mndsPeriode
-                                        }
-                                        set18mndsPeriode={
-                                            setSisteDagI18mndsPeriode
-                                        }
-                                        allePermitteringerOgFraværesPerioder={
-                                            allePermitteringerOgFraværesPerioder
-                                        }
-                                    />
-                                </>
-                            )}
-                        </div>
-                        <AlertStripe type="info">
-                            <strong>Forklaringer</strong>
-                            <br />
-                            <strong>Permitteringsdager:</strong>
-                            <br />
-                            kalenderdager arbeidstakeren har vært permittert
-                            (ikke kun dagene arbeidstakeren ikke var på jobb)
-                            <br />
-                            <strong>Lønnspliktperiode:</strong>
-                            <br />
-                            Perioden arbeidsgiver har plikt til å betale ut
-                            lønn, selv om arbeidstakeren er permittert.
-                            Lønnspliktperiode omtales også som
-                            arbeidsgiverperiode.
-                        </AlertStripe>
+                    <div
+                        className={'kalkulator__tidslinje-wrapper'}
+                        id={'kalkulator-tidslinje-wrapper'}
+                    >
+                        {datoIntervallErDefinert(
+                            allePermitteringerOgFraværesPerioder
+                                .permitteringer[0]
+                        ) && (
+                            <>
+                                <Undertittel>
+                                    4. Beregningen vises i tidslinje
+                                </Undertittel>
+                                <Tidslinje
+                                    setEndringAv={
+                                        setsteDagI18mndsPeriodeEndretAv
+                                    }
+                                    endringAv={sisteDagI18mndsPeriodeEndretAv}
+                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                        'kalkulator-tidslinje-wrapper',
+                                        antallDagerGått(
+                                            finnGrenserFor18MNDPeriode(
+                                                dagensDato
+                                            ).datoFra,
+                                            finnGrenserFor18MNDPeriode(
+                                                dagensDato
+                                            ).datoTil
+                                        )
+                                    )}
+                                    sisteDagIPeriode={sisteDagI18mndsPeriode}
+                                    set18mndsPeriode={setSisteDagI18mndsPeriode}
+                                    allePermitteringerOgFraværesPerioder={
+                                        allePermitteringerOgFraværesPerioder
+                                    }
+                                />
+                            </>
+                        )}
                     </div>
+                    <AlertStripe type="info">
+                        <strong>Forklaringer</strong>
+                        <br />
+                        <strong>Permitteringsdager:</strong>
+                        <br />
+                        kalenderdager arbeidstakeren har vært permittert (ikke
+                        kun dagene arbeidstakeren ikke var på jobb)
+                        <br />
+                        <strong>Lønnspliktperiode:</strong>
+                        <br />
+                        Perioden arbeidsgiver har plikt til å betale ut lønn,
+                        selv om arbeidstakeren er permittert. Lønnspliktperiode
+                        omtales også som arbeidsgiverperiode.
+                    </AlertStripe>
                 </div>
                 <div className={'kalkulator__utregningskolonne'}>
                     <Utregningskolonne
