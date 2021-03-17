@@ -233,7 +233,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     permitteringer framover i tid. Kalkulatoren vil da regne ut
                     når (og hvis) Arbeidsgiverperiode 2 inntreffer.
                 </Normaltekst>
-                <div className={'kalkulator__informasjonslenker'}>
+                <Normaltekst className={'kalkulator__informasjonslenker'}>
                     <Lenke
                         href={
                             'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn'
@@ -248,7 +248,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     >
                         Tilbake til permitteringsveiviseren
                     </Lenke>
-                </div>
+                </Normaltekst>
             </div>
         </>
     );
