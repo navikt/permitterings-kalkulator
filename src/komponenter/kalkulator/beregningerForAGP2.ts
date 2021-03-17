@@ -176,9 +176,6 @@ export const finnDatoForTidligste18mndsPeriode = (
         );
 
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
-            console.log(
-                'Forsøker å finne nytt permitteringintervall når gammelt utgår'
-            );
             const nestePermitteringsstart:
                 | DatoMedKategori
                 | undefined = finnPermitteringsDatoEtterGittDato(

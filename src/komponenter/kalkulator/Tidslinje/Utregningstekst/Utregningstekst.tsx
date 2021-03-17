@@ -1,13 +1,19 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import './Utregningstekst.less';
 import {
     ArbeidsgiverPeriode2Resulatet,
     InformasjonOmAGP2Status,
 } from '../../beregningerForAGP2';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../../Datovelger/datofunksjoner';
 import { finnDato18MndTilbake } from '../../utregninger';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
+import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;
@@ -49,43 +55,46 @@ const leggTiltekstOmFraværsAndelVedFraværv = (
     return '.';
 };
 
-const genererTekst = (info: InformasjonOmAGP2Status): string => {
+const genererTekst = (
+    info: InformasjonOmAGP2Status,
+    innføringsdatoAGP2: Dayjs
+): string => {
     if (info.sluttDato) {
         switch (true) {
+            case info.type !== ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2 &&
+                info.sluttDato.isSame(innføringsdatoAGP2, 'day'):
+                return 'Den ansatte er ikke permittert lenge nok til å nå Arbeidsgiverperiode 2.';
             case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
                 return 'Dette overskrider 30 uker. Arbeidsgiverperiode 2 inntreffer 1.juni';
             case info.type ===
                 ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
-                console.log(formaterDato(info.sluttDato), 'sluttdato');
-                return (
-                    'Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til ' +
-                    formaterDato(info.sluttDato).toString() +
-                    ' faller Arbeidsgiverperiode 2 på denne datoen.'
-                );
+                return `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 
+                    ${formaterDato(info.sluttDato).toString()} 
+                     faller Arbeidsgiverperiode 2 på denne datoen.`;
 
             case info.type ===
                 ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
                 const sluttDatoString = formaterDato(info.sluttDato);
-                console.log(sluttDatoString, 'sluddato- variabel');
-                return (
-                    'Du kan ha den ansatte permittert i ' +
-                    skrivDagerIHeleUkerPlussDager(
+                return `Du kan ha den ansatte permittert i
+                    ${skrivDagerIHeleUkerPlussDager(
                         info.gjenståendePermitteringsDager
-                    ) +
-                    ' fram til ' +
-                    +sluttDatoString +
-                    ' før Arbeidsgiverperiode 2 inntreffer.'
-                );
+                    )}
+                     innen 
+                    ${sluttDatoString}, 
+                     før Arbeidsgiverperiode 2 inntreffer.`;
         }
     }
     return '';
 };
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
+    const { innføringsdatoAGP2 } = useContext(PermitteringContext);
     const [tekst, setTekst] = useState('');
 
     useEffect(() => {
-        setTekst(genererTekst(props.informasjonOmAGP2Status));
+        setTekst(
+            genererTekst(props.informasjonOmAGP2Status, innføringsdatoAGP2)
+        );
     }, [props.informasjonOmAGP2Status]);
 
     return (
@@ -101,7 +110,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Dersom du vil vite mer om når AGP2 inntreffer ved framtidige
                     permitteringer, kan du gjøre dette ved å fylle inn
                     permitteringer framover i tid. Kalkulatoren vil da regne ut
-                    når ( og hvis) AGP 2 inntreffer.
+                    når (og hvis) Arbeidsgiverperiode 2 inntreffer.
                 </Normaltekst>
             </div>
         </>
