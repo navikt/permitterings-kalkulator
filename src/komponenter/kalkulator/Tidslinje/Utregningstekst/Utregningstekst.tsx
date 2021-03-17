@@ -45,7 +45,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     return false;
 };
 
-const tekstCase1 = (
+const tekstNådd30UkerVedInnføringsdato = (
     info: InformasjonOmAGP2Status,
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs
@@ -70,7 +70,7 @@ const tekstCase1 = (
     );
 };
 
-const tekstCase2 = (
+const tekstIkkeNåddAGP2Løpende = (
     info: InformasjonOmAGP2Status,
     tidslinje: DatoMedKategori[],
     sisteDagAvRelevantIntervall: Dayjs
@@ -95,7 +95,7 @@ const tekstCase2 = (
     );
 };
 
-const tekstCase3 = (
+const tekstIkkeNåddAGP2IkkeLøpende = (
     info: InformasjonOmAGP2Status,
     tidslinje: DatoMedKategori[],
     sisteDagAvRelevantIntervall: Dayjs
@@ -175,25 +175,38 @@ const genererTekst = (
     innføringsdatoAGP2: Dayjs
 ) => {
     if (info.sluttDato) {
-        switch (true) {
-            case info.type !== ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2 &&
-                info.sluttDato.isSame(innføringsdatoAGP2, 'day'):
-                return (
-                    <div>
-                        <Element>
-                            Den ansatte er ikke permittert lenge nok til å nå
-                            Arbeidsgiverperiode 2.
-                        </Element>
-                    </div>
+        if (
+            info.type !== ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2 &&
+            info.sluttDato.isSame(innføringsdatoAGP2, 'day')
+        ) {
+            return (
+                <div>
+                    <Element>
+                        Den ansatte er ikke permittert lenge nok til å nå
+                        Arbeidsgiverperiode 2.
+                    </Element>
+                </div>
+            );
+        }
+        switch (info.type) {
+            case ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
+                return tekstNådd30UkerVedInnføringsdato(
+                    info,
+                    tidslinje,
+                    innføringsdatoAGP2
                 );
-            case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
-                return tekstCase1(info, tidslinje, innføringsdatoAGP2);
-            case info.type ===
-                ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
-                return tekstCase2(info, tidslinje, info.sluttDato);
-            case info.type ===
-                ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
-                return tekstCase3(info, tidslinje, info.sluttDato);
+            case ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
+                return tekstIkkeNåddAGP2Løpende(
+                    info,
+                    tidslinje,
+                    info.sluttDato
+                );
+            case ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
+                return tekstIkkeNåddAGP2IkkeLøpende(
+                    info,
+                    tidslinje,
+                    info.sluttDato
+                );
         }
     }
     return <div />;
