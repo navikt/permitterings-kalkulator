@@ -56,7 +56,7 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
     return (
         <div className="permitteringsperioder">
             <Undertittel tag="h2">
-                2. Legg inn permitteringsperiode for arbeidstaker
+                1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
             <Infotekst
                 className="permitteringsperioder__infotekst"
