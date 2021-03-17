@@ -11,7 +11,7 @@ test('Tester at kalkulator renderes med basic innhold', () => {
     );
 
     const permitteringsElement = getByText(
-        /Legg inn permitteringsperiode for arbeidstaker/i
+        /Legg til periodene den ansatte har vært permittert/i
     );
     expect(permitteringsElement).toBeInTheDocument();
 
