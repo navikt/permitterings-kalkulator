@@ -1,19 +1,16 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import './Fraværsperioder.less';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-} from '../../typer';
-import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
+import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
-} from '../../utregninger';
+} from '../utregninger';
 import { Dayjs } from 'dayjs';
-import { Infotekst } from '../../Infotekst/Infotekst';
+import { Infotekst } from '../Infotekst/Infotekst';
 import timeglassSvg from './timeglass.svg';
 
 interface Props {

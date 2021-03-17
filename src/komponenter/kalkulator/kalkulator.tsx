@@ -2,9 +2,13 @@ import React, { useContext, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Systemtittel, Undertittel } from 'nav-frontend-typografi';
+import {
+    Innholdstittel,
+    Systemtittel,
+    Undertittel,
+} from 'nav-frontend-typografi';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
-import Fraværsperioder from './Permitteringsperiode/Fraværsperioder/Fraværsperioder';
+import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antallDagerGått,
@@ -48,10 +52,10 @@ const Kalkulator = () => {
                     className={'kalkulator__utfyllingskolonne'}
                     id={'kalkulator-utfyllingskolonne'}
                 >
-                    <Systemtittel>
+                    <Innholdstittel>
                         Lurer du på når du skal utbetale lønn under
                         permittering?
-                    </Systemtittel>
+                    </Innholdstittel>
                     <Topp />
                     <Permitteringsperioder
                         allePermitteringerOgFraværesPerioder={
