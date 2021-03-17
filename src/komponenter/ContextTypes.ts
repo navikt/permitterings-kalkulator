@@ -4,6 +4,7 @@ export interface PermitteringInnhold {
     hvordanPermittere: [] | SanityBlockTypes[];
     narSkalJegUtbetale: [] | SanityBlockTypes[];
     iPermitteringsperioden: [] | SanityBlockTypes[];
+    informasjonTilAnsatte: [] | SanityBlockTypes[];
     vanligeSpr: [] | SanityBlockTypes[];
 }
 
@@ -41,6 +42,9 @@ export const setPermitteringInnholdFraNokkelVerdi = (
             break;
         case 'nar-skal-jeg-utbetale-lonn':
             settPermitteringInnhold('narSkalJegUtbetale', item);
+            break;
+        case 'informasjon-til-ansatte':
+            settPermitteringInnhold('informasjonTilAnsatte', item);
             break;
         case 'vanlige-sporsmal':
             settPermitteringInnhold('vanligeSpr', item);
