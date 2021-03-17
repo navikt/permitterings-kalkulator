@@ -254,6 +254,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             <Fargeforklaringer />
             <div className={'kalkulator__tidslinje-forklaring'}>
                 <Utregningstekst
+                    tidslinje={tidslinjeObjekter}
                     informasjonOmAGP2Status={informasjonOmAGP2Status}
                 />
             </div>

@@ -9,15 +9,118 @@ import {
     ArbeidsgiverPeriode2Resulatet,
     InformasjonOmAGP2Status,
 } from '../../beregningerForAGP2';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../../Datovelger/datofunksjoner';
-import { finnDato18MndTilbake } from '../../utregninger';
-import { Normaltekst, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringContext } from '../../../ContextProvider';
+import { datointervallKategori, DatoMedKategori } from '../../typer';
+import { finnDato18MndTilbake } from '../../utregninger';
 
 interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;
+    tidslinje: DatoMedKategori[];
 }
+
+const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
+    tidslinje: DatoMedKategori[],
+    sluttDato18mndsIntervall: Dayjs
+) => {
+    const startDato18mndsIntervall = finnDato18MndTilbake(
+        sluttDato18mndsIntervall
+    );
+    const finnesPermitteringerFørGittDato = tidslinje.find(
+        (datoMedKategori) =>
+            datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
+            datoMedKategori.dato.isBefore(startDato18mndsIntervall)
+    );
+    if (finnesPermitteringerFørGittDato) {
+        return `Merk at permitteringer før ${formaterDato(
+            startDato18mndsIntervall
+        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-måneders-intervallet (${formaterDato(
+            startDato18mndsIntervall
+        )}-${formaterDato(sluttDato18mndsIntervall)}).`;
+    }
+    return false;
+};
+
+const tekstCase1 = (
+    info: InformasjonOmAGP2Status,
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs
+) => {
+    const førsteDel = `Dette overskrider 30 uker. ${tekstOmPermitteringPåInnføringsdato(
+        info.permittertVedInnføringsdato
+    )}`;
+    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
+        tidslinje,
+        innføringsdatoAGP2
+    );
+    return (
+        <div>
+            <Element>{førsteDel}</Element>
+            {sistedelAvTekst && (
+                <Normaltekst>
+                    <br />
+                    {sistedelAvTekst}
+                </Normaltekst>
+            )}
+        </div>
+    );
+};
+
+const tekstCase2 = (
+    info: InformasjonOmAGP2Status,
+    tidslinje: DatoMedKategori[],
+    sisteDagAvRelevantIntervall: Dayjs
+) => {
+    const førsteDel = `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 
+                    ${formaterDato(info.sluttDato!).toString()} 
+                     faller Arbeidsgiverperiode 2 på denne datoen.`;
+    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
+        tidslinje,
+        sisteDagAvRelevantIntervall
+    );
+    return (
+        <div>
+            <Element>{førsteDel}</Element>
+            {sistedelAvTekst && (
+                <Normaltekst>
+                    <br />
+                    {sistedelAvTekst}
+                </Normaltekst>
+            )}
+        </div>
+    );
+};
+
+const tekstCase3 = (
+    info: InformasjonOmAGP2Status,
+    tidslinje: DatoMedKategori[],
+    sisteDagAvRelevantIntervall: Dayjs
+) => {
+    const førsteDel = `Du kan ha den ansatte permittert i
+                    ${skrivDagerIHeleUkerPlussDager(
+                        info.gjenståendePermitteringsDager
+                    )}
+                     innen 
+                    ${formaterDato(info.sluttDato!)}, 
+                     før Arbeidsgiverperiode 2 inntreffer.`;
+    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
+        tidslinje,
+        info.sluttDato!
+    );
+    return (
+        <div>
+            <Element>{førsteDel}</Element>
+            {sistedelAvTekst && (
+                <Normaltekst>
+                    <br />
+                    {sistedelAvTekst}
+                </Normaltekst>
+            )}
+        </div>
+    );
+};
 
 const beskrivelseAvInput = (info: InformasjonOmAGP2Status) => {
     return `Den ansatte har i perioden 2. desember 2019 til 1. juni 2021 vært permittert i ${skrivDagerIHeleUkerPlussDager(
@@ -61,50 +164,50 @@ const tekstOmPermitteringPåInnføringsdato = (
     if (erPermittertVedInnføring) {
         return 'Arbeidsgiverperiode 2 inntreffer 1.juni';
     }
-    return 'Dersom den ansatte er permittert 1. juni, vil Arbeidsgiverperiode 2 inntreffe på denne datoen';
+    return 'Dersom den ansatte er permittert 1. juni vil Arbeidsgiverperiode 2 inntreffe på denne datoen';
 };
 
 const genererTekst = (
     info: InformasjonOmAGP2Status,
+    tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs
-): string => {
+) => {
     if (info.sluttDato) {
         switch (true) {
             case info.type !== ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2 &&
                 info.sluttDato.isSame(innføringsdatoAGP2, 'day'):
-                return 'Den ansatte er ikke permittert lenge nok til å nå Arbeidsgiverperiode 2.';
+                return (
+                    <div>
+                        <Element>
+                            Den ansatte er ikke permittert lenge nok til å nå
+                            Arbeidsgiverperiode 2.
+                        </Element>
+                    </div>
+                );
             case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
-                return `Dette overskrider 30 uker. ${tekstOmPermitteringPåInnføringsdato(
-                    info.permittertVedInnføringsdato
-                )};`;
+                return tekstCase1(info, tidslinje, innføringsdatoAGP2);
             case info.type ===
                 ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
-                return `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 
-                    ${formaterDato(info.sluttDato).toString()} 
-                     faller Arbeidsgiverperiode 2 på denne datoen.`;
-
+                return tekstCase2(info, tidslinje, info.sluttDato);
             case info.type ===
                 ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
-                const sluttDatoString = formaterDato(info.sluttDato);
-                return `Du kan ha den ansatte permittert i
-                    ${skrivDagerIHeleUkerPlussDager(
-                        info.gjenståendePermitteringsDager
-                    )}
-                     innen 
-                    ${sluttDatoString}, 
-                     før Arbeidsgiverperiode 2 inntreffer.`;
+                return tekstCase3(info, tidslinje, info.sluttDato);
         }
     }
-    return '';
+    return <div />;
 };
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
     const { innføringsdatoAGP2 } = useContext(PermitteringContext);
-    const [tekst, setTekst] = useState('');
+    const [tekst, setTekst] = useState(<div />);
 
     useEffect(() => {
         setTekst(
-            genererTekst(props.informasjonOmAGP2Status, innføringsdatoAGP2)
+            genererTekst(
+                props.informasjonOmAGP2Status,
+                props.tidslinje,
+                innføringsdatoAGP2
+            )
         );
     }, [props.informasjonOmAGP2Status]);
 

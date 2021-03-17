@@ -284,5 +284,5 @@ const erPermittertVedInnføringsdatoAvAGP2 = (
     const status = tidslinje.find((datoMedKategori) =>
         datoMedKategori.dato.isSame(innføringsdatoAGP2, 'day')
     );
-    return status!.kategori === datointervallKategori.PERMITTERT;
+    return status?.kategori === datointervallKategori.PERMITTERT;
 };
