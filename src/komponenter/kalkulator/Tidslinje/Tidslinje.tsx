@@ -250,12 +250,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         </div>
                     </>
                 )}
-                <Fargeforklaringer />
-                <div className={'kalkulator__tidslinje-forklaring'}>
-                    <Utregningstekst
-                        informasjonOmAGP2Status={informasjonOmAGP2Status}
-                    />
-                </div>
+            </div>
+            <Fargeforklaringer />
+            <div className={'kalkulator__tidslinje-forklaring'}>
+                <Utregningstekst
+                    informasjonOmAGP2Status={informasjonOmAGP2Status}
+                />
             </div>
         </>
     );

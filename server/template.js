@@ -10,6 +10,7 @@ const sanityQueryKeys = () => [
     'hvordan-permittere-ansatte',
     'nar-skal-jeg-utbetale-lonn',
     'i-permitteringsperioden',
+    'informasjon-til-ansatte',
     'vanlige-sporsmal',
 ];
 

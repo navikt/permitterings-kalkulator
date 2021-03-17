@@ -9,6 +9,7 @@ import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import NarSkalJegUtbetaleLonn from './info-ark/infoark-utbetale-lonn/NarSkalJegUtbetaleLonn';
 import { PermitteringContext } from './ContextProvider';
+import InformasjonTilAnsatte from './info-ark/infoark-informasjon-til-ansatte/InformasjonTilAnsatte';
 
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
@@ -22,12 +23,15 @@ const Permittering = () => {
         hvordanPermittere,
         narSkalJegUtbetale,
         iPermitteringsperioden,
+        informasjonTilAnsatte,
         vanligeSpr,
     } = permitteringInnhold;
 
     return (
         <div className={permittering.className}>
-            <Banner classname="banner" center={true} />
+            <Banner classname="banner" center={true}>
+                Veiviser for permittering
+            </Banner>
             <div className={permittering.element('container')}>
                 <div
                     className={permittering.element('wrapper')}
@@ -59,6 +63,13 @@ const Permittering = () => {
                             content={iPermitteringsperioden}
                             overskrift="I permitteringsperioden"
                             id="permitteringsperioden"
+                        />
+
+                        <InformasjonTilAnsatte
+                            className={permittering.className}
+                            content={informasjonTilAnsatte}
+                            overskrift="Informasjon til Ansatte"
+                            id="infotilansatte"
                         />
 
                         <VanligeSporsmal

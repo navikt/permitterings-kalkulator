@@ -19,6 +19,10 @@ export const lenker: PermitteringsLenke[] = [
         lenketekst: 'I permitteringsperioden',
     },
     {
+        hopplenke: '#infotilansatte',
+        lenketekst: 'Informasjon til Ansatte',
+    },
+    {
         hopplenke: '#vanligSpr',
         lenketekst: 'Vanlige spørsmål',
     },
@@ -34,7 +38,7 @@ const hoppLenkerScrollheight = (): number[] =>
 export const setFocusIndex = (
     setFocusSection: Dispatch<SetStateAction<number>>
 ): (void | null)[] | null => {
-    return lenker.length === 4
+    return lenker.length === 5
         ? hoppLenkerScrollheight().map((scrollheight, index) => {
               if (scrollheight - 450 < scrollHeight()) {
                   return setFocusSection(index);

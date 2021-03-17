@@ -11,12 +11,12 @@ test('Tester at kalkulator renderes med basic innhold', () => {
     );
 
     const permitteringsElement = getByText(
-        /Legg inn permitteringsperiode for arbeidstaker/i
+        /Legg til periodene den ansatte har vært permittert/i
     );
     expect(permitteringsElement).toBeInTheDocument();
 
     const fraværsElement = getByText(
-        /Legg inn eventuelle fravær den permitterte har hatt/i
+        /Legg inn eventuelle fravær under permitteringen/i
     );
     expect(fraværsElement).toBeInTheDocument();
 });

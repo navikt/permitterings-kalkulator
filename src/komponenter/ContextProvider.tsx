@@ -35,6 +35,7 @@ const ContextProvider = (props: Props) => {
         hvordanPermittere: [],
         narSkalJegUtbetale: [],
         iPermitteringsperioden: [],
+        informasjonTilAnsatte: [],
         vanligeSpr: [],
     });
 
