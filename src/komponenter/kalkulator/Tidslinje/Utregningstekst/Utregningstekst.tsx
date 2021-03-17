@@ -55,6 +55,15 @@ const leggTiltekstOmFraværsAndelVedFraværv = (
     return '.';
 };
 
+const tekstOmPermitteringPåInnføringsdato = (
+    erPermittertVedInnføring?: boolean
+) => {
+    if (erPermittertVedInnføring) {
+        return 'Arbeidsgiverperiode 2 inntreffer 1.juni';
+    }
+    return 'Dersom den ansatte er permittert 1. juni, vil Arbeidsgiverperiode 2 inntreffe på denne datoen';
+};
+
 const genererTekst = (
     info: InformasjonOmAGP2Status,
     innføringsdatoAGP2: Dayjs
@@ -65,7 +74,9 @@ const genererTekst = (
                 info.sluttDato.isSame(innføringsdatoAGP2, 'day'):
                 return 'Den ansatte er ikke permittert lenge nok til å nå Arbeidsgiverperiode 2.';
             case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
-                return 'Dette overskrider 30 uker. Arbeidsgiverperiode 2 inntreffer 1.juni';
+                return `Dette overskrider 30 uker. ${tekstOmPermitteringPåInnføringsdato(
+                    info.permittertVedInnføringsdato
+                )};`;
             case info.type ===
                 ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
                 return `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 

@@ -22,6 +22,7 @@ export interface InformasjonOmAGP2Status {
     brukteDager: number;
     type: ArbeidsgiverPeriode2Resulatet;
     fraværsdager: number;
+    permittertVedInnføringsdato?: boolean;
 }
 
 export const finnInformasjonAGP2 = (
@@ -39,6 +40,10 @@ export const finnInformasjonAGP2 = (
         tidslinje,
         innføringsdatoAGP2
     );
+    const erPermittertVedInnføringsdato = erPermittertVedInnføringsdatoAvAGP2(
+        tidslinje,
+        innføringsdatoAGP2
+    );
     const antallGjenværendeDagerFørAGP2VedInnføringsdato =
         antallDagerFørAGP2Inntreffer -
         finnBruktePermitteringsDager(tidslinje, innføringsdatoAGP2);
@@ -51,6 +56,7 @@ export const finnInformasjonAGP2 = (
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
             fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            permittertVedInnføringsdato: erPermittertVedInnføringsdato,
         };
     }
     if (erLøpende) {
@@ -269,4 +275,14 @@ const finnPermitteringsDatoEtterGittDato = (
             datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
             datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
     );
+};
+
+const erPermittertVedInnføringsdatoAvAGP2 = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs
+) => {
+    const status = tidslinje.find((datoMedKategori) =>
+        datoMedKategori.dato.isSame(innføringsdatoAGP2, 'day')
+    );
+    return status!.kategori === datointervallKategori.PERMITTERT;
 };
