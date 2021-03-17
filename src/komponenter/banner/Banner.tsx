@@ -5,6 +5,7 @@ import './banner.less';
 
 interface Props {
     classname: string;
+    children: string;
     center?: boolean;
 }
 
@@ -20,7 +21,7 @@ const Banner = (props: Props) => {
             aria-roledescription="site banner"
         >
             <div className={cls.element('tekst')}>
-                <Sidetittel>Veiviser for permittering</Sidetittel>
+                <Sidetittel>{props.children}</Sidetittel>
             </div>
             <div className={cls.element('bunnlinje')} />
         </div>

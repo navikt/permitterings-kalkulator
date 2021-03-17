@@ -1842,6 +1842,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/classnames@^2.2.11":
+  version "2.2.11"
+  resolved "https://registry.yarnpkg.com/@types/classnames/-/classnames-2.2.11.tgz#2521cc86f69d15c5b90664e4829d84566052c1cf"
+  integrity sha512-2koNhpWm3DgWRp5tpkiJ8JGc1xTn2q0l+jUNUE7oMKXUf5NpI9AIdC4kbjGNFBdHtcxBD18LAksoudAVhFKCjw==
+
 "@types/eslint@^7.2.6":
   version "7.2.7"
   resolved "https://registry.yarnpkg.com/@types/eslint/-/eslint-7.2.7.tgz#f7ef1cf0dceab0ae6f9a976a0a9af14ab1baca26"
@@ -8189,6 +8194,16 @@ nav-frontend-spinner@^2.0.2:
   version "2.0.16"
   resolved "https://registry.yarnpkg.com/nav-frontend-spinner/-/nav-frontend-spinner-2.0.16.tgz#71dad64ec5730f336309db63d79765c576105eb7"
   integrity sha512-En0IMZI5oFzf7rTtmKYOYWKGUn+GbiwdzEuXwdTYa1UGAVVl9FZcxTStt08upgdsmoH8bwkulB7B3zWXoMDsOA==
+
+nav-frontend-stegindikator-style@^1.0.47:
+  version "1.0.47"
+  resolved "https://registry.yarnpkg.com/nav-frontend-stegindikator-style/-/nav-frontend-stegindikator-style-1.0.47.tgz#34b17e0f1822a44b9c34a3fe69aa679fd8068693"
+  integrity sha512-lgeLUw61tuIGwSYDhzwDHmotBKihwKoG/BxzOajjVxSl5OH6GuGk/fiGzzDdIoIV+BwgvgqD/WdrYh5nzZYw+g==
+
+nav-frontend-stegindikator@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/nav-frontend-stegindikator/-/nav-frontend-stegindikator-1.0.3.tgz#4c98d3a7c4141ce1745debdba90e5850bbe75d4b"
+  integrity sha512-yXdp5NGhGA6kxaujKK7ZEHwDIA+kxL5o/4OnTFAOfrGmYcYo007ZQGQ9iNFwbIFNNuSTN8ImL/GxPktcYoka9w==
 
 nav-frontend-tabs-style@^1.0.2:
   version "1.0.3"

@@ -1,115 +1,48 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import './Topp.less';
-import {
-    finnDato18MndFram,
-    finnDato18MndTilbake,
-    finnGrenserFor18MNDPeriode,
-} from '../utregninger';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import Datovelger from '../../Datovelger/Datovelger';
-import kalender from './kalender.svg';
-import Lenke from 'nav-frontend-lenker';
-import { PermitteringContext } from '../../ContextProvider';
-import { Dayjs } from 'dayjs';
-import { formaterDato } from '../../Datovelger/datofunksjoner';
+import { Normaltekst } from 'nav-frontend-typografi';
+import Stegindikator from 'nav-frontend-stegindikator/lib/stegindikator';
 
-interface Props {
-    set18mndsPeriode: (dato: Dayjs) => void;
-    sisteDagIPeriode: Dayjs;
-    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
-    setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
-}
-
-const Topp: FunctionComponent<Props> = (props) => {
-    const [feilMelding, setFeilmelding] = useState('');
-    const { dagensDato } = useContext(PermitteringContext);
-
-    const datoValidering = (dato: Dayjs) => {
-        const { datoFra, datoTil } = finnGrenserFor18MNDPeriode(dagensDato);
-
-        if (dato.isSameOrAfter(datoTil!)) {
-            setFeilmelding('sett dato før ' + formaterDato(datoTil!));
-            return false;
-        }
-        if (finnDato18MndTilbake(dato).isSameOrBefore(datoFra!)) {
-            setFeilmelding(
-                'sett dato før ' + formaterDato(finnDato18MndFram(datoFra!))
-            );
-            return false;
-        } else {
-            setFeilmelding('');
-            return true;
-        }
-    };
-
+const Topp: FunctionComponent = () => {
     return (
-        <div className={'kalkulator__topp'}>
-            <Normaltekst className={'kalkulator__generell-info'}>
-                Fra 1. november 2020 økte maksperioden en arbeidsgiver kan
-                fritas fra sin lønnsplikt innenfor en periode på 18 måneder, fra
-                26 til 49 uker.{' '}
-                <Lenke
-                    href={
-                        'https://arbeidsgiver.nav.no/arbeidsgiver-permittering#narSkalJegUtbetaleLonn'
-                    }
-                >
-                    Du kan lese mer om beregning av lønnsplikt ved permittering
-                    her.
-                </Lenke>
-            </Normaltekst>
-            <Undertittel>
-                1. Angi hvilken 18 mnd periode du vil beregne
-            </Undertittel>
-            <div className={'kalkulator__18mnd-illustrasjon'}>
-                <div className={'kalkulator__18mnd-illustrasjon-første-dag'}>
-                    <Normaltekst>første dag:</Normaltekst>
-                    <Normaltekst>
-                        {formaterDato(
-                            finnDato18MndTilbake(props.sisteDagIPeriode)
-                        )}
+        <div className={'topp'}>
+            <div className={'topp__generell-info'}>
+                <Normaltekst>
+                    <strong>
+                        Du har lønnsplikt når den ansatte har vært permittert i
+                        30 uker
+                    </strong>
+                </Normaltekst>
+                <Normaltekst>Kalkulatoren regner ut:</Normaltekst>
+                <ul className="topp__liste">
+                    <Normaltekst tag="li">
+                        Hvor lenge den ansatte har vært permittert
                     </Normaltekst>
-                </div>
-                <div className={'kalkulator__18mnd-linje'}>
-                    <Element className={'kalkulator__18mnd-illustrasjon-tekst'}>
-                        18 måneder
-                    </Element>
-                </div>
-                <Datovelger
-                    tjenesteBestemtFeilmelding={feilMelding}
-                    className={'initial-datovelger'}
-                    overtekst={'Siste dag i perioden'}
-                    onChange={(event) => {
-                        if (datoValidering(event.currentTarget.value)) {
-                            props.set18mndsPeriode(event.currentTarget.value);
-                            props.setEndringAv('datovelger');
-                        }
-                    }}
-                    value={props.sisteDagIPeriode}
-                />
+                    <Normaltekst tag="li">Når du skal betale lønn</Normaltekst>
+                </ul>
+                <Normaltekst>
+                    <strong>Denne informasjonen trenger du</strong>
+                </Normaltekst>
+                <ul className="topp__liste">
+                    <Normaltekst tag="li">
+                        Periodene den ansatte har vært permittert
+                    </Normaltekst>
+                    <Normaltekst tag="li">
+                        Eventuelle fravær under permitteringen
+                    </Normaltekst>
+                </ul>
             </div>
-            <div className={'kalkulator__velg-ny-periode-info'}>
-                <img
-                    alt={'kalender ikon'}
-                    className={'kalkulator__ikon-kalender'}
-                    src={kalender}
+            <div className="topp__stegindikator">
+                <Stegindikator
+                    aktivtSteg={-1}
+                    steg={[
+                        { label: 'Legg til permittering', index: 0 },
+                        { label: 'Legg til evt. fravær', index: 1 },
+                        { label: 'Se resultatet', index: 2 },
+                    ]}
+                    onChange={() => {}}
+                    visLabel
                 />
-                <div>
-                    <Normaltekst>
-                        {
-                            'Permitteringsukene beregnes alltid i et tidsrom på 18 måneder av gangen.  Du kan endre 18 måneders perioden ved å bruke datovelgeren over til høyre.'
-                        }
-                    </Normaltekst>
-                    <br />
-                    <Normaltekst>
-                        {`Dagen du har valgt som sluttdato for perioden er ${formaterDato(
-                            props.sisteDagIPeriode
-                        )}. 18 måneders perioden er tidsrommet fra og med ${formaterDato(
-                            finnDato18MndTilbake(props.sisteDagIPeriode)
-                        )} til og med ${formaterDato(
-                            props.sisteDagIPeriode
-                        )} .`}
-                    </Normaltekst>
-                </div>
             </div>
         </div>
     );

@@ -29,7 +29,9 @@ const Permittering = () => {
 
     return (
         <div className={permittering.className}>
-            <Banner classname="banner" center={true} />
+            <Banner classname="banner" center={true}>
+                Veiviser for permittering
+            </Banner>
             <div className={permittering.element('container')}>
                 <div
                     className={permittering.element('wrapper')}
