@@ -21,6 +21,8 @@ export interface InformasjonOmAGP2Status {
     gjenståendePermitteringsDager: number;
     brukteDager: number;
     type: ArbeidsgiverPeriode2Resulatet;
+    fraværsdager: number;
+    permittertVedInnføringsdato?: boolean;
 }
 
 export const finnInformasjonAGP2 = (
@@ -38,6 +40,10 @@ export const finnInformasjonAGP2 = (
         tidslinje,
         innføringsdatoAGP2
     );
+    const erPermittertVedInnføringsdato = erPermittertVedInnføringsdatoAvAGP2(
+        tidslinje,
+        innføringsdatoAGP2
+    );
     const antallGjenværendeDagerFørAGP2VedInnføringsdato =
         antallDagerFørAGP2Inntreffer -
         finnBruktePermitteringsDager(tidslinje, innføringsdatoAGP2);
@@ -49,6 +55,8 @@ export const finnInformasjonAGP2 = (
                 statusPermittering1muligAGP2.dagerAnnetFravær,
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            permittertVedInnføringsdato: erPermittertVedInnføringsdato,
         };
     }
     if (erLøpende) {
@@ -64,6 +72,7 @@ export const finnInformasjonAGP2 = (
                 antallBruktePermitteringsdagerVedInnføringsdato,
             brukteDager: antallBruktePermitteringsdagerVedInnføringsdato,
             type: ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
         };
     } else {
         const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
@@ -82,6 +91,7 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
             brukteDager: antallBruktePermitteringsdagerIPerioden,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
             type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         };
     }
@@ -156,6 +166,7 @@ export const finnDatoForTidligste18mndsPeriode = (
             finnDato18MndTilbake(potensiellSisteDatoIIntervall),
             tidslinje
         );
+
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
             const nestePermitteringsstart:
                 | DatoMedKategori
@@ -169,6 +180,7 @@ export const finnDatoForTidligste18mndsPeriode = (
                 finnDato18MndFram(nestePermitteringsstart.dato)
             );
         }
+
         overskuddAvPermitteringsdagerITidsintervall = finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager(
             potensiellSisteDatoIIntervall,
             tidslinje,
@@ -263,4 +275,14 @@ const finnPermitteringsDatoEtterGittDato = (
             datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
             datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
     );
+};
+
+const erPermittertVedInnføringsdatoAvAGP2 = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs
+) => {
+    const status = tidslinje.find((datoMedKategori) =>
+        datoMedKategori.dato.isSame(innføringsdatoAGP2, 'day')
+    );
+    return status?.kategori === datointervallKategori.PERMITTERT;
 };
