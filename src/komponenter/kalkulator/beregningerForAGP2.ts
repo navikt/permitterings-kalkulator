@@ -26,6 +26,7 @@ export interface InformasjonOmAGP2Status {
     gjenståendePermitteringsDager: number;
     brukteDager: number; // 210-brukteDager
     type: ArbeidsgiverPeriode2Resulatet;
+    fraværsdager: number;
 }
 
 //funksjoner for utregning av AGP2
@@ -56,6 +57,7 @@ export const finnInformasjonAGP2 = (
                 statusPermittering1muligAGP2.dagerAnnetFravær,
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
         };
     }
     if (erLøpende) {
@@ -71,6 +73,7 @@ export const finnInformasjonAGP2 = (
                 antallBruktePermitteringsdagerPer1Juni,
             brukteDager: antallBruktePermitteringsdagerPer1Juni,
             type: ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
         };
     } else {
         const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
@@ -89,6 +92,7 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
             brukteDager: antallBruktePermitteringsdagerIPerioden,
+            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
             type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         };
     }
@@ -170,6 +174,7 @@ export const finnDatoForTidligste18mndsPeriode = (
             finnDato18MndTilbake(potensiellSisteDatoIIntervall),
             tidslinje
         );
+
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
             console.log(
                 'Forsøker å finne nytt permitteringintervall når gammelt utgår'
@@ -186,6 +191,7 @@ export const finnDatoForTidligste18mndsPeriode = (
                 finnDato18MndFram(nestePermitteringsstart.dato)
             );
         }
+
         overskuddAvPermitteringsdagerITidsintervall = finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager(
             potensiellSisteDatoIIntervall,
             tidslinje,

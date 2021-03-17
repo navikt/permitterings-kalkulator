@@ -25,14 +25,14 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 import {
     ArbeidsgiverPeriode2Resulatet,
     finnInformasjonAGP2,
     InformasjonOmAGP2Status,
 } from '../beregningerForAGP2';
-import dayjs from 'dayjs';
+import Utregningstekst from './Utregningstekst/Utregningstekst';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -42,43 +42,6 @@ interface Props {
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
 }
-
-const skrivTekst = (info: InformasjonOmAGP2Status): string => {
-    switch (true) {
-        case info.sluttDato?.isSameOrBefore(dayjs('2021-06-02')):
-            return 'ikke tilstrekkelig data';
-        case info.type === ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
-            return (
-                'treffer AGP2 1.juni, brukt: ' +
-                info.brukteDager +
-                ' permittert'
-            );
-        case info.type === ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
-            return (
-                'dersom du har løpende permittering fram til ' +
-                formaterDato(info.sluttDato!) +
-                ' faller AGP2 på denne datoen. Nå har du per 1. juni brukt ' +
-                info.brukteDager +
-                'dager'
-            );
-
-        case info.type ===
-            ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
-            return (
-                'I perioden ' +
-                formaterDato(finnDato18MndTilbake(info.sluttDato!)) +
-                ' - ' +
-                formaterDato(info.sluttDato!) +
-                ' er det permittert: ' +
-                info.brukteDager +
-                ' dager. Du kan permittere i ' +
-                info.gjenståendePermitteringsDager +
-                ' dager fra i dag til ' +
-                formaterDato(info.sluttDato!)
-            );
-    }
-    return '';
-};
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
@@ -96,7 +59,16 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
-    const [tekst, setTekst] = useState('');
+    const [
+        informasjonOmAGP2Status,
+        setInformasjonOmAGP2Status,
+    ] = useState<InformasjonOmAGP2Status>({
+        brukteDager: 0,
+        sluttDato: innføringsdatoAGP2,
+        type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
+        gjenståendePermitteringsDager: 210,
+        fraværsdager: 0,
+    });
 
     const [
         posisjonsStylingDragElement,
@@ -136,14 +108,15 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             (permittering) => permittering.erLøpende
         );
         // her hender det at løpende-funksjonen kalles
-        const infoAGP2 = finnInformasjonAGP2(
-            tidslinjeObjekter,
-            innføringsdatoAGP2,
-            finnesLøpende !== undefined,
-            dagensDato,
-            210
+        setInformasjonOmAGP2Status(
+            finnInformasjonAGP2(
+                tidslinjeObjekter,
+                innføringsdatoAGP2,
+                finnesLøpende !== undefined,
+                dagensDato,
+                210
+            )
         );
-        setTekst(skrivTekst(infoAGP2));
     }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
@@ -211,67 +184,80 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             : props.sisteDagIPeriode;
 
     return (
-        <div
-            className={'kalkulator__tidslinje-container start'}
-            id={'kalkulator-tidslinje-container'}
-        >
-            {tidslinjeObjekter.length > 0 && (
-                <>
-                    <Draggable
-                        axis={'x'}
-                        bounds={'parent'}
-                        onStop={() => OnTidslinjeDragRelease()}
-                        onDrag={() => OnTidslinjeDrag()}
-                    >
-                        <div
-                            style={{
-                                position: posisjonsStylingDragElement,
-                                left:
-                                    absoluttPosisjonFraVenstreDragElement.toString() +
-                                    '%',
-                                width:
-                                    (
-                                        props.breddeAvDatoObjektIProsent * 550
-                                    ).toString() + '%',
-                            }}
-                            id={'draggable-periode'}
-                            className={'kalkulator__draggable-periode'}
+        <>
+            <div
+                className={'kalkulator__tidslinje-container start'}
+                id={'kalkulator-tidslinje-container'}
+            >
+                {tidslinjeObjekter.length > 0 && (
+                    <>
+                        <Draggable
+                            axis={'x'}
+                            bounds={'parent'}
+                            onStop={() => OnTidslinjeDragRelease()}
+                            onDrag={() => OnTidslinjeDrag()}
                         >
                             <div
-                                className={'kalkulator__draggable-kant venstre'}
-                            />
-                            <div
-                                className={'kalkulator__draggable-kant høyre'}
-                            />
-                            <Normaltekst className={'venstre-dato '}>
-                                {formaterDato(
-                                    finnDato18MndTilbake(datoVisesPaDragElement)
-                                )}
-                            </Normaltekst>
+                                style={{
+                                    position: posisjonsStylingDragElement,
+                                    left:
+                                        absoluttPosisjonFraVenstreDragElement.toString() +
+                                        '%',
+                                    width:
+                                        (
+                                            props.breddeAvDatoObjektIProsent *
+                                            550
+                                        ).toString() + '%',
+                                }}
+                                id={'draggable-periode'}
+                                className={'kalkulator__draggable-periode'}
+                            >
+                                <div
+                                    className={
+                                        'kalkulator__draggable-kant venstre'
+                                    }
+                                />
+                                <div
+                                    className={
+                                        'kalkulator__draggable-kant høyre'
+                                    }
+                                />
+                                <Normaltekst className={'venstre-dato '}>
+                                    {formaterDato(
+                                        finnDato18MndTilbake(
+                                            datoVisesPaDragElement
+                                        )
+                                    )}
+                                </Normaltekst>
 
-                            <Normaltekst className={'høyre-dato'}>
-                                {formaterDato(datoVisesPaDragElement)}
-                            </Normaltekst>
+                                <Normaltekst className={'høyre-dato'}>
+                                    {formaterDato(datoVisesPaDragElement)}
+                                </Normaltekst>
+                            </div>
+                        </Draggable>
+                        <div
+                            className={'kalkulator__tidslinje-underlag'}
+                            id={'kalkulator__tidslinje'}
+                        >
+                            <div
+                                className={
+                                    'kalkulator__tidslinje-fargeperioder'
+                                }
+                            >
+                                {htmlFargeObjekt}
+                            </div>
+                            {htmlElementerForHverDato}
                         </div>
-                    </Draggable>
-                    <div
-                        className={'kalkulator__tidslinje-underlag'}
-                        id={'kalkulator__tidslinje'}
-                    >
-                        <div className={'kalkulator__tidslinje-fargeperioder'}>
-                            {htmlFargeObjekt}
-                        </div>
-                        {htmlElementerForHverDato}
-                    </div>
-                    <Fargeforklaringer />
-                    <Normaltekst
-                        className={'kalkulator__tidslinje-agp2-forklaring'}
-                    >
-                        {tekst}
-                    </Normaltekst>
-                </>
-            )}
-        </div>
+                    </>
+                )}
+                <Fargeforklaringer />
+                <div className={'kalkulator__tidslinje-forklaring'}>
+                    <Utregningstekst
+                        informasjonOmAGP2Status={informasjonOmAGP2Status}
+                    />
+                </div>
+            </div>
+        </>
     );
 };
 
