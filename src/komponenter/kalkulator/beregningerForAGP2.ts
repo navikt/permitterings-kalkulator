@@ -81,10 +81,10 @@ export const finnInformasjonAGP2 = (
             dagensDato,
             antallDagerFørAGP2Inntreffer
         );
-        const antallBruktePermitteringsdagerIPerioden = finnBruktePermitteringsDager(
-            tidslinje,
-            sisteDatoIPerioden
-        );
+
+        const antallBruktePermitteringsdagerIPerioden = sisteDatoIPerioden
+            ? finnBruktePermitteringsDager(tidslinje, sisteDatoIPerioden)
+            : 0;
         return {
             sluttDato: sisteDatoIPerioden,
             gjenståendePermitteringsDager:
@@ -133,14 +133,14 @@ export const finnDatoForTidligste18mndsPeriode = (
     innføringsdatoAGP2: Dayjs,
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-): Dayjs => {
+): Dayjs | undefined => {
     const førstePermitteringStart:
         | DatoMedKategori
         | undefined = finnPermitteringsDatoEtterGittDato(
         finnDato18MndTilbake(innføringsdatoAGP2),
         tidslinje
     );
-    if (!førstePermitteringStart) return innføringsdatoAGP2;
+    if (!førstePermitteringStart) return undefined;
 
     let potensiellSisteDatoIIntervall = dayjs(
         finnDato18MndFram(førstePermitteringStart.dato)
@@ -175,7 +175,7 @@ export const finnDatoForTidligste18mndsPeriode = (
                 tidslinje
             );
             // return ved ingen relevante permitteringsintervall igjen
-            if (!nestePermitteringsstart) return innføringsdatoAGP2;
+            if (!nestePermitteringsstart) return undefined;
             potensiellSisteDatoIIntervall = dayjs(
                 finnDato18MndFram(nestePermitteringsstart.dato)
             );

@@ -175,19 +175,6 @@ const genererTekst = (
     innføringsdatoAGP2: Dayjs
 ) => {
     if (info.sluttDato) {
-        if (
-            info.type !== ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2 &&
-            info.sluttDato.isSame(innføringsdatoAGP2, 'day')
-        ) {
-            return (
-                <div>
-                    <Element>
-                        Den ansatte er ikke permittert lenge nok til å nå
-                        Arbeidsgiverperiode 2.
-                    </Element>
-                </div>
-            );
-        }
         switch (info.type) {
             case ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
                 return tekstNådd30UkerVedInnføringsdato(
@@ -208,8 +195,16 @@ const genererTekst = (
                     info.sluttDato
                 );
         }
+    } else {
+        return (
+            <div>
+                <Element>
+                    Den ansatte er ikke permittert lenge nok til å nå
+                    Arbeidsgiverperiode 2.
+                </Element>
+            </div>
+        );
     }
-    return <div />;
 };
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
@@ -224,7 +219,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 innføringsdatoAGP2
             )
         );
-    }, [props.informasjonOmAGP2Status]);
+    }, [props.informasjonOmAGP2Status, props.tidslinje, innføringsdatoAGP2]);
 
     return (
         <>
