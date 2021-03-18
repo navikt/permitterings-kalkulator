@@ -38,6 +38,7 @@ export const sumPermitteringerOgFravær = (
             gjenståendeDager++;
         }
         if (dag.kategori === 2) {
+            // TODO i finnOversiktOverPermitteringOgFraværGitt18mnd er implemtert annerledes. Fiks denne eller slett.
             antallDagerFravær++;
         }
     });

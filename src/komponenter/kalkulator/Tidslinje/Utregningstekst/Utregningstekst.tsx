@@ -126,12 +126,12 @@ const tekstIkkeNåddAGP2IkkeLøpende = (
 
 const beskrivelseAvInput = (info: InformasjonOmAGP2Status) => {
     return `Den ansatte har i perioden 2. desember 2019 til 1. juni 2021 vært permittert i ${skrivDagerIHeleUkerPlussDager(
-        info.brukteDager + info.fraværsdager
+        info.permitteringsdagerVedInnføringsdato
     )}${leggTiltekstOmFraværsAndelVedFraværv(
-        info.fraværsdager,
-        info.brukteDager
+        info.fraværsdagerVedInnføringsdato,
+        info.brukteDagerVedInnføringsdato
     )} Det er dermed ${skrivDagerIHeleUkerPlussDager(
-        info.brukteDager
+        info.brukteDagerVedInnføringsdato
     )} som telles med i beregningen av Arbeidsgiverperiode 2. `;
 };
 

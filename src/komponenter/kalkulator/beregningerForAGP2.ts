@@ -19,9 +19,10 @@ export enum ArbeidsgiverPeriode2Resulatet {
 export interface InformasjonOmAGP2Status {
     sluttDato: Dayjs | undefined;
     gjenståendePermitteringsDager: number;
-    brukteDager: number;
+    brukteDagerVedInnføringsdato: number;
     type: ArbeidsgiverPeriode2Resulatet;
-    fraværsdager: number;
+    fraværsdagerVedInnføringsdato: number;
+    permitteringsdagerVedInnføringsdato: number;
     permittertVedInnføringsdato?: boolean;
 }
 
@@ -32,7 +33,7 @@ export const finnInformasjonAGP2 = (
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): InformasjonOmAGP2Status => {
-    const statusPermittering1muligAGP2 = finnOversiktOverPermitteringOgFraværGitt18mnd(
+    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
         innføringsdatoAGP2,
         tidslinje
     );
@@ -50,12 +51,13 @@ export const finnInformasjonAGP2 = (
     if (antallGjenværendeDagerFørAGP2VedInnføringsdato <= 0) {
         return {
             sluttDato: innføringsdatoAGP2,
-            brukteDager:
-                statusPermittering1muligAGP2.dagerPermittert -
-                statusPermittering1muligAGP2.dagerAnnetFravær,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
             permittertVedInnføringsdato: erPermittertVedInnføringsdato,
         };
     }
@@ -67,12 +69,15 @@ export const finnInformasjonAGP2 = (
         );
         return {
             sluttDato: datoAGP2,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerVedInnføringsdato,
-            brukteDager: antallBruktePermitteringsdagerVedInnføringsdato,
             type: ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
         };
     } else {
         const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
@@ -90,8 +95,11 @@ export const finnInformasjonAGP2 = (
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
-            brukteDager: antallBruktePermitteringsdagerIPerioden,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerIPerioden,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
             type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         };
     }
@@ -203,13 +211,17 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
             dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
             dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
         ) {
-            if (dag.kategori === 0) {
+            if (dag.kategori === datointervallKategori.PERMITTERT) {
                 permittert++;
             }
-            if (dag.kategori === 1) {
+            if (dag.kategori === datointervallKategori.ARBEIDER) {
                 gjenståendeDager++;
             }
-            if (dag.kategori === 2) {
+            if (
+                dag.kategori ===
+                datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+            ) {
+                permittert++;
                 antallDagerFravær++;
             }
         }

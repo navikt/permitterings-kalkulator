@@ -63,11 +63,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         informasjonOmAGP2Status,
         setInformasjonOmAGP2Status,
     ] = useState<InformasjonOmAGP2Status>({
-        brukteDager: 0,
+        brukteDagerVedInnføringsdato: 0,
         sluttDato: innføringsdatoAGP2,
         type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         gjenståendePermitteringsDager: 210,
-        fraværsdager: 0,
+        fraværsdagerVedInnføringsdato: 0,
+        permitteringsdagerVedInnføringsdato: 0,
     });
 
     const [
