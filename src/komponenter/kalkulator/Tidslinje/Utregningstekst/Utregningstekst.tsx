@@ -126,7 +126,7 @@ const tekstIkkeNåddAGP2IkkeLøpende = (
 
 const beskrivelseAvInput = (info: InformasjonOmAGP2Status) => {
     return `Den ansatte har i perioden 2. desember 2019 til 1. juni 2021 vært permittert i ${skrivDagerIHeleUkerPlussDager(
-        info.brukteDagerVedInnføringsdato + info.fraværsdagerVedInnføringsdato
+        info.permitteringsdagerVedInnføringsdato
     )}${leggTiltekstOmFraværsAndelVedFraværv(
         info.fraværsdagerVedInnføringsdato,
         info.brukteDagerVedInnføringsdato
