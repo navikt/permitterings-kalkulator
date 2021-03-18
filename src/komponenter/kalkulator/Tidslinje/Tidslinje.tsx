@@ -211,40 +211,46 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     return (
         <>
             <div
-                className={'kalkulator__tidslinje-container start'}
-                id={'kalkulator-tidslinje-container'}
+                role="img"
+                aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
             >
-                {tidslinjeObjekter.length > 0 && (
-                    <>
-                        {erInteraktiv ? (
-                            <Draggable
-                                axis={'x'}
-                                bounds={'parent'}
-                                onStop={() => OnTidslinjeDragRelease()}
-                                onDrag={() => OnTidslinjeDrag()}
-                            >
-                                {get18mndsperiode()}
-                            </Draggable>
-                        ) : (
-                            get18mndsperiode()
-                        )}
-                        <div
-                            className={'kalkulator__tidslinje-underlag'}
-                            id={'kalkulator__tidslinje'}
-                        >
+                <div
+                    aria-hidden
+                    className={'kalkulator__tidslinje-container start'}
+                    id={'kalkulator-tidslinje-container'}
+                >
+                    {tidslinjeObjekter.length > 0 && (
+                        <>
+                            {erInteraktiv ? (
+                                <Draggable
+                                    axis={'x'}
+                                    bounds={'parent'}
+                                    onStop={() => OnTidslinjeDragRelease()}
+                                    onDrag={() => OnTidslinjeDrag()}
+                                >
+                                    {get18mndsperiode()}
+                                </Draggable>
+                            ) : (
+                                get18mndsperiode()
+                            )}
                             <div
-                                className={
-                                    'kalkulator__tidslinje-fargeperioder'
-                                }
+                                className={'kalkulator__tidslinje-underlag'}
+                                id={'kalkulator__tidslinje'}
                             >
-                                {htmlFargeObjekt}
+                                <div
+                                    className={
+                                        'kalkulator__tidslinje-fargeperioder'
+                                    }
+                                >
+                                    {htmlFargeObjekt}
+                                </div>
+                                {htmlElementerForHverDato}
                             </div>
-                            {htmlElementerForHverDato}
-                        </div>
-                    </>
-                )}
+                        </>
+                    )}
+                </div>
+                <Fargeforklaringer />
             </div>
-            <Fargeforklaringer />
             <div className={'kalkulator__tidslinje-forklaring'}>
                 <Utregningstekst
                     tidslinje={tidslinjeObjekter}
