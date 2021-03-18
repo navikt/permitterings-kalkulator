@@ -1,4 +1,7 @@
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
+import PermittereAnsatte from './seksjoner/PermittereAnsatte';
+import FellesSeksjon from './seksjoner/FellesSeksjon';
+import VanligeSporsmal from './seksjoner/infoark-vanlige-sporsmaal/VanligeSporsmal';
 
 export interface PermitteringInnhold {
     hvordanPermittere: [] | SanityBlockTypes[];
@@ -79,3 +82,11 @@ export const seksjoner: Seksjon[] = [
         navn: 'Vanlige spørsmål',
     },
 ];
+
+export const componentMap = {
+    hvordanPermittere: PermittereAnsatte,
+    narSkalJegUtbetale: FellesSeksjon,
+    iPermitteringsperioden: FellesSeksjon,
+    informasjonTilAnsatte: FellesSeksjon,
+    vanligeSpr: VanligeSporsmal,
+};

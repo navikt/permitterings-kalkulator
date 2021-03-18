@@ -14,11 +14,8 @@ import {
     windowWidthIsDesktopSize,
 } from '../../utils/menu-utils';
 import { PermitteringContext } from '../ContextProvider';
-import {
-    seksjoner,
-    PermitteringsLenke,
-    setFocusIndex,
-} from '../../utils/menu-lenker-utils';
+import { setFocusIndex } from '../../utils/menu-lenker-utils';
+import { Seksjon, seksjoner } from '../ContextTypes';
 
 const Meny = () => {
     const context = useContext(PermitteringContext);
@@ -93,12 +90,9 @@ const Meny = () => {
                                 Innhold på denne siden:
                             </Undertittel>
 
-                            {lenker
-                                ? lenker.map(
-                                      (
-                                          element: PermitteringsLenke,
-                                          index: number
-                                      ) => {
+                            {seksjoner
+                                ? seksjoner.map(
+                                      (element: Seksjon, index: number) => {
                                           return (
                                               <Normaltekst
                                                   className={cls.element(
