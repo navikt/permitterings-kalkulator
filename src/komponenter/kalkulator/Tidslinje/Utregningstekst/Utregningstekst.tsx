@@ -130,9 +130,7 @@ const beskrivelseAvInput = (info: InformasjonOmAGP2Status) => {
     )}${leggTiltekstOmFraværsAndelVedFraværv(
         info.fraværsdagerVedInnføringsdato,
         info.brukteDagerVedInnføringsdato
-    )} Det er dermed ${skrivDagerIHeleUkerPlussDager(
-        info.brukteDagerVedInnføringsdato
-    )} som telles med i beregningen av Arbeidsgiverperiode 2. `;
+    )}`;
 };
 
 const skrivDagerIHeleUkerPlussDager = (dager: number) => {

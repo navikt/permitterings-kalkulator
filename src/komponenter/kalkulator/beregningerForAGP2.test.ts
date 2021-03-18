@@ -5,7 +5,10 @@ import {
     konstruerStatiskTidslinje,
 } from './utregninger';
 import dayjs from 'dayjs';
-import { finnInformasjonAGP2 } from './beregningerForAGP2';
+import {
+    finnBruktePermitteringsDager,
+    finnInformasjonAGP2,
+} from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
 
 configureDayJS();
@@ -77,9 +80,34 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
         dayjs('2020-04-21'),
         dayjs('2020-06-01')
     );
-    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toBe(
+    const vertifikasjonAvAntallDagerPermittertVedInnføringsDato =
+        antallDagerGått(
+            finnDato18MndTilbake(innføringsdatoAGP2),
+            allePermitteringerOgFravær.permitteringer[0].datoTil
+        ) +
+        antallDagerGått(
+            allePermitteringerOgFravær.permitteringer[1].datoFra,
+            allePermitteringerOgFravær.permitteringer[1].datoTil
+        );
+    const brukteDagerI18mndsIntervall = finnBruktePermitteringsDager(
+        tidslinje,
+        informasjonOmAGP2.sluttDato!
+    );
+
+    expect(informasjonOmAGP2.permitteringsdagerVedInnføringsdato).toBe(
+        vertifikasjonAvAntallDagerPermittertVedInnføringsDato
+    );
+    expect(brukteDagerI18mndsIntervall).toBe(
         antallDagerIAndrePermitteringsperiode
     );
+    const overskuddAvPermitteringsDagerVedInnføringsDato =
+        210 - informasjonOmAGP2.brukteDagerVedInnføringsdato;
+    const forMangeLedigePermitteringsdagerIFTGjenståendeDagerI18mndsIntervall =
+        overskuddAvPermitteringsDagerVedInnføringsDato >
+        antallDagerGått(dagensDato, innføringsdatoAGP2);
+    expect(
+        forMangeLedigePermitteringsdagerIFTGjenståendeDagerI18mndsIntervall
+    ).toBe(true);
 });
 
 test('skal returnere at man kan ha løpende permittering til 10. november', () => {

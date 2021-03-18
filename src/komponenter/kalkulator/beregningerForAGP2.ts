@@ -95,7 +95,7 @@ export const finnInformasjonAGP2 = (
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
-            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerIPerioden,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             fraværsdagerVedInnføringsdato:
                 oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
             permitteringsdagerVedInnføringsdato:
@@ -251,7 +251,7 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     );
 };
 
-const finnBruktePermitteringsDager = (
+export const finnBruktePermitteringsDager = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs
 ): number => {
