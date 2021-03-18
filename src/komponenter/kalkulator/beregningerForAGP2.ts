@@ -19,7 +19,7 @@ export enum ArbeidsgiverPeriode2Resulatet {
 export interface InformasjonOmAGP2Status {
     sluttDato: Dayjs | undefined;
     gjenståendePermitteringsDager: number;
-    brukteDager: number;
+    brukteDagerVedInnføringsdato: number;
     type: ArbeidsgiverPeriode2Resulatet;
     fraværsdager: number;
     permittertVedInnføringsdato?: boolean;
@@ -50,9 +50,7 @@ export const finnInformasjonAGP2 = (
     if (antallGjenværendeDagerFørAGP2VedInnføringsdato <= 0) {
         return {
             sluttDato: innføringsdatoAGP2,
-            brukteDager:
-                statusPermittering1muligAGP2.dagerPermittert -
-                statusPermittering1muligAGP2.dagerAnnetFravær,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
             fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
@@ -67,10 +65,10 @@ export const finnInformasjonAGP2 = (
         );
         return {
             sluttDato: datoAGP2,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerVedInnføringsdato,
-            brukteDager: antallBruktePermitteringsdagerVedInnføringsdato,
             type: ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2,
             fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
         };
@@ -90,7 +88,7 @@ export const finnInformasjonAGP2 = (
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
-            brukteDager: antallBruktePermitteringsdagerIPerioden,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerIPerioden,
             fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
             type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         };
@@ -203,13 +201,17 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
             dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
             dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
         ) {
-            if (dag.kategori === 0) {
+            if (dag.kategori === datointervallKategori.PERMITTERT) {
                 permittert++;
             }
-            if (dag.kategori === 1) {
+            if (dag.kategori === datointervallKategori.ARBEIDER) {
                 gjenståendeDager++;
             }
-            if (dag.kategori === 2) {
+            if (
+                dag.kategori ===
+                datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+            ) {
+                permittert++;
                 antallDagerFravær++;
             }
         }

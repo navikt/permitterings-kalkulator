@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 export enum datointervallKategori {
     PERMITTERT,
     ARBEIDER,
-    ANNETFRAVÆR,
+    FRAVÆR_PÅ_PERMITTERINGSDAG,
 }
 
 export interface AllePermitteringerOgFraværesPerioder {

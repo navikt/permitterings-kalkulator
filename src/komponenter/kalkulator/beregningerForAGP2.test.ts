@@ -39,7 +39,7 @@ test('dato for AGP2-grense', () => {
         dayjs('2020-06-29')
     );
     expect(informasjonOmAGP2.sluttDato).toEqual(innføringsdatoAGP2);
-    expect(informasjonOmAGP2.brukteDager).toBe(
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toBe(
         antallDagerIPermitteringsperiode
     );
 });
@@ -78,7 +78,7 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
         dayjs('2020-04-21'),
         dayjs('2020-06-01')
     );
-    expect(informasjonOmAGP2.brukteDager).toBe(
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toBe(
         antallDagerIAndrePermitteringsperiode
     );
 });
@@ -192,7 +192,7 @@ test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdat
         dagensDato,
         210
     );
-    expect(informasjonOmAGP2.brukteDager).toEqual(51);
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(51);
 });
 
 test('brukteDager skal trekke fra fraværsdager under permittering', () => {
@@ -224,7 +224,7 @@ test('brukteDager skal trekke fra fraværsdager under permittering', () => {
         dagensDato,
         210
     );
-    expect(informasjonOmAGP2.brukteDager).toEqual(30);
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(30);
 });
 
 test('brukteDager skal bare telle med fraværsdager som overlapper med permittering', () => {
@@ -256,7 +256,7 @@ test('brukteDager skal bare telle med fraværsdager som overlapper med permitter
         dagensDato,
         210
     );
-    expect(informasjonOmAGP2.brukteDager).toEqual(20);
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(20);
 });
 
 test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innføringsdato', () => {
@@ -276,10 +276,7 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         allePermitteringerOgFravær,
         dagensDato
     );
-    console.log(
-        formaterDato(tidslinje[0].dato),
-        formaterDato(tidslinje[tidslinje.length - 1].dato)
-    );
+
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
         innføringsdatoAGP2,
@@ -287,5 +284,5 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         dagensDato,
         210
     );
-    expect(informasjonOmAGP2.brukteDager).toEqual(21);
+    expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(21);
 });
