@@ -5,6 +5,7 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
@@ -66,7 +67,12 @@ export const getAntallOverlappendeDager = (
         dag = dag.add(1, 'day')
     ) {
         if (
-            dag?.isBetween(intervall1.datoFra!, intervall1.datoTil!, null, '[]')
+            dag?.isBetween(
+                intervall1.datoFra!,
+                intervall1.datoTil!,
+                'day',
+                '[]'
+            )
         ) {
             antallOverlappendeDager++;
         }
@@ -241,7 +247,7 @@ const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
     perioder.forEach((periode) => {
         if (
             datoIntervallErDefinert(periode) &&
-            dato.isBetween(periode.datoFra!, periode.datoTil!, null, '[]')
+            dato.isBetween(periode.datoFra!, periode.datoTil!, 'day', '[]')
         ) {
             finnes = true;
         }

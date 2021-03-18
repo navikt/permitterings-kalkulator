@@ -257,9 +257,9 @@ describe('Tester for utregninger.ts', () => {
             alle,
             dayjs()
         );
-        expect(oversikt.dagerAnnetFravær).toBe(1); // Burde være 2? Vises som to i selve komponenten.
-        expect(oversikt.dagerGjensående).toBe(650); // Hm ?
-        expect(oversikt.dagerPermittert).toBe(64); // 65?
+        expect(oversikt.dagerAnnetFravær).toBe(2); // Burde være 2? Vises som to i selve komponenten.
+        expect(oversikt.dagerGjensående).toBe(646); // Hm ?
+        expect(oversikt.dagerPermittert).toBe(67); // 65?
     });
 
     test('Kutt av datoer for en permitteringsperiode', () => {
