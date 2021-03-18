@@ -21,7 +21,8 @@ export interface InformasjonOmAGP2Status {
     gjenståendePermitteringsDager: number;
     brukteDagerVedInnføringsdato: number;
     type: ArbeidsgiverPeriode2Resulatet;
-    fraværsdager: number;
+    fraværsdagerVedInnføringsdato: number;
+    permitteringsdagerVedInnføringsdato: number;
     permittertVedInnføringsdato?: boolean;
 }
 
@@ -32,7 +33,7 @@ export const finnInformasjonAGP2 = (
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): InformasjonOmAGP2Status => {
-    const statusPermittering1muligAGP2 = finnOversiktOverPermitteringOgFraværGitt18mnd(
+    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
         innføringsdatoAGP2,
         tidslinje
     );
@@ -53,7 +54,10 @@ export const finnInformasjonAGP2 = (
             brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             gjenståendePermitteringsDager: 0,
             type: ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
             permittertVedInnføringsdato: erPermittertVedInnføringsdato,
         };
     }
@@ -70,7 +74,10 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerVedInnføringsdato,
             type: ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
         };
     } else {
         const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
@@ -89,7 +96,10 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
             brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerIPerioden,
-            fraværsdager: statusPermittering1muligAGP2.dagerAnnetFravær,
+            fraværsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+            permitteringsdagerVedInnføringsdato:
+                oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
             type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         };
     }

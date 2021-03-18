@@ -67,7 +67,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         sluttDato: innføringsdatoAGP2,
         type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         gjenståendePermitteringsDager: 210,
-        fraværsdager: 0,
+        fraværsdagerVedInnføringsdato: 0,
+        permitteringsdagerVedInnføringsdato: 0,
     });
 
     const [
