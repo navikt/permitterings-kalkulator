@@ -183,6 +183,31 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? datoOnDrag
             : props.sisteDagIPeriode;
 
+    const get18mndsperiode = () => (
+        <div
+            style={{
+                position: posisjonsStylingDragElement,
+                left: absoluttPosisjonFraVenstreDragElement.toString() + '%',
+                width:
+                    (props.breddeAvDatoObjektIProsent * 550).toString() + '%',
+            }}
+            id={'draggable-periode'}
+            className={'kalkulator__draggable-periode'}
+        >
+            <div className={'kalkulator__draggable-kant venstre'} />
+            <div className={'kalkulator__draggable-kant høyre'} />
+            <Normaltekst className={'venstre-dato '}>
+                {formaterDato(finnDato18MndTilbake(datoVisesPaDragElement))}
+            </Normaltekst>
+
+            <Normaltekst className={'høyre-dato'}>
+                {formaterDato(datoVisesPaDragElement)}
+            </Normaltekst>
+        </div>
+    );
+
+    const erInteraktiv = process.env.NODE_ENV === 'development';
+
     return (
         <>
             <div
@@ -191,50 +216,18 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             >
                 {tidslinjeObjekter.length > 0 && (
                     <>
-                        <Draggable
-                            axis={'x'}
-                            bounds={'parent'}
-                            onStop={() => OnTidslinjeDragRelease()}
-                            onDrag={() => OnTidslinjeDrag()}
-                        >
-                            <div
-                                style={{
-                                    position: posisjonsStylingDragElement,
-                                    left:
-                                        absoluttPosisjonFraVenstreDragElement.toString() +
-                                        '%',
-                                    width:
-                                        (
-                                            props.breddeAvDatoObjektIProsent *
-                                            550
-                                        ).toString() + '%',
-                                }}
-                                id={'draggable-periode'}
-                                className={'kalkulator__draggable-periode'}
+                        {erInteraktiv ? (
+                            <Draggable
+                                axis={'x'}
+                                bounds={'parent'}
+                                onStop={() => OnTidslinjeDragRelease()}
+                                onDrag={() => OnTidslinjeDrag()}
                             >
-                                <div
-                                    className={
-                                        'kalkulator__draggable-kant venstre'
-                                    }
-                                />
-                                <div
-                                    className={
-                                        'kalkulator__draggable-kant høyre'
-                                    }
-                                />
-                                <Normaltekst className={'venstre-dato '}>
-                                    {formaterDato(
-                                        finnDato18MndTilbake(
-                                            datoVisesPaDragElement
-                                        )
-                                    )}
-                                </Normaltekst>
-
-                                <Normaltekst className={'høyre-dato'}>
-                                    {formaterDato(datoVisesPaDragElement)}
-                                </Normaltekst>
-                            </div>
-                        </Draggable>
+                                {get18mndsperiode()}
+                            </Draggable>
+                        ) : (
+                            get18mndsperiode()
+                        )}
                         <div
                             className={'kalkulator__tidslinje-underlag'}
                             id={'kalkulator__tidslinje'}
