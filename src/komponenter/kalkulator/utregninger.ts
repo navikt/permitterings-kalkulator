@@ -30,7 +30,7 @@ export const sumPermitteringerOgFravær = (
     let permittert = 0;
     let antallDagerFravær = 0;
     let gjenståendeDager = 0;
-    statusAlleDager18mndLsite.forEach((dag, index) => {
+    statusAlleDager18mndLsite.forEach((dag) => {
         if (dag.kategori === 0) {
             permittert++;
         }
