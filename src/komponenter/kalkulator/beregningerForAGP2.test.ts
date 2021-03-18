@@ -166,3 +166,35 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
         dayjs('2021-07-01').add(210, 'days')
     );
 });
+
+test('skal bare telle med fraværsdager som overlapper med permittering', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const permitteringsstart = dayjs('2020-01-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: permitteringsstart,
+                datoTil: permitteringsstart.add(50, 'days'),
+            },
+        ],
+        andreFraværsperioder: [
+            {
+                datoFra: permitteringsstart.add(20, 'days'),
+                datoTil: permitteringsstart.add(70, 'days'),
+            },
+        ],
+    };
+    const dagensDato = permitteringsstart.add(100, 'days');
+    const tidslinje = konstruerStatiskTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+    expect(informasjonOmAGP2.brukteDager).toEqual(20);
+});
