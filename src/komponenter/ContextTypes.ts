@@ -1,4 +1,7 @@
 import { SanityBlockTypes, SistOppdatert } from '../sanity-blocks/sanityTypes';
+import PermittereAnsatte from './seksjoner/PermittereAnsatte';
+import FellesSeksjon from './seksjoner/FellesSeksjon';
+import VanligeSporsmal from './seksjoner/infoark-vanlige-sporsmaal/VanligeSporsmal';
 
 export interface PermitteringInnhold {
     hvordanPermittere: [] | SanityBlockTypes[];
@@ -6,6 +9,11 @@ export interface PermitteringInnhold {
     iPermitteringsperioden: [] | SanityBlockTypes[];
     informasjonTilAnsatte: [] | SanityBlockTypes[];
     vanligeSpr: [] | SanityBlockTypes[];
+}
+
+export interface Seksjon {
+    id: keyof PermitteringInnhold;
+    navn: string;
 }
 
 export type SettPermitteringInnhold = <
@@ -50,4 +58,35 @@ export const setPermitteringInnholdFraNokkelVerdi = (
             settPermitteringInnhold('vanligeSpr', item);
             break;
     }
+};
+
+export const seksjoner: Seksjon[] = [
+    {
+        id: 'hvordanPermittere',
+        navn: 'Hvordan permittere ansatte?',
+    },
+    {
+        id: 'narSkalJegUtbetale',
+        navn: 'Lønnsplikt ved permittering',
+    },
+    {
+        id: 'iPermitteringsperioden',
+        navn: 'I permitteringsperioden',
+    },
+    {
+        id: 'informasjonTilAnsatte',
+        navn: 'Informasjon til ansatte',
+    },
+    {
+        id: 'vanligeSpr',
+        navn: 'Vanlige spørsmål',
+    },
+];
+
+export const componentMap = {
+    hvordanPermittere: PermittereAnsatte,
+    narSkalJegUtbetale: FellesSeksjon,
+    iPermitteringsperioden: FellesSeksjon,
+    informasjonTilAnsatte: FellesSeksjon,
+    vanligeSpr: VanligeSporsmal,
 };
