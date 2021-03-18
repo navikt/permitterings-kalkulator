@@ -67,7 +67,12 @@ export const getAntallOverlappendeDager = (
         dag = dag.add(1, 'day')
     ) {
         if (
-            dag?.isBetween(intervall1.datoFra!, intervall1.datoTil!, null, '[]')
+            dag?.isBetween(
+                intervall1.datoFra!,
+                intervall1.datoTil!,
+                'day',
+                '[]'
+            )
         ) {
             antallOverlappendeDager++;
         }
