@@ -7,8 +7,9 @@ import VanligeSporsmal from './seksjoner/infoark-vanlige-sporsmaal/VanligeSporsm
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
 import { PermitteringContext } from './ContextProvider';
-import { lenker, PermitteringsLenke } from '../utils/menu-lenker-utils';
+
 import FellesSeksjon from './seksjoner/FellesSeksjon';
+import { Seksjon, seksjoner } from './ContextTypes';
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
 
@@ -41,23 +42,19 @@ const Permittering = () => {
                             className={permitteringClassName}
                             content={sistOppdatert}
                         />
-                        {lenker.map(
-                            (seksjon: PermitteringsLenke, index: number) => {
-                                const Component = componentMap[seksjon.id];
+                        {seksjoner.map((seksjon: Seksjon, index: number) => {
+                            const Component = componentMap[seksjon.id];
 
-                                return (
-                                    <Component
-                                        className={permittering.className}
-                                        content={
-                                            permitteringInnhold[seksjon.id]
-                                        }
-                                        navn={seksjon.navn}
-                                        id={seksjon.id}
-                                        key={index}
-                                    />
-                                );
-                            }
-                        )}
+                            return (
+                                <Component
+                                    className={permittering.className}
+                                    content={permitteringInnhold[seksjon.id]}
+                                    navn={seksjon.navn}
+                                    id={seksjon.id}
+                                    key={index}
+                                />
+                            );
+                        })}
                     </div>
                 </div>
             </div>

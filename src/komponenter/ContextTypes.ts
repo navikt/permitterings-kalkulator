@@ -8,6 +8,11 @@ export interface PermitteringInnhold {
     vanligeSpr: [] | SanityBlockTypes[];
 }
 
+export interface Seksjon {
+    id: keyof PermitteringInnhold;
+    navn: string;
+}
+
 export type SettPermitteringInnhold = <
     K extends keyof NonNullable<PermitteringInnhold>,
     T extends SanityBlockTypes
@@ -51,3 +56,26 @@ export const setPermitteringInnholdFraNokkelVerdi = (
             break;
     }
 };
+
+export const seksjoner: Seksjon[] = [
+    {
+        id: 'hvordanPermittere',
+        navn: 'Hvordan permittere ansatte?',
+    },
+    {
+        id: 'narSkalJegUtbetale',
+        navn: 'Lønnsplikt ved permittering',
+    },
+    {
+        id: 'iPermitteringsperioden',
+        navn: 'I permitteringsperioden',
+    },
+    {
+        id: 'informasjonTilAnsatte',
+        navn: 'Informasjon til ansatte',
+    },
+    {
+        id: 'vanligeSpr',
+        navn: 'Vanlige spørsmål',
+    },
+];

@@ -15,7 +15,7 @@ import {
 } from '../../utils/menu-utils';
 import { PermitteringContext } from '../ContextProvider';
 import {
-    lenker,
+    seksjoner,
     PermitteringsLenke,
     setFocusIndex,
 } from '../../utils/menu-lenker-utils';
