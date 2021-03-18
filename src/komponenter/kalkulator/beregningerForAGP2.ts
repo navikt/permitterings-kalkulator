@@ -95,7 +95,7 @@ export const finnInformasjonAGP2 = (
             gjenståendePermitteringsDager:
                 antallDagerFørAGP2Inntreffer -
                 antallBruktePermitteringsdagerIPerioden,
-            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerIPerioden,
+            brukteDagerVedInnføringsdato: antallBruktePermitteringsdagerVedInnføringsdato,
             fraværsdagerVedInnføringsdato:
                 oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
             permitteringsdagerVedInnføringsdato:
