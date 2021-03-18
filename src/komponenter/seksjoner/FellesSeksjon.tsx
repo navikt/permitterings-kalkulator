@@ -11,7 +11,7 @@ interface Props {
     id: string;
 }
 
-const Ipermitteringsperioden = (props: Props) => {
+const FellesSeksjon = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
         <Infoseksjon
@@ -26,4 +26,4 @@ const Ipermitteringsperioden = (props: Props) => {
     );
 };
 
-export default Ipermitteringsperioden;
+export default FellesSeksjon;

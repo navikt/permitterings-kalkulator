@@ -3,15 +3,12 @@ import BEMHelper from '../utils/bem';
 import Banner from './banner/Banner';
 import Meny from './meny/Meny';
 import PermittereAnsatte from './seksjoner/PermittereAnsatte';
-import Ipermitteringsperioden from './seksjoner/Ipermitteringsperioden';
 import VanligeSporsmal from './seksjoner/infoark-vanlige-sporsmaal/VanligeSporsmal';
 import './permittering.less';
 import SistOppdatertInfo from './SistOppdatertInfo';
-import NarSkalJegUtbetaleLonn from './seksjoner/NarSkalJegUtbetaleLonn';
 import { PermitteringContext } from './ContextProvider';
-import InformasjonTilAnsatte from './seksjoner/InformasjonTilAnsatte';
 import { lenker, PermitteringsLenke } from '../utils/menu-lenker-utils';
-
+import FellesSeksjon from './seksjoner/FellesSeksjon';
 export const permitteringClassName = 'permittering';
 const permittering = BEMHelper('permittering');
 
@@ -22,9 +19,9 @@ const Permittering = () => {
 
     const componentMap = {
         hvordanPermittere: PermittereAnsatte,
-        narSkalJegUtbetale: NarSkalJegUtbetaleLonn,
-        iPermitteringsperioden: Ipermitteringsperioden,
-        informasjonTilAnsatte: InformasjonTilAnsatte,
+        narSkalJegUtbetale: FellesSeksjon,
+        iPermitteringsperioden: FellesSeksjon,
+        informasjonTilAnsatte: FellesSeksjon,
         vanligeSpr: VanligeSporsmal,
     };
 
