@@ -167,7 +167,7 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
     );
 });
 
-test('skal telle riktig antall permitteringsdager ved innføringsdato', () => {
+test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdato', () => {
     const innføringsdatoAGP2 = dayjs('2021-06-01');
     const permitteringsstart = dayjs('2021-03-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
@@ -194,7 +194,7 @@ test('skal telle riktig antall permitteringsdager ved innføringsdato', () => {
     expect(informasjonOmAGP2.brukteDager).toEqual(51);
 });
 
-test('skal trekke fra fraværsdager under permittering', () => {
+test('brukteDager skal trekke fra fraværsdager under permittering', () => {
     const innføringsdatoAGP2 = dayjs('2021-06-01');
     const permitteringsstart = dayjs('2021-03-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
@@ -226,7 +226,7 @@ test('skal trekke fra fraværsdager under permittering', () => {
     expect(informasjonOmAGP2.brukteDager).toEqual(30);
 });
 
-test('skal bare telle med fraværsdager som overlapper med permittering', () => {
+test('brukteDager skal bare telle med fraværsdager som overlapper med permittering', () => {
     const innføringsdatoAGP2 = dayjs('2021-06-01');
     const permitteringsstart = dayjs('2020-07-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
@@ -256,4 +256,31 @@ test('skal bare telle med fraværsdager som overlapper med permittering', () => 
         210
     );
     expect(informasjonOmAGP2.brukteDager).toEqual(20);
+});
+
+test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innføringsdato', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const start18mndsperiode = finnDato18MndTilbake(innføringsdatoAGP2);
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: start18mndsperiode.subtract(20, 'days'),
+                datoTil: start18mndsperiode.add(20, 'days'),
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = innføringsdatoAGP2.add(100, 'days');
+    const tidslinje = konstruerStatiskTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+    expect(informasjonOmAGP2.brukteDager).toEqual(21);
 });
