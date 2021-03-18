@@ -137,3 +137,32 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
     );
     expect(informasjonOmAGP2.sluttDato).toEqual(dayjs('2021-09-14'));
 });
+
+test('skal håndtere løpende permittering etter innføringsdato', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: dayjs('2021-07-01'),
+                datoTil: dayjs('2022-12-01'),
+                erLøpende: true,
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = dayjs('2021-03-11');
+    const tidslinje = konstruerStatiskTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+    expect(informasjonOmAGP2.sluttDato).toEqual(
+        dayjs('2021-07-01').add(210, 'days')
+    );
+});
