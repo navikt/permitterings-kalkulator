@@ -7,6 +7,7 @@ import {
 import dayjs from 'dayjs';
 import { finnInformasjonAGP2 } from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 configureDayJS();
 
@@ -179,7 +180,7 @@ test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdat
         ],
         andreFraværsperioder: [],
     };
-    const dagensDato = permitteringsstart.add(100, 'days');
+    const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
     const tidslinje = konstruerStatiskTidslinje(
         allePermitteringerOgFravær,
         dagensDato
@@ -211,7 +212,7 @@ test('brukteDager skal trekke fra fraværsdager under permittering', () => {
             },
         ],
     };
-    const dagensDato = permitteringsstart.add(100, 'days');
+    const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
     const tidslinje = konstruerStatiskTidslinje(
         allePermitteringerOgFravær,
         dagensDato
@@ -243,7 +244,7 @@ test('brukteDager skal bare telle med fraværsdager som overlapper med permitter
             },
         ],
     };
-    const dagensDato = permitteringsstart.add(100, 'days');
+    const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
     const tidslinje = konstruerStatiskTidslinje(
         allePermitteringerOgFravær,
         dagensDato
@@ -270,10 +271,14 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         ],
         andreFraværsperioder: [],
     };
-    const dagensDato = innføringsdatoAGP2.add(100, 'days');
+    const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
     const tidslinje = konstruerStatiskTidslinje(
         allePermitteringerOgFravær,
         dagensDato
+    );
+    console.log(
+        formaterDato(tidslinje[0].dato),
+        formaterDato(tidslinje[tidslinje.length - 1].dato)
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
