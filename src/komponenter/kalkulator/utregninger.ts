@@ -5,6 +5,7 @@ import {
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
@@ -29,7 +30,7 @@ export const sumPermitteringerOgFravær = (
     let permittert = 0;
     let antallDagerFravær = 0;
     let gjenståendeDager = 0;
-    statusAlleDager18mndLsite.forEach((dag) => {
+    statusAlleDager18mndLsite.forEach((dag, index) => {
         if (dag.kategori === 0) {
             permittert++;
         }
@@ -241,7 +242,7 @@ const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
     perioder.forEach((periode) => {
         if (
             datoIntervallErDefinert(periode) &&
-            dato.isBetween(periode.datoFra!, periode.datoTil!, null, '[]')
+            dato.isBetween(periode.datoFra!, periode.datoTil!, 'day', '[]')
         ) {
             finnes = true;
         }
