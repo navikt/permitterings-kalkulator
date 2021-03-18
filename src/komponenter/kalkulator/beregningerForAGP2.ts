@@ -251,7 +251,7 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     );
 };
 
-const finnBruktePermitteringsDager = (
+export const finnBruktePermitteringsDager = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs
 ): number => {
