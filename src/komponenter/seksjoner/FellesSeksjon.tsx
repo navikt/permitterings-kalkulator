@@ -1,22 +1,22 @@
 import React from 'react';
-import BEMHelper from '../../../utils/bem';
-import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
-import SanityInnhold from '../../../sanity-blocks/SanityInnhold';
-import Infoseksjon from '../../infoseksjon/Infoseksjon';
+import BEMHelper from '../../utils/bem';
+import { SanityBlockTypes } from '../../sanity-blocks/sanityTypes';
+import SanityInnhold from '../../sanity-blocks/SanityInnhold';
+import Infoseksjon from '../infoseksjon/Infoseksjon';
 
 interface Props {
     className: string;
     content: SanityBlockTypes[];
-    overskrift: string;
+    navn: string;
     id: string;
 }
 
-const Ipermitteringsperioden = (props: Props) => {
+const FellesSeksjon = (props: Props) => {
     const cls = BEMHelper(props.className);
     return (
         <Infoseksjon
             className={props.className}
-            overskrift={props.overskrift}
+            overskrift={props.navn}
             id={props.id}
         >
             <div className={cls.element('avsnitt')}>
@@ -26,4 +26,4 @@ const Ipermitteringsperioden = (props: Props) => {
     );
 };
 
-export default Ipermitteringsperioden;
+export default FellesSeksjon;

@@ -1,30 +1,31 @@
 import { Dispatch, SetStateAction } from 'react';
+import { PermitteringInnhold } from '../komponenter/ContextTypes';
 
 export interface PermitteringsLenke {
-    hopplenke: string;
-    lenketekst: string;
+    id: keyof PermitteringInnhold;
+    navn: string;
 }
 
 export const lenker: PermitteringsLenke[] = [
     {
-        hopplenke: '#hvordanPermittere',
-        lenketekst: 'Hvordan permittere ansatte?',
+        id: 'hvordanPermittere',
+        navn: 'Hvordan permittere ansatte?',
     },
     {
-        hopplenke: '#narSkalJegUtbetaleLonn',
-        lenketekst: 'Lønnsplikt ved permittering',
+        id: 'narSkalJegUtbetale',
+        navn: 'Lønnsplikt ved permittering',
     },
     {
-        hopplenke: '#permitteringsperioden',
-        lenketekst: 'I permitteringsperioden',
+        id: 'iPermitteringsperioden',
+        navn: 'I permitteringsperioden',
     },
     {
-        hopplenke: '#infotilansatte',
-        lenketekst: 'Informasjon til Ansatte',
+        id: 'informasjonTilAnsatte',
+        navn: 'Informasjon til ansatte',
     },
     {
-        hopplenke: '#vanligSpr',
-        lenketekst: 'Vanlige spørsmål',
+        id: 'vanligeSpr',
+        navn: 'Vanlige spørsmål',
     },
 ];
 
@@ -32,7 +33,7 @@ const scrollHeight = (): number => window.scrollY || window.pageYOffset;
 
 const hoppLenkerScrollheight = (): number[] =>
     lenker
-        .map((section) => document.getElementById(section.hopplenke.slice(1)))
+        .map((section) => document.getElementById(section.id))
         .map((sectionNode) => (sectionNode ? sectionNode.offsetTop : 0));
 
 export const setFocusIndex = (

@@ -144,6 +144,7 @@ const veilederpanelSerializer = (panel: VeilederPanelNode) => {
 const lesmerSerializer = (panel: LesMerNode) => {
     return panel.node.innhold ? (
         <Lesmerpanel
+            style={{ paddingTop: '0' }}
             intro={panel.node.introduksjonstekst || ''}
             apneTekst={panel.node.apnetekst || ''}
             lukkTekst={panel.node.lukktekst || ''}

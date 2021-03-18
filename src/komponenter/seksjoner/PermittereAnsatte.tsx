@@ -1,16 +1,16 @@
 import React from 'react';
-import BEMHelper from '../../../utils/bem';
+import BEMHelper from '../../utils/bem';
 import KnappBase from 'nav-frontend-knapper';
-import Tekstseksjon from '../../infoseksjon/Tekstseksjon';
-import { skrivTilMalingBesokerSideGaTilSkjema } from '../../../utils/amplitudeUtils';
-import { SanityBlockTypes } from '../../../sanity-blocks/sanityTypes';
-import SanityBlocktype from '../../../sanity-blocks/SanityBlocktype';
-import Infoseksjon from '../../infoseksjon/Infoseksjon';
+import Tekstseksjon from '../infoseksjon/Tekstseksjon';
+import { skrivTilMalingBesokerSideGaTilSkjema } from '../../utils/amplitudeUtils';
+import { SanityBlockTypes } from '../../sanity-blocks/sanityTypes';
+import SanityBlocktype from '../../sanity-blocks/SanityBlocktype';
+import Infoseksjon from '../infoseksjon/Infoseksjon';
 
 interface Props {
     className: string;
     content: SanityBlockTypes[];
-    overskrift: string;
+    navn: string;
     id: string;
 }
 
@@ -46,7 +46,7 @@ const PermittereAnsatte = (props: Props) => {
     return (
         <Infoseksjon
             className={props.className}
-            overskrift={props.overskrift}
+            overskrift={props.navn}
             id={props.id}
         >
             <div className={cls.element('avsnitt')}>
