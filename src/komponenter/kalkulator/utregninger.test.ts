@@ -258,7 +258,7 @@ describe('Tester for utregninger.ts', () => {
             dayjs()
         );
         expect(oversikt.dagerAnnetFravær).toBe(2); // Burde være 2? Vises som to i selve komponenten.
-        expect(oversikt.dagerGjensående).toBe(646); // Hm ?
+        expect(oversikt.dagerGjenstående).toBe(646); // Hm ?
         expect(oversikt.dagerPermittert).toBe(67); // 65?
     });
 

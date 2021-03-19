@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import './Utregningstekst.less';
 import {
-    ArbeidsgiverPeriode2Resulatet,
+    Permitteringssituasjon,
     InformasjonOmAGP2Status,
 } from '../../beregningerForAGP2';
 import { Dayjs } from 'dayjs';
@@ -180,19 +180,19 @@ const genererTekst = (
 ) => {
     if (info.sluttDato) {
         switch (info.type) {
-            case ArbeidsgiverPeriode2Resulatet.NÅDD_AGP2:
+            case Permitteringssituasjon.NÅDD_AGP2:
                 return tekstNådd30UkerVedInnføringsdato(
                     info,
                     tidslinje,
                     innføringsdatoAGP2
                 );
-            case ArbeidsgiverPeriode2Resulatet.LØPENDE_IKKE_NÅDD_AGP2:
+            case Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2:
                 return tekstIkkeNåddAGP2Løpende(
                     info,
                     tidslinje,
                     info.sluttDato
                 );
-            case ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
+            case Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
                 return tekstIkkeNåddAGP2IkkeLøpende(
                     info,
                     tidslinje,

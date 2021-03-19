@@ -45,8 +45,9 @@ export const sumPermitteringerOgFravær = (
 
     const oversikt: OversiktOverBrukteOgGjenværendeDager = {
         dagerPermittert: permittert,
-        dagerGjensående: gjenståendeDager,
+        dagerGjenstående: gjenståendeDager,
         dagerAnnetFravær: antallDagerFravær,
+        dagerBrukt: permittert - antallDagerFravær,
     };
     return oversikt;
 };
