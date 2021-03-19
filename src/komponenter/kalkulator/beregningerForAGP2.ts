@@ -1,5 +1,5 @@
 import {
-    datointervallKategori,
+    DatointervallKategori,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
@@ -283,15 +283,15 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
             dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
             dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
         ) {
-            if (dag.kategori === datointervallKategori.PERMITTERT) {
+            if (dag.kategori === DatointervallKategori.PERMITTERT) {
                 permittert++;
             }
-            if (dag.kategori === datointervallKategori.ARBEIDER) {
+            if (dag.kategori === DatointervallKategori.ARBEIDER) {
                 gjenståendeDager++;
             }
             if (
                 dag.kategori ===
-                datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+                DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
             ) {
                 permittert++;
                 antallDagerFravær++;
@@ -345,7 +345,7 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     if (
         indeksITidslinje > 0 &&
         tidslinje[indeksITidslinje].kategori !==
-            datointervallKategori.PERMITTERT
+            DatointervallKategori.PERMITTERT
     ) {
         return indeksITidslinje;
     }
@@ -357,7 +357,7 @@ const finnPermitteringsDatoEtterGittDato = (
 ) => {
     return tidslinje.find(
         (datoMedKategori) =>
-            datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
+            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
             datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
     );
 };
@@ -366,5 +366,5 @@ const erPermittertVedDato = (tidslinje: DatoMedKategori[], dato: Dayjs) => {
     const status = tidslinje.find((datoMedKategori) =>
         datoMedKategori.dato.isSame(dato, 'day')
     );
-    return status?.kategori === datointervallKategori.PERMITTERT;
+    return status?.kategori === DatointervallKategori.PERMITTERT;
 };

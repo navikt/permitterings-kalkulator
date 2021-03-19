@@ -1,11 +1,11 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatointervallKategori,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import { Dayjs } from 'dayjs';
-import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
@@ -245,16 +245,19 @@ export const konstruerStatiskTidslinje = (
 };
 
 const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
-    let finnes = false;
-    perioder.forEach((periode) => {
-        if (
-            datoIntervallErDefinert(periode) &&
-            dato.isBetween(periode.datoFra!, periode.datoTil!, 'day', '[]')
-        ) {
-            finnes = true;
-        }
-    });
-    return finnes;
+    return !!perioder.find((periode) => finnesIIntervall(dato, periode));
+};
+
+const finnesIIntervall = (dato: Dayjs, periode: DatoIntervall): boolean => {
+    if (!periode.datoFra) {
+        return false;
+    } else if (periode.erLøpende) {
+        return dato.isSameOrAfter(periode.datoFra, 'date');
+    } else if (!periode.datoTil) {
+        return false;
+    } else {
+        return dato.isBetween(periode.datoFra, periode.datoTil, 'date', '[]');
+    }
 };
 
 const finneKategori = (
@@ -271,18 +274,18 @@ const finneKategori = (
     );
     if (erFraVærsDato && erPermittert) {
         return {
-            kategori: 2,
+            kategori: DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG,
             dato: dato,
         };
     }
     if (erPermittert) {
         return {
-            kategori: 0,
+            kategori: DatointervallKategori.PERMITTERT,
             dato: dato,
         };
     }
     return {
-        kategori: 1,
+        kategori: DatointervallKategori.ARBEIDER,
         dato: dato,
     };
 };

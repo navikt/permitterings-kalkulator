@@ -1,4 +1,4 @@
-import { datointervallKategori, DatoMedKategori } from '../typer';
+import { DatointervallKategori, DatoMedKategori } from '../typer';
 import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
@@ -8,7 +8,7 @@ import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
-    kategori: datointervallKategori;
+    kategori: DatointervallKategori;
     grenserTilFraværHøyre?: boolean;
     grenserTilFraværVenstre?: boolean;
     key: number;
@@ -177,7 +177,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
     return fargePerioder;
 };
 
-const finnFarge = (kategori: datointervallKategori) => {
+const finnFarge = (kategori: DatointervallKategori) => {
     if (kategori === 0) {
         return '#5EAEC7';
     }
