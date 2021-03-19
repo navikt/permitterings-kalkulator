@@ -144,7 +144,8 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
         permitteringer: [
             {
                 datoFra: dayjs('2021-02-16'),
-                datoTil: dayjs('2021-06-01'),
+                datoTil: undefined,
+                erLøpende: true,
             },
             {
                 datoFra: dayjs('2019-11-20'),
@@ -317,29 +318,4 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         210
     );
     expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(21);
-});
-
-test('test', () => {
-    const innføringsdatoAGP2 = dayjs('2021-06-01');
-    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
-        permitteringer: [
-            {
-                datoFra: dayjs('2021-04-14'),
-                datoTil: undefined,
-                erLøpende: true,
-            },
-        ],
-        andreFraværsperioder: [],
-    };
-    const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
-        allePermitteringerOgFravær,
-        dagensDato
-    );
-
-    const obj = finnOversiktOverPermitteringOgFraværGitt18mnd(
-        dayjs('2021-11-09'),
-        tidslinje
-    );
-    expect(obj.dagerBrukt).toEqual(210);
 });

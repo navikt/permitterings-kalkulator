@@ -188,8 +188,12 @@ const finnDatoAGP2LøpendePermittering = (
         tidslinje,
         potensiellDatoForAGP2
     );
+    const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
 
-    while (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
+    while (
+        antallDagerPermittert < antallDagerFørAGP2Inntreffer &&
+        potensiellDatoForAGP2.isSameOrBefore(sisteDagITidslinjen)
+    ) {
         const antallDagerTilNesteGjett =
             antallDagerFørAGP2Inntreffer - antallDagerPermittert;
         potensiellDatoForAGP2 = potensiellDatoForAGP2.add(
