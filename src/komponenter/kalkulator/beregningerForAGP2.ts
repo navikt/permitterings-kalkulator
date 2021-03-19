@@ -199,7 +199,7 @@ export const finnDatoForTidligste18mndsPeriode = (
     return potensiellSisteDatoIIntervall;
 };
 
-const finnOversiktOverPermitteringOgFraværGitt18mnd = (
+export const finnOversiktOverPermitteringOgFraværGitt18mnd = (
     sisteDatoIAktuellPeriode: Dayjs,
     tidslinje: DatoMedKategori[]
 ): OversiktOverBrukteOgGjenværendeDager => {

@@ -19,38 +19,6 @@ export const antallUkerRundetOpp = (antallDager: number) => {
     return Math.ceil(antallDager / 7);
 };
 
-export const sumPermitteringerOgFravær = (
-    allePErmitteringerOgFraværsperioder: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs
-): OversiktOverBrukteOgGjenværendeDager => {
-    const statusAlleDager18mndLsite = konstruerStatiskTidslinje(
-        allePErmitteringerOgFraværsperioder,
-        dagensDato
-    );
-    let permittert = 0;
-    let antallDagerFravær = 0;
-    let gjenståendeDager = 0;
-    statusAlleDager18mndLsite.forEach((dag) => {
-        if (dag.kategori === 0) {
-            permittert++;
-        }
-        if (dag.kategori === 1) {
-            gjenståendeDager++;
-        }
-        if (dag.kategori === 2) {
-            // TODO i finnOversiktOverPermitteringOgFraværGitt18mnd er implemtert annerledes. Fiks denne eller slett.
-            antallDagerFravær++;
-        }
-    });
-
-    const oversikt: OversiktOverBrukteOgGjenværendeDager = {
-        dagerPermittert: permittert,
-        dagerGjensående: gjenståendeDager,
-        dagerAnnetFravær: antallDagerFravær,
-    };
-    return oversikt;
-};
-
 export const getAntallOverlappendeDager = (
     intervall1: DatoIntervall,
     intervall2: DatoIntervall
@@ -221,7 +189,7 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     );
 };
 
-const finnSluttDatoPåTidslinje = (
+export const finnSluttDatoPåTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ) => {
@@ -253,13 +221,15 @@ const finnSluttDatoPåTidslinje = (
 
 export const konstruerStatiskTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs
+    dagensDato: Dayjs,
+    sisteDatoVistPåTidslinjen: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-    const sluttDatoITidslinje = finnSluttDatoPåTidslinje(
-        allePermitteringerOgFravær,
-        dagensDato
-    );
+
+    const sluttDatoITidslinje = sisteDatoVistPåTidslinjen
+        ? sisteDatoVistPåTidslinjen
+        : finnSluttDatoPåTidslinje(allePermitteringerOgFravær, dagensDato);
+
     const antallObjektITidslinje = antallDagerGått(
         finnGrenserFor18MNDPeriode(dagensDato).datoFra,
         sluttDatoITidslinje
