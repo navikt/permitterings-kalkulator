@@ -3,7 +3,7 @@ import { Normaltekst } from 'nav-frontend-typografi';
 
 export const Fargeforklaringer = () => {
     return (
-        <div className={'kalkulator__tidslinje-farge-forklaring'}>
+        <div aria-hidden className={'kalkulator__tidslinje-farge-forklaring'}>
             <div className={'kalkulator__tidslinje-farge-forklaring-container'}>
                 <Normaltekst>Permittert</Normaltekst>
                 <div className={'kalkulator__tidslinje-farge permittert'} />
