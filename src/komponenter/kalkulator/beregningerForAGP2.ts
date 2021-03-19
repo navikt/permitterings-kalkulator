@@ -56,7 +56,7 @@ const getInformasjonOmAGP2HvisAGP2ErNådd = (
     gjenståendePermitteringsDager: number;
     permittertVedInnføringsdato: boolean;
 } => {
-    const erPermittertVedInnføringsdato = erPermittertVedInnføringsdatoAvAGP2(
+    const erPermittertVedInnføringsdato = erPermittertVedDato(
         tidslinje,
         innføringsdatoAGP2
     );
@@ -362,12 +362,9 @@ const finnPermitteringsDatoEtterGittDato = (
     );
 };
 
-const erPermittertVedInnføringsdatoAvAGP2 = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs
-) => {
+const erPermittertVedDato = (tidslinje: DatoMedKategori[], dato: Dayjs) => {
     const status = tidslinje.find((datoMedKategori) =>
-        datoMedKategori.dato.isSame(innføringsdatoAGP2, 'day')
+        datoMedKategori.dato.isSame(dato, 'day')
     );
     return status?.kategori === datointervallKategori.PERMITTERT;
 };
