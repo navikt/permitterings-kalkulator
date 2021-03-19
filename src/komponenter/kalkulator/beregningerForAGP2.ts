@@ -9,6 +9,7 @@ import {
     finnDato18MndTilbake,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export enum Permitteringssituasjon {
     NÅDD_AGP2 = 'NÅDD_AGP2',
@@ -177,7 +178,7 @@ export const finnInformasjonAGP2 = (
     };
 };
 
-export const finnDatoAGP2LøpendePermittering = (
+const finnDatoAGP2LøpendePermittering = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
@@ -188,7 +189,6 @@ export const finnDatoAGP2LøpendePermittering = (
         potensiellDatoForAGP2
     );
 
-    let antallDagerForskyving = 0;
     while (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         const antallDagerTilNesteGjett =
             antallDagerFørAGP2Inntreffer - antallDagerPermittert;
@@ -196,14 +196,10 @@ export const finnDatoAGP2LøpendePermittering = (
             antallDagerTilNesteGjett,
             'days'
         );
-        antallDagerForskyving += antallDagerTilNesteGjett;
-
-        const dagerPermittertUtenLøpendePermittering = finnBruktePermitteringsDager(
+        antallDagerPermittert = finnBruktePermitteringsDager(
             tidslinje,
             potensiellDatoForAGP2
         );
-        antallDagerPermittert =
-            dagerPermittertUtenLøpendePermittering + antallDagerForskyving;
     }
     return potensiellDatoForAGP2.add(1, 'day');
 };
@@ -271,7 +267,7 @@ export const finnDatoForTidligste18mndsPeriode = (
     return potensiellSisteDatoIIntervall;
 };
 
-const finnOversiktOverPermitteringOgFraværGitt18mnd = (
+export const finnOversiktOverPermitteringOgFraværGitt18mnd = (
     sisteDatoIAktuellPeriode: Dayjs,
     tidslinje: DatoMedKategori[]
 ): OversiktOverBrukteOgGjenværendeDager => {

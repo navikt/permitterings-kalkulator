@@ -167,8 +167,8 @@ export const finnGrenserFor18MNDPeriode = (
     dagensDato: Dayjs
 ): DatoIntervall => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
-    const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
-    const maksGrenseFramoverITid = dagensDato.add(112, 'days');
+    const maksGrenseIBakoverITid = bakover18mnd.subtract(256, 'days');
+    const maksGrenseFramoverITid = dagensDato.add(512, 'days');
 
     return {
         datoFra: maksGrenseIBakoverITid,

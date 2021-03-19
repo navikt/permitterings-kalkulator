@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import {
     finnBruktePermitteringsDager,
     finnInformasjonAGP2,
+    finnOversiktOverPermitteringOgFraværGitt18mnd,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
 
@@ -116,7 +117,8 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
         permitteringer: [
             {
                 datoFra: dayjs('2021-04-14'),
-                datoTil: dayjs('2021-06-01'),
+                datoTil: undefined,
+                erLøpende: true,
             },
         ],
         andreFraværsperioder: [],
@@ -172,7 +174,7 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
         permitteringer: [
             {
                 datoFra: dayjs('2021-07-01'),
-                datoTil: dayjs('2022-12-01'),
+                datoTil: undefined,
                 erLøpende: true,
             },
         ],
@@ -315,4 +317,29 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         210
     );
     expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(21);
+});
+
+test('test', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: dayjs('2021-04-14'),
+                datoTil: undefined,
+                erLøpende: true,
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = dayjs('2021-03-11');
+    const tidslinje = konstruerStatiskTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
+
+    const obj = finnOversiktOverPermitteringOgFraværGitt18mnd(
+        dayjs('2021-11-09'),
+        tidslinje
+    );
+    expect(obj.dagerBrukt).toEqual(210);
 });
