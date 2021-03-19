@@ -144,38 +144,37 @@ export const finnInformasjonAGP2 = (
         brukteDagerVedInnføringsdato:
             oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
     };
+
+    let dataSpesifikkForSituasjon;
     switch (situasjon) {
         case Permitteringssituasjon.NÅDD_AGP2:
-            return {
-                ...dataVedInnføringsdato,
-                type: Permitteringssituasjon.NÅDD_AGP2,
-                ...getInformasjonOmAGP2HvisAGP2ErNådd(
-                    tidslinje,
-                    innføringsdatoAGP2
-                ),
-            };
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2ErNådd(
+                tidslinje,
+                innføringsdatoAGP2
+            );
+            break;
         case Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2:
-            return {
-                ...dataVedInnføringsdato,
-                type: Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2,
-                ...getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende(
-                    tidslinje,
-                    innføringsdatoAGP2,
-                    antallDagerFørAGP2Inntreffer
-                ),
-            };
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer
+            );
+            break;
         case Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
-            return {
-                ...dataVedInnføringsdato,
-                type: Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
-                ...getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende(
-                    tidslinje,
-                    innføringsdatoAGP2,
-                    antallDagerFørAGP2Inntreffer,
-                    dagensDato
-                ),
-            };
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer,
+                dagensDato
+            );
+            break;
     }
+
+    return {
+        type: situasjon,
+        ...dataVedInnføringsdato,
+        ...dataSpesifikkForSituasjon,
+    };
 };
 
 export const finnDatoAGP2LøpendePermittering = (
