@@ -221,14 +221,48 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     );
 };
 
+const finnSluttDatoPåTidslinje = (
+    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
+    dagensDato: Dayjs
+) => {
+    let senesteDatoPåTidslinje = finnGrenserFor18MNDPeriode(dagensDato).datoTil;
+    if (
+        allePermitteringerOgFravær.permitteringer[0] &&
+        allePermitteringerOgFravær.permitteringer[0].datoFra
+    ) {
+        let tempSistePermitteringsStart =
+            allePermitteringerOgFravær.permitteringer[0].datoFra;
+        allePermitteringerOgFravær.permitteringer.forEach(
+            (permitteringsperiode) => {
+                if (permitteringsperiode.datoFra?.isAfter('day')) {
+                    tempSistePermitteringsStart = permitteringsperiode.datoFra;
+                }
+            }
+        );
+        const sisteDatoIsisteMulige18mndsPeriode = finnDato18MndFram(
+            tempSistePermitteringsStart!
+        );
+        senesteDatoPåTidslinje = sisteDatoIsisteMulige18mndsPeriode.isAfter(
+            senesteDatoPåTidslinje!
+        )
+            ? sisteDatoIsisteMulige18mndsPeriode
+            : senesteDatoPåTidslinje;
+    }
+    return senesteDatoPåTidslinje;
+};
+
 export const konstruerStatiskTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
+    const sluttDatoITidslinje = finnSluttDatoPåTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
     const antallObjektITidslinje = antallDagerGått(
         finnGrenserFor18MNDPeriode(dagensDato).datoFra,
-        finnGrenserFor18MNDPeriode(dagensDato).datoTil
+        sluttDatoITidslinje
     );
     const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
