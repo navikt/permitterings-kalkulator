@@ -26,13 +26,6 @@ export interface InformasjonOmAGP2Status {
     permittertVedInnføringsdato?: boolean;
 }
 
-/*
-   Del opp finnInformasjonAGP2:
-
-   én funksjon returneer ArbeidsgiverPeriode2Resulatet
-   to/tre funkjosner som tar hånd om hvert case
- */
-
 export const finnPermitteringssituasjon = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
