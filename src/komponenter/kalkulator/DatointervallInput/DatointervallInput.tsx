@@ -1,10 +1,9 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
-import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 
 interface Props {
@@ -15,8 +14,6 @@ interface Props {
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
-    const { innføringsdatoAGP2 } = useContext(PermitteringContext);
-
     const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
     const erLøpende = !!datoIntervall.erLøpende;
 
@@ -24,39 +21,39 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
         setDatoIntervall({
             ...datoIntervall,
             datoTil: dato,
+            erLøpende: false,
         });
 
     const onFraDatoChange = (event: { currentTarget: { value: Dayjs } }) => {
         const eventDato: Dayjs = event.currentTarget.value;
 
-        const nyttDatoIntervall = !!datoIntervall.datoTil
-            ? {
-                  datoFra: eventDato,
-              }
-            : {
-                  datoFra: eventDato,
-                  datoTil: eventDato.add(1, 'day'),
-              };
-
-        setDatoIntervall({
-            ...datoIntervall,
-            ...nyttDatoIntervall,
-        });
+        if (!datoIntervall.datoTil && !datoIntervall.erLøpende) {
+            setDatoIntervall({
+                ...datoIntervall,
+                datoFra: eventDato,
+                datoTil: eventDato.add(1, 'day'),
+            });
+        } else {
+            setDatoIntervall({
+                ...datoIntervall,
+                datoFra: eventDato,
+            });
+        }
     };
 
     const onErLøpendeChange = () => {
-        const nyState = erLøpende
-            ? {
-                  erLøpende: false,
-              }
-            : {
-                  erLøpende: true,
-                  datoTil: innføringsdatoAGP2,
-              };
-        setDatoIntervall({
-            ...datoIntervall,
-            ...nyState,
-        });
+        if (erLøpende) {
+            setDatoIntervall({
+                ...datoIntervall,
+                erLøpende: false,
+            });
+        } else {
+            setDatoIntervall({
+                ...datoIntervall,
+                erLøpende: true,
+                datoTil: undefined,
+            });
+        }
     };
 
     return (

@@ -216,9 +216,10 @@ export const finnSisteDato = (
 };
 
 export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
+    const { datoFra, datoTil, erLøpende } = datoIntervall;
     return (
-        datoIntervall.datoFra !== undefined &&
-        datoIntervall.datoTil !== undefined
+        (datoFra !== undefined && datoTil !== undefined) ||
+        (datoFra !== undefined && erLøpende)
     );
 };
 
