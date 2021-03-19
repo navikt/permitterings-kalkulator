@@ -51,25 +51,18 @@ export const finnPermitteringssituasjon = (
 const getInformasjonOmAGP2HvisAGP2ErNådd = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs
-): InformasjonOmAGP2Status => {
-    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
-        innføringsdatoAGP2,
-        tidslinje
-    );
+): {
+    sluttDato: Dayjs;
+    gjenståendePermitteringsDager: number;
+    permittertVedInnføringsdato: boolean;
+} => {
     const erPermittertVedInnføringsdato = erPermittertVedInnføringsdatoAvAGP2(
         tidslinje,
         innføringsdatoAGP2
     );
     return {
         sluttDato: innføringsdatoAGP2,
-        brukteDagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
         gjenståendePermitteringsDager: 0,
-        type: Permitteringssituasjon.NÅDD_AGP2,
-        fraværsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
-        permitteringsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
         permittertVedInnføringsdato: erPermittertVedInnføringsdato,
     };
 };
@@ -78,7 +71,10 @@ const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-): InformasjonOmAGP2Status => {
+): {
+    sluttDato: Dayjs;
+    gjenståendePermitteringsDager: number;
+} => {
     const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
         innføringsdatoAGP2,
         tidslinje
@@ -90,16 +86,9 @@ const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende = (
     );
     return {
         sluttDato: datoAGP2,
-        brukteDagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
         gjenståendePermitteringsDager:
             antallDagerFørAGP2Inntreffer -
             oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
-        type: Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2,
-        permitteringsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
-        fraværsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
     };
 };
 
@@ -108,16 +97,15 @@ const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende = (
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number,
     dagensDato: Dayjs
-): InformasjonOmAGP2Status => {
+): {
+    sluttDato: Dayjs | undefined;
+    gjenståendePermitteringsDager: number;
+} => {
     const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
         tidslinje,
         innføringsdatoAGP2,
         dagensDato,
         antallDagerFørAGP2Inntreffer
-    );
-    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
-        innføringsdatoAGP2,
-        tidslinje
     );
     const antallBruktePermitteringsdagerIPerioden = sisteDatoIPerioden
         ? finnBruktePermitteringsDager(tidslinje, sisteDatoIPerioden)
@@ -127,13 +115,6 @@ const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende = (
         gjenståendePermitteringsDager:
             antallDagerFørAGP2Inntreffer -
             antallBruktePermitteringsdagerIPerioden,
-        brukteDagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
-        fraværsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
-        permitteringsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
-        type: Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
     };
 };
 
@@ -150,25 +131,50 @@ export const finnInformasjonAGP2 = (
         antallDagerFørAGP2Inntreffer,
         erLøpende
     );
+    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
+        innføringsdatoAGP2,
+        tidslinje
+    );
+
+    const dataVedInnføringsdato = {
+        fraværsdagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+        permitteringsdagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
+        brukteDagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
+    };
     switch (situasjon) {
         case Permitteringssituasjon.NÅDD_AGP2:
-            return getInformasjonOmAGP2HvisAGP2ErNådd(
-                tidslinje,
-                innføringsdatoAGP2
-            );
+            return {
+                ...dataVedInnføringsdato,
+                type: Permitteringssituasjon.NÅDD_AGP2,
+                ...getInformasjonOmAGP2HvisAGP2ErNådd(
+                    tidslinje,
+                    innføringsdatoAGP2
+                ),
+            };
         case Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2:
-            return getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer
-            );
+            return {
+                ...dataVedInnføringsdato,
+                type: Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2,
+                ...getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringErLøpende(
+                    tidslinje,
+                    innføringsdatoAGP2,
+                    antallDagerFørAGP2Inntreffer
+                ),
+            };
         case Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
-            return getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer,
-                dagensDato
-            );
+            return {
+                ...dataVedInnføringsdato,
+                type: Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
+                ...getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende(
+                    tidslinje,
+                    innføringsdatoAGP2,
+                    antallDagerFørAGP2Inntreffer,
+                    dagensDato
+                ),
+            };
     }
 };
 
