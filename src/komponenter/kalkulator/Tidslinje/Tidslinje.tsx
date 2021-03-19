@@ -4,14 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import {
-    antallDagerGått,
-    finnDato18MndFram,
-    finnDato18MndTilbake,
-    finnGrenserFor18MNDPeriode,
-    finnSluttDatoPåTidslinje,
-    konstruerTidslinje,
-} from '../utregninger';
+import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,

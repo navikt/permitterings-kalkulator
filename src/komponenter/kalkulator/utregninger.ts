@@ -2,10 +2,8 @@ import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
     DatoMedKategori,
-    OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
 import { Dayjs } from 'dayjs';
-import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {

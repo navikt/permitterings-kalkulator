@@ -1,9 +1,4 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -17,7 +12,6 @@ import {
     finnDato18MndTilbake,
     kuttAvDatoIntervallInnefor18mnd,
 } from '../utregninger';
-import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { finnOversiktOverPermitteringOgFraværGitt18mnd } from '../beregningerForAGP2';
 
@@ -37,7 +31,6 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         andreFraværsperioder: [],
         permitteringer: [],
     });
-    const { dagensDato } = useContext(PermitteringContext);
 
     const [
         resultatUtregningAv18mndsPeriode,

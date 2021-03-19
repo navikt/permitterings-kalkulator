@@ -1,8 +1,4 @@
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-    OversiktOverBrukteOgGjenværendeDager,
-} from './typer';
+import { DatoIntervall } from './typer';
 import {
     antallDagerGått,
     finnGrenserFor18MNDPeriode,
