@@ -10,7 +10,7 @@ import {
     finnDato18MndTilbake,
     finnGrenserFor18MNDPeriode,
     finnSluttDatoPåTidslinje,
-    konstruerStatiskTidslinje,
+    konstruerTidslinje,
 } from '../utregninger';
 import './Tidslinje.less';
 import {

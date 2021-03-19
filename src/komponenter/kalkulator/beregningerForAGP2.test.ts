@@ -2,7 +2,7 @@ import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
-    konstruerStatiskTidslinje,
+    konstruerTidslinje,
 } from './utregninger';
 import dayjs from 'dayjs';
 import {
@@ -25,7 +25,7 @@ test('dato for AGP2-grense', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -62,7 +62,7 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -122,7 +122,7 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -152,7 +152,7 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -179,7 +179,7 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -211,7 +211,7 @@ test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdat
         andreFraværsperioder: [],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -243,7 +243,7 @@ test('brukteDager skal trekke fra fraværsdager under permittering', () => {
         ],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -275,7 +275,7 @@ test('brukteDager skal bare telle med fraværsdager som overlapper med permitter
         ],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );
@@ -302,7 +302,7 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         andreFraværsperioder: [],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato
     );

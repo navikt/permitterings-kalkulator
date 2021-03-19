@@ -219,7 +219,7 @@ export const finnSluttDatoPåTidslinje = (
     return senesteDatoPåTidslinje;
 };
 
-export const konstruerStatiskTidslinje = (
+export const konstruerTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
     sisteDatoVistPåTidslinjen: Dayjs

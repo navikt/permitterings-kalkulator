@@ -11,7 +11,7 @@ import {
     finnGrenserFor18MNDPeriode,
     finnSluttDatoPåTidslinje,
     getDefaultPermitteringsperiode,
-    konstruerStatiskTidslinje,
+    konstruerTidslinje,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -48,7 +48,7 @@ const Kalkulator = () => {
 
     useEffect(() => {
         setTidslinjeObjekter(
-            konstruerStatiskTidslinje(
+            konstruerTidslinje(
                 allePermitteringerOgFraværesPerioder,
                 dagensDato,
                 sisteDatoVistPåTidslinje!
