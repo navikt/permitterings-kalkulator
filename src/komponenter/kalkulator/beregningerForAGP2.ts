@@ -301,7 +301,7 @@ const finnOversiktOverPermitteringOgFraværGitt18mnd = (
     });
     return {
         dagerPermittert: permittert,
-        dagerGjenstående: 0, // TODO Denne er ikke riktig, må fjernes.
+        dagerGjenstående: gjenståendeDager, // TODO Denne er ikke riktig, må fjernes.
         dagerAnnetFravær: antallDagerFravær,
         dagerBrukt: permittert - antallDagerFravær,
     };
