@@ -138,11 +138,17 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     const restIDager = dager % 7;
 
     if (heleUkerPermittert > 0) {
-        const dagerITekst = restIDager === 0 ? '' : ` og ${restIDager} dager`;
-        return `${heleUkerPermittert} uker${dagerITekst}`;
+        const dagerITekst =
+            restIDager === 0 ? '' : ` og ${skrivDager(restIDager)}`;
+        return skrivUker(heleUkerPermittert) + dagerITekst;
     }
     return `${restIDager} dager`;
 };
+
+const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
+
+const skrivDager = (dager: number) =>
+    dager === 1 ? '1 dag' : dager + ' dager';
 
 const leggTiltekstOmFraværsAndelVedFraværv = (
     fraværsdager: number,
