@@ -25,5 +25,6 @@ export interface DatoMedKategori {
 export interface OversiktOverBrukteOgGjenværendeDager {
     dagerPermittert: number;
     dagerAnnetFravær: number;
-    dagerGjensående: number;
+    dagerGjenstående: number;
+    dagerBrukt: number;
 }
