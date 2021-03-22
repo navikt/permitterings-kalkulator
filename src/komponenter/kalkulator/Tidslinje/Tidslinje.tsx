@@ -90,7 +90,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
-        console.log('lager tidslinje');
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
                 props.allePermitteringerOgFraværesPerioder,
