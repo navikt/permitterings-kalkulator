@@ -84,6 +84,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             />
             <Lukknapp
                 className="datointervall-input__slett-knapp"
+                aria-label="Slett periode"
                 onClick={props.slettPeriode}
             />
         </div>
