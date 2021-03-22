@@ -271,6 +271,32 @@ export const finnDatoForTidligste18mndsPeriode = (
     return potensiellSisteDatoIIntervall;
 };
 
+const finnDatoPermitteringsOverskrider30Uker = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    dagensDato: Dayjs,
+    antallDagerFørAGP2Inntreffer: number
+) => {
+    let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
+    let permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
+        tidslinje,
+        potensiellDatoForAGP2
+    );
+    while (permitteringerI18mndsIntervall < antallDagerFørAGP2Inntreffer) {
+        const antallDagerTilNesteGjett =
+            antallDagerFørAGP2Inntreffer - permitteringerI18mndsIntervall;
+        potensiellDatoForAGP2 = potensiellDatoForAGP2.add(
+            antallDagerTilNesteGjett,
+            'days'
+        );
+        permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
+            tidslinje,
+            potensiellDatoForAGP2
+        );
+    }
+    return potensiellDatoForAGP2;
+};
+
 const finnOversiktOverPermitteringOgFraværGitt18mnd = (
     sisteDatoIAktuellPeriode: Dayjs,
     tidslinje: DatoMedKategori[]
