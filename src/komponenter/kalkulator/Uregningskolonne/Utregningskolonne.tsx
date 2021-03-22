@@ -18,7 +18,7 @@ import { finnOversiktOverPermitteringOgFraværGitt18mnd } from '../beregningerFo
 interface UtregningskolonneProps {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     sisteDagIPeriode: Dayjs;
-    tidslinjeObjekter: DatoMedKategori[];
+    tidslinje: DatoMedKategori[];
 }
 
 const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
@@ -64,13 +64,13 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         setResultatUtregningAv18mndsPeriode(
             finnOversiktOverPermitteringOgFraværGitt18mnd(
                 props.sisteDagIPeriode,
-                props.tidslinjeObjekter
+                props.tidslinje
             )
         );
     }, [
         oversiktOverPerioderInnenfor18mnd,
         props.sisteDagIPeriode,
-        props.tidslinjeObjekter,
+        props.tidslinje,
     ]);
 
     const enkeltUtregninger = oversiktOverPerioderInnenfor18mnd.permitteringer.map(

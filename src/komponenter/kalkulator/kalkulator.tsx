@@ -9,7 +9,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer'
 import {
     datoIntervallErDefinert,
     finnGrenserFor18MNDPeriode,
-    finnSluttDatoPåTidslinje,
+    finnØvreGrenseForSluttdatoPåTidslinje,
     getDefaultPermitteringsperiode,
     konstruerTidslinje,
 } from './utregninger';
@@ -39,15 +39,13 @@ const Kalkulator = () => {
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         dagensDato
     );
-    const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
-        DatoMedKategori[]
-    >([]);
+    const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState(
         finnGrenserFor18MNDPeriode(dagensDato).datoTil
     );
 
     useEffect(() => {
-        setTidslinjeObjekter(
+        setTidslinje(
             konstruerTidslinje(
                 allePermitteringerOgFraværesPerioder,
                 dagensDato,
@@ -57,7 +55,7 @@ const Kalkulator = () => {
     }, [allePermitteringerOgFraværesPerioder, sisteDatoVistPåTidslinje]);
 
     useEffect(() => {
-        const nySisteDatoPåTidslinjen = finnSluttDatoPåTidslinje(
+        const nySisteDatoPåTidslinjen = finnØvreGrenseForSluttdatoPåTidslinje(
             allePermitteringerOgFraværesPerioder,
             dagensDato
         );
@@ -111,11 +109,11 @@ const Kalkulator = () => {
                                     setEndringAv={
                                         setsteDagI18mndsPeriodeEndretAv
                                     }
-                                    tidslinjeObjekter={tidslinjeObjekter}
+                                    tidslinje={tidslinje}
                                     endringAv={sisteDagI18mndsPeriodeEndretAv}
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'kalkulator-tidslinje-wrapper',
-                                        tidslinjeObjekter.length
+                                        tidslinje.length
                                     )}
                                     sisteDagIPeriode={sisteDagI18mndsPeriode}
                                     set18mndsPeriode={setSisteDagI18mndsPeriode}
@@ -129,7 +127,7 @@ const Kalkulator = () => {
                 </div>
                 <div className={'kalkulator__utregningskolonne'}>
                     <Utregningskolonne
-                        tidslinjeObjekter={tidslinjeObjekter}
+                        tidslinje={tidslinje}
                         sisteDagIPeriode={sisteDagI18mndsPeriode}
                         allePermitteringerOgFraværesPerioder={
                             allePermitteringerOgFraværesPerioder
