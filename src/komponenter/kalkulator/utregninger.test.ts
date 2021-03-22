@@ -281,23 +281,4 @@ describe('Tester for utregninger.ts', () => {
         expect(nyttIntervall.datoFra).toEqual(startKuttDato);
         expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
     });
-    test('Kutt av datoer for en permitteringsperiode', () => {
-        const startIntervall = dayjs('2020-02-14');
-        const sluttIntervall = dayjs('2020-05-02');
-
-        const intervall: DatoIntervall = {
-            datoFra: startIntervall,
-            datoTil: sluttIntervall,
-        };
-        const startKuttDato = dayjs('2020-03-02');
-        const sluttKuttDato = dayjs('2020-04-20');
-
-        const nyttIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
-            intervall,
-            startKuttDato,
-            sluttKuttDato
-        );
-        expect(nyttIntervall.datoFra).toEqual(startKuttDato);
-        expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
-    });
 });

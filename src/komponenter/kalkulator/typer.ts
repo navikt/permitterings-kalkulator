@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 export enum DatointervallKategori {
     PERMITTERT,
@@ -15,7 +15,7 @@ export type DatoIntervall =
     | {
           datoFra: Dayjs | undefined;
           datoTil: Dayjs | undefined;
-          erLøpende?: false | undefined;
+          erLøpende?: false;
       }
     | {
           datoFra: Dayjs | undefined;

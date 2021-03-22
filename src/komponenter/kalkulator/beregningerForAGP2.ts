@@ -9,7 +9,6 @@ import {
     finnDato18MndTilbake,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
-import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export enum Permitteringssituasjon {
     NÅDD_AGP2 = 'NÅDD_AGP2',
