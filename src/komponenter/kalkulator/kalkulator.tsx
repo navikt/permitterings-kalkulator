@@ -8,7 +8,7 @@ import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import {
     datoIntervallErDefinert,
-    finnGrenserFor18MNDPeriode,
+    finnInitialgrenserForTidslinjedatoer,
     finnØvreGrenseForSluttdatoPåTidslinje,
     getDefaultPermitteringsperiode,
     konstruerTidslinje,
@@ -41,7 +41,7 @@ const Kalkulator = () => {
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState(
-        finnGrenserFor18MNDPeriode(dagensDato).datoTil
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
     );
 
     useEffect(() => {

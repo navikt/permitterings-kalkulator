@@ -1,7 +1,7 @@
 import { DatoIntervall } from './typer';
 import {
     antallDagerGått,
-    finnGrenserFor18MNDPeriode,
+    finnInitialgrenserForTidslinjedatoer,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
@@ -19,7 +19,8 @@ describe('Tester for utregninger.ts', () => {
         const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
             dayjs().startOf('date'),
-            finnGrenserFor18MNDPeriode(dayjs().startOf('date')).datoTil!
+            finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
+                .datoTil!
         );
         let bestårTest = true;
         tidslinje.forEach((objekt, indeks) => {
@@ -50,7 +51,8 @@ describe('Tester for utregninger.ts', () => {
         const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
             dayjs().startOf('date'),
-            finnGrenserFor18MNDPeriode(dayjs().startOf('date')).datoTil!
+            finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
+                .datoTil!
         );
         for (let i = 0; i < 1000; i++) {
             const tilfeldigIndeks = Math.floor(

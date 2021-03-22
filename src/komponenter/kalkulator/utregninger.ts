@@ -128,7 +128,7 @@ export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
     dato.subtract(1, 'day').add(18, 'months');
 
-export const finnGrenserFor18MNDPeriode = (
+export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
 ): DatoIntervall => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
@@ -191,7 +191,9 @@ export const finnØvreGrenseForSluttdatoPåTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ) => {
-    let senesteDatoPåTidslinje = finnGrenserFor18MNDPeriode(dagensDato).datoTil;
+    let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
+        dagensDato
+    ).datoTil;
     if (
         allePermitteringerOgFravær.permitteringer[0] &&
         allePermitteringerOgFravær.permitteringer[0].datoFra
@@ -230,10 +232,10 @@ export const konstruerTidslinje = (
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
 
     const antallObjektITidslinje = antallDagerGått(
-        finnGrenserFor18MNDPeriode(dagensDato).datoFra,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra,
         sisteDatoVistPåTidslinjen
     );
-    const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
+    const startDato = finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
         finneKategori(startDato!, allePermitteringerOgFravær)
     );
