@@ -100,7 +100,12 @@ const tekstIkkeNåddAGP2IkkeLøpende = (
     tidslinje: DatoMedKategori[],
     sisteDagAvRelevantIntervall: Dayjs
 ) => {
-    const førsteDel = `Du kan ha den ansatte permittert i
+    const nåddAGP2 = info.gjenståendePermitteringsDager <= 0;
+    const førsteDel = nåddAGP2
+        ? `${formaterDato(
+              info.sluttDato!
+          )} har den ansatte vært permittert i 30 uker`
+        : `Du kan ha den ansatte permittert i
                     ${skrivDagerIHeleUkerPlussDager(
                         info.gjenståendePermitteringsDager
                     )}

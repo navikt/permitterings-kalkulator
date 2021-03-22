@@ -14,6 +14,7 @@ export enum Permitteringssituasjon {
     NÅDD_AGP2 = 'NÅDD_AGP2',
     LØPENDE_IKKE_NÅDD_AGP2 = 'LØPENDE_IKKE_NÅDD_AGP2',
     IKKE_LØPENDE_IKKE_NÅDD_AGP2 = 'IKKE_LØPENDE_IKKE_NÅDD_AGP2',
+    NÅR_AGP2_I_FRAMTIDEN_IKKE_LØPENDE = 'IKKE_LØPENDE_IKKE_NÅDD_AGP2',
 }
 
 export interface InformasjonOmAGP2Status {
@@ -118,6 +119,32 @@ const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende = (
     };
 };
 
+export const getInformasjonOmAGP2HvisAGP2NåsIFramtidenUtenLøpendePermittering = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    dagensDato: Dayjs,
+    antallDagerFørAGP2Inntreffer: number
+) => {
+    let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
+    let permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
+        tidslinje,
+        potensiellDatoForAGP2
+    );
+    while (permitteringerI18mndsIntervall < antallDagerFørAGP2Inntreffer) {
+        const antallDagerTilNesteGjett =
+            antallDagerFørAGP2Inntreffer - permitteringerI18mndsIntervall;
+        potensiellDatoForAGP2 = potensiellDatoForAGP2.add(
+            antallDagerTilNesteGjett,
+            'days'
+        );
+        permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
+            tidslinje,
+            potensiellDatoForAGP2
+        );
+    }
+    return potensiellDatoForAGP2;
+};
+
 export const finnInformasjonAGP2 = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
@@ -167,6 +194,25 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer,
                 dagensDato
             );
+            const nårAGP2IPlanlagtePermitteringer =
+                dataSpesifikkForSituasjon.gjenståendePermitteringsDager <= 0;
+            if (nårAGP2IPlanlagtePermitteringer) {
+                console.log(
+                    'agp2 i framtiden: ',
+                    dataSpesifikkForSituasjon.gjenståendePermitteringsDager
+                );
+                const datoAGPInntrefferIFramtiden = getInformasjonOmAGP2HvisAGP2NåsIFramtidenUtenLøpendePermittering(
+                    tidslinje,
+                    innføringsdatoAGP2,
+                    dagensDato,
+                    antallDagerFørAGP2Inntreffer
+                );
+                dataSpesifikkForSituasjon = {
+                    sluttDato: datoAGPInntrefferIFramtiden,
+                    gjenståendePermitteringsDager: 0,
+                };
+            }
+
             break;
     }
 
@@ -269,32 +315,6 @@ export const finnDatoForTidligste18mndsPeriode = (
         );
     }
     return potensiellSisteDatoIIntervall;
-};
-
-const finnDatoPermitteringsOverskrider30Uker = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs,
-    dagensDato: Dayjs,
-    antallDagerFørAGP2Inntreffer: number
-) => {
-    let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
-    let permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
-        tidslinje,
-        potensiellDatoForAGP2
-    );
-    while (permitteringerI18mndsIntervall < antallDagerFørAGP2Inntreffer) {
-        const antallDagerTilNesteGjett =
-            antallDagerFørAGP2Inntreffer - permitteringerI18mndsIntervall;
-        potensiellDatoForAGP2 = potensiellDatoForAGP2.add(
-            antallDagerTilNesteGjett,
-            'days'
-        );
-        permitteringerI18mndsIntervall = finnBruktePermitteringsDager(
-            tidslinje,
-            potensiellDatoForAGP2
-        );
-    }
-    return potensiellDatoForAGP2;
 };
 
 const finnOversiktOverPermitteringOgFraværGitt18mnd = (
