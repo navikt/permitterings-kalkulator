@@ -19,7 +19,7 @@ export type DatoIntervall =
       }
     | {
           datoFra: Dayjs | undefined;
-          datoTil: undefined;
+          datoTil?: undefined;
           erLøpende: true;
       };
 

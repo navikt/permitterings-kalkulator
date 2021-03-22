@@ -90,6 +90,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
+        console.log('lager tidslinje');
         setTidslinjeObjekter(
             konstruerStatiskTidslinje(
                 props.allePermitteringerOgFraværesPerioder,
@@ -108,16 +109,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
-        // her hender det at løpende-funksjonen kalles
-        setInformasjonOmAGP2Status(
-            finnInformasjonAGP2(
-                tidslinjeObjekter,
-                innføringsdatoAGP2,
-                finnesLøpende !== undefined,
-                dagensDato,
-                210
-            )
-        );
+        if (tidslinjeObjekter.length > 0) {
+            setInformasjonOmAGP2Status(
+                finnInformasjonAGP2(
+                    tidslinjeObjekter,
+                    innføringsdatoAGP2,
+                    finnesLøpende !== undefined,
+                    dagensDato,
+                    210
+                )
+            );
+        }
     }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {

@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 import {
     finnBruktePermitteringsDager,
     finnInformasjonAGP2,
-    finnOversiktOverPermitteringOgFraværGitt18mnd,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
 
@@ -117,7 +116,6 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
         permitteringer: [
             {
                 datoFra: dayjs('2021-04-14'),
-                datoTil: undefined,
                 erLøpende: true,
             },
         ],
@@ -144,7 +142,6 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
         permitteringer: [
             {
                 datoFra: dayjs('2021-02-16'),
-                datoTil: undefined,
                 erLøpende: true,
             },
             {
@@ -175,7 +172,6 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
         permitteringer: [
             {
                 datoFra: dayjs('2021-07-01'),
-                datoTil: undefined,
                 erLøpende: true,
             },
         ],
@@ -318,4 +314,33 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         210
     );
     expect(informasjonOmAGP2.brukteDagerVedInnføringsdato).toEqual(21);
+});
+
+test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: innføringsdatoAGP2.subtract(5, 'weeks'),
+                erLøpende: true,
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
+    const tidslinje = konstruerStatiskTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato
+    );
+
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+    expect(informasjonOmAGP2.sluttDato).toEqual(
+        innføringsdatoAGP2.add(25, 'weeks')
+    );
 });
