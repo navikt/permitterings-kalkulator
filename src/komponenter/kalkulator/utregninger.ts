@@ -7,6 +7,10 @@ import {
 } from './typer';
 import { Dayjs } from 'dayjs';
 
+export const lengdePåIntervall = (datointervall: DatoIntervall): number => {
+    return antallDagerGått(datointervall.datoFra, datointervall.datoTil);
+};
+
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
         return til.diff(fra, 'days') + 1;
@@ -228,9 +232,8 @@ export const konstruerStatiskTidslinje = (
     dagensDato: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-    const antallObjektITidslinje = antallDagerGått(
-        finnGrenserFor18MNDPeriode(dagensDato).datoFra,
-        finnGrenserFor18MNDPeriode(dagensDato).datoTil
+    const antallObjektITidslinje = lengdePåIntervall(
+        finnGrenserFor18MNDPeriode(dagensDato)
     );
     const startDato = finnGrenserFor18MNDPeriode(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(

@@ -7,10 +7,10 @@ import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
-    antallDagerGått,
     datoIntervallErDefinert,
     finnGrenserFor18MNDPeriode,
     getDefaultPermitteringsperiode,
+    lengdePåIntervall,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -87,13 +87,10 @@ const Kalkulator = () => {
                                     endringAv={sisteDagI18mndsPeriodeEndretAv}
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'kalkulator-tidslinje-wrapper',
-                                        antallDagerGått(
+                                        lengdePåIntervall(
                                             finnGrenserFor18MNDPeriode(
                                                 dagensDato
-                                            ).datoFra,
-                                            finnGrenserFor18MNDPeriode(
-                                                dagensDato
-                                            ).datoTil
+                                            )
                                         )
                                     )}
                                     sisteDagIPeriode={sisteDagI18mndsPeriode}
