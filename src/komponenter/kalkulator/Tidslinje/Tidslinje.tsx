@@ -25,7 +25,7 @@ import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../Datovelger/datofunksjoner';
 import {
-    ArbeidsgiverPeriode2Resulatet,
+    Permitteringssituasjon,
     finnInformasjonAGP2,
     InformasjonOmAGP2Status,
 } from '../beregningerForAGP2';
@@ -60,7 +60,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     ] = useState<InformasjonOmAGP2Status>({
         brukteDagerVedInnføringsdato: 0,
         sluttDato: innføringsdatoAGP2,
-        type: ArbeidsgiverPeriode2Resulatet.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
+        type: Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
         gjenståendePermitteringsDager: 210,
         fraværsdagerVedInnføringsdato: 0,
         permitteringsdagerVedInnføringsdato: 0,

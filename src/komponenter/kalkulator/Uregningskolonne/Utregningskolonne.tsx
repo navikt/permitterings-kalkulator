@@ -38,7 +38,8 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
     ] = useState<OversiktOverBrukteOgGjenværendeDager>({
         dagerPermittert: 0,
         dagerAnnetFravær: 0,
-        dagerGjensående: 0,
+        dagerGjenstående: 0,
+        dagerBrukt: 0,
     });
 
     useEffect(() => {
