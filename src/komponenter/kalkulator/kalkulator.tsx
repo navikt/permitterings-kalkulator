@@ -9,7 +9,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer'
 import {
     datoIntervallErDefinert,
     finnInitialgrenserForTidslinjedatoer,
-    finnØvreGrenseForSluttdatoPåTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
     getDefaultPermitteringsperiode,
     konstruerTidslinje,
 } from './utregninger';
@@ -55,7 +55,7 @@ const Kalkulator = () => {
     }, [allePermitteringerOgFraværesPerioder, sisteDatoVistPåTidslinje]);
 
     useEffect(() => {
-        const nySisteDatoPåTidslinjen = finnØvreGrenseForSluttdatoPåTidslinje(
+        const nySisteDatoPåTidslinjen = regnUtHvaSisteDatoPåTidslinjenSkalVære(
             allePermitteringerOgFraværesPerioder,
             dagensDato
         );

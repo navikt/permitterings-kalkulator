@@ -187,7 +187,7 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     );
 };
 
-export const finnØvreGrenseForSluttdatoPåTidslinje = (
+export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
 ) => {
