@@ -1,28 +1,24 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import './Utregningskolonne.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from '../typer';
 import UtregningAvEnkelPeriode from './UtregningAvEnkelPeriode/UtregningAvEnkelPeriode';
 import {
     finnDato18MndTilbake,
     kuttAvDatoIntervallInnefor18mnd,
-    sumPermitteringerOgFravær,
 } from '../utregninger';
-import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
+import { finnOversiktOverPermitteringOgFraværGitt18mnd } from '../beregningerForAGP2';
 
 interface UtregningskolonneProps {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     sisteDagIPeriode: Dayjs;
+    tidslinje: DatoMedKategori[];
 }
 
 const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
@@ -35,7 +31,6 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
         andreFraværsperioder: [],
         permitteringer: [],
     });
-    const { dagensDato } = useContext(PermitteringContext);
 
     const [
         resultatUtregningAv18mndsPeriode,
@@ -68,12 +63,16 @@ const Utregningskolonne: FunctionComponent<UtregningskolonneProps> = (
 
     useEffect(() => {
         setResultatUtregningAv18mndsPeriode(
-            sumPermitteringerOgFravær(
-                oversiktOverPerioderInnenfor18mnd,
-                dagensDato
+            finnOversiktOverPermitteringOgFraværGitt18mnd(
+                props.sisteDagIPeriode,
+                props.tidslinje
             )
         );
-    }, [oversiktOverPerioderInnenfor18mnd]);
+    }, [
+        oversiktOverPerioderInnenfor18mnd,
+        props.sisteDagIPeriode,
+        props.tidslinje,
+    ]);
 
     const enkeltUtregninger = oversiktOverPerioderInnenfor18mnd.permitteringer.map(
         (permitteringsperiode, indeks) => {
