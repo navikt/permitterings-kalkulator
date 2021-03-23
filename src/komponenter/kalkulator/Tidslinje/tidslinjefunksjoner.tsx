@@ -66,18 +66,20 @@ export const lagHTMLObjektForPeriodeMedFarge = (
 ) => {
     return representasjonAvPerioderMedFarge.map((objekt, indeks) => {
         let borderRadius = '0';
-        if (objekt.kategori === 0) {
+        if (objekt.kategori === datointervallKategori.PERMITTERT) {
             if (indeks !== 0) {
                 borderRadius = '4px';
                 const grenserTilFraværVenstre =
-                    representasjonAvPerioderMedFarge[indeks - 1].kategori === 2;
+                    representasjonAvPerioderMedFarge[indeks - 1].kategori ===
+                    datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG;
                 if (grenserTilFraværVenstre) {
                     borderRadius = '0 4px 4px 0';
                 }
             }
             if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
                 const grenserTilFraværHøyre =
-                    representasjonAvPerioderMedFarge[indeks + 1].kategori === 2;
+                    representasjonAvPerioderMedFarge[indeks + 1].kategori ===
+                    datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG;
                 if (grenserTilFraværHøyre) {
                     borderRadius = '4px 0 0 4px';
                 }
@@ -179,10 +181,10 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
 };
 
 const finnFarge = (kategori: datointervallKategori) => {
-    if (kategori === 0) {
+    if (kategori === datointervallKategori.PERMITTERT) {
         return '#5EAEC7';
     }
-    if (kategori === 2) {
+    if (kategori === datointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG) {
         return '#E3B0AB';
     }
     return 'transParent';
