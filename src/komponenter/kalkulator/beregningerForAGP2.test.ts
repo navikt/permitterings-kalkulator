@@ -12,7 +12,6 @@ import {
     finnInformasjonAGP2,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
-import { formaterDato } from '../Datovelger/datofunksjoner';
 
 configureDayJS();
 
