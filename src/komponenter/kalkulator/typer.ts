@@ -1,6 +1,6 @@
 import { Dayjs } from 'dayjs';
 
-export enum datointervallKategori {
+export enum DatointervallKategori {
     PERMITTERT,
     ARBEIDER,
     FRAVÆR_PÅ_PERMITTERINGSDAG,
@@ -11,15 +11,21 @@ export interface AllePermitteringerOgFraværesPerioder {
     andreFraværsperioder: DatoIntervall[];
 }
 
-export interface DatoIntervall {
-    datoFra: Dayjs | undefined;
-    datoTil: Dayjs | undefined;
-    erLøpende?: boolean;
-}
+export type DatoIntervall =
+    | {
+          datoFra: Dayjs | undefined;
+          datoTil: Dayjs | undefined;
+          erLøpende?: false;
+      }
+    | {
+          datoFra: Dayjs | undefined;
+          datoTil?: undefined;
+          erLøpende: true;
+      };
 
 export interface DatoMedKategori {
     dato: Dayjs;
-    kategori: datointervallKategori;
+    kategori: DatointervallKategori;
 }
 
 export interface OversiktOverBrukteOgGjenværendeDager {

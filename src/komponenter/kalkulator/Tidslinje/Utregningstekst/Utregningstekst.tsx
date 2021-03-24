@@ -13,7 +13,7 @@ import { Dayjs } from 'dayjs';
 import { formaterDato } from '../../../Datovelger/datofunksjoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringContext } from '../../../ContextProvider';
-import { datointervallKategori, DatoMedKategori } from '../../typer';
+import { DatointervallKategori, DatoMedKategori } from '../../typer';
 import { finnDato18MndTilbake } from '../../utregninger';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
@@ -32,7 +32,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     );
     const finnesPermitteringerFørGittDato = tidslinje.find(
         (datoMedKategori) =>
-            datoMedKategori.kategori === datointervallKategori.PERMITTERT &&
+            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
             datoMedKategori.dato.isBefore(startDato18mndsIntervall)
     );
     if (finnesPermitteringerFørGittDato) {

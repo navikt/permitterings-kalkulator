@@ -94,16 +94,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
-        // her hender det at løpende-funksjonen kalles
-        setInformasjonOmAGP2Status(
-            finnInformasjonAGP2(
-                props.tidslinje,
-                innføringsdatoAGP2,
-                finnesLøpende !== undefined,
-                dagensDato,
-                210
-            )
-        );
+        if (props.tidslinje.length > 0) {
+            setInformasjonOmAGP2Status(
+                finnInformasjonAGP2(
+                    props.tidslinje,
+                    innføringsdatoAGP2,
+                    finnesLøpende !== undefined,
+                    dagensDato,
+                    210
+                )
+            );
+        }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {

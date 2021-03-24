@@ -1,9 +1,14 @@
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
+    DatointervallKategori,
     DatoMedKategori,
 } from './typer';
 import { Dayjs } from 'dayjs';
+
+export const lengdePåIntervall = (datointervall: DatoIntervall): number => {
+    return antallDagerGått(datointervall.datoFra, datointervall.datoTil);
+};
 
 export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     if (fra && til) {
@@ -27,20 +32,24 @@ export const getAntallOverlappendeDager = (
     ) {
         return 0;
     }
+    if (intervall1.erLøpende && intervall2.erLøpende) {
+        throw new Error(
+            'Kan ikke regne ut overlappende dager mellom løpende intervaller'
+        );
+    }
+
+    const intervallSomIkkeErLøpende = intervall1.erLøpende
+        ? intervall2
+        : intervall1;
+    const annetIntervall = intervall1.erLøpende ? intervall1 : intervall2;
+
     let antallOverlappendeDager = 0;
     for (
-        let dag = intervall2.datoFra;
-        dag?.isSameOrBefore(intervall2.datoTil!);
-        dag = dag.add(1, 'day')
+        let dag = intervallSomIkkeErLøpende.datoFra;
+        dag?.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
+        dag = dag!.add(1, 'day')
     ) {
-        if (
-            dag?.isBetween(
-                intervall1.datoFra!,
-                intervall1.datoTil!,
-                'day',
-                '[]'
-            )
-        ) {
+        if (finnesIIntervall(dag!, annetIntervall)) {
             antallOverlappendeDager++;
         }
     }
@@ -181,9 +190,10 @@ export const finnSisteDato = (
 };
 
 export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
+    const { datoFra, datoTil, erLøpende } = datoIntervall;
     return (
-        datoIntervall.datoFra !== undefined &&
-        datoIntervall.datoTil !== undefined
+        (datoFra !== undefined && datoTil !== undefined) ||
+        (datoFra !== undefined && erLøpende)
     );
 };
 
@@ -249,16 +259,19 @@ export const konstruerTidslinje = (
 };
 
 const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
-    let finnes = false;
-    perioder.forEach((periode) => {
-        if (
-            datoIntervallErDefinert(periode) &&
-            dato.isBetween(periode.datoFra!, periode.datoTil!, 'day', '[]')
-        ) {
-            finnes = true;
-        }
-    });
-    return finnes;
+    return !!perioder.find((periode) => finnesIIntervall(dato, periode));
+};
+
+const finnesIIntervall = (dato: Dayjs, periode: DatoIntervall): boolean => {
+    if (!periode.datoFra) {
+        return false;
+    } else if (periode.erLøpende) {
+        return dato.isSameOrAfter(periode.datoFra, 'date');
+    } else if (!periode.datoTil) {
+        return false;
+    } else {
+        return dato.isBetween(periode.datoFra, periode.datoTil, 'date', '[]');
+    }
 };
 
 const finneKategori = (
@@ -275,18 +288,18 @@ const finneKategori = (
     );
     if (erFraVærsDato && erPermittert) {
         return {
-            kategori: 2,
+            kategori: DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG,
             dato: dato,
         };
     }
     if (erPermittert) {
         return {
-            kategori: 0,
+            kategori: DatointervallKategori.PERMITTERT,
             dato: dato,
         };
     }
     return {
-        kategori: 1,
+        kategori: DatointervallKategori.ARBEIDER,
         dato: dato,
     };
 };

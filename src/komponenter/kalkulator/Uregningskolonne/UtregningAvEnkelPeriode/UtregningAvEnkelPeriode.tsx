@@ -6,7 +6,7 @@ import {
     DatoIntervall,
 } from '../../typer';
 import {
-    antallDagerGått,
+    lengdePåIntervall,
     summerFraværsdagerIPermitteringsperiode,
 } from '../../utregninger';
 
@@ -22,9 +22,8 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
     const [antall, setAntall] = useState(0);
 
     useEffect(() => {
-        const antallDagerPermittert = antallDagerGått(
-            props.permitteringsperiode.datoFra,
-            props.permitteringsperiode.datoTil
+        const antallDagerPermittert = lengdePåIntervall(
+            props.permitteringsperiode
         );
         const fraværIPerioden = summerFraværsdagerIPermitteringsperiode(
             props.permitteringsperiode,
@@ -46,10 +45,7 @@ const UtregningAvEnkelPeriode: FunctionComponent<UtregningAvEnkelPeriodeProps> =
                 <div className={'utregningskolonne__enkelperiode-utregning'}>
                     <Undertekst>
                         {props.permitteringsperiode.datoFra
-                            ? antallDagerGått(
-                                  props.permitteringsperiode.datoFra,
-                                  props.permitteringsperiode.datoTil
-                              )
+                            ? lengdePåIntervall(props.permitteringsperiode)
                             : 0}
                     </Undertekst>
                     <div className={'utregningskolonne__ledd'}>

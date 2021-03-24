@@ -5,6 +5,7 @@ import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
+    getAntallOverlappendeDager,
     konstruerTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
@@ -227,5 +228,20 @@ describe('Tester for utregninger.ts', () => {
         );
         expect(nyttIntervall.datoFra).toEqual(startKuttDato);
         expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
+    });
+
+    test('getAntallOverlappendeDager skal telle riktig når ett intervall er løpende', () => {
+        const løpendeIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-03-1'),
+            erLøpende: true,
+        };
+        const annetIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-02-14'),
+            datoTil: dayjs('2021-03-14'),
+        };
+
+        expect(
+            getAntallOverlappendeDager(løpendeIntervall, annetIntervall)
+        ).toEqual(14);
     });
 });
