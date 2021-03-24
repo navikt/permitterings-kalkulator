@@ -4,10 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import {
-    finnDato18MndTilbake,
-    konstruerStatiskTidslinje,
-} from '../utregninger';
+import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
@@ -41,20 +38,18 @@ interface Props {
     breddeAvDatoObjektIProsent: number;
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
+    tidslinje: DatoMedKategori[];
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
-    const [tidslinjeObjekter, setTidslinjeObjekter] = useState<
-        DatoMedKategori[]
-    >([]);
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
         regnUtPosisjonFraVenstreGittSluttdato(
-            tidslinjeObjekter,
+            props.tidslinje,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         )
@@ -90,15 +85,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
-        setTidslinjeObjekter(
-            konstruerStatiskTidslinje(
-                props.allePermitteringerOgFraværesPerioder,
-                dagensDato
-            )
-        );
-    }, [props.allePermitteringerOgFraværesPerioder]);
-
-    useEffect(() => {
         if (props.endringAv === 'datovelger') {
             setPosisjonsStylingDragElement('absolute');
         }
@@ -108,10 +94,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
-        if (tidslinjeObjekter.length > 0) {
+        if (props.tidslinje.length > 0) {
             setInformasjonOmAGP2Status(
                 finnInformasjonAGP2(
-                    tidslinjeObjekter,
+                    props.tidslinje,
                     innføringsdatoAGP2,
                     finnesLøpende !== undefined,
                     dagensDato,
@@ -119,17 +105,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 )
             );
         }
-    }, [tidslinjeObjekter, props.allePermitteringerOgFraværesPerioder]);
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
-            tidslinjeObjekter,
+            props.tidslinje,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
         if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
-                tidslinjeObjekter,
+                props.tidslinje,
                 props.breddeAvDatoObjektIProsent,
                 datoOnDrag
             );
@@ -143,16 +129,16 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         datoOnDrag,
         props.sisteDagIPeriode,
         props.breddeAvDatoObjektIProsent,
-        tidslinjeObjekter,
+        props.tidslinje,
     ]);
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
-        tidslinjeObjekter,
+        props.tidslinje,
         props.breddeAvDatoObjektIProsent,
         dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
-        lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeObjekter),
+        lagObjektForRepresentasjonAvPerioderMedFarge(props.tidslinje),
         props.breddeAvDatoObjektIProsent
     );
 
@@ -177,7 +163,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 indeksStartDato = indeks;
             }
         });
-        setDatoOnDrag(tidslinjeObjekter[indeksStartDato].dato);
+        setDatoOnDrag(props.tidslinje[indeksStartDato].dato);
     };
 
     const datoVisesPaDragElement =
@@ -191,7 +177,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 position: posisjonsStylingDragElement,
                 left: absoluttPosisjonFraVenstreDragElement.toString() + '%',
                 width:
-                    (props.breddeAvDatoObjektIProsent * 550).toString() + '%',
+                    (
+                        props.breddeAvDatoObjektIProsent *
+                        antallDagerGått(
+                            finnDato18MndTilbake(datoVisesPaDragElement),
+                            datoVisesPaDragElement
+                        )
+                    ).toString() + '%',
             }}
             id={'draggable-periode'}
             className={'kalkulator__draggable-periode'}
@@ -221,7 +213,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     className={'kalkulator__tidslinje-container start'}
                     id={'kalkulator-tidslinje-container'}
                 >
-                    {tidslinjeObjekter.length > 0 && (
+                    {props.tidslinje.length > 0 && (
                         <>
                             {erInteraktiv ? (
                                 <Draggable
@@ -255,7 +247,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             </div>
             <div className={'kalkulator__tidslinje-forklaring'}>
                 <Utregningstekst
-                    tidslinje={tidslinjeObjekter}
+                    tidslinje={props.tidslinje}
                     informasjonOmAGP2Status={informasjonOmAGP2Status}
                 />
             </div>

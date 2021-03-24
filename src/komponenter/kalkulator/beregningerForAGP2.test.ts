@@ -2,7 +2,9 @@ import { AllePermitteringerOgFraværesPerioder } from './typer';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
-    konstruerStatiskTidslinje,
+    finnInitialgrenserForTidslinjedatoer,
+    konstruerTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utregninger';
 import dayjs from 'dayjs';
 import {
@@ -10,6 +12,7 @@ import {
     finnInformasjonAGP2,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../dayjs-config';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 configureDayJS();
 
@@ -25,9 +28,10 @@ test('dato for AGP2-grense', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -62,9 +66,10 @@ test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -122,9 +127,10 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -152,9 +158,13 @@ test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -178,9 +188,13 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
         andreFraværsperioder: [],
     };
     const dagensDato = dayjs('2021-03-11');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -208,9 +222,10 @@ test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdat
         andreFraværsperioder: [],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -240,9 +255,10 @@ test('brukteDager skal trekke fra fraværsdager under permittering', () => {
         ],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -272,9 +288,10 @@ test('brukteDager skal bare telle med fraværsdager som overlapper med permitter
         ],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -299,9 +316,10 @@ test('brukteDager skal bare telle permitteringsdager i 18mndsperioden før innf�
         andreFraværsperioder: [],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
 
     const informasjonOmAGP2 = finnInformasjonAGP2(
@@ -326,9 +344,10 @@ test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', (
         andreFraværsperioder: [],
     };
     const dagensDato = innføringsdatoAGP2.subtract(10, 'days');
-    const tidslinje = konstruerStatiskTidslinje(
+    const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
-        dagensDato
+        dagensDato,
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
     );
 
     const informasjonOmAGP2 = finnInformasjonAGP2(

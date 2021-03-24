@@ -1,16 +1,17 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
 import { Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
-import { AllePermitteringerOgFraværesPerioder } from './typer';
+import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import {
     datoIntervallErDefinert,
-    finnGrenserFor18MNDPeriode,
+    finnInitialgrenserForTidslinjedatoer,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
     getDefaultPermitteringsperiode,
-    lengdePåIntervall,
+    konstruerTidslinje,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -38,6 +39,30 @@ const Kalkulator = () => {
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         dagensDato
     );
+    const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
+    const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState(
+        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
+    );
+
+    useEffect(() => {
+        setTidslinje(
+            konstruerTidslinje(
+                allePermitteringerOgFraværesPerioder,
+                dagensDato,
+                sisteDatoVistPåTidslinje!
+            )
+        );
+    }, [allePermitteringerOgFraværesPerioder, sisteDatoVistPåTidslinje]);
+
+    useEffect(() => {
+        const nySisteDatoPåTidslinjen = regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFraværesPerioder,
+            dagensDato
+        );
+        if (nySisteDatoPåTidslinjen?.isAfter(sisteDatoVistPåTidslinje!)) {
+            setSisteDatoVistPåTidslinje(nySisteDatoPåTidslinjen);
+        }
+    }, [allePermitteringerOgFraværesPerioder]);
 
     return (
         <div className={'kalkulator-bakgrunn'}>
@@ -84,14 +109,11 @@ const Kalkulator = () => {
                                     setEndringAv={
                                         setsteDagI18mndsPeriodeEndretAv
                                     }
+                                    tidslinje={tidslinje}
                                     endringAv={sisteDagI18mndsPeriodeEndretAv}
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'kalkulator-tidslinje-wrapper',
-                                        lengdePåIntervall(
-                                            finnGrenserFor18MNDPeriode(
-                                                dagensDato
-                                            )
-                                        )
+                                        tidslinje.length
                                     )}
                                     sisteDagIPeriode={sisteDagI18mndsPeriode}
                                     set18mndsPeriode={setSisteDagI18mndsPeriode}
@@ -105,6 +127,7 @@ const Kalkulator = () => {
                 </div>
                 <div className={'kalkulator__utregningskolonne'}>
                     <Utregningskolonne
+                        tidslinje={tidslinje}
                         sisteDagIPeriode={sisteDagI18mndsPeriode}
                         allePermitteringerOgFraværesPerioder={
                             allePermitteringerOgFraværesPerioder
