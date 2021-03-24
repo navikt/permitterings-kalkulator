@@ -185,19 +185,19 @@ const genererTekst = (
 ) => {
     if (info.sluttDato) {
         switch (info.type) {
-            case Permitteringssituasjon.NÅDD_AGP2:
+            case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
                 return tekstNådd30UkerVedInnføringsdato(
                     info,
                     tidslinje,
                     innføringsdatoAGP2
                 );
-            case Permitteringssituasjon.LØPENDE_IKKE_NÅDD_AGP2:
+            case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
                 return tekstIkkeNåddAGP2Løpende(
                     info,
                     tidslinje,
                     info.sluttDato
                 );
-            case Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2:
+            case Permitteringssituasjon.AGP2_IKKE_NÅDD:
                 return tekstIkkeNåddAGP2IkkeLøpende(
                     info,
                     tidslinje,

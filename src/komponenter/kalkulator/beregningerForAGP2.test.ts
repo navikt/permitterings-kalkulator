@@ -208,6 +208,39 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
     );
 });
 
+test('skal håndtere lang permitteringsperiode etter innføringsdato', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: innføringsdatoAGP2.add(1, 'month'),
+                datoTil: innføringsdatoAGP2.add(11, 'months'),
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = dayjs('2021-03-11');
+    const tidslinje = konstruerTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato,
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
+    );
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+
+    expect(informasjonOmAGP2.sluttDato).toEqual(
+        innføringsdatoAGP2.add(1, 'month').add(210, 'days')
+    );
+});
+
 test('brukteDager skal telle riktig antall permitteringsdager ved innføringsdato', () => {
     const innføringsdatoAGP2 = dayjs('2021-06-01');
     const permitteringsstart = dayjs('2021-03-01');
