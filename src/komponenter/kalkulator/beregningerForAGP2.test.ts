@@ -129,7 +129,10 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
     const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato,
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -205,6 +208,39 @@ test('skal håndtere løpende permittering etter innføringsdato', () => {
 
     expect(informasjonOmAGP2.sluttDato).toEqual(
         dayjs('2021-07-01').add(210, 'days')
+    );
+});
+
+test('skal håndtere lang permitteringsperiode etter innføringsdato', () => {
+    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
+        permitteringer: [
+            {
+                datoFra: innføringsdatoAGP2.add(1, 'month'),
+                datoTil: innføringsdatoAGP2.add(11, 'months'),
+            },
+        ],
+        andreFraværsperioder: [],
+    };
+    const dagensDato = dayjs('2021-03-11');
+    const tidslinje = konstruerTidslinje(
+        allePermitteringerOgFravær,
+        dagensDato,
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
+    );
+    const informasjonOmAGP2 = finnInformasjonAGP2(
+        tidslinje,
+        innføringsdatoAGP2,
+        true,
+        dagensDato,
+        210
+    );
+
+    expect(informasjonOmAGP2.sluttDato).toEqual(
+        innføringsdatoAGP2.add(1, 'month').add(210, 'days')
     );
 });
 
@@ -346,7 +382,10 @@ test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', (
     const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato,
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
 
     const informasjonOmAGP2 = finnInformasjonAGP2(
@@ -356,6 +395,7 @@ test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', (
         dagensDato,
         210
     );
+
     expect(informasjonOmAGP2.sluttDato).toEqual(
         innføringsdatoAGP2.add(25, 'weeks')
     );

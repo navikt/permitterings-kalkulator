@@ -60,7 +60,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     ] = useState<InformasjonOmAGP2Status>({
         brukteDagerVedInnføringsdato: 0,
         sluttDato: innføringsdatoAGP2,
-        type: Permitteringssituasjon.IKKE_LØPENDE_IKKE_NÅDD_AGP2,
+        type: Permitteringssituasjon.AGP2_IKKE_NÅDD,
         gjenståendePermitteringsDager: 210,
         fraværsdagerVedInnføringsdato: 0,
         permitteringsdagerVedInnføringsdato: 0,
