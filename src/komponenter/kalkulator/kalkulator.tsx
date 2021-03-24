@@ -3,15 +3,14 @@ import './kalkulator.less';
 
 import Banner from '../banner/Banner';
 import { Innholdstittel, Undertittel } from 'nav-frontend-typografi';
-import Utregningskolonne from './Uregningskolonne/Utregningskolonne';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import {
     datoIntervallErDefinert,
     finnInitialgrenserForTidslinjedatoer,
-    regnUtHvaSisteDatoPåTidslinjenSkalVære,
     getDefaultPermitteringsperiode,
     konstruerTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
@@ -124,15 +123,6 @@ const Kalkulator = () => {
                             </>
                         )}
                     </div>
-                </div>
-                <div className={'kalkulator__utregningskolonne'}>
-                    <Utregningskolonne
-                        tidslinje={tidslinje}
-                        sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        allePermitteringerOgFraværesPerioder={
-                            allePermitteringerOgFraværesPerioder
-                        }
-                    />
                 </div>
             </div>
         </div>
