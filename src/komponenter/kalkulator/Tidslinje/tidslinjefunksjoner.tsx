@@ -1,4 +1,4 @@
-import { datointervallKategori, DatoMedKategori } from '../typer';
+import { DatointervallKategori, DatoMedKategori } from '../typer';
 import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
@@ -8,7 +8,7 @@ import { formaterDato } from '../../Datovelger/datofunksjoner';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
-    kategori: datointervallKategori;
+    kategori: DatointervallKategori;
     grenserTilFraværHøyre?: boolean;
     grenserTilFraværVenstre?: boolean;
     key: number;
@@ -66,20 +66,23 @@ export const lagHTMLObjektForPeriodeMedFarge = (
 ) => {
     return representasjonAvPerioderMedFarge.map((objekt, indeks) => {
         let borderRadius = '0';
-        if (objekt.kategori === 0 && indeks !== 0) {
-            const grenserTilFraværVenstre =
-                objekt.kategori === 0 &&
-                representasjonAvPerioderMedFarge[indeks - 1].kategori === 2;
-            const grenserTilFraværHøyre =
-                objekt.kategori &&
-                objekt.kategori === 0 &&
-                representasjonAvPerioderMedFarge[indeks + 1].kategori === 2;
-            if (grenserTilFraværVenstre) {
-                borderRadius = '0 4px 4px 0';
-            } else if (grenserTilFraværHøyre) {
-                borderRadius = '4px 0 0 4px';
-            } else {
+        if (objekt.kategori === DatointervallKategori.PERMITTERT) {
+            if (indeks !== 0) {
                 borderRadius = '4px';
+                const grenserTilFraværVenstre =
+                    representasjonAvPerioderMedFarge[indeks - 1].kategori ===
+                    DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG;
+                if (grenserTilFraværVenstre) {
+                    borderRadius = '0 4px 4px 0';
+                }
+            }
+            if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
+                const grenserTilFraværHøyre =
+                    representasjonAvPerioderMedFarge[indeks + 1].kategori ===
+                    DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG;
+                if (grenserTilFraværHøyre) {
+                    borderRadius = '4px 0 0 4px';
+                }
             }
         }
 
@@ -177,11 +180,11 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
     return fargePerioder;
 };
 
-const finnFarge = (kategori: datointervallKategori) => {
-    if (kategori === 0) {
+const finnFarge = (kategori: DatointervallKategori) => {
+    if (kategori === DatointervallKategori.PERMITTERT) {
         return '#5EAEC7';
     }
-    if (kategori === 2) {
+    if (kategori === DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG) {
         return '#E3B0AB';
     }
     return 'transParent';

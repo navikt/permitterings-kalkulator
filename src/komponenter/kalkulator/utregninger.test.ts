@@ -1,17 +1,14 @@
-import {
-    AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
-    OversiktOverBrukteOgGjenværendeDager,
-} from './typer';
+import { DatoIntervall } from './typer';
 import {
     antallDagerGått,
+    finnInitialgrenserForTidslinjedatoer,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
-    konstruerStatiskTidslinje,
+    getAntallOverlappendeDager,
+    konstruerTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
     summerFraværsdagerIPermitteringsperiode,
-    sumPermitteringerOgFravær,
 } from './utregninger';
 import dayjs from 'dayjs';
 import { configureDayJS } from '../../dayjs-config';
@@ -20,9 +17,11 @@ configureDayJS();
 
 describe('Tester for utregninger.ts', () => {
     test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
-        const tidslinje = konstruerStatiskTidslinje(
+        const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
-            dayjs().startOf('date')
+            dayjs().startOf('date'),
+            finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
+                .datoTil!
         );
         let bestårTest = true;
         tidslinje.forEach((objekt, indeks) => {
@@ -50,9 +49,11 @@ describe('Tester for utregninger.ts', () => {
     });
 
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
-        const tidslinje = konstruerStatiskTidslinje(
+        const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
-            dayjs().startOf('date')
+            dayjs().startOf('date'),
+            finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
+                .datoTil!
         );
         for (let i = 0; i < 1000; i++) {
             const tilfeldigIndeks = Math.floor(
@@ -209,59 +210,6 @@ describe('Tester for utregninger.ts', () => {
         ).toEqual(dayjs('2021-06-02'));
     });
 
-    test('Sum av permitteringer og fravær', () => {
-        const startFraværsIntervall1 = dayjs('2020-03-01');
-        const sluttFraværsIntervall1 = dayjs('2020-03-15'); // 15 dager
-        const fraværsPeriode: DatoIntervall = {
-            datoFra: startFraværsIntervall1,
-            datoTil: sluttFraværsIntervall1,
-        };
-
-        const startPermitteringsPeriode1 = dayjs('2020-02-14');
-        const sluttPermitteringsPeriode1 = dayjs('2020-03-02');
-        const startPermitteringsPeriode2 = dayjs('2020-01-10');
-        const sluttPermitteringsPeriode2 = dayjs('2020-01-25');
-        const startPermitteringsPeriode3 = dayjs('2020-04-14');
-        const sluttPermitteringsPeriode3 = dayjs('2020-04-28');
-        const startPermitteringsPeriode4 = dayjs('2020-05-14');
-        const sluttPermitteringsPeriode4 = dayjs('2020-06-02');
-
-        const permitteringsPeriode1: DatoIntervall = {
-            datoFra: startPermitteringsPeriode1,
-            datoTil: sluttPermitteringsPeriode1,
-        };
-        const permitteringsPeriode2: DatoIntervall = {
-            datoFra: startPermitteringsPeriode2,
-            datoTil: sluttPermitteringsPeriode2,
-        };
-        const permitteringsPeriode3: DatoIntervall = {
-            datoFra: startPermitteringsPeriode3,
-            datoTil: sluttPermitteringsPeriode3,
-        };
-        const permitteringsPeriode4: DatoIntervall = {
-            datoFra: startPermitteringsPeriode4,
-            datoTil: sluttPermitteringsPeriode4,
-        };
-
-        const alle: AllePermitteringerOgFraværesPerioder = {
-            permitteringer: Array.of(
-                permitteringsPeriode1,
-                permitteringsPeriode2,
-                permitteringsPeriode3,
-                permitteringsPeriode4
-            ),
-            andreFraværsperioder: Array.of(fraværsPeriode),
-        };
-
-        const oversikt: OversiktOverBrukteOgGjenværendeDager = sumPermitteringerOgFravær(
-            alle,
-            dayjs()
-        );
-        expect(oversikt.dagerAnnetFravær).toBe(2); // Burde være 2? Vises som to i selve komponenten.
-        expect(oversikt.dagerGjenstående).toBe(646); // Hm ?
-        expect(oversikt.dagerPermittert).toBe(67); // 65?
-    });
-
     test('Kutt av datoer for en permitteringsperiode', () => {
         const startIntervall = dayjs('2020-02-14');
         const sluttIntervall = dayjs('2020-05-02');
@@ -280,5 +228,20 @@ describe('Tester for utregninger.ts', () => {
         );
         expect(nyttIntervall.datoFra).toEqual(startKuttDato);
         expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
+    });
+
+    test('getAntallOverlappendeDager skal telle riktig når ett intervall er løpende', () => {
+        const løpendeIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-03-1'),
+            erLøpende: true,
+        };
+        const annetIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-02-14'),
+            datoTil: dayjs('2021-03-14'),
+        };
+
+        expect(
+            getAntallOverlappendeDager(løpendeIntervall, annetIntervall)
+        ).toEqual(14);
     });
 });
