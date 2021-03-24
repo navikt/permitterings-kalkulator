@@ -129,7 +129,10 @@ test('skal returnere at man kan ha løpende permittering til 10. november', () =
     const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato,
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
     const informasjonOmAGP2 = finnInformasjonAGP2(
         tidslinje,
@@ -379,7 +382,10 @@ test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', (
     const tidslinje = konstruerTidslinje(
         allePermitteringerOgFravær,
         dagensDato,
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
+        regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            allePermitteringerOgFravær,
+            dagensDato
+        )!
     );
 
     const informasjonOmAGP2 = finnInformasjonAGP2(
@@ -389,6 +395,7 @@ test('finnInformasjonAGP2 skal finne dato for AGP2 ved løpende permittering', (
         dagensDato,
         210
     );
+
     expect(informasjonOmAGP2.sluttDato).toEqual(
         innføringsdatoAGP2.add(25, 'weeks')
     );
