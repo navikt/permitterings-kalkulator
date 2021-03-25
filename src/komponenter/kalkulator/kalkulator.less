@@ -1,68 +1,21 @@
 @import '~nav-frontend-core/less/_variabler';
 
-.kalkulator-bakgrunn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    background-color: #e6e6e6;
-}
-
 .kalkulator {
     display: flex;
-    padding: 3rem 0 3rem;
-    width: 63rem;
-    max-width: 90%;
+    flex-direction: column;
+    width: 100%;
+    max-width: 55rem;
+    background-color: white;
+    border-radius: 0.25rem;
+    padding: 2rem;
+    box-sizing: border-box;
+    margin: 3rem 0;
 
-    &__etter-lønnplikt {
-        margin: 0.5rem 0 0.5rem;
-    }
-
-    .checkboks + .skjemaelement__label {
-        margin-top: 0.5rem;
-    }
-
-    &__overskrift-med-hjelpetekst {
-        display: flex;
-    }
-
-    .hjelpetekst__innhold {
-        max-width: 9rem;
-    }
-
-    .hjelpetekst__apneknapp {
-        margin-left: 0.5rem;
-    }
-
-    &__utfyllingskolonne {
+    &__bakgrunn {
         display: flex;
         flex-direction: column;
-        background-color: white;
-        border-radius: 3px;
-        padding: 2rem;
-        margin-right: 1rem;
-    }
-
-    &__feilmelding {
-        margin-top: 0.5rem;
-        color: @redErrorDarken20;
-    }
-
-    &__tidslinje-wrapper {
+        align-items: center;
         width: 100%;
-        position: relative;
-    }
-}
-
-@media (max-width: @screen-sm-min) {
-    .kalkulator {
-        width: 100%;
-        flex-direction: column;
-        max-width: none;
-
-        &__utfyllingskolonne {
-            align-self: center;
-            margin-right: 0;
-        }
+        background-color: #e6e6e6;
     }
 }
