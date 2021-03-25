@@ -153,17 +153,29 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                 </button>
             </div>
             <Collapse isOpened={erApen}>
-                <DayPicker
-                    className={'datofelt__collapse'}
-                    selectedDays={selectedDate.toDate()}
-                    month={selectedDate.toDate()}
-                    firstDayOfWeek={1}
-                    onDayClick={(day: Date) => onDatoClick(dayjs(day))}
-                    months={MONTHS['no']}
-                    weekdaysLong={WEEKDAYS_LONG['no']}
-                    weekdaysShort={WEEKDAYS_SHORT['no']}
-                    labels={LABELS['no']}
-                />
+                {erApen && (
+                    <DayPicker
+                        onKeyDown={(e) => {
+                            if (e.key === 'Escape') {
+                                setErApen(!erApen);
+                            }
+                        }}
+                        className={'datofelt__collapse'}
+                        selectedDays={selectedDate.toDate()}
+                        month={selectedDate.toDate()}
+                        firstDayOfWeek={1}
+                        onDayKeyDown={(date, modifiers, e) => {
+                            if (e.key === 'Tab') {
+                                setErApen(!erApen);
+                            }
+                        }}
+                        onDayClick={(day: Date) => onDatoClick(dayjs(day))}
+                        months={MONTHS['no']}
+                        weekdaysLong={WEEKDAYS_LONG['no']}
+                        weekdaysShort={WEEKDAYS_SHORT['no']}
+                        labels={LABELS['no']}
+                    />
+                )}
             </Collapse>
         </div>
     );
