@@ -95,6 +95,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             (permittering) => permittering.erLøpende
         );
         if (props.tidslinje.length > 0) {
+            props.setEndringAv('datovelger');
             setInformasjonOmAGP2Status(
                 finnInformasjonAGP2(
                     props.tidslinje,
@@ -106,6 +107,13 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             );
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+
+    useEffect(() => {
+        const sluttDatoIllustrasjonPåTidslinje = informasjonOmAGP2Status.sluttDato
+            ? informasjonOmAGP2Status.sluttDato
+            : innføringsdatoAGP2;
+        props.set18mndsPeriode(sluttDatoIllustrasjonPåTidslinje);
+    }, [informasjonOmAGP2Status, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(

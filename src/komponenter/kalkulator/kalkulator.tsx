@@ -20,7 +20,7 @@ import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 
 const Kalkulator = () => {
-    const { dagensDato } = useContext(PermitteringContext);
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
 
     const [
         allePermitteringerOgFraværesPerioder,
@@ -36,7 +36,7 @@ const Kalkulator = () => {
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        dagensDato
+        innføringsdatoAGP2
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState(
