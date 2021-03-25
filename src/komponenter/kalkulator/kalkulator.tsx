@@ -65,7 +65,7 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator-bakgrunn'}>
-            <Banner classname={'banner'}>Permitteringskalkulator</Banner>
+            <Banner classname={'banner'}>Permitterings&shy;kalkulator</Banner>
             <div className={'kalkulator'}>
                 <div
                     className={'kalkulator__utfyllingskolonne'}
