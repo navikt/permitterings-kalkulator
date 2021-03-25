@@ -1,7 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './Topp.less';
 import { Normaltekst } from 'nav-frontend-typografi';
-import Stegindikator from 'nav-frontend-stegindikator/lib/stegindikator';
 
 const Topp: FunctionComponent = () => {
     return (
@@ -31,18 +30,6 @@ const Topp: FunctionComponent = () => {
                         Eventuelle fravær under permitteringen
                     </Normaltekst>
                 </ul>
-            </div>
-            <div className="topp__stegindikator">
-                <Stegindikator
-                    aktivtSteg={-1}
-                    steg={[
-                        { label: 'Legg til permittering', index: 0 },
-                        { label: 'Legg til evt. fravær', index: 1 },
-                        { label: 'Se resultatet', index: 2 },
-                    ]}
-                    onChange={() => {}}
-                    visLabel
-                />
             </div>
         </div>
     );
