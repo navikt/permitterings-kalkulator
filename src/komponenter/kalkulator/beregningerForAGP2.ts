@@ -84,10 +84,6 @@ const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
     sluttDato: Dayjs;
     gjenståendePermitteringsDager: number;
 } => {
-    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
-        innføringsdatoAGP2,
-        tidslinje
-    );
     const datoAGP2 = finnDatoAGP2EtterInnføringsdato(
         tidslinje,
         innføringsdatoAGP2,
