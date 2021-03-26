@@ -64,65 +64,57 @@ const Kalkulator = () => {
     }, [allePermitteringerOgFraværesPerioder]);
 
     return (
-        <div className={'kalkulator-bakgrunn'}>
-            <Banner classname={'banner'}>Permitteringskalkulator</Banner>
+        <div className={'kalkulator__bakgrunn'}>
+            <Banner classname={'banner'}>
+                <span aria-label="Permitteringskalkulator">
+                    Permitterings&shy;kalkulator
+                </span>
+            </Banner>
             <div className={'kalkulator'}>
-                <div
-                    className={'kalkulator__utfyllingskolonne'}
-                    id={'kalkulator-utfyllingskolonne'}
-                >
-                    <Innholdstittel>
-                        Lurer du på når du skal utbetale lønn under
-                        permittering?
-                    </Innholdstittel>
-                    <Topp />
-                    <Permitteringsperioder
-                        allePermitteringerOgFraværesPerioder={
-                            allePermitteringerOgFraværesPerioder
-                        }
-                        setAllePermitteringerOgFraværesPerioder={
-                            setAllePermitteringerOgFraværesPerioder
-                        }
-                    />
-                    <Fraværsperioder
-                        setAllePermitteringerOgFraværesPerioder={
-                            setAllePermitteringerOgFraværesPerioder
-                        }
-                        allePermitteringerOgFraværesPerioder={
-                            allePermitteringerOgFraværesPerioder
-                        }
-                    />
-                    <div
-                        className={'kalkulator__tidslinje-wrapper'}
-                        id={'kalkulator-tidslinje-wrapper'}
-                    >
-                        {datoIntervallErDefinert(
-                            allePermitteringerOgFraværesPerioder
-                                .permitteringer[0]
-                        ) && (
-                            <>
-                                <Undertittel>
-                                    4. Beregningen vises i tidslinje
-                                </Undertittel>
-                                <Tidslinje
-                                    setEndringAv={
-                                        setsteDagI18mndsPeriodeEndretAv
-                                    }
-                                    tidslinje={tidslinje}
-                                    endringAv={sisteDagI18mndsPeriodeEndretAv}
-                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                        'kalkulator-tidslinje-wrapper',
-                                        tidslinje.length
-                                    )}
-                                    sisteDagIPeriode={sisteDagI18mndsPeriode}
-                                    set18mndsPeriode={setSisteDagI18mndsPeriode}
-                                    allePermitteringerOgFraværesPerioder={
-                                        allePermitteringerOgFraværesPerioder
-                                    }
-                                />
-                            </>
-                        )}
-                    </div>
+                <Innholdstittel>
+                    Lurer du på når du skal utbetale lønn under permittering?
+                </Innholdstittel>
+                <Topp />
+                <Permitteringsperioder
+                    allePermitteringerOgFraværesPerioder={
+                        allePermitteringerOgFraværesPerioder
+                    }
+                    setAllePermitteringerOgFraværesPerioder={
+                        setAllePermitteringerOgFraværesPerioder
+                    }
+                />
+                <Fraværsperioder
+                    setAllePermitteringerOgFraværesPerioder={
+                        setAllePermitteringerOgFraværesPerioder
+                    }
+                    allePermitteringerOgFraværesPerioder={
+                        allePermitteringerOgFraværesPerioder
+                    }
+                />
+                <div id={'kalkulator-tidslinje-wrapper'}>
+                    {datoIntervallErDefinert(
+                        allePermitteringerOgFraværesPerioder.permitteringer[0]
+                    ) && (
+                        <>
+                            <Undertittel>
+                                4. Beregningen vises i tidslinje
+                            </Undertittel>
+                            <Tidslinje
+                                setEndringAv={setsteDagI18mndsPeriodeEndretAv}
+                                tidslinje={tidslinje}
+                                endringAv={sisteDagI18mndsPeriodeEndretAv}
+                                breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                    'kalkulator-tidslinje-wrapper',
+                                    tidslinje.length
+                                )}
+                                sisteDagIPeriode={sisteDagI18mndsPeriode}
+                                set18mndsPeriode={setSisteDagI18mndsPeriode}
+                                allePermitteringerOgFraværesPerioder={
+                                    allePermitteringerOgFraværesPerioder
+                                }
+                            />
+                        </>
+                    )}
                 </div>
             </div>
         </div>
