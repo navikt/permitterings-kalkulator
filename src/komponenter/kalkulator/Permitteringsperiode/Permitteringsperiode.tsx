@@ -6,7 +6,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDato, getDefaultPermitteringsperiode } from '../utregninger';
+import { finnSisteDato } from '../utregninger';
 import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
@@ -60,7 +60,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             nyePermitteringsperioder.splice(props.indeks, 1);
         } else {
             nyePermitteringsperioder = [
-                getDefaultPermitteringsperiode(dagensDato),
+                { datoFra: undefined, datoTil: undefined },
             ];
         }
         props.setAllePermitteringerOgFraværesPerioder({

@@ -150,13 +150,6 @@ export const finnInitialgrenserForTidslinjedatoer = (
     };
 };
 
-export const getDefaultPermitteringsperiode = (
-    dagensDato: Dayjs
-): DatoIntervall => ({
-    datoFra: finnDato18MndTilbake(dagensDato),
-    datoTil: undefined,
-});
-
 export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
     datointervall.forEach((datoIntervall) => {
