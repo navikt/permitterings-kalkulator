@@ -9,6 +9,7 @@ import {
     finnDato18MndTilbake,
 } from './utregninger';
 import dayjs, { Dayjs } from 'dayjs';
+import { formaterDato } from '../Datovelger/datofunksjoner';
 
 export enum Permitteringssituasjon {
     AGP2_NÅDD_VED_INNFØRINGSDATO = 'AGP2_NÅDD_VED_INNFØRINGSDATO',
@@ -94,13 +95,11 @@ const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
     );
     return {
         sluttDato: datoAGP2!,
-        gjenståendePermitteringsDager:
-            antallDagerFørAGP2Inntreffer -
-            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
+        gjenståendePermitteringsDager: 0,
     };
 };
 
-const getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende = (
+const getInformasjonOmAGP2HvisAGP2IkkeNås = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number,
@@ -168,7 +167,7 @@ export const finnInformasjonAGP2 = (
             );
             break;
         case Permitteringssituasjon.AGP2_IKKE_NÅDD:
-            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeErNåddOgPermitteringIkkeErLøpende(
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
                 tidslinje,
                 innføringsdatoAGP2,
                 antallDagerFørAGP2Inntreffer,
