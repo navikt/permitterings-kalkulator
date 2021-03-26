@@ -62,6 +62,10 @@ const Kalkulator = () => {
         }
     }, [allePermitteringerOgFraværesPerioder]);
 
+    const minstEnPermitteringErDefinert = allePermitteringerOgFraværesPerioder.permitteringer.find(
+        (periode) => datoIntervallErDefinert(periode)
+    );
+
     return (
         <div className={'kalkulator__bakgrunn'}>
             <Banner classname={'banner'}>
@@ -91,9 +95,7 @@ const Kalkulator = () => {
                     }
                 />
                 <div id={'kalkulator-tidslinje-wrapper'}>
-                    {datoIntervallErDefinert(
-                        allePermitteringerOgFraværesPerioder.permitteringer[0]
-                    ) && (
+                    {minstEnPermitteringErDefinert && (
                         <>
                             <Undertittel>
                                 4. Beregningen vises i tidslinje
