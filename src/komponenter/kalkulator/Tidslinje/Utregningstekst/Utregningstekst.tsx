@@ -70,12 +70,23 @@ const tekstNådd30UkerVedInnføringsdato = (
     );
 };
 
-const tekstIkkeNåddAGP2Løpende = (
+const aGP2NåsIFramtiden = (
     info: InformasjonOmAGP2Status,
     tidslinje: DatoMedKategori[],
     sisteDagAvRelevantIntervall: Dayjs
 ) => {
-    const førsteDel = `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 
+    console.log(
+        'gjenstående permitteringdager: ',
+        info.gjenståendePermitteringsDager
+    );
+    const førsteDel =
+        info.gjenståendePermitteringsDager === 0
+            ? `Arbeidsgiverperiode 2 vil være  
+                    ${formaterDato(
+                        info.sluttDato!
+                    ).toString()}. Da har den ansatte vært permittert i mer enn 30 uker. 
+                     `
+            : `Dette overskrider ikke 30 uker. Dersom du har løpende permittering fram til 
                     ${formaterDato(info.sluttDato!).toString()} 
                      faller Arbeidsgiverperiode 2 på denne datoen.`;
     const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
@@ -192,11 +203,7 @@ const genererTekst = (
                     innføringsdatoAGP2
                 );
             case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-                return tekstIkkeNåddAGP2Løpende(
-                    info,
-                    tidslinje,
-                    info.sluttDato
-                );
+                return aGP2NåsIFramtiden(info, tidslinje, info.sluttDato);
             case Permitteringssituasjon.AGP2_IKKE_NÅDD:
                 return tekstIkkeNåddAGP2IkkeLøpende(
                     info,
