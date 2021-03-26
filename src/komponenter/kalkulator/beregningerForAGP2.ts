@@ -51,10 +51,6 @@ export const finnPermitteringssituasjon = (
     );
 
     if (datoAGP2EtterInnføringsdato) {
-        console.log(
-            'dato er etter innføringsdato og er: ',
-            formaterDato(datoAGP2EtterInnføringsdato)
-        );
         return Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO;
     } else {
         return Permitteringssituasjon.AGP2_IKKE_NÅDD;
@@ -214,7 +210,6 @@ const finnDatoAGP2EtterInnføringsdato = (
             potensiellDatoForAGP2
         );
     }
-    console.log('dager permittert : ', antallDagerPermittert);
     if (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         return undefined;
     }
