@@ -5,7 +5,7 @@ import React, {
     useRef,
     useState,
 } from 'react';
-import { Collapse } from 'react-collapse';
+import { UnmountClosed } from 'react-collapse';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { Input, Label } from 'nav-frontend-skjema';
@@ -152,19 +152,29 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     <img alt={''} src={kalender} />
                 </button>
             </div>
-            <Collapse isOpened={erApen}>
+            <UnmountClosed isOpened={erApen}>
                 <DayPicker
+                    onKeyDown={(e) => {
+                        if (e.key === 'Escape') {
+                            setErApen(!erApen);
+                        }
+                    }}
                     className={'datofelt__collapse'}
                     selectedDays={selectedDate.toDate()}
                     month={selectedDate.toDate()}
                     firstDayOfWeek={1}
+                    onDayKeyDown={(date, modifiers, e) => {
+                        if (e.key === 'Tab') {
+                            setErApen(!erApen);
+                        }
+                    }}
                     onDayClick={(day: Date) => onDatoClick(dayjs(day))}
                     months={MONTHS['no']}
                     weekdaysLong={WEEKDAYS_LONG['no']}
                     weekdaysShort={WEEKDAYS_SHORT['no']}
                     labels={LABELS['no']}
                 />
-            </Collapse>
+            </UnmountClosed>
         </div>
     );
 };
