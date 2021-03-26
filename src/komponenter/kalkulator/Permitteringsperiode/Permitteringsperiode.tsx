@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent } from 'react';
 import '../kalkulator.less';
 import './Permitteringsperiode.less';
 
@@ -7,7 +7,6 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import { finnSisteDato } from '../utregninger';
-import { PermitteringContext } from '../../ContextProvider';
 
 interface Props {
     info: DatoIntervall;
