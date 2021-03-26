@@ -19,17 +19,15 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
     const leggTilNyPermitteringsperiode = () => {
-        const sistRegistrerteDag = finnSisteDato(
+        const sisteUtfyltePermitteringsdag = finnSisteDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
-        )
-            ? finnSisteDato(
-                  props.allePermitteringerOgFraværesPerioder.permitteringer
-              )
-            : dagensDato;
+        );
+        const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
+            ? sisteUtfyltePermitteringsdag.add(1, 'day')
+            : undefined;
         const nyPeriode: DatoIntervall = {
-            datoFra: sistRegistrerteDag!.add(1, 'day'),
+            datoFra: startdatoForNyPeriode,
             datoTil: undefined,
         };
 
