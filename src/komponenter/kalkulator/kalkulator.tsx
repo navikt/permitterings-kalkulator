@@ -65,7 +65,11 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator__bakgrunn'}>
-            <Banner classname={'banner'}>Permitterings&shy;kalkulator</Banner>
+            <Banner classname={'banner'}>
+                <span aria-label="Permitteringskalkulator">
+                    Permitterings&shy;kalkulator
+                </span>
+            </Banner>
             <div className={'kalkulator'}>
                 <Innholdstittel>
                     Lurer du på når du skal utbetale lønn under permittering?
