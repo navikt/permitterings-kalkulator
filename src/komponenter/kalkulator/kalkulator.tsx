@@ -8,7 +8,6 @@ import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer'
 import {
     datoIntervallErDefinert,
     finnInitialgrenserForTidslinjedatoer,
-    getDefaultPermitteringsperiode,
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utregninger';
@@ -26,7 +25,7 @@ const Kalkulator = () => {
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
     ] = useState<AllePermitteringerOgFraværesPerioder>({
-        permitteringer: [getDefaultPermitteringsperiode(dagensDato)],
+        permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
 
