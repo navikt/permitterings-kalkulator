@@ -221,35 +221,27 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     className={'kalkulator__tidslinje-container start'}
                     id={'kalkulator-tidslinje-container'}
                 >
-                    {props.tidslinje.length > 0 && (
-                        <>
-                            {erInteraktiv ? (
-                                <Draggable
-                                    axis={'x'}
-                                    bounds={'parent'}
-                                    onStop={() => OnTidslinjeDragRelease()}
-                                    onDrag={() => OnTidslinjeDrag()}
-                                >
-                                    {get18mndsperiode()}
-                                </Draggable>
-                            ) : (
-                                get18mndsperiode()
-                            )}
-                            <div
-                                className={'kalkulator__tidslinje-underlag'}
-                                id={'kalkulator__tidslinje'}
-                            >
-                                <div
-                                    className={
-                                        'kalkulator__tidslinje-fargeperioder'
-                                    }
-                                >
-                                    {htmlFargeObjekt}
-                                </div>
-                                {htmlElementerForHverDato}
-                            </div>
-                        </>
+                    {erInteraktiv ? (
+                        <Draggable
+                            axis={'x'}
+                            bounds={'parent'}
+                            onStop={() => OnTidslinjeDragRelease()}
+                            onDrag={() => OnTidslinjeDrag()}
+                        >
+                            {get18mndsperiode()}
+                        </Draggable>
+                    ) : (
+                        get18mndsperiode()
                     )}
+                    <div
+                        className={'kalkulator__tidslinje-underlag'}
+                        id={'kalkulator__tidslinje'}
+                    >
+                        <div className={'kalkulator__tidslinje-fargeperioder'}>
+                            {htmlFargeObjekt}
+                        </div>
+                        {htmlElementerForHverDato}
+                    </div>
                 </div>
                 <Fargeforklaringer />
             </div>

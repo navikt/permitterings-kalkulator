@@ -197,17 +197,17 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
         dagensDato
     ).datoTil;
-    if (
-        allePermitteringerOgFravær.permitteringer[0] &&
-        allePermitteringerOgFravær.permitteringer[0].datoFra
-    ) {
+    const førsteDefinertePermitteringsDato = finnFørsteDefinertePermittering(
+        allePermitteringerOgFravær
+    );
+    if (førsteDefinertePermitteringsDato) {
         let tempSistePermitteringsStart =
-            allePermitteringerOgFravær.permitteringer[0].datoFra;
+            førsteDefinertePermitteringsDato.datoFra;
         allePermitteringerOgFravær.permitteringer.forEach(
             (permitteringsperiode) => {
                 if (
                     permitteringsperiode.datoFra?.isAfter(
-                        tempSistePermitteringsStart,
+                        tempSistePermitteringsStart!,
                         'day'
                     )
                 ) {
@@ -225,6 +225,15 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
             : senesteDatoPåTidslinje;
     }
     return senesteDatoPåTidslinje;
+};
+
+const finnFørsteDefinertePermittering = (
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
+): DatoIntervall | undefined => {
+    const førsteDefinertePermittering = allePermitteringerOgFraværesPerioder.permitteringer.find(
+        (periode) => datoIntervallErDefinert(periode)
+    );
+    return førsteDefinertePermittering;
 };
 
 export const konstruerTidslinje = (

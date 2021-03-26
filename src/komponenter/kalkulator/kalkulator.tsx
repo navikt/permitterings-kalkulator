@@ -90,10 +90,8 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
-                <div id={'kalkulator-tidslinje-wrapper'}>
-                    {datoIntervallErDefinert(
-                        allePermitteringerOgFraværesPerioder.permitteringer[0]
-                    ) && (
+                {tidslinje.length && (
+                    <div id={'kalkulator-tidslinje-wrapper'}>
                         <>
                             <Undertittel>
                                 4. Beregningen vises i tidslinje
@@ -113,8 +111,8 @@ const Kalkulator = () => {
                                 }
                             />
                         </>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );
