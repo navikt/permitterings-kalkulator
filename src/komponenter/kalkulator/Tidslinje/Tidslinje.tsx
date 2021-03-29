@@ -4,7 +4,6 @@ import React, {
     useEffect,
     useState,
 } from 'react';
-import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
@@ -23,13 +22,17 @@ import {
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
-import { formaterDato } from '../../Datovelger/datofunksjoner';
 import {
     Permitteringssituasjon,
     finnInformasjonAGP2,
     InformasjonOmAGP2Status,
 } from '../beregningerForAGP2';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
+import {
+    antallDagerGått,
+    finnDato18MndTilbake,
+    formaterDato,
+} from '../dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

@@ -1,17 +1,19 @@
 import { DatoIntervall } from './typer';
+import { summerFraværsdagerIPermitteringsperiode } from './utregninger';
+import dayjs from 'dayjs';
+import { configureDayJS } from '../../dayjs-config';
 import {
     antallDagerGått,
-    finnInitialgrenserForTidslinjedatoer,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
     getAntallOverlappendeDager,
-    konstruerTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
-    summerFraværsdagerIPermitteringsperiode,
-} from './utregninger';
-import dayjs from 'dayjs';
-import { configureDayJS } from '../../dayjs-config';
+} from './dato-utils';
+import {
+    finnInitialgrenserForTidslinjedatoer,
+    konstruerTidslinje,
+} from './tidslinje-utils';
 
 configureDayJS();
 

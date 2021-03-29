@@ -5,18 +5,18 @@ import Banner from '../banner/Banner';
 import { Innholdstittel, Undertittel } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
-import {
-    datoIntervallErDefinert,
-    finnInitialgrenserForTidslinjedatoer,
-    konstruerTidslinje,
-    regnUtHvaSisteDatoPåTidslinjenSkalVære,
-} from './utregninger';
 import Tidslinje from './Tidslinje/Tidslinje';
 import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
+import { datoIntervallErDefinert } from './dato-utils';
+import {
+    finnInitialgrenserForTidslinjedatoer,
+    konstruerTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
+} from './tidslinje-utils';
 
 const Kalkulator = () => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);

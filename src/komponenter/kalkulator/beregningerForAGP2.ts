@@ -3,13 +3,13 @@ import {
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
 } from './typer';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
-} from './utregninger';
-import dayjs, { Dayjs } from 'dayjs';
-import { formaterDato } from '../Datovelger/datofunksjoner';
+    formaterDato,
+} from './dato-utils';
 
 export enum Permitteringssituasjon {
     AGP2_NÅDD_VED_INNFØRINGSDATO = 'AGP2_NÅDD_VED_INNFØRINGSDATO',

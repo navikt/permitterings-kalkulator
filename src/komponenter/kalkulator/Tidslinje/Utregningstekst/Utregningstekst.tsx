@@ -10,13 +10,12 @@ import {
     InformasjonOmAGP2Status,
 } from '../../beregningerForAGP2';
 import { Dayjs } from 'dayjs';
-import { formaterDato } from '../../../Datovelger/datofunksjoner';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringContext } from '../../../ContextProvider';
 import { DatointervallKategori, DatoMedKategori } from '../../typer';
-import { finnDato18MndTilbake } from '../../utregninger';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
+import { finnDato18MndTilbake, formaterDato } from '../../dato-utils';
 
 interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;

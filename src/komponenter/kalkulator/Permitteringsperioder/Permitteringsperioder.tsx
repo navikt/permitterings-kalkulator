@@ -2,10 +2,10 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import Permitteringsperiode from '../Permitteringsperiode/Permitteringsperiode';
-import { finnUtOmDefinnesOverlappendePerioder } from '../utregninger';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
+import { finnUtOmDefinnesOverlappendePerioder } from '../dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
