@@ -12,7 +12,7 @@
         "@types/classnames": "^2.2.11",
         "@types/lodash.debounce": "^4.0.6",
         "@types/lodash.throttle": "^4.1.6",
-        "amplitude-js": "^7.4.3",
+        "amplitude-js": "^8.1.0",
         "classnames": "^2.2.6",
         "craco-less": "^1.16.0",
         "cross-env": "^7.0.2",
