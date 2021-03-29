@@ -97,6 +97,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
+        const finnesLøpendePermittering = !!props.allePermitteringerOgFraværesPerioder.permitteringer.find(
+            (permitteringsperiode) => permitteringsperiode.erLøpende
+        );
         if (props.tidslinje.length > 0) {
             props.setEndringAv('datovelger');
             setInformasjonOmAGP2Status(
@@ -105,7 +108,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     innføringsdatoAGP2,
                     finnesLøpende !== undefined,
                     dagensDato,
-                    210
+                    210,
+                    finnesLøpendePermittering
                 )
             );
         }
@@ -215,6 +219,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     return (
         <>
+            <div className={'kalkulator__tidslinje-forklaring'}>
+                <Utregningstekst
+                    tidslinje={props.tidslinje}
+                    informasjonOmAGP2Status={informasjonOmAGP2Status}
+                />
+            </div>
             <div
                 role="img"
                 aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
@@ -247,12 +257,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     </div>
                 </div>
                 <Fargeforklaringer />
-            </div>
-            <div className={'kalkulator__tidslinje-forklaring'}>
-                <Utregningstekst
-                    tidslinje={props.tidslinje}
-                    informasjonOmAGP2Status={informasjonOmAGP2Status}
-                />
             </div>
         </>
     );
