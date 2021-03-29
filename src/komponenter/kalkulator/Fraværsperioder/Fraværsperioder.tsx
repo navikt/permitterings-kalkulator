@@ -87,7 +87,6 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
-                    erLøpendeLabel="Fraværet er fortsatt aktivt"
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder

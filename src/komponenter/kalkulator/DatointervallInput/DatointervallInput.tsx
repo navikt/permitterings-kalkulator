@@ -9,12 +9,11 @@ import { Dayjs } from 'dayjs';
 interface Props {
     datoIntervall: DatoIntervall;
     setDatoIntervall: (datoIntervall: DatoIntervall) => void;
-    erLøpendeLabel: string;
     slettPeriode: () => void;
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
-    const { datoIntervall, setDatoIntervall, erLøpendeLabel } = props;
+    const { datoIntervall, setDatoIntervall } = props;
     const erLøpende = !!datoIntervall.erLøpende;
 
     const setTilDato = (dato: Dayjs) =>
@@ -77,9 +76,8 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             </div>
             <Checkbox
                 className="datointervall-input__checkbox"
-                label={erLøpendeLabel}
+                label="Ingen sluttdato"
                 checked={erLøpende}
-                name={erLøpendeLabel}
                 onChange={onErLøpendeChange}
             />
             <Lukknapp

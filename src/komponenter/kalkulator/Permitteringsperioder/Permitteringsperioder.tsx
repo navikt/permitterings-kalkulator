@@ -64,6 +64,8 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 imgAlt="Kalender"
             >
                 <Normaltekst>
+                    Hvis den ansatte har fått lønnskompensasjon, skal dette være
+                    med i periodene. <br />
                     Periodene skal <strong>ikke</strong> inneholde dagene du har
                     lønnsplikt, eller permitteringer grunnet streik.
                 </Normaltekst>

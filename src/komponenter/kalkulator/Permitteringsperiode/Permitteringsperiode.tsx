@@ -77,7 +77,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 setDatoIntervall={(intervall) =>
                     oppdaterDatoIntervall(intervall)
                 }
-                erLøpendeLabel="Permitteringen er fortsatt aktiv"
                 slettPeriode={slettPeriode}
             />
             {props.indeks ===
