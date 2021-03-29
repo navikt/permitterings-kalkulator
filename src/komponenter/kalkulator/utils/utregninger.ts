@@ -1,4 +1,4 @@
-import { DatoIntervall } from './typer';
+import { DatoIntervall } from '../typer';
 import { getAntallOverlappendeDager } from './dato-utils';
 
 export const summerFraværsdagerIPermitteringsperiode = (

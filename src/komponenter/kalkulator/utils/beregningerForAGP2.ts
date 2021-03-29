@@ -2,7 +2,7 @@ import {
     DatointervallKategori,
     DatoMedKategori,
     OversiktOverBrukteOgGjenværendeDager,
-} from './typer';
+} from '../typer';
 import dayjs, { Dayjs } from 'dayjs';
 import {
     antallDagerGått,

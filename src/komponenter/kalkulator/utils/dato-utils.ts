@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import { DatoIntervall } from './typer';
+import { DatoIntervall } from '../typer';
 
 export const formaterDato = (dato: Dayjs): string => dato.format('DD.MM.YYYY');
 

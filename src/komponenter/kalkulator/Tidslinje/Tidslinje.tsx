@@ -26,13 +26,13 @@ import {
     Permitteringssituasjon,
     finnInformasjonAGP2,
     InformasjonOmAGP2Status,
-} from '../beregningerForAGP2';
+} from '../utils/beregningerForAGP2';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
     formaterDato,
-} from '../dato-utils';
+} from '../utils/dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

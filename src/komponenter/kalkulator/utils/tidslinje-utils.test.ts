@@ -3,7 +3,7 @@ import {
     konstruerTidslinje,
 } from './tidslinje-utils';
 import dayjs from 'dayjs';
-import { configureDayJS } from '../../dayjs-config';
+import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 

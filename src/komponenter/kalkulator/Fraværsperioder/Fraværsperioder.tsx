@@ -11,7 +11,7 @@ import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
-} from '../dato-utils';
+} from '../utils/dato-utils';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (

@@ -7,7 +7,7 @@ import {
     antallDagerGått,
     finnDato18MndTilbake,
     formaterDato,
-} from '../dato-utils';
+} from '../utils/dato-utils';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;

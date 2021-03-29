@@ -8,14 +8,14 @@ import './Utregningstekst.less';
 import {
     Permitteringssituasjon,
     InformasjonOmAGP2Status,
-} from '../../beregningerForAGP2';
+} from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import { PermitteringContext } from '../../../ContextProvider';
 import { DatointervallKategori, DatoMedKategori } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
-import { finnDato18MndTilbake, formaterDato } from '../../dato-utils';
+import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
 
 interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;

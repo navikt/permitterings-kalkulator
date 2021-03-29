@@ -4,7 +4,7 @@ import {
     DatoIntervall,
     DatointervallKategori,
     DatoMedKategori,
-} from './typer';
+} from '../typer';
 import {
     antallDagerGått,
     datoIntervallErDefinert,

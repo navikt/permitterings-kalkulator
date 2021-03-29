@@ -11,12 +11,11 @@ import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
-import { datoIntervallErDefinert } from './dato-utils';
 import {
     finnInitialgrenserForTidslinjedatoer,
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
-} from './tidslinje-utils';
+} from './utils/tidslinje-utils';
 
 const Kalkulator = () => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);

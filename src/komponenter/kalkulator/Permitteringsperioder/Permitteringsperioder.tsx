@@ -5,7 +5,7 @@ import Permitteringsperiode from '../Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
-import { finnUtOmDefinnesOverlappendePerioder } from '../dato-utils';
+import { finnUtOmDefinnesOverlappendePerioder } from '../utils/dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

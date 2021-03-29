@@ -6,7 +6,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDato } from '../dato-utils';
+import { finnSisteDato } from '../utils/dato-utils';
 
 interface Props {
     info: DatoIntervall;

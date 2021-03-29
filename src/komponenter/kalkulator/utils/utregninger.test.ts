@@ -1,7 +1,7 @@
-import { DatoIntervall } from './typer';
+import { DatoIntervall } from '../typer';
 import { summerFraværsdagerIPermitteringsperiode } from './utregninger';
 import dayjs from 'dayjs';
-import { configureDayJS } from '../../dayjs-config';
+import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 

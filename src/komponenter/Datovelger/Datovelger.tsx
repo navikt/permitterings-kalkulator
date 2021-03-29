@@ -21,7 +21,7 @@ import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
 import { PermitteringContext } from '../ContextProvider';
-import { formaterDato } from '../kalkulator/dato-utils';
+import { formaterDato } from '../kalkulator/utils/dato-utils';
 
 interface Props {
     overtekst: string;

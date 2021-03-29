@@ -11,8 +11,8 @@ import {
     getAntallOverlappendeDager,
     kuttAvDatoIntervallInnefor18mnd,
 } from './dato-utils';
-import { DatoIntervall } from './typer';
-import { configureDayJS } from '../../dayjs-config';
+import { DatoIntervall } from '../typer';
+import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 
