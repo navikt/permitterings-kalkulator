@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
     Permitteringssituasjon,
@@ -18,36 +18,128 @@ interface Props {
     tidslinje: DatoMedKategori[];
 }
 
-export const lagResultatTekstOverskrift = (
+interface ResultatTekst {
+    konklusjon: string;
+    beskrivelse: ReactElement | null;
+}
+
+export const lagResultatTekst = (
     informasjon: InformasjonOmAGP2Status
-) => {
+): ResultatTekst => {
     if (!informasjon.sluttDato) {
-        return `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid.  Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`;
+        return {
+            konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid.  Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
+            beskrivelse: <div />,
+        };
     }
     switch (informasjon.type) {
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
             const tilleggstekstLøpendePermittering = informasjon.finnesLøpendePermittering
                 ? ', dersom permitteringen holdes løpende'
                 : '';
-            return `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                finnDato18MndTilbake(informasjon.sluttDato)
-            )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                informasjon.sluttDato
-            )} `;
+            return {
+                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
+                    informasjon.sluttDato
+                )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
+                    informasjon.sluttDato
+                )} .`,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Den ansatte har i perioden{' '}
+                            {formaterDato(
+                                finnDato18MndTilbake(informasjon.sluttDato)
+                            )}
+                            –{formaterDato(informasjon.sluttDato)} være
+                            permittert i tilsammen mer enn 30 uker.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
+                            har vært permittert i 30 uker i løpet av de siste 18
+                            månedene. I dette tilfellet blir 18 måneders
+                            perioden{' '}
+                            {formaterDato(
+                                finnDato18MndTilbake(informasjon.sluttDato)
+                            )}{' '}
+                            til {formaterDato(informasjon.sluttDato)}.
+                        </Normaltekst>
+                    </>
+                ),
+            };
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
-            return `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                finnDato18MndTilbake(informasjon.sluttDato)
-            )}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                informasjon.sluttDato
-            )} `;
+            return {
+                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
+                    informasjon.sluttDato
+                )}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
+                    informasjon.sluttDato
+                )} `,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Arbeidsgiverperiode 2 treffer ansatte som har vært
+                            permittert i mer enn 30 uker i løpet av 18 måneders
+                            perioden 02.12.2019 – 01.06.2021, dersom de
+                            fremdeles er permittert 1. juni. Dette vil gjelde
+                            for deg og de fleste arbeidsgivere som har
+                            permittert ansatte i forbindelse med korona.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Den ansatte har vært permittert i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                informasjon.brukteDagerVedInnføringsdato
+                            )}{' '}
+                            i 18-månedsperioden før første juni (02.12.2019 –
+                            01.06.2021). Dette overskrider 30 uker, dermed
+                            inntreffer Arbeidsgiverperiode 2 den 1. juni.
+                        </Normaltekst>
+                    </>
+                ),
+            };
+        //TODO returner antall dager permttert i nytt 18 mnds intervall (ikke 1. jun intervallet)
         case Permitteringssituasjon.AGP2_IKKE_NÅDD:
-            return `Du kan fram til ${formaterDato(
-                informasjon.sluttDato
-            )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                informasjon.gjenståendePermitteringsDager
-            )} uten lønnsplikt  før Arbeidsgiverperiode 2 inntreffer.`;
+            return {
+                konklusjon: `Du kan fram til ${formaterDato(
+                    informasjon.sluttDato
+                )}  permittere i ${skrivDagerIHeleUkerPlussDager(
+                    informasjon.gjenståendePermitteringsDager
+                )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Den ansatte har i perioden{' '}
+                            {formaterDato(
+                                finnDato18MndTilbake(informasjon.sluttDato)
+                            )}
+                            –{formaterDato(informasjon.sluttDato)} vært
+                            permittert i tilsammen{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                210 - informasjon.gjenståendePermitteringsDager
+                            )}
+                            . Det betyr at du kan ha den ansatte permittert uten
+                            lønnsplikt i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                informasjon.gjenståendePermitteringsDager
+                            )}{' '}
+                            før Arbeidsgiverperiode 2 inntreffer.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Når Arbeidsgiverperiode 2 inntreffer skal du betale
+                            lønn i fem dager.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Tips: Du kan fylle inn permitteringer framover i
+                            tid, kalkulatoren vil da regne ut når
+                            Arbeidsgiverperiode 2 inntreffer ved fremtidige
+                            permitteringer.
+                        </Normaltekst>
+                    </>
+                ),
+            };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO:
-            return `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `;
+            return {
+                konklusjon: `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `,
+                beskrivelse: null,
+            };
     }
 };
 
@@ -100,31 +192,10 @@ const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
 const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
 
-const leggTiltekstOmFraværsAndelVedFraværv = (
-    fraværsdager: number,
-    brukteDager: number
-) => {
-    if (fraværsdager > 0) {
-        return ` og har hatt et fravær på ${skrivDagerIHeleUkerPlussDager(
-            fraværsdager
-        )} i denne perioden. Det er dermed ${skrivDagerIHeleUkerPlussDager(
-            brukteDager
-        )} som telles med i beregningen av Arbeidsgiverperiode 2.`;
-    }
-    return '.';
-};
-
-const tekstOmPermitteringPåInnføringsdato = (
-    erPermittertVedInnføring?: boolean
-) => {
-    if (erPermittertVedInnføring) {
-        return 'Arbeidsgiverperiode 2 inntreffer 1.juni';
-    }
-    return 'Dersom den ansatte er permittert 1. juni vil Arbeidsgiverperiode 2 inntreffe på denne datoen.';
-};
-
 const Utregningstekst: FunctionComponent<Props> = (props) => {
     const { innføringsdatoAGP2 } = useContext(PermitteringContext);
+
+    const resultatTekst = lagResultatTekst(props.informasjonOmAGP2Status);
 
     return (
         <>
@@ -134,17 +205,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     src={lampeikon}
                     alt={''}
                 />
-                <Element>
-                    {lagResultatTekstOverskrift(props.informasjonOmAGP2Status)}
-                </Element>
-                <br />
-                <br />
-                <Normaltekst>
-                    Dersom du vil vite mer om når AGP2 inntreffer ved framtidige
-                    permitteringer, kan du gjøre dette ved å fylle inn
-                    permitteringer framover i tid. Kalkulatoren vil da regne ut
-                    når (og hvis) Arbeidsgiverperiode 2 inntreffer.
-                </Normaltekst>
+                <Element>{resultatTekst.konklusjon}</Element>
+                {resultatTekst.beskrivelse}
                 <Normaltekst className={'kalkulator__informasjonslenker'}>
                     <Lenke
                         href={
