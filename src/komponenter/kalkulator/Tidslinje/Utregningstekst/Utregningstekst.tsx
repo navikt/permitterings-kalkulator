@@ -1,9 +1,4 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useContext } from 'react';
 import './Utregningstekst.less';
 import {
     Permitteringssituasjon,
@@ -22,6 +17,39 @@ interface Props {
     informasjonOmAGP2Status: InformasjonOmAGP2Status;
     tidslinje: DatoMedKategori[];
 }
+
+export const lagResultatTekstOverskrift = (
+    informasjon: InformasjonOmAGP2Status
+) => {
+    if (!informasjon.sluttDato) {
+        return `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid.  Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`;
+    }
+    switch (informasjon.type) {
+        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
+            const tilleggstekstLøpendePermittering = informasjon.finnesLøpendePermittering
+                ? ', dersom permitteringen holdes løpende'
+                : '';
+            return `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
+                finnDato18MndTilbake(informasjon.sluttDato)
+            )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
+                informasjon.sluttDato
+            )} `;
+        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
+            return `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
+                finnDato18MndTilbake(informasjon.sluttDato)
+            )}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
+                informasjon.sluttDato
+            )} `;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
+            return `Du kan fram til ${formaterDato(
+                informasjon.sluttDato
+            )}  permittere i ${skrivDagerIHeleUkerPlussDager(
+                informasjon.gjenståendePermitteringsDager
+            )} uten lønnsplikt  før Arbeidsgiverperiode 2 inntreffer.`;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO:
+            return `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `;
+    }
+};
 
 const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     tidslinje: DatoMedKategori[],
@@ -45,96 +73,13 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     return false;
 };
 
-const tekstNådd30UkerVedInnføringsdato = (
-    info: InformasjonOmAGP2Status,
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs
-) => {
-    const førsteDel = `Dette overskrider 30 uker. ${tekstOmPermitteringPåInnføringsdato(
-        info.permittertVedInnføringsdato
-    )}`;
-    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
-        tidslinje,
-        innføringsdatoAGP2
-    );
-    return (
-        <div>
-            <Element>{førsteDel}</Element>
-            {sistedelAvTekst && (
-                <Normaltekst>
-                    <br />
-                    {sistedelAvTekst}
-                </Normaltekst>
-            )}
-        </div>
-    );
-};
-
-const tekstAGPNåsIFramtiden = (
-    info: InformasjonOmAGP2Status,
-    tidslinje: DatoMedKategori[],
-    sisteDagAvRelevantIntervall: Dayjs
-) => {
-    const førsteDel = `Arbeidsgiverperiode 2 vil være ${formaterDato(
+const tekstSumPermitteringI18mndsPeriode = (info: InformasjonOmAGP2Status) => {
+    return `Den ansatte har i perioden ${formaterDato(
+        finnDato18MndTilbake(info.sluttDato!)
+    )} til ${formaterDato(
         info.sluttDato!
-    ).toString()}. Da har den ansatte vært permittert i mer enn 30 uker.`;
-    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
-        tidslinje,
-        sisteDagAvRelevantIntervall
-    );
-    return (
-        <div>
-            <Element>{førsteDel}</Element>
-            {sistedelAvTekst && (
-                <Normaltekst>
-                    <br />
-                    {sistedelAvTekst}
-                </Normaltekst>
-            )}
-        </div>
-    );
-};
-
-const tekstIkkeNåddAGP2IkkeLøpende = (
-    info: InformasjonOmAGP2Status,
-    tidslinje: DatoMedKategori[],
-    sisteDagAvRelevantIntervall: Dayjs
-) => {
-    const nåddAGP2 = info.gjenståendePermitteringsDager <= 0;
-    const førsteDel = nåddAGP2
-        ? `${formaterDato(
-              info.sluttDato!
-          )} har den ansatte vært permittert i 30 uker`
-        : `Du kan ha den ansatte permittert i
-                    ${skrivDagerIHeleUkerPlussDager(
-                        info.gjenståendePermitteringsDager
-                    )}
-                     innen 
-                    ${formaterDato(sisteDagAvRelevantIntervall)}, 
-                     før Arbeidsgiverperiode 2 inntreffer.`;
-    const sistedelAvTekst = lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode(
-        tidslinje,
-        sisteDagAvRelevantIntervall!
-    );
-    return (
-        <div>
-            <Element>{førsteDel}</Element>
-            {sistedelAvTekst && (
-                <Normaltekst>
-                    <br />
-                    {sistedelAvTekst}
-                </Normaltekst>
-            )}
-        </div>
-    );
-};
-
-const beskrivelseAvInput = (info: InformasjonOmAGP2Status) => {
-    return `Den ansatte har i perioden 2. desember 2019 til 1. juni 2021 vært permittert i ${skrivDagerIHeleUkerPlussDager(
+    )} vært permittert i tilsammen ${skrivDagerIHeleUkerPlussDager(
         info.permitteringsdagerVedInnføringsdato
-    )}${leggTiltekstOmFraværsAndelVedFraværv(
-        info.fraværsdagerVedInnføringsdato,
-        info.brukteDagerVedInnføringsdato
     )}`;
 };
 
@@ -178,53 +123,8 @@ const tekstOmPermitteringPåInnføringsdato = (
     return 'Dersom den ansatte er permittert 1. juni vil Arbeidsgiverperiode 2 inntreffe på denne datoen.';
 };
 
-const genererTekst = (
-    info: InformasjonOmAGP2Status,
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs
-) => {
-    if (info.sluttDato) {
-        switch (info.type) {
-            case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
-                return tekstNådd30UkerVedInnføringsdato(
-                    info,
-                    tidslinje,
-                    innføringsdatoAGP2
-                );
-            case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-                return tekstAGPNåsIFramtiden(info, tidslinje, info.sluttDato);
-            case Permitteringssituasjon.AGP2_IKKE_NÅDD:
-                return tekstIkkeNåddAGP2IkkeLøpende(
-                    info,
-                    tidslinje,
-                    info.sluttDato
-                );
-        }
-    } else {
-        return (
-            <div>
-                <Element>
-                    Den ansatte er ikke permittert lenge nok til å nå
-                    Arbeidsgiverperiode 2.
-                </Element>
-            </div>
-        );
-    }
-};
-
 const Utregningstekst: FunctionComponent<Props> = (props) => {
     const { innføringsdatoAGP2 } = useContext(PermitteringContext);
-    const [tekst, setTekst] = useState(<div />);
-
-    useEffect(() => {
-        setTekst(
-            genererTekst(
-                props.informasjonOmAGP2Status,
-                props.tidslinje,
-                innføringsdatoAGP2
-            )
-        );
-    }, [props.informasjonOmAGP2Status, props.tidslinje, innføringsdatoAGP2]);
 
     return (
         <>
@@ -234,11 +134,10 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     src={lampeikon}
                     alt={''}
                 />
-                <Normaltekst>
-                    {beskrivelseAvInput(props.informasjonOmAGP2Status)}
-                </Normaltekst>
+                <Element>
+                    {lagResultatTekstOverskrift(props.informasjonOmAGP2Status)}
+                </Element>
                 <br />
-                {tekst}
                 <br />
                 <Normaltekst>
                     Dersom du vil vite mer om når AGP2 inntreffer ved framtidige
