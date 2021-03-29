@@ -125,3 +125,22 @@ export const konstruerTidslinje = (
     }
     return listeMedTidslinjeObjekter;
 };
+export const finnPermitteringsDatoEtterGittDato = (
+    skalVæreEtter: Dayjs,
+    tidslinje: DatoMedKategori[]
+) => {
+    return tidslinje.find(
+        (datoMedKategori) =>
+            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
+            datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
+    );
+};
+export const erPermittertVedDato = (
+    tidslinje: DatoMedKategori[],
+    dato: Dayjs
+) => {
+    const status = tidslinje.find((datoMedKategori) =>
+        datoMedKategori.dato.isSame(dato, 'day')
+    );
+    return status?.kategori === DatointervallKategori.PERMITTERT;
+};

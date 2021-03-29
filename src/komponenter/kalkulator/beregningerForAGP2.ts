@@ -8,8 +8,11 @@ import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
-    formaterDato,
 } from './dato-utils';
+import {
+    erPermittertVedDato,
+    finnPermitteringsDatoEtterGittDato,
+} from './tidslinje-utils';
 
 export enum Permitteringssituasjon {
     AGP2_NÅDD_VED_INNFØRINGSDATO = 'AGP2_NÅDD_VED_INNFØRINGSDATO',
@@ -26,6 +29,64 @@ export interface InformasjonOmAGP2Status {
     permitteringsdagerVedInnføringsdato: number;
     permittertVedInnføringsdato?: boolean;
 }
+
+export const finnInformasjonAGP2 = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    erLøpende: boolean,
+    dagensDato: Dayjs,
+    antallDagerFørAGP2Inntreffer: number
+): InformasjonOmAGP2Status => {
+    const situasjon = finnPermitteringssituasjon(
+        tidslinje,
+        innføringsdatoAGP2,
+        antallDagerFørAGP2Inntreffer
+    );
+    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
+        innføringsdatoAGP2,
+        tidslinje
+    );
+
+    const dataVedInnføringsdato = {
+        fraværsdagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+        permitteringsdagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
+        brukteDagerVedInnføringsdato:
+            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
+    };
+
+    let dataSpesifikkForSituasjon;
+    switch (situasjon) {
+        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2ErNådd(
+                tidslinje,
+                innføringsdatoAGP2
+            );
+            break;
+        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer
+            );
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer,
+                dagensDato
+            );
+            break;
+    }
+
+    return {
+        type: situasjon,
+        ...dataVedInnføringsdato,
+        ...dataSpesifikkForSituasjon,
+    };
+};
 
 export const finnPermitteringssituasjon = (
     tidslinje: DatoMedKategori[],
@@ -118,64 +179,6 @@ const getInformasjonOmAGP2HvisAGP2IkkeNås = (
         gjenståendePermitteringsDager:
             antallDagerFørAGP2Inntreffer -
             antallBruktePermitteringsdagerIPerioden,
-    };
-};
-
-export const finnInformasjonAGP2 = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs,
-    erLøpende: boolean,
-    dagensDato: Dayjs,
-    antallDagerFørAGP2Inntreffer: number
-): InformasjonOmAGP2Status => {
-    const situasjon = finnPermitteringssituasjon(
-        tidslinje,
-        innføringsdatoAGP2,
-        antallDagerFørAGP2Inntreffer
-    );
-    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
-        innføringsdatoAGP2,
-        tidslinje
-    );
-
-    const dataVedInnføringsdato = {
-        fraværsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
-        permitteringsdagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
-        brukteDagerVedInnføringsdato:
-            oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
-    };
-
-    let dataSpesifikkForSituasjon;
-    switch (situasjon) {
-        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
-            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2ErNådd(
-                tidslinje,
-                innføringsdatoAGP2
-            );
-            break;
-        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer
-            );
-            break;
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
-            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer,
-                dagensDato
-            );
-            break;
-    }
-
-    return {
-        type: situasjon,
-        ...dataVedInnføringsdato,
-        ...dataSpesifikkForSituasjon,
     };
 };
 
@@ -315,7 +318,7 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     tidslinje: DatoMedKategori[],
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-) => {
+): number => {
     const ubrukteDagerIPeriode =
         antallDagerFørAGP2Inntreffer -
         finnBruktePermitteringsDager(tidslinje, sisteDagIAktuellPeriode);
@@ -353,22 +356,4 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     ) {
         return indeksITidslinje;
     }
-};
-
-const finnPermitteringsDatoEtterGittDato = (
-    skalVæreEtter: Dayjs,
-    tidslinje: DatoMedKategori[]
-) => {
-    return tidslinje.find(
-        (datoMedKategori) =>
-            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
-            datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
-    );
-};
-
-const erPermittertVedDato = (tidslinje: DatoMedKategori[], dato: Dayjs) => {
-    const status = tidslinje.find((datoMedKategori) =>
-        datoMedKategori.dato.isSame(dato, 'day')
-    );
-    return status?.kategori === DatointervallKategori.PERMITTERT;
 };
