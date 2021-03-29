@@ -69,8 +69,8 @@ const Kalkulator = () => {
                 </span>
             </Banner>
             <div className={'kalkulator'}>
-                <Innholdstittel>
-                    Lurer du på når du skal utbetale lønn under permittering?
+                <Innholdstittel tag="h2">
+                    Regn ut når du skal betale arbeidsgiverperiode 2
                 </Innholdstittel>
                 <Topp />
                 <Permitteringsperioder
