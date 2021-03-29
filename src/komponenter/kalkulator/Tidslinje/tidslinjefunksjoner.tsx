@@ -1,10 +1,13 @@
 import { DatointervallKategori, DatoMedKategori } from '../typer';
-import { antallDagerGått, finnDato18MndTilbake } from '../utregninger';
 import React from 'react';
 import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
 import { Dayjs } from 'dayjs';
-import { formaterDato } from '../../Datovelger/datofunksjoner';
+import {
+    antallDagerGått,
+    finnDato18MndTilbake,
+    formaterDato,
+} from '../utils/dato-utils';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;

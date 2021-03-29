@@ -4,14 +4,14 @@ import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
+import { Dayjs } from 'dayjs';
+import { Infotekst } from '../Infotekst/Infotekst';
+import timeglassSvg from './timeglass.svg';
 import {
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
-} from '../utregninger';
-import { Dayjs } from 'dayjs';
-import { Infotekst } from '../Infotekst/Infotekst';
-import timeglassSvg from './timeglass.svg';
+} from '../utils/dato-utils';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (

@@ -1,53 +1,22 @@
-import { DatoIntervall } from './typer';
+import {
+    finnInitialgrenserForTidslinjedatoer,
+    konstruerTidslinje,
+} from './tidslinje-utils';
+import dayjs from 'dayjs';
 import {
     antallDagerGått,
-    finnInitialgrenserForTidslinjedatoer,
     finnSisteDato,
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
     getAntallOverlappendeDager,
-    konstruerTidslinje,
     kuttAvDatoIntervallInnefor18mnd,
-    summerFraværsdagerIPermitteringsperiode,
-} from './utregninger';
-import dayjs from 'dayjs';
-import { configureDayJS } from '../../dayjs-config';
+} from './dato-utils';
+import { DatoIntervall } from '../typer';
+import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 
 describe('Tester for utregninger.ts', () => {
-    test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {
-        const tidslinje = konstruerTidslinje(
-            { permitteringer: [], andreFraværsperioder: [] },
-            dayjs().startOf('date'),
-            finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
-                .datoTil!
-        );
-        let bestårTest = true;
-        tidslinje.forEach((objekt, indeks) => {
-            if (indeks > 0) {
-                if (
-                    tidslinje[indeks].dato.date() -
-                        tidslinje[indeks - 1].dato.date() !==
-                    1
-                ) {
-                    if (tidslinje[indeks].dato.date() !== 1) {
-                        bestårTest = false;
-                    }
-                    if (
-                        tidslinje[indeks].dato.month() -
-                            tidslinje[indeks - 1].dato.month() !==
-                            1 &&
-                        tidslinje[indeks].dato.month() !== 0
-                    ) {
-                        bestårTest = false;
-                    }
-                }
-            }
-        });
-        expect(bestårTest).toBe(true);
-    });
-
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
         const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
@@ -100,36 +69,6 @@ describe('Tester for utregninger.ts', () => {
         expect(
             finnUtOmDefinnesOverlappendePerioder(Array.of(periode1, periode2))
         ).toBe(true);
-    });
-
-    test('Summer antall fraværsdager i en permitteringsperiode', () => {
-        const fraværsIntervall1: DatoIntervall = {
-            datoFra: dayjs('2021-03-01'),
-            datoTil: dayjs('2021-03-15'),
-        };
-        const fraværsIntervall2: DatoIntervall = {
-            datoFra: dayjs('2021-04-02'),
-            datoTil: dayjs('2021-04-02'),
-        };
-        const fraværsIntervall3: DatoIntervall = {
-            datoFra: dayjs('2021-04-29'),
-            datoTil: dayjs('2021-05-07'),
-        };
-        const permitteringsPeriode: DatoIntervall = {
-            datoFra: dayjs('2020-02-14'),
-            datoTil: dayjs('2021-06-02'),
-        };
-
-        expect(
-            summerFraværsdagerIPermitteringsperiode(
-                permitteringsPeriode,
-                Array.of(
-                    fraværsIntervall1,
-                    fraværsIntervall2,
-                    fraværsIntervall3
-                )
-            )
-        ).toBe(25);
     });
 
     test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', () => {

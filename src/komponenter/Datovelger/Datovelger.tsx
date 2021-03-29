@@ -12,16 +12,16 @@ import { Input, Label } from 'nav-frontend-skjema';
 import { guid } from 'nav-frontend-js-utils';
 import {
     datoValidering,
-    formaterDato,
     LABELS,
     MONTHS,
     WEEKDAYS_LONG,
     WEEKDAYS_SHORT,
-} from './datofunksjoner';
+} from './datovelger-utils';
 import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
 import { PermitteringContext } from '../ContextProvider';
+import { formaterDato } from '../kalkulator/utils/dato-utils';
 
 interface Props {
     overtekst: string;

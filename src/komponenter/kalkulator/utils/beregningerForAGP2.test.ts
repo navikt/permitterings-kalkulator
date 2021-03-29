@@ -1,17 +1,16 @@
-import { AllePermitteringerOgFraværesPerioder } from './typer';
-import {
-    antallDagerGått,
-    finnDato18MndTilbake,
-    finnInitialgrenserForTidslinjedatoer,
-    konstruerTidslinje,
-    regnUtHvaSisteDatoPåTidslinjenSkalVære,
-} from './utregninger';
+import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import dayjs from 'dayjs';
 import {
     finnBruktePermitteringsDager,
     finnInformasjonAGP2,
 } from './beregningerForAGP2';
-import { configureDayJS } from '../../dayjs-config';
+import { configureDayJS } from '../../../dayjs-config';
+import { antallDagerGått, finnDato18MndTilbake } from './dato-utils';
+import {
+    finnInitialgrenserForTidslinjedatoer,
+    konstruerTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
+} from './tidslinje-utils';
 
 configureDayJS();
 
