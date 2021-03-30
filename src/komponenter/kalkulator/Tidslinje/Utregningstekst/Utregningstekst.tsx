@@ -2,7 +2,7 @@ import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoAGP2EtterInnføringsdato,
+    finnDatoForAGP2,
     getPermitteringsoversikt,
     finnPermitteringssituasjon,
     Permitteringssituasjon,
@@ -73,7 +73,7 @@ export const lagResultatTekst = (
                 ),
             };
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const datoAGP2: Dayjs = finnDatoAGP2EtterInnføringsdato(
+            const datoAGP2: Dayjs = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
                 210

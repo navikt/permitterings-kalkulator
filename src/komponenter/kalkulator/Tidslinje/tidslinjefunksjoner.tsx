@@ -10,7 +10,7 @@ import {
 } from '../utils/dato-utils';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoAGP2EtterInnføringsdato,
+    finnDatoForAGP2,
     finnPermitteringssituasjon,
     Permitteringssituasjon,
 } from '../utils/beregningerForAGP2';
@@ -218,7 +218,7 @@ export const finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen = (
     let sluttDatoIllustrasjonPåTidslinje: Dayjs | undefined;
     switch (situasjon) {
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            sluttDatoIllustrasjonPåTidslinje = finnDatoAGP2EtterInnføringsdato(
+            sluttDatoIllustrasjonPåTidslinje = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
                 antallDagerFørAGP2Inntreffer

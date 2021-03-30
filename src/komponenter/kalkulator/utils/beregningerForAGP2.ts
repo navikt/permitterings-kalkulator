@@ -27,7 +27,10 @@ export const finnPermitteringssituasjon = (
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): Permitteringssituasjon => {
-    const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversikt(tidslinje, innføringsdatoAGP2).dagerBrukt;
+    const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversikt(
+        tidslinje,
+        innføringsdatoAGP2
+    ).dagerBrukt;
 
     if (
         antallBruktePermitteringsdagerVedInnføringsdato >=
@@ -39,7 +42,7 @@ export const finnPermitteringssituasjon = (
         return Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO;
     }
 
-    const datoAGP2EtterInnføringsdato = finnDatoAGP2EtterInnføringsdato(
+    const datoAGP2EtterInnføringsdato = finnDatoForAGP2(
         tidslinje,
         innføringsdatoAGP2,
         antallDagerFørAGP2Inntreffer
@@ -52,13 +55,29 @@ export const finnPermitteringssituasjon = (
     }
 };
 
-export const finnDatoAGP2EtterInnføringsdato = (
+export const finnDatoForAGP2 = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): Dayjs | undefined => {
+    const oversiktVedInnføringsdato = getPermitteringsoversikt(
+        tidslinje,
+        innføringsdatoAGP2
+    );
+
+    if (oversiktVedInnføringsdato.dagerBrukt > antallDagerFørAGP2Inntreffer) {
+        if (erPermittertVedDato(tidslinje, innføringsdatoAGP2)) {
+            return innføringsdatoAGP2;
+        } else {
+            return undefined;
+        }
+    }
+
     let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
-    let antallDagerPermittert = getPermitteringsoversikt(tidslinje, potensiellDatoForAGP2).dagerBrukt;
+    let antallDagerPermittert = getPermitteringsoversikt(
+        tidslinje,
+        potensiellDatoForAGP2
+    ).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
 
     while (
@@ -71,7 +90,10 @@ export const finnDatoAGP2EtterInnføringsdato = (
             antallDagerTilNesteGjett,
             'days'
         );
-        antallDagerPermittert = getPermitteringsoversikt(tidslinje, potensiellDatoForAGP2).dagerBrukt;
+        antallDagerPermittert = getPermitteringsoversikt(
+            tidslinje,
+            potensiellDatoForAGP2
+        ).dagerBrukt;
     }
     if (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         return undefined;
@@ -81,7 +103,7 @@ export const finnDatoAGP2EtterInnføringsdato = (
 
 export const getPermitteringsoversikt = (
     tidslinje: DatoMedKategori[],
-    sisteDatoIAktuellPeriode: dayjs.Dayjs,
+    sisteDatoIAktuellPeriode: dayjs.Dayjs
 ): Permitteringsoversikt => {
     let permittert = 0;
     let antallDagerFravær = 0;
