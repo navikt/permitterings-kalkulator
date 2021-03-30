@@ -17,8 +17,8 @@ import {
 export enum Permitteringssituasjon {
     AGP2_NÅDD_VED_INNFØRINGSDATO = 'AGP2_NÅDD_VED_INNFØRINGSDATO',
     AGP2_NÅDD_ETTER_INNFØRINGSDATO = 'AGP2_NÅDD_ETTER_INNFØRINGSDATO',
-    AGP2_IKKE_NÅDD = 'AGP2_IKKE_NÅDD',
-    AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO = 'AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO',
+    AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT = 'AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT',
+    AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO = 'AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO',
 }
 
 export interface InformasjonOmAGP2Status {
@@ -74,13 +74,6 @@ export const finnInformasjonAGP2 = (
                 permittertVedInnføringsdato: true,
             };
             break;
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO:
-            dataSpesifikkForSituasjon = {
-                sluttDato: innføringsdatoAGP2,
-                gjenståendePermitteringsdager: 0,
-                permittertVedInnføringsdato: false,
-            };
-            break;
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
             dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato(
                 tidslinje,
@@ -88,7 +81,14 @@ export const finnInformasjonAGP2 = (
                 antallDagerFørAGP2Inntreffer
             );
             break;
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = {
+                sluttDato: innføringsdatoAGP2,
+                gjenståendePermitteringsdager: 0,
+                permittertVedInnføringsdato: false,
+            };
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
             dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
                 tidslinje,
                 innføringsdatoAGP2,
@@ -123,7 +123,7 @@ export const finnPermitteringssituasjon = (
         if (erPermittertVedDato(tidslinje, innføringsdatoAGP2)) {
             return Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO;
         }
-        return Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO;
+        return Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO;
     }
 
     const datoAGP2EtterInnføringsdato = finnDatoAGP2EtterInnføringsdato(
@@ -135,11 +135,11 @@ export const finnPermitteringssituasjon = (
     if (datoAGP2EtterInnføringsdato) {
         return Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO;
     } else {
-        return Permitteringssituasjon.AGP2_IKKE_NÅDD;
+        return Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT;
     }
 };
 
-const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
+export const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
@@ -160,7 +160,7 @@ const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
     };
 };
 
-const getInformasjonOmAGP2HvisAGP2IkkeNås = (
+export const getInformasjonOmAGP2HvisAGP2IkkeNås = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number,
@@ -188,7 +188,7 @@ const getInformasjonOmAGP2HvisAGP2IkkeNås = (
     };
 };
 
-const finnDatoAGP2EtterInnføringsdato = (
+export const finnDatoAGP2EtterInnføringsdato = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number

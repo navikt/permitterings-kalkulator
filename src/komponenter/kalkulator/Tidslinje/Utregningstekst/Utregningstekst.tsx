@@ -94,7 +94,7 @@ export const lagResultatTekst = (
                 ),
             };
         //TODO returner antall dager permttert i nytt 18 mnds intervall (ikke 1. jun intervallet)
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
                     informasjon.sluttDato
@@ -133,7 +133,7 @@ export const lagResultatTekst = (
                     </>
                 ),
             };
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO:
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
                 konklusjon: `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `,
                 beskrivelse: null,
