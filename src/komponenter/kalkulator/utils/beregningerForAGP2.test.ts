@@ -2,10 +2,10 @@ import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from '../typer
 import dayjs, { Dayjs } from 'dayjs';
 import {
     finnBruktePermitteringsDager,
+    finnDatoAGP2EtterInnføringsdato,
     finnOversiktOverPermitteringOgFraværGitt18mnd,
     finnPermitteringssituasjon,
     getInformasjonOmAGP2HvisAGP2IkkeNås,
-    getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato,
     Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
@@ -35,6 +35,27 @@ export interface InformasjonOmAGP2Status {
     finnesLøpendePermittering?: boolean;
 }
 
+// TODO Slett denne.
+const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    antallDagerFørAGP2Inntreffer: number,
+): {
+    sluttDato: Dayjs;
+    gjenståendePermitteringsdager: number;
+    bruktePermitteringsdager: number;
+} => {
+    const datoAGP2 = finnDatoAGP2EtterInnføringsdato(
+        tidslinje,
+        innføringsdatoAGP2,
+        antallDagerFørAGP2Inntreffer,
+    );
+    return {
+        sluttDato: datoAGP2!,
+        gjenståendePermitteringsdager: 0,
+        bruktePermitteringsdager: antallDagerFørAGP2Inntreffer,
+    };
+};
 // TODO Slett denne.
 const finnInformasjonAGP2 = (
     tidslinje: DatoMedKategori[],
