@@ -24,7 +24,7 @@ import {
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
 
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
 import {
     Permitteringssituasjon,
