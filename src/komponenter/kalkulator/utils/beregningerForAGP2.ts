@@ -12,7 +12,7 @@ import {
 } from './dato-utils';
 import {
     erPermittertVedDato,
-    finnPermitteringsDatoEtterGittDato,
+    finnPermitteringsDatoEtterGittDato, getSistePermitteringsdato,
 } from './tidslinje-utils';
 
 export enum Permitteringssituasjon {
@@ -72,10 +72,11 @@ export const finnDatoForAGP2 = (
         potensiellDatoForAGP2
     ).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
+    const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
 
     while (
         antallDagerPermittert <= antallDagerFørAGP2Inntreffer &&
-        potensiellDatoForAGP2.isSameOrBefore(sisteDagITidslinjen)
+        potensiellDatoForAGP2.isSameOrBefore(sistePermitteringsdato || sisteDagITidslinjen)
     ) {
         const antallDagerTilNesteGjett =
             antallDagerFørAGP2Inntreffer - antallDagerPermittert + 1;

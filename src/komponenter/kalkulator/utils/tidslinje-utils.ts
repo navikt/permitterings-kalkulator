@@ -128,7 +128,7 @@ export const konstruerTidslinje = (
 export const finnPermitteringsDatoEtterGittDato = (
     skalVæreEtter: Dayjs,
     tidslinje: DatoMedKategori[]
-) => {
+): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>
             datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
@@ -138,9 +138,24 @@ export const finnPermitteringsDatoEtterGittDato = (
 export const erPermittertVedDato = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs
-) => {
+): boolean => {
     const status = tidslinje.find((datoMedKategori) =>
         datoMedKategori.dato.isSame(dato, 'day')
     );
-    return status?.kategori === DatointervallKategori.PERMITTERT;
+    return status?.kategori === DatointervallKategori.PERMITTERT; // TODO Dette er ikke riktig
+};
+
+export const getSistePermitteringsdato = (
+    tidslinje: DatoMedKategori[]
+): Dayjs | undefined => {
+    for (let i = tidslinje.length - 1; i >= 0; i--) {
+        const kategori = tidslinje[i].kategori;
+        if (
+            kategori === DatointervallKategori.PERMITTERT ||
+            kategori === DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+        ) {
+            return tidslinje[i].dato;
+        }
+    }
+    return undefined;
 };
