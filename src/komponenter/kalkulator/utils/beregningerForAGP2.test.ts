@@ -80,7 +80,6 @@ describe('Tester for beregningerForAGP2', () => {
 
         test('Skal returnere AGP2_NÅDD_ETTER_INNFØRINGSDATO i riktig tilfelle, med fast permitteringsintervall', () => {
             const innføringsdatoAGP2 = dayjs('2021-06-01');
-            const permitteringsstart = innføringsdatoAGP2.subtract(100, 'days');
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
