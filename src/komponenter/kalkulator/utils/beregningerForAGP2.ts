@@ -27,10 +27,7 @@ export const finnPermitteringssituasjon = (
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): Permitteringssituasjon => {
-    const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversikt(
-        innføringsdatoAGP2,
-        tidslinje
-    ).dagerBrukt;
+    const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversikt(tidslinje, innføringsdatoAGP2).dagerBrukt;
 
     if (
         antallBruktePermitteringsdagerVedInnføringsdato >=
@@ -61,10 +58,7 @@ export const finnDatoAGP2EtterInnføringsdato = (
     antallDagerFørAGP2Inntreffer: number
 ): Dayjs | undefined => {
     let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
-    let antallDagerPermittert = getPermitteringsoversikt(
-        potensiellDatoForAGP2,
-        tidslinje
-    ).dagerBrukt;
+    let antallDagerPermittert = getPermitteringsoversikt(tidslinje, potensiellDatoForAGP2).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
 
     while (
@@ -77,10 +71,7 @@ export const finnDatoAGP2EtterInnføringsdato = (
             antallDagerTilNesteGjett,
             'days'
         );
-        antallDagerPermittert = getPermitteringsoversikt(
-            potensiellDatoForAGP2,
-            tidslinje
-        ).dagerBrukt;
+        antallDagerPermittert = getPermitteringsoversikt(tidslinje, potensiellDatoForAGP2).dagerBrukt;
     }
     if (antallDagerPermittert < antallDagerFørAGP2Inntreffer) {
         return undefined;
@@ -89,8 +80,8 @@ export const finnDatoAGP2EtterInnføringsdato = (
 };
 
 export const getPermitteringsoversikt = (
-    sisteDatoIAktuellPeriode: Dayjs,
-    tidslinje: DatoMedKategori[]
+    tidslinje: DatoMedKategori[],
+    sisteDatoIAktuellPeriode: dayjs.Dayjs,
 ): Permitteringsoversikt => {
     let permittert = 0;
     let antallDagerFravær = 0;
@@ -196,7 +187,7 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
 ): number => {
     const ubrukteDagerIPeriode =
         antallDagerFørAGP2Inntreffer -
-        getPermitteringsoversikt(sisteDagIAktuellPeriode, tidslinje).dagerBrukt;
+        getPermitteringsoversikt(tidslinje, sisteDagIAktuellPeriode).dagerBrukt;
     const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antallDagerGått(
         dagensDato,
         sisteDagIAktuellPeriode

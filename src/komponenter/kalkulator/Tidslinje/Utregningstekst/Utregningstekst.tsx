@@ -40,10 +40,7 @@ export const lagResultatTekst = (
         innføringsdatoAGP2,
         210
     );
-    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(
-        innføringsdatoAGP2,
-        tidslinje
-    );
+    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(tidslinje, innføringsdatoAGP2);
 
     switch (situasjon) {
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
@@ -133,10 +130,7 @@ export const lagResultatTekst = (
                 };
             }
 
-            const oversiktOverPermittering = getPermitteringsoversikt(
-                aktuell18mndsperiode.datoTil!,
-                tidslinje
-            );
+            const oversiktOverPermittering = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode.datoTil!);
 
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
