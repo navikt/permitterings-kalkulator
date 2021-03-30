@@ -1,12 +1,11 @@
-import React, { FunctionComponent, ReactElement, useContext } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import './Utregningstekst.less';
 import {
-    Permitteringssituasjon,
     InformasjonOmAGP2Status,
+    Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { PermitteringContext } from '../../../ContextProvider';
 import { DatointervallKategori, DatoMedKategori } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
