@@ -11,7 +11,7 @@ import {
     Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
-import { finnDato18MndTilbake } from './dato-utils';
+import { finnDato18MndTilbake, lengdePåIntervall } from './dato-utils';
 import {
     finnInitialgrenserForTidslinjedatoer,
     konstruerTidslinje,
@@ -62,7 +62,7 @@ describe('Tester for beregningerForAGP2', () => {
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoAGP2.subtract(208, 'days'), // TODO Dette skal egentlig feile for 208, men funke for 209
+                        datoFra: innføringsdatoAGP2.subtract(209, 'days'),
                         erLøpende: true,
                     },
                 ],
@@ -84,8 +84,8 @@ describe('Tester for beregningerForAGP2', () => {
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: permitteringsstart,
-                        datoTil: permitteringsstart.add(300, 'days'),
+                        datoFra: innføringsdatoAGP2.subtract(209, 'days'),
+                        datoTil: innføringsdatoAGP2.add(1, 'day'),
                     },
                 ],
                 andreFraværsperioder: [],
@@ -107,7 +107,7 @@ describe('Tester for beregningerForAGP2', () => {
                 permitteringer: [
                     {
                         datoFra: permitteringsstart,
-                        datoTil: permitteringsstart.add(208, 'days'), // TODO Skal feile for 208, men funke for 209 (eller 210?)
+                        datoTil: permitteringsstart.add(209, 'days'),
                     },
                 ],
                 andreFraværsperioder: [],
@@ -127,7 +127,7 @@ describe('Tester for beregningerForAGP2', () => {
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: dayjs('2019-12-02'),
+                        datoFra: innføringsdatoAGP2.subtract(211, 'days'),
                         datoTil: innføringsdatoAGP2.subtract(1, 'day'),
                     },
                 ],
@@ -182,7 +182,7 @@ describe('Tester for beregningerForAGP2', () => {
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoAGP2.subtract(35, 'weeks'),
+                        datoFra: innføringsdatoAGP2.subtract(210, 'days'),
                         erLøpende: true,
                     },
                 ],
@@ -232,6 +232,31 @@ describe('Tester for beregningerForAGP2', () => {
                 210
             );
             expect(datoAGP2).toEqual(innføringsdatoAGP2.add(25, 'weeks'));
+        });
+
+        test('finnDatoForAGP2 skal ikke gi en dato hvis permitteringen ikke _overskrider_ 210', () => {
+            const innføringsdatoAGP2 = dayjs('2021-06-01');
+            const permitteringsslutt = innføringsdatoAGP2.subtract(40, 'days');
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: permitteringsslutt.subtract(209, 'days'),
+                        datoTil: permitteringsslutt,
+                    },
+                ],
+                andreFraværsperioder: [],
+            });
+            const datoAGP2 = finnDatoForAGP2(
+                tidslinje,
+                innføringsdatoAGP2,
+                210
+            );
+            const dagerBrukt = getPermitteringsoversikt(
+                tidslinje,
+                permitteringsslutt.add(100, 'days')
+            ).dagerBrukt;
+            expect(dagerBrukt).toEqual(210);
+            expect(datoAGP2).toEqual(undefined);
         });
 
         test('skal håndtere løpende permittering etter innføringsdato', () => {
