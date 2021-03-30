@@ -28,9 +28,8 @@ export interface DatoMedKategori {
     kategori: DatointervallKategori;
 }
 
-export interface OversiktOverBrukteOgGjenværendeDager {
+export interface Permitteringsoversikt {
     dagerPermittert: number;
     dagerAnnetFravær: number;
-    dagerGjenstående: number;
     dagerBrukt: number;
 }
