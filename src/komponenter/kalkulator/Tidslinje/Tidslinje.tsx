@@ -12,6 +12,8 @@ import {
 import { Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
 
+import pek from './cursor-touch-2.svg';
+
 import { Fargeforklaringer } from './Fargeforklaringer';
 import {
     lagHTMLObjektForAlleDatoer,
@@ -21,6 +23,8 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
+
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
 import {
     Permitteringssituasjon,
@@ -57,6 +61,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
+    const [resultatVises, setResultatVises] = useState(false);
     const [
         informasjonOmAGP2Status,
         setInformasjonOmAGP2Status,
@@ -94,6 +99,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
+        setResultatVises(false);
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
@@ -218,47 +224,62 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const erInteraktiv = process.env.NODE_ENV === 'development';
 
     return (
-        <>
-            <div className={'kalkulator__tidslinje-forklaring'}>
-                <Utregningstekst
-                    tidslinje={props.tidslinje}
-                    informasjonOmAGP2Status={informasjonOmAGP2Status}
-                />
-            </div>
-            <div
-                role="img"
-                aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
+        <div className={'tidslinje'}>
+            <Hovedknapp
+                className={'tidslinje__vis-resultat-knapp'}
+                onClick={() => setResultatVises(true)}
             >
-                <div
-                    aria-hidden
-                    className={'kalkulator__tidslinje-container start'}
-                    id={'kalkulator-tidslinje-container'}
-                >
-                    {erInteraktiv ? (
-                        <Draggable
-                            axis={'x'}
-                            bounds={'parent'}
-                            onStop={() => OnTidslinjeDragRelease()}
-                            onDrag={() => OnTidslinjeDrag()}
-                        >
-                            {get18mndsperiode()}
-                        </Draggable>
-                    ) : (
-                        get18mndsperiode()
-                    )}
-                    <div
-                        className={'kalkulator__tidslinje-underlag'}
-                        id={'kalkulator__tidslinje'}
-                    >
-                        <div className={'kalkulator__tidslinje-fargeperioder'}>
-                            {htmlFargeObjekt}
-                        </div>
-                        {htmlElementerForHverDato}
+                <img alt={'trykk her-symbol'} src={pek} />
+                Se beregningen
+            </Hovedknapp>
+            {resultatVises && (
+                <>
+                    <div className={'kalkulator__tidslinje-forklaring'}>
+                        <Utregningstekst
+                            tidslinje={props.tidslinje}
+                            informasjonOmAGP2Status={informasjonOmAGP2Status}
+                        />
                     </div>
-                </div>
-                <Fargeforklaringer />
-            </div>
-        </>
+                    <div
+                        role="img"
+                        aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
+                    >
+                        <div
+                            aria-hidden
+                            className={'kalkulator__tidslinje-container start'}
+                            id={'kalkulator-tidslinje-container'}
+                        >
+                            {erInteraktiv ? (
+                                <Draggable
+                                    axis={'x'}
+                                    bounds={'parent'}
+                                    onStop={() => OnTidslinjeDragRelease()}
+                                    onDrag={() => OnTidslinjeDrag()}
+                                >
+                                    {get18mndsperiode()}
+                                </Draggable>
+                            ) : (
+                                get18mndsperiode()
+                            )}
+                            <div
+                                className={'kalkulator__tidslinje-underlag'}
+                                id={'kalkulator__tidslinje'}
+                            >
+                                <div
+                                    className={
+                                        'kalkulator__tidslinje-fargeperioder'
+                                    }
+                                >
+                                    {htmlFargeObjekt}
+                                </div>
+                                {htmlElementerForHverDato}
+                            </div>
+                        </div>
+                        <Fargeforklaringer />
+                    </div>
+                </>
+            )}
+        </div>
     );
 };
 
