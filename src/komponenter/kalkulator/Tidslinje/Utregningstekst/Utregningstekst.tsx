@@ -1,19 +1,21 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
+    finnInformasjonAGP2,
     InformasjonOmAGP2Status,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { DatointervallKategori, DatoMedKategori } from '../../typer';
+import { AllePermitteringerOgFraværesPerioder, DatointervallKategori, DatoMedKategori } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
+import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
-    informasjonOmAGP2Status: InformasjonOmAGP2Status;
     tidslinje: DatoMedKategori[];
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 interface ResultatTekst {
@@ -93,7 +95,6 @@ export const lagResultatTekst = (
                     </>
                 ),
             };
-        //TODO returner antall dager permttert i nytt 18 mnds intervall (ikke 1. jun intervallet)
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
@@ -191,7 +192,24 @@ const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const resultatTekst = lagResultatTekst(props.informasjonOmAGP2Status);
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
+        (permittering) => permittering.erLøpende
+    );
+    const finnesLøpendePermittering = !!props.allePermitteringerOgFraværesPerioder.permitteringer.find(
+        (permitteringsperiode) => permitteringsperiode.erLøpende
+    );
+
+    const informasjonOmAGP2Status: InformasjonOmAGP2Status = finnInformasjonAGP2(
+        props.tidslinje,
+        innføringsdatoAGP2,
+        finnesLøpende !== undefined,
+        dagensDato,
+        210,
+        finnesLøpendePermittering
+    );
+
+    const resultatTekst = lagResultatTekst(informasjonOmAGP2Status);
 
     return (
         <>

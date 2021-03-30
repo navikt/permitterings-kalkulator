@@ -62,17 +62,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         )
     );
     const [resultatVises, setResultatVises] = useState(false);
-    const [
-        informasjonOmAGP2Status,
-        setInformasjonOmAGP2Status,
-    ] = useState<InformasjonOmAGP2Status>({
-        brukteDagerVedInnføringsdato: 0,
-        sluttDato: innføringsdatoAGP2,
-        type: Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT,
-        gjenståendePermitteringsdager: 210,
-        fraværsdagerVedInnføringsdato: 0,
-        permitteringsdagerVedInnføringsdato: 0,
-    });
 
     const [
         posisjonsStylingDragElement,
@@ -100,33 +89,31 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     useEffect(() => {
         setResultatVises(false);
+
+        if (props.tidslinje.length > 0) {
+            props.setEndringAv('datovelger');
+        }
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+
+    useEffect(() => {
         const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permittering) => permittering.erLøpende
         );
         const finnesLøpendePermittering = !!props.allePermitteringerOgFraværesPerioder.permitteringer.find(
             (permitteringsperiode) => permitteringsperiode.erLøpende
         );
-        if (props.tidslinje.length > 0) {
-            props.setEndringAv('datovelger');
-            setInformasjonOmAGP2Status(
-                finnInformasjonAGP2(
-                    props.tidslinje,
-                    innføringsdatoAGP2,
-                    finnesLøpende !== undefined,
-                    dagensDato,
-                    210,
-                    finnesLøpendePermittering
-                )
-            );
-        }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
-
-    useEffect(() => {
-        const sluttDatoIllustrasjonPåTidslinje = informasjonOmAGP2Status.sluttDato
-            ? informasjonOmAGP2Status.sluttDato
-            : innføringsdatoAGP2;
+        const infoAGP2 = finnInformasjonAGP2(
+            props.tidslinje,
+            innføringsdatoAGP2,
+            finnesLøpende !== undefined,
+            dagensDato,
+            210,
+            finnesLøpendePermittering
+        );
+        const sluttDatoIllustrasjonPåTidslinje =
+            infoAGP2.sluttDato || innføringsdatoAGP2;
         props.set18mndsPeriode(sluttDatoIllustrasjonPåTidslinje);
-    }, [informasjonOmAGP2Status, props.allePermitteringerOgFraværesPerioder]);
+    }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
@@ -237,7 +224,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     <div className={'kalkulator__tidslinje-forklaring'}>
                         <Utregningstekst
                             tidslinje={props.tidslinje}
-                            informasjonOmAGP2Status={informasjonOmAGP2Status}
+                            allePermitteringerOgFraværesPerioder={
+                                props.allePermitteringerOgFraværesPerioder
+                            }
                         />
                     </div>
                     <div
