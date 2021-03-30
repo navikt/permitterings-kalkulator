@@ -320,6 +320,28 @@ describe('Tester for beregningerForAGP2', () => {
                 innføringsdatoAGP2.add(1, 'month').add(210, 'days')
             );
         });
+
+        test('AGP2 skal komme på innføringsdato selv om det er et fravær på den datoen', () => {
+            const innføringsdatoAGP2 = dayjs('2021-06-01');
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: innføringsdatoAGP2.subtract(300, 'days'),
+                        erLøpende: true,
+                    },
+                ],
+                andreFraværsperioder: [{
+                    datoFra: innføringsdatoAGP2.subtract(2, 'days'),
+                    datoTil: innføringsdatoAGP2.add(2, 'days'),
+                }],
+            });
+            const datoAGP2 = finnDatoForAGP2(
+                tidslinje,
+                innføringsdatoAGP2,
+                210
+            );
+            expect(datoAGP2).toEqual(innføringsdatoAGP2);
+        });
     });
 
     describe('Tester for getPermitteringsoversikt', () => {

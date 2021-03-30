@@ -49,18 +49,18 @@ const finneKategori = (
     );
     if (erFraVærsDato && erPermittert) {
         return {
-            kategori: DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG,
+            kategori: DatointervallKategori.PERMITTERT_MED_FRAVÆR,
             dato: dato,
         };
     }
     if (erPermittert) {
         return {
-            kategori: DatointervallKategori.PERMITTERT,
+            kategori: DatointervallKategori.PERMITTERT_UTEN_FRAVÆR,
             dato: dato,
         };
     }
     return {
-        kategori: DatointervallKategori.ARBEIDER,
+        kategori: DatointervallKategori.IKKE_PERMITTERT,
         dato: dato,
     };
 };
@@ -131,7 +131,8 @@ export const finnPermitteringsDatoEtterGittDato = (
 ): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>
-            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
+            datoMedKategori.kategori ===
+                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
             datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
     );
 };
@@ -142,7 +143,10 @@ export const erPermittertVedDato = (
     const status = tidslinje.find((datoMedKategori) =>
         datoMedKategori.dato.isSame(dato, 'day')
     );
-    return status?.kategori === DatointervallKategori.PERMITTERT; // TODO Dette er ikke riktig
+    return (
+        status?.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR ||
+        status?.kategori === DatointervallKategori.PERMITTERT_MED_FRAVÆR
+    );
 };
 
 export const getSistePermitteringsdato = (
@@ -151,8 +155,8 @@ export const getSistePermitteringsdato = (
     for (let i = tidslinje.length - 1; i >= 0; i--) {
         const kategori = tidslinje[i].kategori;
         if (
-            kategori === DatointervallKategori.PERMITTERT ||
-            kategori === DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+            kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR ||
+            kategori === DatointervallKategori.PERMITTERT_MED_FRAVÆR
         ) {
             return tidslinje[i].dato;
         }

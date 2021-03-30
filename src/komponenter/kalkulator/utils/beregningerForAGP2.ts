@@ -107,15 +107,15 @@ export const getPermitteringsoversikt = (
             dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
             dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
         ) {
-            if (dag.kategori === DatointervallKategori.PERMITTERT) {
+            if (dag.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR) {
                 permittert++;
             }
-            if (dag.kategori === DatointervallKategori.ARBEIDER) {
+            if (dag.kategori === DatointervallKategori.IKKE_PERMITTERT) {
                 gjenståendeDager++;
             }
             if (
                 dag.kategori ===
-                DatointervallKategori.FRAVÆR_PÅ_PERMITTERINGSDAG
+                DatointervallKategori.PERMITTERT_MED_FRAVÆR
             ) {
                 permittert++;
                 antallDagerFravær++;
@@ -223,7 +223,7 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     if (
         indeksITidslinje > 0 &&
         tidslinje[indeksITidslinje].kategori !==
-            DatointervallKategori.PERMITTERT
+            DatointervallKategori.PERMITTERT_UTEN_FRAVÆR
     ) {
         return indeksITidslinje;
     }

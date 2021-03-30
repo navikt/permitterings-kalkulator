@@ -189,7 +189,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     );
     const finnesPermitteringerFørGittDato = tidslinje.find(
         (datoMedKategori) =>
-            datoMedKategori.kategori === DatointervallKategori.PERMITTERT &&
+            datoMedKategori.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
             datoMedKategori.dato.isBefore(startDato18mndsIntervall)
     );
     if (finnesPermitteringerFørGittDato) {
