@@ -1,12 +1,11 @@
-import React, { FunctionComponent, ReactElement, useContext } from 'react';
+import React, { FunctionComponent, ReactElement } from 'react';
 import './Utregningstekst.less';
 import {
-    Permitteringssituasjon,
     InformasjonOmAGP2Status,
+    Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { PermitteringContext } from '../../../ContextProvider';
 import { DatointervallKategori, DatoMedKategori } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
@@ -95,12 +94,12 @@ export const lagResultatTekst = (
                 ),
             };
         //TODO returner antall dager permttert i nytt 18 mnds intervall (ikke 1. jun intervallet)
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD:
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
                     informasjon.sluttDato
                 )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    informasjon.gjenståendePermitteringsDager
+                    informasjon.gjenståendePermitteringsdager
                 )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
                 beskrivelse: (
                     <>
@@ -112,12 +111,12 @@ export const lagResultatTekst = (
                             –{formaterDato(informasjon.sluttDato)} vært
                             permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                210 - informasjon.gjenståendePermitteringsDager
+                                informasjon.bruktePermitteringsdager!
                             )}
                             . Det betyr at du kan ha den ansatte permittert uten
                             lønnsplikt i{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.gjenståendePermitteringsDager
+                                informasjon.gjenståendePermitteringsdager
                             )}{' '}
                             før Arbeidsgiverperiode 2 inntreffer.
                         </Normaltekst>
@@ -134,7 +133,7 @@ export const lagResultatTekst = (
                     </>
                 ),
             };
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_INNFØRINGSDATO:
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
                 konklusjon: `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `,
                 beskrivelse: null,
@@ -192,8 +191,6 @@ const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const { innføringsdatoAGP2 } = useContext(PermitteringContext);
-
     const resultatTekst = lagResultatTekst(props.informasjonOmAGP2Status);
 
     return (
