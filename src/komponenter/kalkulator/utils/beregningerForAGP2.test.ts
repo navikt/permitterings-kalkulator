@@ -11,7 +11,7 @@ import {
     Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
-import { finnDato18MndTilbake, lengdePåIntervall } from './dato-utils';
+import { finnDato18MndTilbake } from './dato-utils';
 import {
     finnInitialgrenserForTidslinjedatoer,
     konstruerTidslinje,
@@ -330,10 +330,12 @@ describe('Tester for beregningerForAGP2', () => {
                         erLøpende: true,
                     },
                 ],
-                andreFraværsperioder: [{
-                    datoFra: innføringsdatoAGP2.subtract(2, 'days'),
-                    datoTil: innføringsdatoAGP2.add(2, 'days'),
-                }],
+                andreFraværsperioder: [
+                    {
+                        datoFra: innføringsdatoAGP2.subtract(2, 'days'),
+                        datoTil: innføringsdatoAGP2.add(2, 'days'),
+                    },
+                ],
             });
             const datoAGP2 = finnDatoForAGP2(
                 tidslinje,
