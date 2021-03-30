@@ -100,7 +100,7 @@ export const lagResultatTekst = (
                 konklusjon: `Du kan fram til ${formaterDato(
                     informasjon.sluttDato
                 )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    informasjon.gjenståendePermitteringsDager
+                    informasjon.gjenståendePermitteringsdager
                 )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
                 beskrivelse: (
                     <>
@@ -112,12 +112,12 @@ export const lagResultatTekst = (
                             –{formaterDato(informasjon.sluttDato)} vært
                             permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                210 - informasjon.gjenståendePermitteringsDager
+                                informasjon.bruktePermitteringsdager!
                             )}
                             . Det betyr at du kan ha den ansatte permittert uten
                             lønnsplikt i{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.gjenståendePermitteringsDager
+                                informasjon.gjenståendePermitteringsdager
                             )}{' '}
                             før Arbeidsgiverperiode 2 inntreffer.
                         </Normaltekst>
@@ -192,8 +192,6 @@ const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const { innføringsdatoAGP2 } = useContext(PermitteringContext);
-
     const resultatTekst = lagResultatTekst(props.informasjonOmAGP2Status);
 
     return (
