@@ -41,7 +41,7 @@ describe('Tester for beregningerForAGP2', () => {
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoAGP2.subtract(209, 'days'), // TODO Dette skal egentlig feile for 209, men funke for 210
+                        datoFra: innføringsdatoAGP2.subtract(210, 'days'),
                         datoTil: innføringsdatoAGP2,
                     },
                 ],
