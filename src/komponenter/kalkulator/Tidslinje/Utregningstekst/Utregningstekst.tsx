@@ -2,9 +2,9 @@ import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
     finnDatoAGP2EtterInnføringsdato,
-    finnInformasjonAGP2,
     finnOversiktOverPermitteringOgFraværGitt18mnd,
-    finnPermitteringssituasjon, getInformasjonOmAGP2HvisAGP2IkkeNås,
+    finnPermitteringssituasjon,
+    getInformasjonOmAGP2HvisAGP2IkkeNås,
     InformasjonOmAGP2Status,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
