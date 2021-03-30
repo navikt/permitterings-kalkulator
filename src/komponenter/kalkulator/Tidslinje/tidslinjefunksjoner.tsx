@@ -8,6 +8,11 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
+import {
+    finnDatoAGP2EtterInnføringsdato,
+    finnPermitteringssituasjon, getInformasjonOmAGP2HvisAGP2IkkeNås,
+    Permitteringssituasjon,
+} from '../utils/beregningerForAGP2';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
@@ -196,3 +201,41 @@ const finnFarge = (kategori: DatointervallKategori) => {
 export const erFørsteJanuar = (date: Dayjs) => {
     return date.month() === 0 && date.date() === 1;
 };
+
+export const finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    antallDagerFørAGP2Inntreffer: number,
+    dagensDato: Dayjs,
+): Dayjs => {
+    const situasjon = finnPermitteringssituasjon(
+        tidslinje,
+        innføringsdatoAGP2,
+        antallDagerFørAGP2Inntreffer
+    )
+
+    let sluttDatoIllustrasjonPåTidslinje: Dayjs | undefined;
+    switch (situasjon) {
+        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
+            sluttDatoIllustrasjonPåTidslinje = finnDatoAGP2EtterInnføringsdato(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer
+            )
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
+            sluttDatoIllustrasjonPåTidslinje = getInformasjonOmAGP2HvisAGP2IkkeNås(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer,
+                dagensDato
+            ).sluttDato;
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
+        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
+        default:
+            sluttDatoIllustrasjonPåTidslinje = innføringsdatoAGP2;
+            break;
+    }
+    return sluttDatoIllustrasjonPåTidslinje || innføringsdatoAGP2;
+}

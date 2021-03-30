@@ -16,6 +16,7 @@ import pek from './cursor-touch-2.svg';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
 import {
+    finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen,
     lagHTMLObjektForAlleDatoer,
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
@@ -26,11 +27,6 @@ import { PermitteringContext } from '../../ContextProvider';
 
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
-import {
-    Permitteringssituasjon,
-    finnInformasjonAGP2,
-    InformasjonOmAGP2Status,
-} from '../utils/beregningerForAGP2';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
 import {
     antallDagerGått,
@@ -96,23 +92,14 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
-        const finnesLøpende = props.allePermitteringerOgFraværesPerioder.permitteringer.find(
-            (permittering) => permittering.erLøpende
+        props.set18mndsPeriode(
+            finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen(
+                props.tidslinje,
+                innføringsdatoAGP2,
+                210,
+                dagensDato
+            )
         );
-        const finnesLøpendePermittering = !!props.allePermitteringerOgFraværesPerioder.permitteringer.find(
-            (permitteringsperiode) => permitteringsperiode.erLøpende
-        );
-        const infoAGP2 = finnInformasjonAGP2(
-            props.tidslinje,
-            innføringsdatoAGP2,
-            finnesLøpende !== undefined,
-            dagensDato,
-            210,
-            finnesLøpendePermittering
-        );
-        const sluttDatoIllustrasjonPåTidslinje =
-            infoAGP2.sluttDato || innføringsdatoAGP2;
-        props.set18mndsPeriode(sluttDatoIllustrasjonPåTidslinje);
     }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
