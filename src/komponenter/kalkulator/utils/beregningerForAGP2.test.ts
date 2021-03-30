@@ -1,11 +1,11 @@
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from '../typer';
 import dayjs, { Dayjs } from 'dayjs';
 import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnBruktePermitteringsDager,
     finnDatoAGP2EtterInnføringsdato,
     finnOversiktOverPermitteringOgFraværGitt18mnd,
     finnPermitteringssituasjon,
-    getInformasjonOmAGP2HvisAGP2IkkeNås,
     Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
@@ -54,6 +54,34 @@ const getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato = (
         sluttDato: datoAGP2!,
         gjenståendePermitteringsdager: 0,
         bruktePermitteringsdager: antallDagerFørAGP2Inntreffer,
+    };
+};
+
+export const getInformasjonOmAGP2HvisAGP2IkkeNås = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    antallDagerFørAGP2Inntreffer: number,
+    dagensDato: Dayjs,
+): {
+    sluttDato: Dayjs | undefined;
+    gjenståendePermitteringsdager: number;
+    bruktePermitteringsdager: number;
+} => {
+    const sisteDatoIPerioden = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+        tidslinje,
+        innføringsdatoAGP2,
+        dagensDato,
+        antallDagerFørAGP2Inntreffer,
+    )?.datoTil;
+    const antallBruktePermitteringsdagerIPerioden = sisteDatoIPerioden
+        ? finnBruktePermitteringsDager(tidslinje, sisteDatoIPerioden)
+        : 0;
+    return {
+        sluttDato: sisteDatoIPerioden,
+        gjenståendePermitteringsdager:
+            antallDagerFørAGP2Inntreffer -
+            antallBruktePermitteringsdagerIPerioden,
+        bruktePermitteringsdager: antallBruktePermitteringsdagerIPerioden,
     };
 };
 // TODO Slett denne.

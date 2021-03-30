@@ -1,4 +1,4 @@
-import { DatointervallKategori, DatoMedKategori, OversiktOverBrukteOgGjenværendeDager } from '../typer';
+import { DatoIntervall, DatointervallKategori, DatoMedKategori, OversiktOverBrukteOgGjenværendeDager } from '../typer';
 import dayjs, { Dayjs } from 'dayjs';
 import { antallDagerGått, finnDato18MndFram, finnDato18MndTilbake } from './dato-utils';
 import { erPermittertVedDato, finnPermitteringsDatoEtterGittDato } from './tidslinje-utils';
@@ -43,34 +43,6 @@ export const finnPermitteringssituasjon = (
     }
 };
 
-export const getInformasjonOmAGP2HvisAGP2IkkeNås = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs,
-    antallDagerFørAGP2Inntreffer: number,
-    dagensDato: Dayjs
-): {
-    sluttDato: Dayjs | undefined;
-    gjenståendePermitteringsdager: number;
-    bruktePermitteringsdager: number;
-} => {
-    const sisteDatoIPerioden = finnDatoForTidligste18mndsPeriode(
-        tidslinje,
-        innføringsdatoAGP2,
-        dagensDato,
-        antallDagerFørAGP2Inntreffer
-    );
-    const antallBruktePermitteringsdagerIPerioden = sisteDatoIPerioden
-        ? finnBruktePermitteringsDager(tidslinje, sisteDatoIPerioden)
-        : 0;
-    return {
-        sluttDato: sisteDatoIPerioden,
-        gjenståendePermitteringsdager:
-            antallDagerFørAGP2Inntreffer -
-            antallBruktePermitteringsdagerIPerioden,
-        bruktePermitteringsdager: antallBruktePermitteringsdagerIPerioden,
-    };
-};
-
 export const finnDatoAGP2EtterInnføringsdato = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
@@ -104,12 +76,12 @@ export const finnDatoAGP2EtterInnføringsdato = (
     return potensiellDatoForAGP2.add(1, 'day');
 };
 
-export const finnDatoForTidligste18mndsPeriode = (
+export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-): Dayjs | undefined => {
+): DatoIntervall | undefined => {
     const førstePermitteringStart:
         | DatoMedKategori
         | undefined = finnPermitteringsDatoEtterGittDato(
@@ -118,7 +90,7 @@ export const finnDatoForTidligste18mndsPeriode = (
     );
     if (!førstePermitteringStart) return undefined;
 
-    let potensiellSisteDatoIIntervall = dayjs(
+    let potensiellSisteDatoIIntervall: Dayjs = dayjs(
         finnDato18MndFram(førstePermitteringStart.dato)
     );
     let overskuddAvPermitteringsdagerITidsintervall = finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager(
@@ -164,7 +136,10 @@ export const finnDatoForTidligste18mndsPeriode = (
             antallDagerFørAGP2Inntreffer
         );
     }
-    return potensiellSisteDatoIIntervall;
+    return {
+        datoFra: finnDato18MndTilbake(potensiellSisteDatoIIntervall),
+        datoTil: potensiellSisteDatoIIntervall,
+    };
 };
 
 export const finnOversiktOverPermitteringOgFraværGitt18mnd = (

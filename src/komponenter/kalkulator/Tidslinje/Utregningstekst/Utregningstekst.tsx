@@ -1,10 +1,10 @@
 import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoAGP2EtterInnføringsdato,
     finnOversiktOverPermitteringOgFraværGitt18mnd,
     finnPermitteringssituasjon,
-    getInformasjonOmAGP2HvisAGP2IkkeNås,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
@@ -120,40 +120,48 @@ export const lagResultatTekst = (
                 ),
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
-            const informasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
+            const aktuell18mndsperiode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 innføringsdatoAGP2,
-                210,
-                dagensDato
+                dagensDato,
+                210
             );
-            if (!informasjon.sluttDato) {
+            if (!aktuell18mndsperiode) {
                 return {
                     konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
                     beskrivelse: <div />,
                 };
             }
+
+            const oversiktOverPermittering = finnOversiktOverPermitteringOgFraværGitt18mnd(
+                aktuell18mndsperiode.datoTil!,
+                tidslinje
+            );
+
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
-                    informasjon.sluttDato
+                    aktuell18mndsperiode.datoTil!
                 )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    informasjon.gjenståendePermitteringsdager
+                    210 - oversiktOverPermittering.dagerBrukt
                 )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
                             {formaterDato(
-                                finnDato18MndTilbake(informasjon.sluttDato)
+                                finnDato18MndTilbake(
+                                    aktuell18mndsperiode.datoTil!
+                                )
                             )}
-                            –{formaterDato(informasjon.sluttDato)} vært
+                            –{formaterDato(aktuell18mndsperiode.datoTil!)} vært
                             permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.bruktePermitteringsdager!
+                                oversiktOverPermittering.dagerBrukt
                             )}
                             . Det betyr at du kan ha den ansatte permittert uten
                             lønnsplikt i{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.gjenståendePermitteringsdager
+                                210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
                             før Arbeidsgiverperiode 2 inntreffer.
                         </Normaltekst>
