@@ -5,7 +5,6 @@ import {
     finnOversiktOverPermitteringOgFraværGitt18mnd,
     finnPermitteringssituasjon,
     getInformasjonOmAGP2HvisAGP2IkkeNås,
-    InformasjonOmAGP2Status,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
@@ -199,16 +198,6 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
         )}-${formaterDato(sluttDato18mndsIntervall)}).`;
     }
     return false;
-};
-
-const tekstSumPermitteringI18mndsPeriode = (info: InformasjonOmAGP2Status) => {
-    return `Den ansatte har i perioden ${formaterDato(
-        finnDato18MndTilbake(info.sluttDato!)
-    )} til ${formaterDato(
-        info.sluttDato!
-    )} vært permittert i tilsammen ${skrivDagerIHeleUkerPlussDager(
-        info.permitteringsdagerVedInnføringsdato
-    )}`;
 };
 
 const skrivDagerIHeleUkerPlussDager = (dager: number) => {

@@ -1,8 +1,12 @@
-import { AllePermitteringerOgFraværesPerioder } from '../typer';
-import dayjs from 'dayjs';
+import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from '../typer';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     finnBruktePermitteringsDager,
-    finnInformasjonAGP2,
+    finnOversiktOverPermitteringOgFraværGitt18mnd,
+    finnPermitteringssituasjon,
+    getInformasjonOmAGP2HvisAGP2IkkeNås,
+    getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato,
+    Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
 import { antallDagerGått, finnDato18MndTilbake } from './dato-utils';
@@ -14,6 +18,91 @@ import {
 
 configureDayJS();
 
+// TODO Slett denne.
+export interface InformasjonOmAGP2Status {
+    type: Permitteringssituasjon;
+
+    sluttDato: Dayjs | undefined;
+
+    gjenståendePermitteringsdager: number;
+    bruktePermitteringsdager?: number;
+
+    brukteDagerVedInnføringsdato: number;
+    fraværsdagerVedInnføringsdato: number;
+    permitteringsdagerVedInnføringsdato: number;
+    permittertVedInnføringsdato?: boolean;
+
+    finnesLøpendePermittering?: boolean;
+}
+
+// TODO Slett denne.
+const finnInformasjonAGP2 = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs,
+    erLøpende: boolean,
+    dagensDato: Dayjs,
+    antallDagerFørAGP2Inntreffer: number,
+): InformasjonOmAGP2Status => {
+    const situasjon = finnPermitteringssituasjon(
+        tidslinje,
+        innføringsdatoAGP2,
+        antallDagerFørAGP2Inntreffer,
+    );
+    const oversiktOverPermitteringVedInnføringsdato = finnOversiktOverPermitteringOgFraværGitt18mnd(
+        innføringsdatoAGP2,
+        tidslinje,
+    );
+
+    const dataVedInnføringsdato = {
+        fraværsdagerVedInnføringsdato:
+        oversiktOverPermitteringVedInnføringsdato.dagerAnnetFravær,
+        permitteringsdagerVedInnføringsdato:
+        oversiktOverPermitteringVedInnføringsdato.dagerPermittert,
+        brukteDagerVedInnføringsdato:
+        oversiktOverPermitteringVedInnføringsdato.dagerBrukt,
+    };
+
+    let dataSpesifikkForSituasjon;
+    switch (situasjon) {
+        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = {
+                sluttDato: innføringsdatoAGP2,
+                gjenståendePermitteringsdager: 0,
+                bruktePermitteringsdager: antallDagerFørAGP2Inntreffer,
+                permittertVedInnføringsdato: true,
+            };
+            break;
+        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisDenNåsEtterInnføringsdato(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer,
+            );
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
+            dataSpesifikkForSituasjon = {
+                sluttDato: innføringsdatoAGP2,
+                gjenståendePermitteringsdager: 0,
+                permittertVedInnføringsdato: false,
+            };
+            break;
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
+            dataSpesifikkForSituasjon = getInformasjonOmAGP2HvisAGP2IkkeNås(
+                tidslinje,
+                innføringsdatoAGP2,
+                antallDagerFørAGP2Inntreffer,
+                dagensDato,
+            );
+            break;
+    }
+
+    return {
+        type: situasjon,
+        finnesLøpendePermittering: erLøpende,
+        ...dataVedInnføringsdato,
+        ...dataSpesifikkForSituasjon,
+    };
+};
 test('dato for AGP2-grense', () => {
     const innføringsdatoAGP2 = dayjs('2021-06-01');
     const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
