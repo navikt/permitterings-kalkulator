@@ -36,11 +36,11 @@ export const getAntallOverlappendeDager = (
 
     let antallOverlappendeDager = 0;
     for (
-        let dag = intervallSomIkkeErLøpende.datoFra;
-        dag?.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
-        dag = dag!.add(1, 'day')
+        let dag = intervallSomIkkeErLøpende.datoFra!;
+        dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
+        dag = dag.add(1, 'day')
     ) {
-        if (finnesIIntervall(dag!, annetIntervall)) {
+        if (finnesIIntervall(dag, annetIntervall)) {
             antallOverlappendeDager++;
         }
     }
