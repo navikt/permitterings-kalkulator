@@ -93,30 +93,16 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
-
-                {tidslinje.length && (
-                    <div id={'kalkulator-tidslinje-wrapper'}>
-                        <>
-                            <Undertittel>
-                                4. Beregningen vises i tidslinje
-                            </Undertittel>
-                            <SeResultat
-                                setEndringAv={setsteDagI18mndsPeriodeEndretAv}
-                                tidslinje={tidslinje}
-                                endringAv={sisteDagI18mndsPeriodeEndretAv}
-                                breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                    'kalkulator-tidslinje-wrapper',
-                                    tidslinje.length
-                                )}
-                                sisteDagIPeriode={sisteDagI18mndsPeriode}
-                                set18mndsPeriode={setSisteDagI18mndsPeriode}
-                                allePermitteringerOgFraværesPerioder={
-                                    allePermitteringerOgFraværesPerioder
-                                }
-                            />
-                        </>
-                    </div>
-                )}
+                <SeResultat
+                    setEndringAv={setsteDagI18mndsPeriodeEndretAv}
+                    tidslinje={tidslinje}
+                    endringAv={sisteDagI18mndsPeriodeEndretAv}
+                    sisteDagIPeriode={sisteDagI18mndsPeriode}
+                    set18mndsPeriode={setSisteDagI18mndsPeriode}
+                    allePermitteringerOgFraværesPerioder={
+                        allePermitteringerOgFraværesPerioder
+                    }
+                />
             </div>
         </div>
     );
