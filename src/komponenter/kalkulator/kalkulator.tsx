@@ -16,6 +16,7 @@ import {
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utils/tidslinje-utils';
+import { SeResultat } from './SeResultat/SeResultat';
 
 const Kalkulator = () => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
@@ -37,7 +38,10 @@ const Kalkulator = () => {
         innføringsdatoAGP2
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
-    const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState<Dayjs>(
+    const [
+        sisteDatoVistPåTidslinje,
+        setSisteDatoVistPåTidslinje,
+    ] = useState<Dayjs>(
         finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
     );
 
@@ -89,13 +93,14 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
+
                 {tidslinje.length && (
                     <div id={'kalkulator-tidslinje-wrapper'}>
                         <>
                             <Undertittel>
                                 4. Beregningen vises i tidslinje
                             </Undertittel>
-                            <Tidslinje
+                            <SeResultat
                                 setEndringAv={setsteDagI18mndsPeriodeEndretAv}
                                 tidslinje={tidslinje}
                                 endringAv={sisteDagI18mndsPeriodeEndretAv}

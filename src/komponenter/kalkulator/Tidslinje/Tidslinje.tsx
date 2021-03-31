@@ -12,8 +12,6 @@ import {
 import { Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
 
-import pek from './cursor-touch-2.svg';
-
 import { Fargeforklaringer } from './Fargeforklaringer';
 import {
     finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen,
@@ -24,10 +22,7 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-
-import { Hovedknapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
-import Utregningstekst from './Utregningstekst/Utregningstekst';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
@@ -57,7 +52,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
-    const [resultatVises, setResultatVises] = useState(false);
 
     const [
         posisjonsStylingDragElement,
@@ -82,14 +76,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             setPosisjonsStylingDragElement('absolute');
         }
     }, [props.endringAv]);
-
-    useEffect(() => {
-        setResultatVises(false);
-
-        if (props.tidslinje.length > 0) {
-            props.setEndringAv('datovelger');
-        }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         props.set18mndsPeriode(
@@ -199,23 +185,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     return (
         <div className={'tidslinje'}>
-            <Hovedknapp
-                className={'tidslinje__vis-resultat-knapp'}
-                onClick={() => setResultatVises(true)}
-            >
-                <img alt={'trykk her-symbol'} src={pek} />
-                Se beregningen
-            </Hovedknapp>
-            {resultatVises && (
+            {
                 <>
-                    <div className={'kalkulator__tidslinje-forklaring'}>
-                        <Utregningstekst
-                            tidslinje={props.tidslinje}
-                            allePermitteringerOgFraværesPerioder={
-                                props.allePermitteringerOgFraværesPerioder
-                            }
-                        />
-                    </div>
                     <div
                         role="img"
                         aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
@@ -254,7 +225,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         <Fargeforklaringer />
                     </div>
                 </>
-            )}
+            }
         </div>
     );
 };
