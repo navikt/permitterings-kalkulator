@@ -73,9 +73,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                         props.indeks
                     ]
                 }
-                setDatoIntervall={(intervall) =>
-                    oppdaterDatoIntervall(intervall)
-                }
+                setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
             />
             {props.indeks ===
@@ -84,9 +82,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                     1 && (
                 <Knapp
                     className={'permitteringsperiode__legg-til-knapp'}
-                    onClick={() => {
-                        leggTilNyPermitteringsperiode();
-                    }}
+                    onClick={leggTilNyPermitteringsperiode}
                 >
                     + Legg til ny periode
                 </Knapp>

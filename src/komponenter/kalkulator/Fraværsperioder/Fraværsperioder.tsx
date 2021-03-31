@@ -43,7 +43,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         }
     }, [props.allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
-    const leggTilNyFraVærsPeriode = () => {
+    const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
@@ -133,7 +133,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             {fraVærsperiodeElementer}
             <Knapp
                 className="fraværsperioder__legg-til-knapp"
-                onClick={() => leggTilNyFraVærsPeriode()}
+                onClick={leggTilNyFraværsperiode}
             >
                 + Legg til ny periode
             </Knapp>

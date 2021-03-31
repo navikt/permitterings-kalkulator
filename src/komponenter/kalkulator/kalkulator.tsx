@@ -56,7 +56,7 @@ const Kalkulator = () => {
             allePermitteringerOgFraværesPerioder,
             dagensDato
         );
-        if (nySisteDatoPåTidslinjen?.isAfter(sisteDatoVistPåTidslinje)) {
+        if (nySisteDatoPåTidslinjen.isAfter(sisteDatoVistPåTidslinje)) {
             setSisteDatoVistPåTidslinje(nySisteDatoPåTidslinjen);
         }
     }, [allePermitteringerOgFraværesPerioder]);

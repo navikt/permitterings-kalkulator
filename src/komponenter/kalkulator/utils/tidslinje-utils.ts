@@ -73,7 +73,7 @@ const finneKategori = (
 export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
-) => {
+): Dayjs => {
     let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
         dagensDato
     ).datoTil;
@@ -89,7 +89,7 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     return getSenesteDato([
         senesteDatoPåTidslinje,
         sisteDatoIsisteMulige18mndsPeriode,
-    ]);
+    ])!;
 };
 
 export const konstruerTidslinje = (
