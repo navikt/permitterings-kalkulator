@@ -33,7 +33,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
-    const skalViseTidslinje = false; // Tidligere: props.tidslinje.length;
+    const skalViseTidslinje = false; // Når tidslinjen skal slås på, erstatt 'false' med: props.tidslinje.length
 
     return (
         <>
@@ -50,14 +50,12 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 </Hovedknapp>
                 {resultatVises && (
                     <>
-                        <div className={'kalkulator__tidslinje-forklaring'}>
-                            <Utregningstekst
-                                tidslinje={props.tidslinje}
-                                allePermitteringerOgFraværesPerioder={
-                                    props.allePermitteringerOgFraværesPerioder
-                                }
-                            />
-                        </div>
+                        <Utregningstekst
+                            tidslinje={props.tidslinje}
+                            allePermitteringerOgFraværesPerioder={
+                                props.allePermitteringerOgFraværesPerioder
+                            }
+                        />
                         <div id="tidslinje-wrapper">
                             {skalViseTidslinje && (
                                 <Tidslinje
