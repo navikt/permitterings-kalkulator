@@ -12,7 +12,8 @@ import {
 } from './dato-utils';
 import {
     erPermittertVedDato,
-    finnPermitteringsDatoEtterGittDato, getSistePermitteringsdato,
+    finnFørsteDatoMedPermitteringUtenFravær,
+    getSistePermitteringsdato,
 } from './tidslinje-utils';
 
 export enum Permitteringssituasjon {
@@ -76,7 +77,9 @@ export const finnDatoForAGP2 = (
 
     while (
         antallDagerPermittert <= antallDagerFørAGP2Inntreffer &&
-        potensiellDatoForAGP2.isSameOrBefore(sistePermitteringsdato || sisteDagITidslinjen)
+        potensiellDatoForAGP2.isSameOrBefore(
+            sistePermitteringsdato || sisteDagITidslinjen
+        )
     ) {
         const antallDagerTilNesteGjett =
             antallDagerFørAGP2Inntreffer - antallDagerPermittert + 1;
@@ -113,10 +116,7 @@ export const getPermitteringsoversikt = (
             if (dag.kategori === DatointervallKategori.IKKE_PERMITTERT) {
                 gjenståendeDager++;
             }
-            if (
-                dag.kategori ===
-                DatointervallKategori.PERMITTERT_MED_FRAVÆR
-            ) {
+            if (dag.kategori === DatointervallKategori.PERMITTERT_MED_FRAVÆR) {
                 permittert++;
                 antallDagerFravær++;
             }
@@ -137,9 +137,9 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
 ): DatoIntervall | undefined => {
     const førstePermitteringStart:
         | DatoMedKategori
-        | undefined = finnPermitteringsDatoEtterGittDato(
-        finnDato18MndTilbake(innføringsdatoAGP2),
-        tidslinje
+        | undefined = finnFørsteDatoMedPermitteringUtenFravær(
+        tidslinje,
+        finnDato18MndTilbake(innføringsdatoAGP2)
     );
     if (!førstePermitteringStart) return undefined;
 
@@ -171,9 +171,9 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
         if (indeksDatoBegynnelsenAv18mndsPeriode) {
             const nestePermitteringsstart:
                 | DatoMedKategori
-                | undefined = finnPermitteringsDatoEtterGittDato(
-                tidslinje[indeksDatoBegynnelsenAv18mndsPeriode].dato,
-                tidslinje
+                | undefined = finnFørsteDatoMedPermitteringUtenFravær(
+                tidslinje,
+                tidslinje[indeksDatoBegynnelsenAv18mndsPeriode].dato
             );
             // return ved ingen relevante permitteringsintervall igjen
             if (!nestePermitteringsstart) return undefined;

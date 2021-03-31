@@ -125,9 +125,9 @@ export const konstruerTidslinje = (
     }
     return listeMedTidslinjeObjekter;
 };
-export const finnPermitteringsDatoEtterGittDato = (
+export const finnFørsteDatoMedPermitteringUtenFravær = (
+    tidslinje: DatoMedKategori[],
     skalVæreEtter: Dayjs,
-    tidslinje: DatoMedKategori[]
 ): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>
