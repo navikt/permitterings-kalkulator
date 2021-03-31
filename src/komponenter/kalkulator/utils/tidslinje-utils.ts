@@ -11,6 +11,7 @@ import {
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervaller,
+    getSenesteDato,
     tilDatoIntervall,
 } from './dato-utils';
 
@@ -75,34 +76,19 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
         dagensDato
     ).datoTil;
-    const førsteDefinertePermitteringsDato = finnFørsteDefinertePermittering(
-        allePermitteringerOgFravær
-    );
-    if (førsteDefinertePermitteringsDato) {
-        let tempSistePermitteringsStart =
-            førsteDefinertePermitteringsDato.datoFra;
-        allePermitteringerOgFravær.permitteringer.forEach(
-            (permitteringsperiode) => {
-                if (
-                    permitteringsperiode.datoFra?.isAfter(
-                        tempSistePermitteringsStart!,
-                        'day'
-                    )
-                ) {
-                    tempSistePermitteringsStart = permitteringsperiode.datoFra;
-                }
-            }
-        );
-        const sisteDatoIsisteMulige18mndsPeriode = finnDato18MndFram(
-            tempSistePermitteringsStart!
-        );
-        senesteDatoPåTidslinje = sisteDatoIsisteMulige18mndsPeriode.isAfter(
-            senesteDatoPåTidslinje!
+    const sistePermitteringsstart = getSenesteDato(
+        allePermitteringerOgFravær.permitteringer.map(
+            (permittering) => permittering.datoFra
         )
-            ? sisteDatoIsisteMulige18mndsPeriode
-            : senesteDatoPåTidslinje;
-    }
-    return senesteDatoPåTidslinje;
+    );
+    const sisteDatoIsisteMulige18mndsPeriode = sistePermitteringsstart
+        ? finnDato18MndFram(sistePermitteringsstart)
+        : undefined;
+
+    return getSenesteDato([
+        senesteDatoPåTidslinje,
+        sisteDatoIsisteMulige18mndsPeriode,
+    ]);
 };
 
 export const konstruerTidslinje = (
