@@ -33,9 +33,11 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
+    const skalViseTidslinje = false; // Tidligere: props.tidslinje.length;
+
     return (
         <>
-            <Undertittel>3. Beregningen vises i tidslinje</Undertittel>
+            <Undertittel>3. Se resultatet av beregningen</Undertittel>
             <div className="se-resultat__innhold">
                 <Hovedknapp
                     className="se-resultat__knapp"
@@ -54,8 +56,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 }
                             />
                         </div>
-                        <div id={'kalkulator-tidslinje-wrapper'}>
-                            {props.tidslinje.length && (
+                        <div id="tidslinje-wrapper">
+                            {skalViseTidslinje && (
                                 <Tidslinje
                                     allePermitteringerOgFraværesPerioder={
                                         props.allePermitteringerOgFraværesPerioder
@@ -63,7 +65,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                     set18mndsPeriode={props.set18mndsPeriode}
                                     sisteDagIPeriode={props.sisteDagIPeriode}
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                        'kalkulator-tidslinje-wrapper',
+                                        'tidslinje-wrapper',
                                         props.tidslinje.length
                                     )}
                                     endringAv={props.endringAv}
