@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import '../kalkulator.less';
+import '../../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../typer';
 
-import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
+import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteTilDato } from '../utils/dato-utils';
+import { finnSisteTilDato } from '../../utils/dato-utils';
 
 interface Props {
     indeks: number;
