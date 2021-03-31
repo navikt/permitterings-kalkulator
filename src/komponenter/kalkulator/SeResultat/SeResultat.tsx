@@ -37,7 +37,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
 
     return (
         <>
-            <Undertittel>3. Se resultatet av beregningen</Undertittel>
+            <Undertittel className="se-resultat__tittel">
+                3. Se resultatet av beregningen
+            </Undertittel>
             <div className="se-resultat__innhold">
                 <Hovedknapp
                     className="se-resultat__knapp"
