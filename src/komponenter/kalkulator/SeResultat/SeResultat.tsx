@@ -13,7 +13,6 @@ import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
 
 interface Props {
-    // Tidlinje-props
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Dayjs) => void;
     sisteDagIPeriode: Dayjs;
