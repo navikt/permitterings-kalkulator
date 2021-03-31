@@ -40,7 +40,10 @@ export const lagResultatTekst = (
         innføringsdatoAGP2,
         210
     );
-    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(tidslinje, innføringsdatoAGP2);
+    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(
+        tidslinje,
+        innføringsdatoAGP2
+    );
 
     switch (situasjon) {
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
@@ -130,7 +133,10 @@ export const lagResultatTekst = (
                 };
             }
 
-            const oversiktOverPermittering = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode.datoTil);
+            const oversiktOverPermittering = getPermitteringsoversikt(
+                tidslinje,
+                aktuell18mndsperiode.datoTil
+            );
 
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
@@ -189,7 +195,8 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     );
     const finnesPermitteringerFørGittDato = tidslinje.find(
         (datoMedKategori) =>
-            datoMedKategori.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
+            datoMedKategori.kategori ===
+                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
             datoMedKategori.dato.isBefore(startDato18mndsIntervall)
     );
     if (finnesPermitteringerFørGittDato) {
@@ -231,27 +238,19 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
 
     return (
         <>
-            <div className={'kalkulator__tidslinje-utregningstekst-container'}>
+            <div className="utregningstekst">
                 <img
-                    className={'kalkulator__tidslinje-lampeikon'}
+                    className="utregningstekst__lampeikon"
                     src={lampeikon}
-                    alt={''}
+                    alt=""
                 />
                 <Element>{resultatTekst.konklusjon}</Element>
                 {resultatTekst.beskrivelse}
-                <Normaltekst className={'kalkulator__informasjonslenker'}>
-                    <Lenke
-                        href={
-                            'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn'
-                        }
-                    >
+                <Normaltekst className="utregningstekst__informasjonslenker">
+                    <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn">
                         Les mer om Arbeidsgiverperiode 2
                     </Lenke>
-                    <Lenke
-                        href={
-                            'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/'
-                        }
-                    >
+                    <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/">
                         Tilbake til permitteringsveivisereng
                     </Lenke>
                 </Normaltekst>
