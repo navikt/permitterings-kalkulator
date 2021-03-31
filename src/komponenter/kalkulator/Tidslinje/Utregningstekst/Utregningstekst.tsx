@@ -1,19 +1,27 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent, ReactElement, useContext } from 'react';
 import './Utregningstekst.less';
 import {
-    InformasjonOmAGP2Status,
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
+    finnDatoForAGP2,
+    getPermitteringsoversikt,
+    finnPermitteringssituasjon,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { Dayjs } from 'dayjs';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { DatointervallKategori, DatoMedKategori } from '../../typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatointervallKategori,
+    DatoMedKategori,
+} from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
+import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
-    informasjonOmAGP2Status: InformasjonOmAGP2Status;
     tidslinje: DatoMedKategori[];
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
 interface ResultatTekst {
@@ -22,54 +30,25 @@ interface ResultatTekst {
 }
 
 export const lagResultatTekst = (
-    informasjon: InformasjonOmAGP2Status
+    tidslinje: DatoMedKategori[],
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    dagensDato: Dayjs,
+    innføringsdatoAGP2: Dayjs
 ): ResultatTekst => {
-    if (!informasjon.sluttDato) {
-        return {
-            konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid.  Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
-            beskrivelse: <div />,
-        };
-    }
-    switch (informasjon.type) {
-        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const tilleggstekstLøpendePermittering = informasjon.finnesLøpendePermittering
-                ? ', dersom permitteringen holdes løpende'
-                : '';
-            return {
-                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                    informasjon.sluttDato
-                )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                    informasjon.sluttDato
-                )} .`,
-                beskrivelse: (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Den ansatte har i perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(informasjon.sluttDato)
-                            )}
-                            –{formaterDato(informasjon.sluttDato)} være
-                            permittert i tilsammen mer enn 30 uker.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
-                            har vært permittert i 30 uker i løpet av de siste 18
-                            månedene. I dette tilfellet blir 18 måneders
-                            perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(informasjon.sluttDato)
-                            )}{' '}
-                            til {formaterDato(informasjon.sluttDato)}.
-                        </Normaltekst>
-                    </>
-                ),
-            };
+    const situasjon = finnPermitteringssituasjon(
+        tidslinje,
+        innføringsdatoAGP2,
+        210
+    );
+    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(tidslinje, innføringsdatoAGP2);
+
+    switch (situasjon) {
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
             return {
                 konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                    informasjon.sluttDato
+                    innføringsdatoAGP2
                 )}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                    informasjon.sluttDato
+                    innføringsdatoAGP2
                 )} `,
                 beskrivelse: (
                     <>
@@ -84,7 +63,7 @@ export const lagResultatTekst = (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har vært permittert i{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.brukteDagerVedInnføringsdato
+                                oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}{' '}
                             i 18-månedsperioden før første juni (02.12.2019 –
                             01.06.2021). Dette overskrider 30 uker, dermed
@@ -93,30 +72,90 @@ export const lagResultatTekst = (
                     </>
                 ),
             };
-        //TODO returner antall dager permttert i nytt 18 mnds intervall (ikke 1. jun intervallet)
+        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
+            const datoAGP2: Dayjs = finnDatoForAGP2(
+                tidslinje,
+                innføringsdatoAGP2,
+                210
+            )!;
+            const sisteDagI18mndsperiode = datoAGP2.subtract(1, 'day');
+
+            const finnesLøpendePermittering = !!allePermitteringerOgFraværesPerioder.permitteringer.find(
+                (permittering) => permittering.erLøpende
+            );
+
+            const tilleggstekstLøpendePermittering = finnesLøpendePermittering
+                ? ', dersom permitteringen holdes løpende'
+                : '';
+            return {
+                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
+                    datoAGP2
+                )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
+                    datoAGP2
+                )} .`,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Den ansatte har i perioden{' '}
+                            {formaterDato(
+                                finnDato18MndTilbake(sisteDagI18mndsperiode)
+                            )}
+                            –{formaterDato(sisteDagI18mndsperiode)} være
+                            permittert i tilsammen 30 uker.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
+                            har vært permittert i mer enn 30 uker i løpet av de
+                            siste 18 månedene. I dette tilfellet blir 18
+                            måneders perioden{' '}
+                            {formaterDato(
+                                finnDato18MndTilbake(sisteDagI18mndsperiode)
+                            )}{' '}
+                            til {formaterDato(sisteDagI18mndsperiode)}.
+                        </Normaltekst>
+                    </>
+                ),
+            };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
+            const aktuell18mndsperiode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+                tidslinje,
+                innføringsdatoAGP2,
+                dagensDato,
+                210
+            );
+            if (!aktuell18mndsperiode) {
+                return {
+                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
+                    beskrivelse: <div />,
+                };
+            }
+
+            const oversiktOverPermittering = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode.datoTil!);
+
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
-                    informasjon.sluttDato
+                    aktuell18mndsperiode.datoTil!
                 )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    informasjon.gjenståendePermitteringsdager
+                    210 - oversiktOverPermittering.dagerBrukt
                 )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
                             {formaterDato(
-                                finnDato18MndTilbake(informasjon.sluttDato)
+                                finnDato18MndTilbake(
+                                    aktuell18mndsperiode.datoTil!
+                                )
                             )}
-                            –{formaterDato(informasjon.sluttDato)} vært
+                            –{formaterDato(aktuell18mndsperiode.datoTil!)} vært
                             permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.bruktePermitteringsdager!
+                                oversiktOverPermittering.dagerBrukt
                             )}
                             . Det betyr at du kan ha den ansatte permittert uten
                             lønnsplikt i{' '}
                             {skrivDagerIHeleUkerPlussDager(
-                                informasjon.gjenståendePermitteringsdager
+                                210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
                             før Arbeidsgiverperiode 2 inntreffer.
                         </Normaltekst>
@@ -163,16 +202,6 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     return false;
 };
 
-const tekstSumPermitteringI18mndsPeriode = (info: InformasjonOmAGP2Status) => {
-    return `Den ansatte har i perioden ${formaterDato(
-        finnDato18MndTilbake(info.sluttDato!)
-    )} til ${formaterDato(
-        info.sluttDato!
-    )} vært permittert i tilsammen ${skrivDagerIHeleUkerPlussDager(
-        info.permitteringsdagerVedInnføringsdato
-    )}`;
-};
-
 const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     const heleUkerPermittert = Math.floor(dager / 7);
     const restIDager = dager % 7;
@@ -191,7 +220,14 @@ const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const resultatTekst = lagResultatTekst(props.informasjonOmAGP2Status);
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+
+    const resultatTekst = lagResultatTekst(
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+        dagensDato,
+        innføringsdatoAGP2
+    );
 
     return (
         <>
@@ -216,7 +252,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                             'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/'
                         }
                     >
-                        Tilbake til permitteringsveiviseren
+                        Tilbake til permitteringsveivisereng
                     </Lenke>
                 </Normaltekst>
             </div>
