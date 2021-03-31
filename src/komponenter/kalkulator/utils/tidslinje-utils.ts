@@ -104,7 +104,7 @@ export const konstruerTidslinje = (
     );
     const startDato = finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
-        finneKategori(startDato!, allePermitteringerOgFravær)
+        finneKategori(startDato, allePermitteringerOgFravær)
     );
     for (let dag = 1; dag < antallObjektITidslinje; dag++) {
         const nesteDag = listeMedTidslinjeObjekter[dag - 1].dato.add(1, 'day');

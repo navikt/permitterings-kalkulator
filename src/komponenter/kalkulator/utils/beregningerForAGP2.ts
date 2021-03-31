@@ -134,7 +134,7 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
     innføringsdatoAGP2: Dayjs,
     dagensDato: Dayjs,
     antallDagerFørAGP2Inntreffer: number
-): DatoIntervall | undefined => {
+): (DatoIntervall & { erLøpende: false }) | undefined => {
     const førstePermitteringStart:
         | DatoMedKategori
         | undefined = finnFørsteDatoMedPermitteringUtenFravær(
