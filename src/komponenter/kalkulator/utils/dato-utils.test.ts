@@ -5,11 +5,11 @@ import {
 import dayjs from 'dayjs';
 import {
     antallDagerGått,
-    finnSisteDato,
-    finnTidligsteDato,
+    finnSisteTilDato,
+    getTidligsteDato,
     finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
-    getAntallOverlappendeDager,
+    getAntallOverlappendeDager, getSenesteDato,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -138,7 +138,7 @@ describe('Tester for utregninger.ts', () => {
         };
 
         expect(
-            finnSisteDato(
+            finnSisteTilDato(
                 Array.of(
                     permitteringsPeriode1,
                     permitteringsPeriode2,
@@ -164,9 +164,9 @@ describe('Tester for utregninger.ts', () => {
         ).toEqual(14);
     });
 
-    test('finnTidligsteDato skal finne tidligste dato', () => {
+    test('getTidligsteDato skal finne tidligste dato', () => {
         expect(
-            finnTidligsteDato([
+            getTidligsteDato([
                 undefined,
                 dayjs('2021-03-1'),
                 dayjs('2020-03-1'),
@@ -175,5 +175,18 @@ describe('Tester for utregninger.ts', () => {
                 dayjs('2021-03-1'),
             ])
         ).toEqual(dayjs('2020-03-1'));
+    });
+
+    test('getSenesteDato skal finne seneste dato', () => {
+        expect(
+            getSenesteDato([
+                undefined,
+                dayjs('2021-03-1'),
+                dayjs('2020-03-1'),
+                dayjs('2023-03-2'),
+                undefined,
+                dayjs('2021-03-1'),
+            ])
+        ).toEqual(dayjs('2023-03-2'));
     });
 });

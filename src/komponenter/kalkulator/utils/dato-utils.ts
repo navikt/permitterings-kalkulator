@@ -93,28 +93,34 @@ export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
     dato.subtract(1, 'day').add(18, 'months');
 
 export const finnTidligsteFraDato = (
-    datointervall: Partial<DatoIntervall>[]
-): Dayjs => {
-    let tidligsteDato = datointervall[0].datoFra!;
-    datointervall.forEach((datoIntervall) => {
-        if (datoIntervall.datoFra) {
-            if (!tidligsteDato) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-            if (tidligsteDato.isAfter(datoIntervall.datoFra)) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-        }
-    });
-    return tidligsteDato;
+    datointervaller: Partial<DatoIntervall>[]
+): Dayjs | undefined => {
+    return getTidligsteDato(
+        datointervaller.map((intervall) => intervall.datoFra)
+    );
 };
 
-export const finnTidligsteDato = (
+export const finnSisteTilDato = (
+    datointervaller: Partial<DatoIntervall>[]
+): Dayjs | undefined => {
+    return getSenesteDato(
+        datointervaller.map((intervall) => intervall.datoTil)
+    );
+};
+
+export const getTidligsteDato = (
+    datoer: (Dayjs | undefined)[]
+): Dayjs | undefined => {
+    const sorterteDatoer = sorterDatoerTidligstFørst(datoer);
+    return sorterteDatoer.length > 0 ? sorterteDatoer[0] : undefined;
+};
+
+export const getSenesteDato = (
     datoer: (Dayjs | undefined)[]
 ): Dayjs | undefined => {
     const sorterteDatoer = sorterDatoerTidligstFørst(datoer);
     return sorterteDatoer.length > 0
-        ? sorterteDatoer[0]
+        ? sorterteDatoer[sorterteDatoer.length - 1]
         : undefined;
 };
 
@@ -123,23 +129,6 @@ const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
         .filter((dato) => dato !== undefined)
         .sort((dato1, dato2) => dato1!.diff(dato2!));
     return sorterteDatoer as Dayjs[];
-};
-
-export const finnSisteDato = (
-    datointervall: Partial<DatoIntervall>[]
-): Dayjs | undefined => {
-    let sisteDato = datointervall[0].datoTil;
-    datointervall.forEach((intervall) => {
-        if (intervall.datoTil) {
-            if (!sisteDato) {
-                sisteDato = intervall.datoTil;
-            }
-            if (sisteDato.isBefore(intervall.datoTil)) {
-                sisteDato = intervall.datoTil;
-            }
-        }
-    });
-    return sisteDato;
 };
 
 export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {

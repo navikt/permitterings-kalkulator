@@ -6,7 +6,7 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDato } from '../utils/dato-utils';
+import { finnSisteTilDato } from '../utils/dato-utils';
 
 interface Props {
     indeks: number;
@@ -18,7 +18,7 @@ interface Props {
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const leggTilNyPermitteringsperiode = () => {
-        const sisteUtfyltePermitteringsdag = finnSisteDato(
+        const sisteUtfyltePermitteringsdag = finnSisteTilDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
         const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
