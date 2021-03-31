@@ -5,7 +5,7 @@ import {
 } from '../typer';
 import { Dayjs } from 'dayjs';
 import { Hovedknapp } from 'nav-frontend-knapper';
-import pek from './cursor-touch-2.svg';
+import { ReactComponent as PekIkon } from './cursor-touch-2.svg';
 import Tidslinje from '../Tidslinje/Tidslinje';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel } from 'nav-frontend-typografi';
@@ -44,7 +44,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                     className="se-resultat__knapp"
                     onClick={() => setResultatVises(true)}
                 >
-                    <img alt={'trykk her-symbol'} src={pek} />
+                    <PekIkon className="se-resultat__knapp-ikon" />
                     Se beregningen
                 </Hovedknapp>
                 {resultatVises && (
