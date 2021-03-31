@@ -44,7 +44,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 allePermitteringerOgFraværesPerioder={
                     allePermitteringerOgFraværesPerioder
                 }
-                info={permitteringsperiode}
                 setAllePermitteringerOgFraværesPerioder={
                     setAllePermitteringerOgFraværesPerioder
                 }

@@ -6,10 +6,9 @@ import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteDato } from '../utils/dato-utils';
+import { finnSisteTilDato } from '../utils/dato-utils';
 
 interface Props {
-    info: DatoIntervall;
     indeks: number;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     setAllePermitteringerOgFraværesPerioder: (
@@ -19,13 +18,13 @@ interface Props {
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const leggTilNyPermitteringsperiode = () => {
-        const sisteUtfyltePermitteringsdag = finnSisteDato(
+        const sisteUtfyltePermitteringsdag = finnSisteTilDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
         const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
             ? sisteUtfyltePermitteringsdag.add(1, 'day')
             : undefined;
-        const nyPeriode: DatoIntervall = {
+        const nyPeriode: Partial<DatoIntervall> = {
             datoFra: startdatoForNyPeriode,
             datoTil: undefined,
         };
@@ -39,7 +38,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (datoIntervall: DatoIntervall) => {
+    const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];
@@ -74,9 +73,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                         props.indeks
                     ]
                 }
-                setDatoIntervall={(intervall) =>
-                    oppdaterDatoIntervall(intervall)
-                }
+                setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
             />
             {props.indeks ===
@@ -85,9 +82,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                     1 && (
                 <Knapp
                     className={'permitteringsperiode__legg-til-knapp'}
-                    onClick={() => {
-                        leggTilNyPermitteringsperiode();
-                    }}
+                    onClick={leggTilNyPermitteringsperiode}
                 >
                     + Legg til ny periode
                 </Knapp>

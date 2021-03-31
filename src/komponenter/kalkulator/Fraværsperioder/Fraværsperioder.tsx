@@ -8,8 +8,8 @@ import { Dayjs } from 'dayjs';
 import { Infotekst } from '../Infotekst/Infotekst';
 import timeglassSvg from './timeglass.svg';
 import {
-    finnSisteDato,
-    finnTidligsteDato,
+    finnSisteTilDato,
+    finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
 } from '../utils/dato-utils';
 
@@ -43,25 +43,25 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         }
     }, [props.allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
-    const leggTilNyFraVærsPeriode = () => {
+    const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
         };
         let startDatoIntervall: Dayjs | undefined;
-        const tidligstePermitteringsdato = finnTidligsteDato(
+        const tidligstePermitteringsdato = finnTidligsteFraDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
         if (antallFraværsperioder === 0) {
             startDatoIntervall = tidligstePermitteringsdato;
         } else {
             startDatoIntervall =
-                finnSisteDato(
+                finnSisteTilDato(
                     props.allePermitteringerOgFraværesPerioder
                         .andreFraværsperioder
                 ) || tidligstePermitteringsdato;
         }
         kopiAvAllPermitteringsInfo.andreFraværsperioder.push({
-            datoFra: startDatoIntervall.add(1, 'day'),
+            datoFra: startDatoIntervall?.add(1, 'day'),
             datoTil: undefined,
         });
         props.setAllePermitteringerOgFraværesPerioder(
@@ -71,7 +71,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
 
     const oppdaterDatoIntervall = (
         indeks: number,
-        datoIntervall: DatoIntervall
+        datoIntervall: Partial<DatoIntervall>
     ) => {
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
@@ -133,7 +133,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             {fraVærsperiodeElementer}
             <Knapp
                 className="fraværsperioder__legg-til-knapp"
-                onClick={() => leggTilNyFraVærsPeriode()}
+                onClick={leggTilNyFraværsperiode}
             >
                 + Legg til ny periode
             </Knapp>

@@ -1,9 +1,11 @@
 import {
     finnInitialgrenserForTidslinjedatoer,
     konstruerTidslinje,
+    regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
 import dayjs from 'dayjs';
 import { configureDayJS } from '../../../dayjs-config';
+import { finnDato18MndFram } from './dato-utils';
 
 configureDayJS();
 
@@ -38,5 +40,29 @@ describe('Tester for tidslinje-utils.ts', () => {
             }
         });
         expect(bestårTest).toBe(true);
+    });
+
+    test('regnUtHvaSisteDatoPåTidslinjenSkalVære skal regne ut 18 mnd etter siste permitteringsstart', () => {
+        const dato = regnUtHvaSisteDatoPåTidslinjenSkalVære(
+            {
+                permitteringer: [
+                    {
+                        datoFra: dayjs('2020-01-01'),
+                        datoTil: dayjs('2020-02-01'),
+                    },
+                    {
+                        datoFra: dayjs('2020-04-01'),
+                        datoTil: dayjs('2020-05-01'),
+                    },
+                    {
+                        datoFra: dayjs('2020-07-01'),
+                        datoTil: dayjs('2020-08-01'),
+                    },
+                ],
+                andreFraværsperioder: [],
+            },
+            dayjs('2021-04-02')
+        );
+        expect(dato).toEqual(finnDato18MndFram(dayjs('2020-07-01')))
     });
 });

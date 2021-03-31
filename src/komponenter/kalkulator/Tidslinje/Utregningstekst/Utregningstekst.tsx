@@ -130,11 +130,11 @@ export const lagResultatTekst = (
                 };
             }
 
-            const oversiktOverPermittering = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode.datoTil!);
+            const oversiktOverPermittering = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode.datoTil);
 
             return {
                 konklusjon: `Du kan fram til ${formaterDato(
-                    aktuell18mndsperiode.datoTil!
+                    aktuell18mndsperiode.datoTil
                 )}  permittere i ${skrivDagerIHeleUkerPlussDager(
                     210 - oversiktOverPermittering.dagerBrukt
                 )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
@@ -144,10 +144,10 @@ export const lagResultatTekst = (
                             Den ansatte har i perioden{' '}
                             {formaterDato(
                                 finnDato18MndTilbake(
-                                    aktuell18mndsperiode.datoTil!
+                                    aktuell18mndsperiode.datoTil
                                 )
                             )}
-                            –{formaterDato(aktuell18mndsperiode.datoTil!)} vært
+                            –{formaterDato(aktuell18mndsperiode.datoTil)} vært
                             permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermittering.dagerBrukt

@@ -5,11 +5,11 @@ import {
 import dayjs from 'dayjs';
 import {
     antallDagerGått,
-    finnSisteDato,
-    finnTidligsteDato,
+    finnSisteTilDato,
+    getTidligsteDato,
+    finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
-    getAntallOverlappendeDager,
-    kuttAvDatoIntervallInnefor18mnd,
+    getAntallOverlappendeDager, getSenesteDato,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -22,7 +22,7 @@ describe('Tester for utregninger.ts', () => {
             { permitteringer: [], andreFraværsperioder: [] },
             dayjs().startOf('date'),
             finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
-                .datoTil!
+                .datoTil
         );
         for (let i = 0; i < 1000; i++) {
             const tilfeldigIndeks = Math.floor(
@@ -99,7 +99,7 @@ describe('Tester for utregninger.ts', () => {
         };
 
         expect(
-            finnTidligsteDato(
+            finnTidligsteFraDato(
                 Array.of(
                     permitteringsPeriode1,
                     permitteringsPeriode2,
@@ -138,7 +138,7 @@ describe('Tester for utregninger.ts', () => {
         };
 
         expect(
-            finnSisteDato(
+            finnSisteTilDato(
                 Array.of(
                     permitteringsPeriode1,
                     permitteringsPeriode2,
@@ -147,26 +147,6 @@ describe('Tester for utregninger.ts', () => {
                 )
             )
         ).toEqual(dayjs('2021-06-02'));
-    });
-
-    test('Kutt av datoer for en permitteringsperiode', () => {
-        const startIntervall = dayjs('2020-02-14');
-        const sluttIntervall = dayjs('2020-05-02');
-
-        const intervall: DatoIntervall = {
-            datoFra: startIntervall,
-            datoTil: sluttIntervall,
-        };
-        const startKuttDato = dayjs('2020-03-02');
-        const sluttKuttDato = dayjs('2020-04-20');
-
-        const nyttIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
-            intervall,
-            startKuttDato,
-            sluttKuttDato
-        );
-        expect(nyttIntervall.datoFra).toEqual(startKuttDato);
-        expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
     });
 
     test('getAntallOverlappendeDager skal telle riktig når ett intervall er løpende', () => {
@@ -182,5 +162,31 @@ describe('Tester for utregninger.ts', () => {
         expect(
             getAntallOverlappendeDager(løpendeIntervall, annetIntervall)
         ).toEqual(14);
+    });
+
+    test('getTidligsteDato skal finne tidligste dato', () => {
+        expect(
+            getTidligsteDato([
+                undefined,
+                dayjs('2021-03-1'),
+                dayjs('2020-03-1'),
+                dayjs('2023-03-2'),
+                undefined,
+                dayjs('2021-03-1'),
+            ])
+        ).toEqual(dayjs('2020-03-1'));
+    });
+
+    test('getSenesteDato skal finne seneste dato', () => {
+        expect(
+            getSenesteDato([
+                undefined,
+                dayjs('2021-03-1'),
+                dayjs('2020-03-1'),
+                dayjs('2023-03-2'),
+                undefined,
+                dayjs('2021-03-1'),
+            ])
+        ).toEqual(dayjs('2023-03-2'));
     });
 });

@@ -7,15 +7,16 @@ import {
 } from '../typer';
 import {
     antallDagerGått,
-    datoIntervallErDefinert,
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervaller,
+    getSenesteDato,
+    tilDatoIntervall,
 } from './dato-utils';
 
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
-): DatoIntervall => {
+): DatoIntervall & { erLøpende: false } => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
     const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
@@ -23,6 +24,7 @@ export const finnInitialgrenserForTidslinjedatoer = (
     return {
         datoFra: maksGrenseIBakoverITid,
         datoTil: maksGrenseFramoverITid,
+        erLøpende: false,
     };
 };
 
@@ -30,9 +32,11 @@ const finnFørsteDefinertePermittering = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
 ): DatoIntervall | undefined => {
     const førsteDefinertePermittering = allePermitteringerOgFraværesPerioder.permitteringer.find(
-        (periode) => datoIntervallErDefinert(periode)
+        (periode) => tilDatoIntervall(periode)
     );
-    return førsteDefinertePermittering;
+    return førsteDefinertePermittering
+        ? tilDatoIntervall(førsteDefinertePermittering)
+        : undefined;
 };
 
 const finneKategori = (
@@ -68,38 +72,23 @@ const finneKategori = (
 export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
-) => {
+): Dayjs => {
     let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
         dagensDato
     ).datoTil;
-    const førsteDefinertePermitteringsDato = finnFørsteDefinertePermittering(
-        allePermitteringerOgFravær
-    );
-    if (førsteDefinertePermitteringsDato) {
-        let tempSistePermitteringsStart =
-            førsteDefinertePermitteringsDato.datoFra;
-        allePermitteringerOgFravær.permitteringer.forEach(
-            (permitteringsperiode) => {
-                if (
-                    permitteringsperiode.datoFra?.isAfter(
-                        tempSistePermitteringsStart!,
-                        'day'
-                    )
-                ) {
-                    tempSistePermitteringsStart = permitteringsperiode.datoFra;
-                }
-            }
-        );
-        const sisteDatoIsisteMulige18mndsPeriode = finnDato18MndFram(
-            tempSistePermitteringsStart!
-        );
-        senesteDatoPåTidslinje = sisteDatoIsisteMulige18mndsPeriode.isAfter(
-            senesteDatoPåTidslinje!
+    const sistePermitteringsstart = getSenesteDato(
+        allePermitteringerOgFravær.permitteringer.map(
+            (permittering) => permittering.datoFra
         )
-            ? sisteDatoIsisteMulige18mndsPeriode
-            : senesteDatoPåTidslinje;
-    }
-    return senesteDatoPåTidslinje;
+    );
+    const sisteDatoIsisteMulige18mndsPeriode = sistePermitteringsstart
+        ? finnDato18MndFram(sistePermitteringsstart)
+        : undefined;
+
+    return getSenesteDato([
+        senesteDatoPåTidslinje,
+        sisteDatoIsisteMulige18mndsPeriode,
+    ])!;
 };
 
 export const konstruerTidslinje = (
@@ -115,7 +104,7 @@ export const konstruerTidslinje = (
     );
     const startDato = finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
-        finneKategori(startDato!, allePermitteringerOgFravær)
+        finneKategori(startDato, allePermitteringerOgFravær)
     );
     for (let dag = 1; dag < antallObjektITidslinje; dag++) {
         const nesteDag = listeMedTidslinjeObjekter[dag - 1].dato.add(1, 'day');
@@ -127,7 +116,7 @@ export const konstruerTidslinje = (
 };
 export const finnFørsteDatoMedPermitteringUtenFravær = (
     tidslinje: DatoMedKategori[],
-    skalVæreEtter: Dayjs,
+    skalVæreEtter: Dayjs
 ): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>

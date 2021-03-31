@@ -7,18 +7,18 @@ export enum DatointervallKategori {
 }
 
 export interface AllePermitteringerOgFraværesPerioder {
-    permitteringer: DatoIntervall[];
-    andreFraværsperioder: DatoIntervall[];
+    permitteringer: Partial<DatoIntervall>[];
+    andreFraværsperioder: Partial<DatoIntervall>[];
 }
 
 export type DatoIntervall =
     | {
-          datoFra: Dayjs | undefined;
-          datoTil: Dayjs | undefined;
+          datoFra: Dayjs;
+          datoTil: Dayjs;
           erLøpende?: false;
       }
     | {
-          datoFra: Dayjs | undefined;
+          datoFra: Dayjs;
           datoTil?: undefined;
           erLøpende: true;
       };

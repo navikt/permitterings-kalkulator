@@ -114,7 +114,7 @@ export const regnUtHorisontalAvstandMellomToElement = (
     const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
     const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
     const avstand =
-        posisjonBeskrivelse1?.right!! - posisjonBeskrivelse2?.right!!;
+        posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.right!;
     return Math.abs(avstand);
 };
 
@@ -151,8 +151,8 @@ export const regnUtPosisjonFraVenstreGittSluttdato = (
 
 export const fraPixelTilProsent = (idContainer: string, antallBarn: number) => {
     const breddeContainer = document.getElementById(idContainer)?.offsetWidth;
-    const breddePerObjekt = breddeContainer!! / antallBarn;
-    return (breddePerObjekt / breddeContainer!!) * 100;
+    const breddePerObjekt = breddeContainer! / antallBarn;
+    return (breddePerObjekt / breddeContainer!) * 100;
 };
 
 export const lagObjektForRepresentasjonAvPerioderMedFarge = (

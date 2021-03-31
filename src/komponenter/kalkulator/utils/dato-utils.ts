@@ -7,7 +7,7 @@ export const lengdePåIntervall = (datointervall: DatoIntervall): number => {
     return antallDagerGått(datointervall.datoFra, datointervall.datoTil);
 };
 
-export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
+export const antallDagerGått = (fra?: Dayjs, til?: Dayjs): number => {
     if (fra && til) {
         return til.diff(fra, 'days') + 1;
     } else {
@@ -15,20 +15,14 @@ export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     }
 };
 
-export const antallUkerRundetOpp = (antallDager: number) => {
+export const antallUkerRundetOpp = (antallDager: number): number => {
     return Math.ceil(antallDager / 7);
 };
 
 export const getAntallOverlappendeDager = (
     intervall1: DatoIntervall,
     intervall2: DatoIntervall
-) => {
-    if (
-        !datoIntervallErDefinert(intervall1) ||
-        !datoIntervallErDefinert(intervall2)
-    ) {
-        return 0;
-    }
+): number => {
     if (intervall1.erLøpende && intervall2.erLøpende) {
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'
@@ -43,74 +37,53 @@ export const getAntallOverlappendeDager = (
     let antallOverlappendeDager = 0;
     for (
         let dag = intervallSomIkkeErLøpende.datoFra;
-        dag?.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
-        dag = dag!.add(1, 'day')
+        dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
+        dag = dag.add(1, 'day')
     ) {
-        if (finnesIIntervall(dag!, annetIntervall)) {
+        if (finnesIIntervall(dag, annetIntervall)) {
             antallOverlappendeDager++;
         }
     }
     return antallOverlappendeDager;
 };
 
+export const tilDatoIntervall = (
+    potensieltUdefinertDatointervall: Partial<DatoIntervall>
+): DatoIntervall | undefined => {
+    const { datoFra, datoTil, erLøpende } = potensieltUdefinertDatointervall;
+    if (datoFra !== undefined && datoTil !== undefined) {
+        return { datoFra, datoTil };
+    }
+    if (datoFra !== undefined && erLøpende) {
+        return { datoFra, erLøpende };
+    }
+    return undefined;
+};
+
+const fjernUdefinerteDatoIntervaller = (
+    potensieltUdefinerteDatointervaller: Partial<DatoIntervall>[]
+): DatoIntervall[] => {
+    return potensieltUdefinerteDatointervaller
+        .map((intervall) => tilDatoIntervall(intervall))
+        .filter((intervall) => intervall !== undefined) as DatoIntervall[];
+};
+
 export const finnUtOmDefinnesOverlappendePerioder = (
-    perioder: DatoIntervall[]
+    perioder: Partial<DatoIntervall>[]
 ): boolean => {
     let finnesOverLapp = false;
-    perioder.forEach((periode) => {
-        if (datoIntervallErDefinert(periode)) {
-            perioder.forEach((periode2) => {
-                if (datoIntervallErDefinert(periode2) && periode !== periode2) {
-                    if (getAntallOverlappendeDager(periode, periode2) > 0) {
-                        finnesOverLapp = true;
-                    }
+    const definertePerioder = fjernUdefinerteDatoIntervaller(perioder);
+
+    definertePerioder.forEach((periode) => {
+        definertePerioder.forEach((periode2) => {
+            if (periode !== periode2) {
+                if (getAntallOverlappendeDager(periode, periode2) > 0) {
+                    finnesOverLapp = true;
                 }
-            });
-        }
+            }
+        });
     });
     return finnesOverLapp;
-};
-
-export const kuttAvDatoIntervallFørGittDato = (
-    gittDato: Dayjs,
-    tidsIntervall: DatoIntervall
-): DatoIntervall => {
-    const { datoFra, datoTil } = tidsIntervall;
-    if (!datoFra || !datoTil) return tidsIntervall;
-    if (gittDato.isBefore(datoFra)) return tidsIntervall;
-    if (gittDato.isAfter(datoTil))
-        return { datoFra: undefined, datoTil: undefined };
-    return { datoFra: gittDato, datoTil };
-};
-
-export const kuttAvDatoIntervallEtterGittDato = (
-    gittDato: Dayjs,
-    tidsIntervall: DatoIntervall
-): DatoIntervall => {
-    const { datoFra, datoTil } = tidsIntervall;
-    if (datoTil?.isAfter(gittDato)) {
-        if (datoFra?.isSameOrAfter(gittDato)) {
-            return { datoFra: undefined, datoTil: undefined };
-        } else {
-            return { datoFra, datoTil: gittDato };
-        }
-    }
-    return tidsIntervall;
-};
-
-export const kuttAvDatoIntervallInnefor18mnd = (
-    datoIntevall: DatoIntervall,
-    startdato: Dayjs,
-    sluttDato: Dayjs
-): DatoIntervall => {
-    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
-        startdato,
-        datoIntevall
-    );
-    return kuttAvDatoIntervallEtterGittDato(
-        sluttDato,
-        datoIntervallEtterStartperiode
-    );
 };
 
 export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
@@ -119,58 +92,68 @@ export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
     dato.subtract(1, 'day').add(18, 'months');
 
-export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
-    let tidligsteDato = datointervall[0].datoFra!;
-    datointervall.forEach((datoIntervall) => {
-        if (datoIntervall.datoFra) {
-            if (!tidligsteDato) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-            if (tidligsteDato.isAfter(datoIntervall.datoFra)) {
-                tidligsteDato = datoIntervall.datoFra;
-            }
-        }
-    });
-    return tidligsteDato;
-};
-
-export const finnSisteDato = (
-    datointervall: DatoIntervall[]
+export const finnTidligsteFraDato = (
+    datointervaller: Partial<DatoIntervall>[]
 ): Dayjs | undefined => {
-    let sisteDato = datointervall[0].datoTil;
-    datointervall.forEach((intervall) => {
-        if (intervall.datoTil) {
-            if (!sisteDato) {
-                sisteDato = intervall.datoTil;
-            }
-            if (sisteDato.isBefore(intervall.datoTil)) {
-                sisteDato = intervall.datoTil;
-            }
-        }
-    });
-    return sisteDato;
-};
-
-export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
-    const { datoFra, datoTil, erLøpende } = datoIntervall;
-    return (
-        (datoFra !== undefined && datoTil !== undefined) ||
-        (datoFra !== undefined && erLøpende)
+    return getTidligsteDato(
+        datointervaller.map((intervall) => intervall.datoFra)
     );
 };
 
-export const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
+export const finnSisteTilDato = (
+    datointervaller: Partial<DatoIntervall>[]
+): Dayjs | undefined => {
+    return getSenesteDato(
+        datointervaller.map((intervall) => intervall.datoTil)
+    );
+};
+
+export const getTidligsteDato = (
+    datoer: (Dayjs | undefined)[]
+): Dayjs | undefined => {
+    const sorterteDatoer = sorterDatoerTidligstFørst(datoer);
+    return sorterteDatoer.length > 0 ? sorterteDatoer[0] : undefined;
+};
+
+export const getSenesteDato = (
+    datoer: (Dayjs | undefined)[]
+): Dayjs | undefined => {
+    const sorterteDatoer = sorterDatoerTidligstFørst(datoer);
+    return sorterteDatoer.length > 0
+        ? sorterteDatoer[sorterteDatoer.length - 1]
+        : undefined;
+};
+
+const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
+    const sorterteDatoer = [...datoer]
+        .filter((dato) => dato !== undefined)
+        .sort((dato1, dato2) => dato1!.diff(dato2!));
+    return sorterteDatoer as Dayjs[];
+};
+
+export const finnesIIntervaller = (
+    dato: Dayjs,
+    perioder: Partial<DatoIntervall>[]
+) => {
     return !!perioder.find((periode) => finnesIIntervall(dato, periode));
 };
 
-const finnesIIntervall = (dato: Dayjs, periode: DatoIntervall): boolean => {
-    if (!periode.datoFra) {
+const finnesIIntervall = (
+    dato: Dayjs,
+    periode: Partial<DatoIntervall>
+): boolean => {
+    const definertPeriode = tilDatoIntervall(periode);
+    if (!definertPeriode) {
         return false;
-    } else if (periode.erLøpende) {
-        return dato.isSameOrAfter(periode.datoFra, 'date');
-    } else if (!periode.datoTil) {
-        return false;
+    }
+    if (definertPeriode.erLøpende) {
+        return dato.isSameOrAfter(definertPeriode.datoFra, 'date');
     } else {
-        return dato.isBetween(periode.datoFra, periode.datoTil, 'date', '[]');
+        return dato.isBetween(
+            definertPeriode.datoFra,
+            definertPeriode.datoTil,
+            'date',
+            '[]'
+        );
     }
 };
