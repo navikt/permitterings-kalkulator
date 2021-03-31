@@ -7,7 +7,6 @@ import {
 } from '../typer';
 import {
     antallDagerGått,
-    datoIntervallErDefinert,
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervaller,

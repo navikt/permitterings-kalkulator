@@ -22,7 +22,7 @@ describe('Tester for utregninger.ts', () => {
             { permitteringer: [], andreFraværsperioder: [] },
             dayjs().startOf('date'),
             finnInitialgrenserForTidslinjedatoer(dayjs().startOf('date'))
-                .datoTil!
+                .datoTil
         );
         for (let i = 0; i < 1000; i++) {
             const tilfeldigIndeks = Math.floor(

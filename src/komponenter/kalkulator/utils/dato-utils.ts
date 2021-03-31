@@ -36,7 +36,7 @@ export const getAntallOverlappendeDager = (
 
     let antallOverlappendeDager = 0;
     for (
-        let dag = intervallSomIkkeErLøpende.datoFra!;
+        let dag = intervallSomIkkeErLøpende.datoFra;
         dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
         dag = dag.add(1, 'day')
     ) {
@@ -129,14 +129,6 @@ const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
         .filter((dato) => dato !== undefined)
         .sort((dato1, dato2) => dato1!.diff(dato2!));
     return sorterteDatoer as Dayjs[];
-};
-
-export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
-    const { datoFra, datoTil, erLøpende } = datoIntervall;
-    return (
-        (datoFra !== undefined && datoTil !== undefined) ||
-        (datoFra !== undefined && erLøpende)
-    );
 };
 
 export const finnesIIntervaller = (
