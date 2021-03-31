@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder } from '../typer';
-import Permitteringsperiode from '../Permitteringsperiode/Permitteringsperiode';
+import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
@@ -54,14 +54,10 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
 
     return (
         <div className="permitteringsperioder">
-            <Undertittel tag="h2">
+            <Undertittel tag="h2" className="permitteringsperioder__tittel">
                 1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
-            <Infotekst
-                className="permitteringsperioder__infotekst"
-                imgSrc={kalenderSvg}
-                imgAlt="Kalender"
-            >
+            <Infotekst imgSrc={kalenderSvg} imgAlt="Kalender">
                 <Normaltekst>
                     Hvis den ansatte har fått lønnskompensasjon, skal dette være
                     med i periodene. <br />

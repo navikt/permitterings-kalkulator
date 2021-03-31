@@ -2,11 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Innholdstittel, Undertittel } from 'nav-frontend-typografi';
+import { Innholdstittel } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
-import Tidslinje from './Tidslinje/Tidslinje';
-import { fraPixelTilProsent } from './Tidslinje/tidslinjefunksjoner';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
@@ -16,6 +14,7 @@ import {
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utils/tidslinje-utils';
+import { SeResultat } from './SeResultat/SeResultat';
 
 const Kalkulator = () => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
@@ -37,7 +36,10 @@ const Kalkulator = () => {
         innføringsdatoAGP2
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
-    const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState<Dayjs>(
+    const [
+        sisteDatoVistPåTidslinje,
+        setSisteDatoVistPåTidslinje,
+    ] = useState<Dayjs>(
         finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
     );
 
@@ -89,29 +91,16 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
-                {tidslinje.length && (
-                    <div id={'kalkulator-tidslinje-wrapper'}>
-                        <>
-                            <Undertittel>
-                                4. Beregningen vises i tidslinje
-                            </Undertittel>
-                            <Tidslinje
-                                setEndringAv={setsteDagI18mndsPeriodeEndretAv}
-                                tidslinje={tidslinje}
-                                endringAv={sisteDagI18mndsPeriodeEndretAv}
-                                breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                    'kalkulator-tidslinje-wrapper',
-                                    tidslinje.length
-                                )}
-                                sisteDagIPeriode={sisteDagI18mndsPeriode}
-                                set18mndsPeriode={setSisteDagI18mndsPeriode}
-                                allePermitteringerOgFraværesPerioder={
-                                    allePermitteringerOgFraværesPerioder
-                                }
-                            />
-                        </>
-                    </div>
-                )}
+                <SeResultat
+                    setEndringAv={setsteDagI18mndsPeriodeEndretAv}
+                    tidslinje={tidslinje}
+                    endringAv={sisteDagI18mndsPeriodeEndretAv}
+                    sisteDagIPeriode={sisteDagI18mndsPeriode}
+                    set18mndsPeriode={setSisteDagI18mndsPeriode}
+                    allePermitteringerOgFraværesPerioder={
+                        allePermitteringerOgFraværesPerioder
+                    }
+                />
             </div>
         </div>
     );
