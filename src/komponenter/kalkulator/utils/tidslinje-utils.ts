@@ -17,7 +17,7 @@ import {
 
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
-): DatoIntervall => {
+): DatoIntervall & { erLøpende: false } => {
     const bakover18mnd = finnDato18MndTilbake(dagensDato);
     const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
@@ -25,6 +25,7 @@ export const finnInitialgrenserForTidslinjedatoer = (
     return {
         datoFra: maksGrenseIBakoverITid,
         datoTil: maksGrenseFramoverITid,
+        erLøpende: false,
     };
 };
 

@@ -192,6 +192,7 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
     return {
         datoFra: finnDato18MndTilbake(potensiellSisteDatoIIntervall),
         datoTil: potensiellSisteDatoIIntervall,
+        erLøpende: false
     };
 };
 

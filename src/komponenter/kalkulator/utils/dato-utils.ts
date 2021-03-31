@@ -7,7 +7,7 @@ export const lengdePåIntervall = (datointervall: DatoIntervall): number => {
     return antallDagerGått(datointervall.datoFra, datointervall.datoTil);
 };
 
-export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
+export const antallDagerGått = (fra?: Dayjs, til?: Dayjs): number => {
     if (fra && til) {
         return til.diff(fra, 'days') + 1;
     } else {
@@ -15,14 +15,14 @@ export const antallDagerGått = (fra?: Dayjs, til?: Dayjs) => {
     }
 };
 
-export const antallUkerRundetOpp = (antallDager: number) => {
+export const antallUkerRundetOpp = (antallDager: number): number => {
     return Math.ceil(antallDager / 7);
 };
 
 export const getAntallOverlappendeDager = (
     intervall1: DatoIntervall,
     intervall2: DatoIntervall
-) => {
+): number => {
     if (intervall1.erLøpende && intervall2.erLøpende) {
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'

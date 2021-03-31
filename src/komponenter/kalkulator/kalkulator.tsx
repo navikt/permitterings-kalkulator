@@ -37,7 +37,7 @@ const Kalkulator = () => {
         innføringsdatoAGP2
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
-    const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState(
+    const [sisteDatoVistPåTidslinje, setSisteDatoVistPåTidslinje] = useState<Dayjs>(
         finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
     );
 
@@ -46,7 +46,7 @@ const Kalkulator = () => {
             konstruerTidslinje(
                 allePermitteringerOgFraværesPerioder,
                 dagensDato,
-                sisteDatoVistPåTidslinje!
+                sisteDatoVistPåTidslinje
             )
         );
     }, [allePermitteringerOgFraværesPerioder, sisteDatoVistPåTidslinje]);
@@ -56,7 +56,7 @@ const Kalkulator = () => {
             allePermitteringerOgFraværesPerioder,
             dagensDato
         );
-        if (nySisteDatoPåTidslinjen?.isAfter(sisteDatoVistPåTidslinje!)) {
+        if (nySisteDatoPåTidslinjen?.isAfter(sisteDatoVistPåTidslinje)) {
             setSisteDatoVistPåTidslinje(nySisteDatoPåTidslinjen);
         }
     }, [allePermitteringerOgFraværesPerioder]);
