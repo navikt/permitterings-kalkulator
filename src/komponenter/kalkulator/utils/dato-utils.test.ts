@@ -7,6 +7,7 @@ import {
     antallDagerGått,
     finnSisteDato,
     finnTidligsteDato,
+    finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
     getAntallOverlappendeDager,
 } from './dato-utils';
@@ -98,7 +99,7 @@ describe('Tester for utregninger.ts', () => {
         };
 
         expect(
-            finnTidligsteDato(
+            finnTidligsteFraDato(
                 Array.of(
                     permitteringsPeriode1,
                     permitteringsPeriode2,
@@ -161,5 +162,18 @@ describe('Tester for utregninger.ts', () => {
         expect(
             getAntallOverlappendeDager(løpendeIntervall, annetIntervall)
         ).toEqual(14);
+    });
+
+    test('finnTidligsteDato skal finne tidligste dato', () => {
+        expect(
+            finnTidligsteDato([
+                undefined,
+                dayjs('2021-03-1'),
+                dayjs('2020-03-1'),
+                dayjs('2023-03-2'),
+                undefined,
+                dayjs('2021-03-1'),
+            ])
+        ).toEqual(dayjs('2020-03-1'));
     });
 });

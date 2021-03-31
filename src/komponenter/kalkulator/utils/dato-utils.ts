@@ -23,12 +23,6 @@ export const getAntallOverlappendeDager = (
     intervall1: DatoIntervall,
     intervall2: DatoIntervall
 ) => {
-    if (
-        !datoIntervallErDefinert(intervall1) ||
-        !datoIntervallErDefinert(intervall2)
-    ) {
-        return 0;
-    }
     if (intervall1.erLøpende && intervall2.erLøpende) {
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'
@@ -98,7 +92,7 @@ export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
     dato.subtract(1, 'day').add(18, 'months');
 
-export const finnTidligsteDato = (
+export const finnTidligsteFraDato = (
     datointervall: Partial<DatoIntervall>[]
 ): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
@@ -113,6 +107,22 @@ export const finnTidligsteDato = (
         }
     });
     return tidligsteDato;
+};
+
+export const finnTidligsteDato = (
+    datoer: (Dayjs | undefined)[]
+): Dayjs | undefined => {
+    const sorterteDatoer = sorterDatoerTidligstFørst(datoer);
+    return sorterteDatoer.length > 0
+        ? sorterteDatoer[0]
+        : undefined;
+};
+
+const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
+    const sorterteDatoer = [...datoer]
+        .filter((dato) => dato !== undefined)
+        .sort((dato1, dato2) => dato1!.diff(dato2!));
+    return sorterteDatoer as Dayjs[];
 };
 
 export const finnSisteDato = (

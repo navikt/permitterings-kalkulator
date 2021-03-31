@@ -9,7 +9,7 @@ import { Infotekst } from '../Infotekst/Infotekst';
 import timeglassSvg from './timeglass.svg';
 import {
     finnSisteDato,
-    finnTidligsteDato,
+    finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
 } from '../utils/dato-utils';
 
@@ -48,7 +48,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             ...props.allePermitteringerOgFraværesPerioder,
         };
         let startDatoIntervall: Dayjs | undefined;
-        const tidligstePermitteringsdato = finnTidligsteDato(
+        const tidligstePermitteringsdato = finnTidligsteFraDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
         if (antallFraværsperioder === 0) {
