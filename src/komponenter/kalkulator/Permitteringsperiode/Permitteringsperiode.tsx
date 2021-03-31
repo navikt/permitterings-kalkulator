@@ -9,7 +9,6 @@ import { Knapp } from 'nav-frontend-knapper';
 import { finnSisteDato } from '../utils/dato-utils';
 
 interface Props {
-    info: DatoIntervall;
     indeks: number;
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     setAllePermitteringerOgFraværesPerioder: (
@@ -25,7 +24,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
             ? sisteUtfyltePermitteringsdag.add(1, 'day')
             : undefined;
-        const nyPeriode: DatoIntervall = {
+        const nyPeriode: Partial<DatoIntervall> = {
             datoFra: startdatoForNyPeriode,
             datoTil: undefined,
         };
@@ -39,7 +38,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (datoIntervall: DatoIntervall) => {
+    const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];

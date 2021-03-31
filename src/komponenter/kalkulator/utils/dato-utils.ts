@@ -53,64 +53,43 @@ export const getAntallOverlappendeDager = (
     return antallOverlappendeDager;
 };
 
+export const tilDatoIntervall = (
+    potensieltUdefinertDatointervall: Partial<DatoIntervall>
+): DatoIntervall | undefined => {
+    const { datoFra, datoTil, erLøpende } = potensieltUdefinertDatointervall;
+    if (datoFra !== undefined && datoTil !== undefined) {
+        return { datoFra, datoTil };
+    }
+    if (datoFra !== undefined && erLøpende) {
+        return { datoFra, erLøpende };
+    }
+    return undefined;
+};
+
+const fjernUdefinerteDatoIntervaller = (
+    potensieltUdefinerteDatointervaller: Partial<DatoIntervall>[]
+): DatoIntervall[] => {
+    return potensieltUdefinerteDatointervaller
+        .map((intervall) => tilDatoIntervall(intervall))
+        .filter((intervall) => intervall !== undefined) as DatoIntervall[];
+};
+
 export const finnUtOmDefinnesOverlappendePerioder = (
-    perioder: DatoIntervall[]
+    perioder: Partial<DatoIntervall>[]
 ): boolean => {
     let finnesOverLapp = false;
-    perioder.forEach((periode) => {
-        if (datoIntervallErDefinert(periode)) {
-            perioder.forEach((periode2) => {
-                if (datoIntervallErDefinert(periode2) && periode !== periode2) {
-                    if (getAntallOverlappendeDager(periode, periode2) > 0) {
-                        finnesOverLapp = true;
-                    }
+    const definertePerioder = fjernUdefinerteDatoIntervaller(perioder);
+
+    definertePerioder.forEach((periode) => {
+        definertePerioder.forEach((periode2) => {
+            if (periode !== periode2) {
+                if (getAntallOverlappendeDager(periode, periode2) > 0) {
+                    finnesOverLapp = true;
                 }
-            });
-        }
+            }
+        });
     });
     return finnesOverLapp;
-};
-
-export const kuttAvDatoIntervallFørGittDato = (
-    gittDato: Dayjs,
-    tidsIntervall: DatoIntervall
-): DatoIntervall => {
-    const { datoFra, datoTil } = tidsIntervall;
-    if (!datoFra || !datoTil) return tidsIntervall;
-    if (gittDato.isBefore(datoFra)) return tidsIntervall;
-    if (gittDato.isAfter(datoTil))
-        return { datoFra: undefined, datoTil: undefined };
-    return { datoFra: gittDato, datoTil };
-};
-
-export const kuttAvDatoIntervallEtterGittDato = (
-    gittDato: Dayjs,
-    tidsIntervall: DatoIntervall
-): DatoIntervall => {
-    const { datoFra, datoTil } = tidsIntervall;
-    if (datoTil?.isAfter(gittDato)) {
-        if (datoFra?.isSameOrAfter(gittDato)) {
-            return { datoFra: undefined, datoTil: undefined };
-        } else {
-            return { datoFra, datoTil: gittDato };
-        }
-    }
-    return tidsIntervall;
-};
-
-export const kuttAvDatoIntervallInnefor18mnd = (
-    datoIntevall: DatoIntervall,
-    startdato: Dayjs,
-    sluttDato: Dayjs
-): DatoIntervall => {
-    const datoIntervallEtterStartperiode = kuttAvDatoIntervallFørGittDato(
-        startdato,
-        datoIntevall
-    );
-    return kuttAvDatoIntervallEtterGittDato(
-        sluttDato,
-        datoIntervallEtterStartperiode
-    );
 };
 
 export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
@@ -119,7 +98,9 @@ export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
     dato.subtract(1, 'day').add(18, 'months');
 
-export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
+export const finnTidligsteDato = (
+    datointervall: Partial<DatoIntervall>[]
+): Dayjs => {
     let tidligsteDato = datointervall[0].datoFra!;
     datointervall.forEach((datoIntervall) => {
         if (datoIntervall.datoFra) {
@@ -135,7 +116,7 @@ export const finnTidligsteDato = (datointervall: DatoIntervall[]): Dayjs => {
 };
 
 export const finnSisteDato = (
-    datointervall: DatoIntervall[]
+    datointervall: Partial<DatoIntervall>[]
 ): Dayjs | undefined => {
     let sisteDato = datointervall[0].datoTil;
     datointervall.forEach((intervall) => {
@@ -159,18 +140,29 @@ export const datoIntervallErDefinert = (datoIntervall: DatoIntervall) => {
     );
 };
 
-export const finnesIIntervaller = (dato: Dayjs, perioder: DatoIntervall[]) => {
+export const finnesIIntervaller = (
+    dato: Dayjs,
+    perioder: Partial<DatoIntervall>[]
+) => {
     return !!perioder.find((periode) => finnesIIntervall(dato, periode));
 };
 
-const finnesIIntervall = (dato: Dayjs, periode: DatoIntervall): boolean => {
-    if (!periode.datoFra) {
+const finnesIIntervall = (
+    dato: Dayjs,
+    periode: Partial<DatoIntervall>
+): boolean => {
+    const definertPeriode = tilDatoIntervall(periode);
+    if (!definertPeriode) {
         return false;
-    } else if (periode.erLøpende) {
-        return dato.isSameOrAfter(periode.datoFra, 'date');
-    } else if (!periode.datoTil) {
-        return false;
+    }
+    if (definertPeriode.erLøpende) {
+        return dato.isSameOrAfter(definertPeriode.datoFra, 'date');
     } else {
-        return dato.isBetween(periode.datoFra, periode.datoTil, 'date', '[]');
+        return dato.isBetween(
+            definertPeriode.datoFra,
+            definertPeriode.datoTil,
+            'date',
+            '[]'
+        );
     }
 };

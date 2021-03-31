@@ -11,6 +11,7 @@ import {
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervaller,
+    tilDatoIntervall,
 } from './dato-utils';
 
 export const finnInitialgrenserForTidslinjedatoer = (
@@ -30,9 +31,11 @@ const finnFørsteDefinertePermittering = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
 ): DatoIntervall | undefined => {
     const førsteDefinertePermittering = allePermitteringerOgFraværesPerioder.permitteringer.find(
-        (periode) => datoIntervallErDefinert(periode)
+        (periode) => tilDatoIntervall(periode)
     );
-    return førsteDefinertePermittering;
+    return førsteDefinertePermittering
+        ? tilDatoIntervall(førsteDefinertePermittering)
+        : undefined;
 };
 
 const finneKategori = (
@@ -127,7 +130,7 @@ export const konstruerTidslinje = (
 };
 export const finnFørsteDatoMedPermitteringUtenFravær = (
     tidslinje: DatoMedKategori[],
-    skalVæreEtter: Dayjs,
+    skalVæreEtter: Dayjs
 ): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>

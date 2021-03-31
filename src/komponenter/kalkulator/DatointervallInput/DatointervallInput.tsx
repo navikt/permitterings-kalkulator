@@ -7,8 +7,8 @@ import Lukknapp from 'nav-frontend-lukknapp';
 import { Dayjs } from 'dayjs';
 
 interface Props {
-    datoIntervall: DatoIntervall;
-    setDatoIntervall: (datoIntervall: DatoIntervall) => void;
+    datoIntervall: Partial<DatoIntervall>;
+    setDatoIntervall: (datoIntervall: Partial<DatoIntervall>) => void;
     slettPeriode: () => void;
 }
 
@@ -28,9 +28,9 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
 
         if (!datoIntervall.datoTil && !datoIntervall.erLøpende) {
             setDatoIntervall({
-                ...datoIntervall,
                 datoFra: eventDato,
                 datoTil: eventDato.add(1, 'day'),
+                erLøpende: false
             });
         } else {
             setDatoIntervall({

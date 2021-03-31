@@ -9,7 +9,6 @@ import {
     finnTidligsteDato,
     finnUtOmDefinnesOverlappendePerioder,
     getAntallOverlappendeDager,
-    kuttAvDatoIntervallInnefor18mnd,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -147,26 +146,6 @@ describe('Tester for utregninger.ts', () => {
                 )
             )
         ).toEqual(dayjs('2021-06-02'));
-    });
-
-    test('Kutt av datoer for en permitteringsperiode', () => {
-        const startIntervall = dayjs('2020-02-14');
-        const sluttIntervall = dayjs('2020-05-02');
-
-        const intervall: DatoIntervall = {
-            datoFra: startIntervall,
-            datoTil: sluttIntervall,
-        };
-        const startKuttDato = dayjs('2020-03-02');
-        const sluttKuttDato = dayjs('2020-04-20');
-
-        const nyttIntervall: DatoIntervall = kuttAvDatoIntervallInnefor18mnd(
-            intervall,
-            startKuttDato,
-            sluttKuttDato
-        );
-        expect(nyttIntervall.datoFra).toEqual(startKuttDato);
-        expect(nyttIntervall.datoTil).toEqual(sluttKuttDato);
     });
 
     test('getAntallOverlappendeDager skal telle riktig når ett intervall er løpende', () => {

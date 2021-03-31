@@ -71,7 +71,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
 
     const oppdaterDatoIntervall = (
         indeks: number,
-        datoIntervall: DatoIntervall
+        datoIntervall: Partial<DatoIntervall>
     ) => {
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
