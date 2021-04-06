@@ -2,7 +2,10 @@ import React, { FunctionComponent } from 'react';
 import UtregningAvEnkeltPeriode from './UtregningAvEnkeltPeriode/UtregningAvEnkeltPeriode';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
 import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
-import { formaterDatoIntervall } from '../../utils/dato-utils';
+import {
+    formaterDatoIntervall,
+    getOverlappendePeriode,
+} from '../../utils/dato-utils';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -15,21 +18,26 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
     permitteringsperioder,
     aktuell18mndsperiode,
 }) => {
-    const permitteringsperioderInnenfor18mndsperiode = permitteringsperioder.map()
+    const permitteringsperioderInnenfor18mndsperiode: DatoIntervall[] = permitteringsperioder
+        .map((periode) => getOverlappendePeriode(periode, aktuell18mndsperiode))
+        .filter((periode) => periode !== undefined) as DatoIntervall[];
+
     return (
         <div>
             detaljert utregning for 18-månedsperioden{' '}
             {formaterDatoIntervall(aktuell18mndsperiode)}
-            {permitteringsperioder.map((periode, index) => (
-                <UtregningAvEnkeltPeriode
-                    permitteringsperiode={periode}
-                    permitteringsoversikt={getPermitteringsoversikt(
-                        tidslinje,
-                        periode
-                    )}
-                    permitteringsnr={index + 1}
-                />
-            ))}
+            {permitteringsperioderInnenfor18mndsperiode.map(
+                (periode, index) => (
+                    <UtregningAvEnkeltPeriode
+                        permitteringsperiode={periode}
+                        permitteringsoversikt={getPermitteringsoversikt(
+                            tidslinje,
+                            periode
+                        )}
+                        permitteringsnr={index + 1}
+                    />
+                )
+            )}
         </div>
     );
 };
