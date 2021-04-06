@@ -3,12 +3,16 @@ import './Utregningstekst.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
+    DatoIntervall,
     DatoMedKategori,
 } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import { lagResultatTekst } from './utregningstekst-utils';
+import {
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    lagResultatTekst,
+} from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import {
     filtrerBortUdefinerteDatoIntervaller,
@@ -24,6 +28,13 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
 
     const resultatTekst = lagResultatTekst(
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+        dagensDato,
+        innføringsdatoAGP2
+    );
+
+    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         props.tidslinje,
         props.allePermitteringerOgFraværesPerioder,
         dagensDato,
@@ -47,12 +58,16 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Tilbake til permitteringsveivisereng
                 </Lenke>
             </Normaltekst>
-            <DetaljertUtregning
-                tidslinje={props.tidslinje}
-                permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
-                    props.allePermitteringerOgFraværesPerioder.permitteringer
-                )}
-            />
+            {aktuell18mndsperiode && (
+                <DetaljertUtregning
+                    tidslinje={props.tidslinje}
+                    permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
+                        props.allePermitteringerOgFraværesPerioder
+                            .permitteringer
+                    )}
+                    aktuell18mndsperiode={aktuell18mndsperiode}
+                />
+            )}
         </div>
     );
 };

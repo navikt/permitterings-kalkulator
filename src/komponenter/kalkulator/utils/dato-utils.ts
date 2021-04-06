@@ -72,6 +72,14 @@ export const tilDatoIntervall = (
     return undefined;
 };
 
+export const til18mndsperiode = (
+    sisteDatoIPerioden: Dayjs
+): DatoIntervall & { erLøpende: false } => ({
+    datoFra: finnDato18MndTilbake(sisteDatoIPerioden),
+    datoTil: sisteDatoIPerioden,
+    erLøpende: false,
+});
+
 export const filtrerBortUdefinerteDatoIntervaller = (
     potensieltUdefinerteIntervaller: Partial<DatoIntervall>[]
 ): DatoIntervall[] => {
