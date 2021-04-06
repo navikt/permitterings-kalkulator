@@ -47,11 +47,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
-        if (props.value) {
-            return editing ? tempDate : formaterDato(selectedDate);
-        } else {
-            return 'dd.mm.yyyy';
-        }
+        return editing ? tempDate : formaterDato(selectedDate);
     };
 
     const onDatoClick = (date: Dayjs) => {
