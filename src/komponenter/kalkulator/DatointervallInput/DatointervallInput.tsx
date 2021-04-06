@@ -1,10 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
 import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
 import { Dayjs } from 'dayjs';
+import { Element } from 'nav-frontend-typografi';
+import ContextProvider, { PermitteringContext } from '../../ContextProvider';
+import { formaterDato } from '../utils/dato-utils';
 
 interface Props {
     datoIntervall: Partial<DatoIntervall>;
@@ -14,6 +17,11 @@ interface Props {
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
     const { datoIntervall, setDatoIntervall } = props;
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const [
+        feilmeldingPermitteringForeldet,
+        setFeilmeldingPermitteringForeldet,
+    ] = useState('');
     const erLøpende = !!datoIntervall.erLøpende;
 
     const setTilDato = (dato: Dayjs) =>
@@ -24,13 +32,28 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
         });
 
     const onFraDatoChange = (event: { currentTarget: { value: Dayjs } }) => {
+        const velgDatoKnappId = document.getElementById('datofelt-knapp');
+        velgDatoKnappId?.focus();
         const eventDato: Dayjs = event.currentTarget.value;
+        const grenseDato = dagensDato.isBefore(innføringsdatoAGP2)
+            ? innføringsdatoAGP2
+            : dagensDato;
+        const datoErForGammel = eventDato.isBefore(grenseDato);
+        if (datoErForGammel) {
+            setFeilmeldingPermitteringForeldet(
+                'Fyll inn permitteringsdatoer før ' +
+                    formaterDato(grenseDato) +
+                    '.'
+            );
+        } else {
+            setFeilmeldingPermitteringForeldet('');
+        }
 
         if (!datoIntervall.datoTil && !datoIntervall.erLøpende) {
             setDatoIntervall({
                 datoFra: eventDato,
                 datoTil: eventDato.add(1, 'day'),
-                erLøpende: false
+                erLøpende: false,
             });
         } else {
             setDatoIntervall({
@@ -85,6 +108,15 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 aria-label="Slett periode"
                 onClick={props.slettPeriode}
             />
+            {feilmeldingPermitteringForeldet.length > 0 && (
+                <Element
+                    className="datointervall-input__feilmelding"
+                    aria-live="assertive"
+                    aria-label={'feilmelding'}
+                >
+                    {feilmeldingPermitteringForeldet}
+                </Element>
+            )}
         </div>
     );
 };

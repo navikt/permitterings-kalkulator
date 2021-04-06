@@ -145,6 +145,8 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     }}
                 />
                 <button
+                    id={'datofelt-knapp'}
+                    aria-label={'Velg' + props.overtekst + ' dato'}
                     disabled={props.disabled}
                     className={'datofelt__knapp'}
                     onClick={() => setErApen(!erApen)}
@@ -152,10 +154,11 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     <img alt={''} src={kalender} />
                 </button>
             </div>
-            <UnmountClosed isOpened={erApen}>
+            <UnmountClosed isOpened={erApen} aria-hidden={!erApen}>
                 <DayPicker
+                    aria-hidden={!erApen}
                     onKeyDown={(e) => {
-                        if (e.key === 'Escape') {
+                        if (e.key === 'Escape' || e.key === 'Enter') {
                             setErApen(!erApen);
                         }
                     }}

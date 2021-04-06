@@ -24,25 +24,6 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
     const antallFraværsperioder =
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
-    const [
-        beskjedOverlappendeFravær,
-        setBeskjedOverlappendeFravær,
-    ] = useState<string>('');
-
-    useEffect(() => {
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
-                props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            )
-        ) {
-            setBeskjedOverlappendeFravær(
-                'Du kan ikke ha overlappende fraværsperioder'
-            );
-        } else {
-            setBeskjedOverlappendeFravær('');
-        }
-    }, [props.allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
-
     const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
             ...props.allePermitteringerOgFraværesPerioder,
@@ -137,9 +118,6 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             >
                 + Legg til ny periode
             </Knapp>
-            <Element className="fraværsperioder__feilmelding">
-                {beskjedOverlappendeFravær}
-            </Element>
         </div>
     );
 };

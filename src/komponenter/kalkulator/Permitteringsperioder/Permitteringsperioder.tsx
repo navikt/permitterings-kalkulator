@@ -18,25 +18,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
     allePermitteringerOgFraværesPerioder,
     setAllePermitteringerOgFraværesPerioder,
 }) => {
-    const [
-        beskjedOverlappendePermittering,
-        setBeskjedOverlappendePermittering,
-    ] = useState('');
-
-    useEffect(() => {
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
-                allePermitteringerOgFraværesPerioder.permitteringer
-            )
-        ) {
-            setBeskjedOverlappendePermittering(
-                'Du kan ikke ha overlappende permitteringsperioder'
-            );
-        } else {
-            setBeskjedOverlappendePermittering('');
-        }
-    }, [allePermitteringerOgFraværesPerioder, beskjedOverlappendePermittering]);
-
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map(
         (permitteringsperiode, indeks) => (
             <Permitteringsperiode
@@ -66,9 +47,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 </Normaltekst>
             </Infotekst>
             {permitteringsobjekter}
-            <Element className={'kalkulator__feilmelding'}>
-                {beskjedOverlappendePermittering}
-            </Element>
         </div>
     );
 };
