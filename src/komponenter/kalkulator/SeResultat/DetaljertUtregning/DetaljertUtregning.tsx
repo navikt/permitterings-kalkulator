@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import UtregningAvEnkeltPeriode from './UtregningAvEnkeltPeriode/UtregningAvEnkeltPeriode';
-import dayjs from 'dayjs';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
 import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
 import { formaterDatoIntervall } from '../../utils/dato-utils';
@@ -16,6 +15,7 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
     permitteringsperioder,
     aktuell18mndsperiode,
 }) => {
+    const permitteringsperioderInnenfor18mndsperiode = permitteringsperioder.map()
     return (
         <div>
             detaljert utregning for 18-månedsperioden{' '}

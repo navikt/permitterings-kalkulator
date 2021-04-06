@@ -11,17 +11,19 @@ export interface AllePermitteringerOgFraværesPerioder {
     andreFraværsperioder: Partial<DatoIntervall>[];
 }
 
-export type DatoIntervall =
-    | {
-          datoFra: Dayjs;
-          datoTil: Dayjs;
-          erLøpende?: false;
-      }
-    | {
-          datoFra: Dayjs;
-          datoTil?: undefined;
-          erLøpende: true;
-      };
+export type FastDatoIntervall = {
+    datoFra: Dayjs;
+    datoTil: Dayjs;
+    erLøpende?: false;
+};
+
+export type LøpendeDatoIntervall = {
+    datoFra: Dayjs;
+    datoTil?: undefined;
+    erLøpende: true;
+};
+
+export type DatoIntervall = FastDatoIntervall | LøpendeDatoIntervall;
 
 export interface DatoMedKategori {
     dato: Dayjs;

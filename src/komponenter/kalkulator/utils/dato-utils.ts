@@ -31,32 +31,48 @@ export const antallUkerRundetOpp = (antallDager: number): number => {
     return Math.ceil(antallDager / 7);
 };
 
+export const getOverlappendePeriode = (
+    intervall1: DatoIntervall,
+    intervall2: DatoIntervall
+): DatoIntervall | undefined => {
+    const senesteFraDato: Dayjs = getSenesteDato([
+        intervall1.datoFra,
+        intervall2.datoFra,
+    ])!;
+    const tidligsteTilDato: Dayjs | undefined = getTidligsteDato([
+        intervall1.datoTil,
+        intervall2.datoTil,
+    ]);
+    if (tidligsteTilDato) {
+        if (tidligsteTilDato.isSameOrAfter(senesteFraDato, 'date')) {
+            return {
+                datoFra: senesteFraDato,
+                datoTil: tidligsteTilDato,
+            };
+        } else {
+            return undefined;
+        }
+    }
+    return {
+        datoFra: senesteFraDato,
+        erLøpende: true,
+    };
+};
+
 export const getAntallOverlappendeDager = (
     intervall1: DatoIntervall,
     intervall2: DatoIntervall
 ): number => {
-    if (intervall1.erLøpende && intervall2.erLøpende) {
+    const overlappendePeriode = getOverlappendePeriode(intervall1, intervall2);
+    if (!overlappendePeriode) {
+        return 0;
+    }
+    if (overlappendePeriode.erLøpende) {
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'
         );
     }
-
-    const intervallSomIkkeErLøpende = intervall1.erLøpende
-        ? intervall2
-        : intervall1;
-    const annetIntervall = intervall1.erLøpende ? intervall1 : intervall2;
-
-    let antallOverlappendeDager = 0;
-    for (
-        let dag = intervallSomIkkeErLøpende.datoFra;
-        dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
-        dag = dag.add(1, 'day')
-    ) {
-        if (finnesIIntervall(dag, annetIntervall)) {
-            antallOverlappendeDager++;
-        }
-    }
-    return antallOverlappendeDager;
+    return lengdePåIntervall(overlappendePeriode);
 };
 
 export const tilDatoIntervall = (

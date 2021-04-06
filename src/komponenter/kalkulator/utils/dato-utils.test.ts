@@ -9,14 +9,16 @@ import {
     getTidligsteDato,
     finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
-    getAntallOverlappendeDager, getSenesteDato,
+    getAntallOverlappendeDager,
+    getSenesteDato,
+    getOverlappendePeriode,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 
-describe('Tester for utregninger.ts', () => {
+describe('Tester for dato-utils.ts', () => {
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
         const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
@@ -188,5 +190,72 @@ describe('Tester for utregninger.ts', () => {
                 dayjs('2021-03-1'),
             ])
         ).toEqual(dayjs('2023-03-2'));
+    });
+
+    describe('Tester for getOverlappendePeriode', () => {
+        test('Skal returnere overlappende periode for faste perioder', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    datoTil: dayjs('2021-03-20'),
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    datoTil: dayjs('2021-03-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                datoTil: dayjs('2021-03-10'),
+            });
+        });
+
+        test('Skal returnere overlappende periode for løpende perioder', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    erLøpende: true,
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                erLøpende: true,
+            });
+        });
+
+        test('Skal returnere overlappende periode hvis én periode er løpende og den andre er fast', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    datoTil: dayjs('2021-03-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                datoTil: dayjs('2021-03-10'),
+            });
+        });
+
+        test('Skal returnere undefined hvis periodene ikke overlapper', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-01-13'),
+                    datoTil: dayjs('2021-02-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual(undefined);
+        });
     });
 });
