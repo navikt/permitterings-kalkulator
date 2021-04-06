@@ -3,6 +3,18 @@ import { DatoIntervall } from '../typer';
 
 export const formaterDato = (dato: Dayjs): string => dato.format('DD.MM.YYYY');
 
+export const formaterDatoIntervall = (intervall: DatoIntervall) => {
+    if (intervall.erLøpende) {
+        return 'fra ' + formaterDato(intervall.datoFra);
+    } else {
+        return (
+            formaterDato(intervall.datoFra) +
+            '–' +
+            formaterDato(intervall.datoTil)
+        );
+    }
+};
+
 export const lengdePåIntervall = (datointervall: DatoIntervall): number => {
     return antallDagerGått(datointervall.datoFra, datointervall.datoTil);
 };

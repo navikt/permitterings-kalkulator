@@ -9,6 +9,7 @@ import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import { lagResultatTekst } from './utregningstekst-utils';
+import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -42,6 +43,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Tilbake til permitteringsveivisereng
                 </Lenke>
             </Normaltekst>
+            <DetaljertUtregning />
         </div>
     );
 };
