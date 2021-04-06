@@ -84,7 +84,7 @@ export const lagResultatTekst = (
                     datoAGP2
                 )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
                     datoAGP2
-                )} .`,
+                )}.`,
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
