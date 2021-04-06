@@ -1,23 +1,31 @@
 import React, { FunctionComponent } from 'react';
 import UtregningAvEnkeltPeriode from './UtregningAvEnkeltPeriode/UtregningAvEnkeltPeriode';
 import dayjs from 'dayjs';
+import { DatoIntervall, DatoMedKategori } from '../../typer';
+import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
 
-export const DetaljertUtregning: FunctionComponent = () => {
+interface Props {
+    tidslinje: DatoMedKategori[];
+    permitteringsperioder: DatoIntervall[];
+}
+
+export const DetaljertUtregning: FunctionComponent<Props> = ({
+    tidslinje,
+    permitteringsperioder,
+}) => {
     return (
         <div>
             detaljert utregning
-            <UtregningAvEnkeltPeriode
-                permitteringsperiode={{
-                    datoFra: dayjs('2021-02-20'),
-                    datoTil: dayjs('2021-02-21'),
-                }}
-                permitteringsoversikt={{
-                    dagerBrukt: 30,
-                    dagerPermittert: 50,
-                    dagerAnnetFravær: 20,
-                }}
-                permitteringsnr={2}
-            />
+            {permitteringsperioder.map((periode, index) => (
+                <UtregningAvEnkeltPeriode
+                    permitteringsperiode={periode}
+                    permitteringsoversikt={getPermitteringsoversikt(
+                        tidslinje,
+                        periode
+                    )}
+                    permitteringsnr={index + 1}
+                />
+            ))}
         </div>
     );
 };

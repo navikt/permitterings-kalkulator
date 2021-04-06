@@ -72,6 +72,14 @@ export const tilDatoIntervall = (
     return undefined;
 };
 
+export const filtrerBortUdefinerteDatoIntervaller = (
+    potensieltUdefinerteIntervaller: Partial<DatoIntervall>[]
+): DatoIntervall[] => {
+    return potensieltUdefinerteIntervaller
+        .map((intervall) => tilDatoIntervall(intervall))
+        .filter((intervall) => intervall !== undefined) as DatoIntervall[];
+};
+
 const fjernUdefinerteDatoIntervaller = (
     potensieltUdefinerteDatointervaller: Partial<DatoIntervall>[]
 ): DatoIntervall[] => {
@@ -150,7 +158,7 @@ export const finnesIIntervaller = (
     return !!perioder.find((periode) => finnesIIntervall(dato, periode));
 };
 
-const finnesIIntervall = (
+export const finnesIIntervall = (
     dato: Dayjs,
     periode: Partial<DatoIntervall>
 ): boolean => {

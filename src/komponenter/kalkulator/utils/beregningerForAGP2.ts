@@ -9,6 +9,8 @@ import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
+    finnesIIntervall,
+    finnesIIntervaller,
 } from './dato-utils';
 import {
     erPermittertVedDato,
@@ -38,7 +40,7 @@ export const finnPermitteringssituasjon = (
             ? Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO
             : Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO;
     } else {
-        const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversikt(
+        const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
             tidslinje,
             innføringsdatoAGP2
         ).dagerBrukt;
@@ -54,7 +56,7 @@ export const finnDatoForAGP2 = (
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): Dayjs | undefined => {
-    const oversiktVedInnføringsdato = getPermitteringsoversikt(
+    const oversiktVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         innføringsdatoAGP2
     );
@@ -68,7 +70,7 @@ export const finnDatoForAGP2 = (
     }
 
     let potensiellDatoForAGP2: Dayjs = dayjs(innføringsdatoAGP2);
-    let antallDagerPermittert = getPermitteringsoversikt(
+    let antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         potensiellDatoForAGP2
     ).dagerBrukt;
@@ -87,7 +89,7 @@ export const finnDatoForAGP2 = (
             antallDagerTilNesteGjett,
             'days'
         );
-        antallDagerPermittert = getPermitteringsoversikt(
+        antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
             tidslinje,
             potensiellDatoForAGP2
         ).dagerBrukt;
@@ -98,18 +100,26 @@ export const finnDatoForAGP2 = (
     return potensiellDatoForAGP2;
 };
 
+export const getPermitteringsoversiktFor18Måneder = (
+    tidslinje: DatoMedKategori[],
+    sisteDatoI18mndsperiode: Dayjs
+): Permitteringsoversikt => {
+    return getPermitteringsoversikt(tidslinje, {
+        datoFra: finnDato18MndTilbake(sisteDatoI18mndsperiode),
+        datoTil: sisteDatoI18mndsperiode,
+    });
+};
+
 export const getPermitteringsoversikt = (
     tidslinje: DatoMedKategori[],
-    sisteDatoIAktuellPeriode: dayjs.Dayjs
+    periode: DatoIntervall
 ): Permitteringsoversikt => {
     let permittert = 0;
     let antallDagerFravær = 0;
     let gjenståendeDager = 0;
+
     tidslinje.forEach((dag) => {
-        if (
-            dag.dato >= finnDato18MndTilbake(sisteDatoIAktuellPeriode) &&
-            dag.dato.isSameOrBefore(sisteDatoIAktuellPeriode)
-        ) {
+        if (finnesIIntervall(dag.dato, periode)) {
             if (dag.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR) {
                 permittert++;
             }
@@ -122,6 +132,7 @@ export const getPermitteringsoversikt = (
             }
         }
     });
+
     return {
         dagerPermittert: permittert,
         dagerAnnetFravær: antallDagerFravær,
@@ -192,7 +203,7 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
     return {
         datoFra: finnDato18MndTilbake(potensiellSisteDatoIIntervall),
         datoTil: potensiellSisteDatoIIntervall,
-        erLøpende: false
+        erLøpende: false,
     };
 };
 
@@ -204,7 +215,8 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
 ): number => {
     const ubrukteDagerIPeriode =
         antallDagerFørAGP2Inntreffer -
-        getPermitteringsoversikt(tidslinje, sisteDagIAktuellPeriode).dagerBrukt;
+        getPermitteringsoversiktFor18Måneder(tidslinje, sisteDagIAktuellPeriode)
+            .dagerBrukt;
     const dagerMellomDagensDatoOgSisteDagIAktuellPeriode = antallDagerGått(
         dagensDato,
         sisteDagIAktuellPeriode

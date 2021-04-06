@@ -9,7 +9,7 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForAGP2,
     finnPermitteringssituasjon,
-    getPermitteringsoversikt,
+    getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
@@ -31,7 +31,7 @@ export const lagResultatTekst = (
         innføringsdatoAGP2,
         210
     );
-    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(
+    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         innføringsdatoAGP2
     );
@@ -122,7 +122,7 @@ export const lagResultatTekst = (
                 };
             }
 
-            const oversiktOverPermittering = getPermitteringsoversikt(
+            const oversiktOverPermittering = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 aktuell18mndsperiode.datoTil
             );

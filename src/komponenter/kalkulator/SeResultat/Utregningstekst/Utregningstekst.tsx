@@ -10,6 +10,10 @@ import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import { lagResultatTekst } from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
+import {
+    filtrerBortUdefinerteDatoIntervaller,
+    tilDatoIntervall,
+} from '../../utils/dato-utils';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -43,7 +47,12 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Tilbake til permitteringsveivisereng
                 </Lenke>
             </Normaltekst>
-            <DetaljertUtregning />
+            <DetaljertUtregning
+                tidslinje={props.tidslinje}
+                permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
+                    props.allePermitteringerOgFraværesPerioder.permitteringer
+                )}
+            />
         </div>
     );
 };

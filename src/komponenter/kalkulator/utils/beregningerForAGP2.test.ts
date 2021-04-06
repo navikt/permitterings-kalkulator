@@ -7,7 +7,7 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForAGP2,
     finnPermitteringssituasjon,
-    getPermitteringsoversikt,
+    getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
@@ -250,7 +250,7 @@ describe('Tester for beregningerForAGP2', () => {
                 innføringsdatoAGP2,
                 210
             );
-            const dagerBrukt = getPermitteringsoversikt(
+            const dagerBrukt = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 permitteringsslutt.add(100, 'days')
             ).dagerBrukt;
@@ -359,7 +359,7 @@ describe('Tester for beregningerForAGP2', () => {
                 ],
                 andreFraværsperioder: [],
             });
-            const { dagerBrukt } = getPermitteringsoversikt(
+            const { dagerBrukt } = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 innføringsdatoAGP2
             );
@@ -383,7 +383,7 @@ describe('Tester for beregningerForAGP2', () => {
                     },
                 ],
             });
-            const oversikt = getPermitteringsoversikt(
+            const oversikt = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 innføringsdatoAGP2
             );
@@ -410,7 +410,7 @@ describe('Tester for beregningerForAGP2', () => {
                     },
                 ],
             });
-            const oversikt = getPermitteringsoversikt(
+            const oversikt = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 innføringsdatoAGP2
             );
@@ -434,7 +434,7 @@ describe('Tester for beregningerForAGP2', () => {
                 ],
                 andreFraværsperioder: [],
             });
-            const { dagerBrukt } = getPermitteringsoversikt(
+            const { dagerBrukt } = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 innføringsdatoAGP2
             );
