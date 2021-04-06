@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
 import Datovelger from '../../Datovelger/Datovelger';

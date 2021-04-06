@@ -8,7 +8,6 @@ import {
     finnSisteTilDato,
     getTidligsteDato,
     finnTidligsteFraDato,
-    finnUtOmDefinnesOverlappendePerioder,
     getAntallOverlappendeDager,
     getSenesteDato,
 } from './dato-utils';
