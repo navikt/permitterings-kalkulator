@@ -47,6 +47,9 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
+        if (!editing && !props.value) {
+            return 'dd.mm.yyyy';
+        }
         return editing ? tempDate : formaterDato(selectedDate);
     };
 
@@ -74,7 +77,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
         if (newDato.isValid()) {
             onDatoClick(newDato);
-        } else {
+        } else if (tekstIInputfeltet() !== 'dd.mm.yyyy') {
             setFeilMelding('dd.mm.yyyy');
             setErApen(false);
         }

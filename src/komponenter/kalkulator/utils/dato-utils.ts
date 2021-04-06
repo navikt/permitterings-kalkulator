@@ -20,8 +20,8 @@ export const antallUkerRundetOpp = (antallDager: number): number => {
 };
 
 export const getAntallOverlappendeDager = (
-    intervall1: DatoIntervall,
-    intervall2: DatoIntervall
+    intervall1: Partial<DatoIntervall>,
+    intervall2: Partial<DatoIntervall>
 ): number => {
     if (intervall1.erLøpende && intervall2.erLøpende) {
         throw new Error(
@@ -37,7 +37,7 @@ export const getAntallOverlappendeDager = (
     let antallOverlappendeDager = 0;
     for (
         let dag = intervallSomIkkeErLøpende.datoFra;
-        dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
+        dag?.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
         dag = dag.add(1, 'day')
     ) {
         if (finnesIIntervall(dag, annetIntervall)) {
@@ -68,20 +68,17 @@ const fjernUdefinerteDatoIntervaller = (
         .filter((intervall) => intervall !== undefined) as DatoIntervall[];
 };
 
-export const finnUtOmDefinnesOverlappendePerioder = (
-    perioder: Partial<DatoIntervall>[]
+export const fraværInngårIPermitteringsperioder = (
+    perioder: Partial<DatoIntervall>[],
+    fraværsintervall: Partial<DatoIntervall>
 ): boolean => {
     let finnesOverLapp = false;
     const definertePerioder = fjernUdefinerteDatoIntervaller(perioder);
 
     definertePerioder.forEach((periode) => {
-        definertePerioder.forEach((periode2) => {
-            if (periode !== periode2) {
-                if (getAntallOverlappendeDager(periode, periode2) > 0) {
-                    finnesOverLapp = true;
-                }
-            }
-        });
+        if (getAntallOverlappendeDager(periode, fraværsintervall) > 0) {
+            finnesOverLapp = true;
+        }
     });
     return finnesOverLapp;
 };

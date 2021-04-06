@@ -9,8 +9,7 @@ import { Infotekst } from '../Infotekst/Infotekst';
 import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
-    finnTidligsteFraDato,
-    finnUtOmDefinnesOverlappendePerioder,
+    finnTidligsteFraDato, fraværInngårIPermitteringsperioder,
 } from '../utils/dato-utils';
 
 interface Props {
@@ -23,6 +22,11 @@ interface Props {
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
     const antallFraværsperioder =
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
+
+    const [
+        beskjedFraværsperiodeUtenforPermittering,
+        setBeskjedFraværsperiodeUtenforPermittering,
+    ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
@@ -54,6 +58,17 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         indeks: number,
         datoIntervall: Partial<DatoIntervall>
     ) => {
+        if (datoIntervall.datoFra &&
+            !fraværInngårIPermitteringsperioder(
+                props.allePermitteringerOgFraværesPerioder.permitteringer, datoIntervall
+            )
+        ) {
+            setBeskjedFraværsperiodeUtenforPermittering(
+                'Merk at fraværsdager som ikke inngår i permitteringsperiodene ikke påvirker beregningen av Arbeidsgiverperiode 2.'
+            );
+        } else {
+            setBeskjedFraværsperiodeUtenforPermittering('');
+        }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
         ];
@@ -68,6 +83,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
+                    feilmeldingPåDatoIntervall={beskjedFraværsperiodeUtenforPermittering}
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder

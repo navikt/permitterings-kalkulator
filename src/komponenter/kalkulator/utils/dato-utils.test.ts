@@ -9,7 +9,8 @@ import {
     getTidligsteDato,
     finnTidligsteFraDato,
     finnUtOmDefinnesOverlappendePerioder,
-    getAntallOverlappendeDager, getSenesteDato,
+    getAntallOverlappendeDager,
+    getSenesteDato,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -47,28 +48,6 @@ describe('Tester for utregninger.ts', () => {
         expect(antallDagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
         expect(antallDagerGått(enDagIFebruar, enDagIMars)).toBe(32);
         expect(antallDagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
-    });
-
-    test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
-        const startIntervall1 = dayjs('2021-03-01');
-        const sluttIntervall1 = dayjs('2021-04-15');
-
-        const startIntervall2 = dayjs('2021-04-15');
-        const sluttIntervall2 = dayjs('2021-05-15');
-
-        const periode1: DatoIntervall = {
-            datoFra: startIntervall1,
-            datoTil: sluttIntervall1,
-        };
-
-        const periode2: DatoIntervall = {
-            datoFra: startIntervall2,
-            datoTil: sluttIntervall2,
-        };
-
-        expect(
-            finnUtOmDefinnesOverlappendePerioder(Array.of(periode1, periode2))
-        ).toBe(true);
     });
 
     test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', () => {
