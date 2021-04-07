@@ -8,12 +8,6 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
-    finnPermitteringssituasjon,
-    Permitteringssituasjon,
-} from '../utils/beregningerForAGP2';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
