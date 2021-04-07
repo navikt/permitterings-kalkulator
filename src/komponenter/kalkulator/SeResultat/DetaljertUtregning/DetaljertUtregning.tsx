@@ -6,6 +6,8 @@ import {
     formaterDatoIntervall,
     getOverlappendePeriode,
 } from '../../utils/dato-utils';
+import { Normaltekst } from 'nav-frontend-typografi';
+import './DetaljertUtregning.less';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -23,21 +25,26 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
         .filter((periode) => periode !== undefined) as DatoIntervall[];
 
     return (
-        <div>
-            Detaljert utregning for 18-månedsperioden{' '}
-            {formaterDatoIntervall(aktuell18mndsperiode)}
-            {permitteringsperioderInnenfor18mndsperiode.map(
-                (periode, index) => (
-                    <UtregningAvEnkeltPeriode
-                        permitteringsperiode={periode}
-                        permitteringsoversikt={getPermitteringsoversikt(
-                            tidslinje,
-                            periode
-                        )}
-                        permitteringsnr={index + 1}
-                    />
-                )
-            )}
+        <div className="detaljert-utregning">
+            <Normaltekst>
+                Detaljert utregning for 18-månedsperioden{' '}
+                {formaterDatoIntervall(aktuell18mndsperiode)}
+            </Normaltekst>
+            <div className="detaljert-utregning__enkeltperioder">
+                {permitteringsperioderInnenfor18mndsperiode.map(
+                    (periode, index) => (
+                        <UtregningAvEnkeltPeriode
+                            key={index}
+                            permitteringsperiode={periode}
+                            permitteringsoversikt={getPermitteringsoversikt(
+                                tidslinje,
+                                periode
+                            )}
+                            permitteringsnr={index + 1}
+                        />
+                    )
+                )}
+            </div>
         </div>
     );
 };

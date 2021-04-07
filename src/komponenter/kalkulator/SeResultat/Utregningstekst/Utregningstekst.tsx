@@ -50,14 +50,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             />
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
-            <Normaltekst className="utregningstekst__informasjonslenker">
-                <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn">
-                    Les mer om Arbeidsgiverperiode 2
-                </Lenke>
-                <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/">
-                    Tilbake til permitteringsveivisereng
-                </Lenke>
-            </Normaltekst>
             {aktuell18mndsperiode && (
                 <DetaljertUtregning
                     tidslinje={props.tidslinje}
@@ -68,6 +60,14 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     aktuell18mndsperiode={aktuell18mndsperiode}
                 />
             )}
+            <Normaltekst className="utregningstekst__informasjonslenker">
+                <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn">
+                    Les mer om Arbeidsgiverperiode 2
+                </Lenke>
+                <Lenke href="/arbeidsgiver-permittering">
+                    Tilbake til permitteringsveiviseren
+                </Lenke>
+            </Normaltekst>
         </div>
     );
 };

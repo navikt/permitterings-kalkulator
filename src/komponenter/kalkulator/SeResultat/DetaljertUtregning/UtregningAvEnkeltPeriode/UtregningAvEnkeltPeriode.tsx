@@ -24,7 +24,7 @@ const UtregningAvEnkelPeriode: FunctionComponent<Props> = ({
     return (
         <div className="utregning-av-enkelt-periode">
             <Element>
-                {permitteringsnr}. permitteringsperiode (
+                {permitteringsnr}. permitteringsperiode <br />(
                 {formaterDatoIntervall(permitteringsperiode)})
             </Element>
             <Normaltekst>
