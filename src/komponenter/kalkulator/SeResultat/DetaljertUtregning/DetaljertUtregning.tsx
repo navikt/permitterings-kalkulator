@@ -24,7 +24,7 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
 
     return (
         <div>
-            detaljert utregning for 18-månedsperioden{' '}
+            Detaljert utregning for 18-månedsperioden{' '}
             {formaterDatoIntervall(aktuell18mndsperiode)}
             {permitteringsperioderInnenfor18mndsperiode.map(
                 (periode, index) => (

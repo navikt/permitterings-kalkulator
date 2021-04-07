@@ -42,9 +42,14 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 210
             )!;
             return til18mndsperiode(datoForAGP2.subtract(1, 'day'));
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
-            return til18mndsperiode(innføringsdatoAGP2);
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
+            return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+                tidslinje,
+                innføringsdatoAGP2,
+                dagensDato,
+                210
+            );
+        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return undefined;
     }
 };
