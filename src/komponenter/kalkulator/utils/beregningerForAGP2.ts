@@ -10,6 +10,7 @@ import {
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervall,
+    til18mndsperiode,
 } from './dato-utils';
 import {
     erPermittertVedDato,
@@ -103,10 +104,10 @@ export const getPermitteringsoversiktFor18Måneder = (
     tidslinje: DatoMedKategori[],
     sisteDatoI18mndsperiode: Dayjs
 ): Permitteringsoversikt => {
-    return getPermitteringsoversikt(tidslinje, {
-        datoFra: finnDato18MndTilbake(sisteDatoI18mndsperiode),
-        datoTil: sisteDatoI18mndsperiode,
-    });
+    return getPermitteringsoversikt(
+        tidslinje,
+        til18mndsperiode(sisteDatoI18mndsperiode)
+    );
 };
 
 export const getPermitteringsoversikt = (

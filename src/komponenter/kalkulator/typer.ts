@@ -11,13 +11,13 @@ export interface AllePermitteringerOgFraværesPerioder {
     andreFraværsperioder: Partial<DatoIntervall>[];
 }
 
-export type FastDatoIntervall = {
+type FastDatoIntervall = {
     datoFra: Dayjs;
     datoTil: Dayjs;
     erLøpende?: false;
 };
 
-export type LøpendeDatoIntervall = {
+type LøpendeDatoIntervall = {
     datoFra: Dayjs;
     datoTil?: undefined;
     erLøpende: true;
