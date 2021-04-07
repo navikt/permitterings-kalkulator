@@ -9,7 +9,8 @@ import { Infotekst } from '../Infotekst/Infotekst';
 import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
-    finnTidligsteFraDato, fraværInngårIPermitteringsperioder,
+    finnTidligsteFraDato,
+    fraværInngårIPermitteringsperioder,
 } from '../utils/dato-utils';
 
 interface Props {
@@ -58,13 +59,15 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         indeks: number,
         datoIntervall: Partial<DatoIntervall>
     ) => {
-        if (datoIntervall.datoFra &&
+        if (
+            datoIntervall.datoFra &&
             !fraværInngårIPermitteringsperioder(
-                props.allePermitteringerOgFraværesPerioder.permitteringer, datoIntervall
+                props.allePermitteringerOgFraværesPerioder.permitteringer,
+                datoIntervall
             )
         ) {
             setFeilmeldingFraværsperiodeUtenforPermittering(
-                'Fraværsdager som ikke inngår i permitteringsperiodene ikke påvirker beregningen av Arbeidsgiverperiode 2.'
+                'Fraværsdager som ikke inngår i permitteringsperioder påvirker ikke beregningen av Arbeidsgiverperiode 2.'
             );
         } else {
             setFeilmeldingFraværsperiodeUtenforPermittering('');
