@@ -8,10 +8,10 @@ import {
     finnSisteTilDato,
     getTidligsteDato,
     finnTidligsteFraDato,
-    finnUtOmDefinnesOverlappendePerioder,
+    getOverlappendePeriode,
     getAntallOverlappendeDager,
     getSenesteDato,
-    getOverlappendePeriode,
+    fraværInngårIPermitteringsperioder,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -49,28 +49,6 @@ describe('Tester for dato-utils.ts', () => {
         expect(antallDagerGått(enDagIFebruar, nesteDagIFebruar)).toBe(2);
         expect(antallDagerGått(enDagIFebruar, enDagIMars)).toBe(32);
         expect(antallDagerGått(enDagIMars, enDagIMarsEtÅrSenere)).toBe(366);
-    });
-
-    test('Tester om to datointervaller er overlappende. Samme slutt og startdato skal regnes som overlappende.', () => {
-        const startIntervall1 = dayjs('2021-03-01');
-        const sluttIntervall1 = dayjs('2021-04-15');
-
-        const startIntervall2 = dayjs('2021-04-15');
-        const sluttIntervall2 = dayjs('2021-05-15');
-
-        const periode1: DatoIntervall = {
-            datoFra: startIntervall1,
-            datoTil: sluttIntervall1,
-        };
-
-        const periode2: DatoIntervall = {
-            datoFra: startIntervall2,
-            datoTil: sluttIntervall2,
-        };
-
-        expect(
-            finnUtOmDefinnesOverlappendePerioder(Array.of(periode1, periode2))
-        ).toBe(true);
     });
 
     test('Finner den tidligste datoen fra en liste av flere permitteringsperioder', () => {
@@ -256,6 +234,70 @@ describe('Tester for dato-utils.ts', () => {
                 }
             );
             expect(overlappendePeriode).toEqual(undefined);
+        });
+    });
+
+    describe('Tester for fraværInngårIPermitteringsperioder', () => {
+        test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
+                    {
+                        datoFra: dayjs('2021-06-1'),
+                        datoTil: dayjs('2021-07-1'),
+                    }
+                )
+            ).toBeFalsy();
+        });
+
+        test('fraværInngårIPermitteringsperioder skal gi true hvis fraværet overlapper helt eller delvis med permitteringsperiodene', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
+                    {
+                        datoFra: dayjs('2021-05-1'),
+                        datoTil: dayjs('2021-05-2'),
+                    }
+                )
+            ).toBeTruthy();
+        });
+
+        test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet ikke er ordentlig definert', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
+                    {
+                        datoFra: dayjs('2021-03-1'),
+                    }
+                )
+            ).toBeFalsy();
         });
     });
 });

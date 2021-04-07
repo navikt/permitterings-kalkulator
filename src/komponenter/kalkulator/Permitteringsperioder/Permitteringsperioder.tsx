@@ -1,11 +1,10 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import React, { FunctionComponent } from 'react';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
-import { finnUtOmDefinnesOverlappendePerioder } from '../utils/dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -18,25 +17,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
     allePermitteringerOgFraværesPerioder,
     setAllePermitteringerOgFraværesPerioder,
 }) => {
-    const [
-        beskjedOverlappendePermittering,
-        setBeskjedOverlappendePermittering,
-    ] = useState('');
-
-    useEffect(() => {
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
-                allePermitteringerOgFraværesPerioder.permitteringer
-            )
-        ) {
-            setBeskjedOverlappendePermittering(
-                'Du kan ikke ha overlappende permitteringsperioder'
-            );
-        } else {
-            setBeskjedOverlappendePermittering('');
-        }
-    }, [allePermitteringerOgFraværesPerioder, beskjedOverlappendePermittering]);
-
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map(
         (permitteringsperiode, indeks) => (
             <Permitteringsperiode
@@ -66,9 +46,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 </Normaltekst>
             </Infotekst>
             {permitteringsobjekter}
-            <Element className={'kalkulator__feilmelding'}>
-                {beskjedOverlappendePermittering}
-            </Element>
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
@@ -10,7 +10,7 @@ import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
     finnTidligsteFraDato,
-    finnUtOmDefinnesOverlappendePerioder,
+    fraværInngårIPermitteringsperioder,
 } from '../utils/dato-utils';
 
 interface Props {
@@ -25,23 +25,9 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const [
-        beskjedOverlappendeFravær,
-        setBeskjedOverlappendeFravær,
+        feilmeldingFraværsperiodeUtenforPermittering,
+        setFeilmeldingFraværsperiodeUtenforPermittering,
     ] = useState<string>('');
-
-    useEffect(() => {
-        if (
-            finnUtOmDefinnesOverlappendePerioder(
-                props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
-            )
-        ) {
-            setBeskjedOverlappendeFravær(
-                'Du kan ikke ha overlappende fraværsperioder'
-            );
-        } else {
-            setBeskjedOverlappendeFravær('');
-        }
-    }, [props.allePermitteringerOgFraværesPerioder, beskjedOverlappendeFravær]);
 
     const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
@@ -73,6 +59,19 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         indeks: number,
         datoIntervall: Partial<DatoIntervall>
     ) => {
+        if (
+            datoIntervall.datoFra &&
+            !fraværInngårIPermitteringsperioder(
+                props.allePermitteringerOgFraværesPerioder.permitteringer,
+                datoIntervall
+            )
+        ) {
+            setFeilmeldingFraværsperiodeUtenforPermittering(
+                'Fraværsdager som ikke inngår i permitteringsperioder påvirker ikke beregningen av Arbeidsgiverperiode 2.'
+            );
+        } else {
+            setFeilmeldingFraværsperiodeUtenforPermittering('');
+        }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
         ];
@@ -87,6 +86,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
+                    feilmelding={feilmeldingFraværsperiodeUtenforPermittering}
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder
@@ -135,11 +135,8 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 className="fraværsperioder__legg-til-knapp"
                 onClick={leggTilNyFraværsperiode}
             >
-                + Legg til ny periode
+                + Legg til fravær
             </Knapp>
-            <Element className="fraværsperioder__feilmelding">
-                {beskjedOverlappendeFravær}
-            </Element>
         </div>
     );
 };
