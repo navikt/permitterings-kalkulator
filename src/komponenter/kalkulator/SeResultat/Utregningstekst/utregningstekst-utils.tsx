@@ -23,9 +23,9 @@ import { Normaltekst } from 'nav-frontend-typografi';
 
 export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     tidslinje: DatoMedKategori[],
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
-    innføringsdatoAGP2: Dayjs
+    innføringsdatoAGP2: Dayjs,
+    antallDagerFørAGP2Inntreffer: number
 ): DatoIntervall | undefined => {
     const situasjon = finnPermitteringssituasjon(
         tidslinje,
@@ -40,7 +40,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
             const datoForAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
-                210
+                antallDagerFørAGP2Inntreffer
             )!;
             return til18mndsperiode(datoForAGP2.subtract(1, 'day'));
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
@@ -48,7 +48,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 tidslinje,
                 innføringsdatoAGP2,
                 dagensDato,
-                210
+                antallDagerFørAGP2Inntreffer
             );
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return undefined;
@@ -131,8 +131,8 @@ export const lagResultatTekst = (
                             Den ansatte har i perioden{' '}
                             {formaterDatoIntervall(
                                 til18mndsperiode(sisteDagI18mndsperiode)
-                            )} vært
-                            permittert i tilsammen 30 uker.
+                            )}{' '}
+                            vært permittert i tilsammen 30 uker.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Arbeidsgiverperiode 2 inntreffer dagen den ansatte

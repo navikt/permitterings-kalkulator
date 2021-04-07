@@ -32,9 +32,9 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
 
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         props.tidslinje,
-        props.allePermitteringerOgFraværesPerioder,
         dagensDato,
-        innføringsdatoAGP2
+        innføringsdatoAGP2,
+        210
     );
 
     return (

@@ -113,8 +113,7 @@ export const regnUtHorisontalAvstandMellomToElement = (
     const element2 = document.getElementById(id2);
     const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
     const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
-    const avstand =
-        posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.right!;
+    const avstand = posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.right!;
     return Math.abs(avstand);
 };
 
@@ -201,42 +200,4 @@ const finnFarge = (kategori: DatointervallKategori) => {
 
 export const erFørsteJanuar = (date: Dayjs) => {
     return date.month() === 0 && date.date() === 1;
-};
-
-export const finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs,
-    antallDagerFørAGP2Inntreffer: number,
-    dagensDato: Dayjs
-): Dayjs => {
-    const situasjon = finnPermitteringssituasjon(
-        tidslinje,
-        innføringsdatoAGP2,
-        antallDagerFørAGP2Inntreffer
-    );
-
-    let sluttDatoIllustrasjonPåTidslinje: Dayjs | undefined;
-    switch (situasjon) {
-        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            sluttDatoIllustrasjonPåTidslinje = finnDatoForAGP2(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer
-            );
-            break;
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
-            sluttDatoIllustrasjonPåTidslinje = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                innføringsdatoAGP2,
-                dagensDato,
-                antallDagerFørAGP2Inntreffer
-            )?.datoTil;
-            break;
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
-        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
-        default:
-            sluttDatoIllustrasjonPåTidslinje = innføringsdatoAGP2;
-            break;
-    }
-    return sluttDatoIllustrasjonPåTidslinje || innføringsdatoAGP2;
 };

@@ -14,7 +14,6 @@ import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
 import {
-    finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen,
     lagHTMLObjektForAlleDatoer,
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
@@ -28,6 +27,7 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../SeResultat/Utregningstekst/utregningstekst-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -78,15 +78,15 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        props.set18mndsPeriode(
-            finnSisteDatoI18mndsintervalletSomMarkeresITidslinjen(
+        const sluttAv18mndsPeriode =
+            finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                 props.tidslinje,
+                dagensDato,
                 innføringsdatoAGP2,
-                210,
-                dagensDato
-            )
-        );
-    }, [props.allePermitteringerOgFraværesPerioder]);
+                210
+            )?.datoTil || innføringsdatoAGP2;
+        props.set18mndsPeriode(sluttAv18mndsPeriode);
+    }, [props.tidslinje]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
