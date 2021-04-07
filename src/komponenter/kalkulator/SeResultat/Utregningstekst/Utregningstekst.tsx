@@ -3,7 +3,6 @@ import './Utregningstekst.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
     DatoMedKategori,
 } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
@@ -14,10 +13,7 @@ import {
     lagResultatTekst,
 } from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
-import {
-    filtrerBortUdefinerteDatoIntervaller,
-    tilDatoIntervall,
-} from '../../utils/dato-utils';
+import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
 
 interface Props {
     tidslinje: DatoMedKategori[];

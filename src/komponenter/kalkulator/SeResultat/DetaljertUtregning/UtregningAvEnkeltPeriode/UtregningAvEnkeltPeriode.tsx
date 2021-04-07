@@ -10,7 +10,7 @@ interface Props {
     permitteringsnr: number;
 }
 
-const UtregningAvEnkelPeriode: FunctionComponent<Props> = ({
+const UtregningAvEnkeltPeriode: FunctionComponent<Props> = ({
     permitteringsperiode,
     permitteringsoversikt,
     permitteringsnr,
@@ -40,4 +40,4 @@ const UtregningAvEnkelPeriode: FunctionComponent<Props> = ({
     );
 };
 
-export default UtregningAvEnkelPeriode;
+export default UtregningAvEnkeltPeriode;

@@ -10,7 +10,6 @@ import {
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervall,
-    finnesIIntervaller,
 } from './dato-utils';
 import {
     erPermittertVedDato,
