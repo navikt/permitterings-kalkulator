@@ -121,6 +121,10 @@ export const getSenesteDato = (
         : undefined;
 };
 
+export const getSenesteDatoAvTo = (dato1: Dayjs, dato2: Dayjs): Dayjs => {
+    return dato1.isAfter(dato2) ? dato1 : dato2;
+}
+
 const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
     const sorterteDatoer = [...datoer]
         .filter((dato) => dato !== undefined)

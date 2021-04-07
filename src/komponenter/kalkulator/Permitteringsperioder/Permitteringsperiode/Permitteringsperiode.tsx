@@ -12,7 +12,8 @@ import { Knapp } from 'nav-frontend-knapper';
 import {
     finnDato18MndTilbake,
     finnSisteTilDato,
-    formaterDato,
+    formaterDato, getSenesteDato, getSenesteDatoAvTo,
+    getTidligsteDato,
 } from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
 
@@ -53,12 +54,12 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     };
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
-        const grenseDato = dagensDato.isBefore(innføringsdatoAGP2)
-            ? innføringsdatoAGP2
-            : dagensDato;
-        const datoErForGammel = datoIntervall.datoFra?.isBefore(
-            finnDato18MndTilbake(grenseDato)
-        );
+        const grenseDato = getSenesteDatoAvTo(innføringsdatoAGP2, dagensDato);
+        const datoErForGammel = getTidligsteDato([
+            datoIntervall.datoFra,
+            datoIntervall.datoTil,
+        ])?.isBefore(finnDato18MndTilbake(grenseDato));
+
         if (datoErForGammel) {
             setFeilmeldingPermitteringForeldet(
                 'Fyll inn perioder etter ' +
@@ -114,7 +115,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                     className={'permitteringsperiode__legg-til-knapp'}
                     onClick={leggTilNyPermitteringsperiode}
                 >
-                    + Legg til ny periode
+                    + Legg til permittering
                 </Knapp>
             )}
         </div>
