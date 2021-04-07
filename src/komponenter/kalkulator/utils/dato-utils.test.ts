@@ -169,45 +169,69 @@ describe('Tester for utregninger.ts', () => {
         ).toEqual(dayjs('2023-03-2'));
     });
 
-    test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
-        expect(
-            fraværInngårIPermitteringsperioder(
-                [
-                    {
-                        datoFra: dayjs('2021-03-1'),
-                        datoTil: dayjs('2021-05-1'),
-                    },
-                    {
-                        datoFra: dayjs('2020-03-1'),
-                        datoTil: dayjs('2020-05-1'),
-                    },
-                ],
-                {
-                    datoFra: dayjs('2021-06-1'),
-                    datoTil: dayjs('2021-07-1'),
-                }
-            )
-        ).toBeFalsy();
-    });
+    describe('Tester for fraværInngårIPermitteringsperioder', () => {
 
-    test('fraværInngårIPermitteringsperioder skal gi true hvis fraværet overlapper helt eller delvis med permitteringsperiodene', () => {
-        expect(
-            fraværInngårIPermitteringsperioder(
-                [
+        test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
+                    {
+                        datoFra: dayjs('2021-06-1'),
+                        datoTil: dayjs('2021-07-1'),
+                    }
+                )
+            ).toBeFalsy();
+        });
+
+        test('fraværInngårIPermitteringsperioder skal gi true hvis fraværet overlapper helt eller delvis med permitteringsperiodene', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
+                    {
+                        datoFra: dayjs('2021-05-1'),
+                        datoTil: dayjs('2021-05-2'),
+                    }
+                )
+            ).toBeTruthy();
+        });
+
+        test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet ikke er ordentlig definert', () => {
+            expect(
+                fraværInngårIPermitteringsperioder(
+                    [
+                        {
+                            datoFra: dayjs('2021-03-1'),
+                            datoTil: dayjs('2021-05-1'),
+                        },
+                        {
+                            datoFra: dayjs('2020-03-1'),
+                            datoTil: dayjs('2020-05-1'),
+                        },
+                    ],
                     {
                         datoFra: dayjs('2021-03-1'),
-                        datoTil: dayjs('2021-05-1'),
-                    },
-                    {
-                        datoFra: dayjs('2020-03-1'),
-                        datoTil: dayjs('2020-05-1'),
-                    },
-                ],
-                {
-                    datoFra: dayjs('2021-05-1'),
-                    datoTil: dayjs('2021-05-2'),
-                }
-            )
-        ).toBeTruthy();
-    });
+                    }
+                )
+            ).toBeFalsy();
+        });
+    })
+
 });

@@ -20,8 +20,8 @@ export const antallUkerRundetOpp = (antallDager: number): number => {
 };
 
 export const getAntallOverlappendeDager = (
-    intervall1: Partial<DatoIntervall>,
-    intervall2: Partial<DatoIntervall>
+    intervall1: DatoIntervall,
+    intervall2: DatoIntervall
 ): number => {
     if (intervall1.erLøpende && intervall2.erLøpende) {
         throw new Error(
@@ -37,7 +37,7 @@ export const getAntallOverlappendeDager = (
     let antallOverlappendeDager = 0;
     for (
         let dag = intervallSomIkkeErLøpende.datoFra;
-        dag?.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
+        dag.isSameOrBefore(intervallSomIkkeErLøpende.datoTil!);
         dag = dag.add(1, 'day')
     ) {
         if (finnesIIntervall(dag, annetIntervall)) {
@@ -75,8 +75,13 @@ export const fraværInngårIPermitteringsperioder = (
     let finnesOverLapp = false;
     const definertePerioder = fjernUdefinerteDatoIntervaller(perioder);
 
+    const definertFraværsintervall = tilDatoIntervall(fraværsintervall);
+    if (!definertFraværsintervall) {
+        return false;
+    }
+
     definertePerioder.forEach((periode) => {
-        if (getAntallOverlappendeDager(periode, fraværsintervall) > 0) {
+        if (getAntallOverlappendeDager(periode, definertFraværsintervall) > 0) {
             finnesOverLapp = true;
         }
     });
