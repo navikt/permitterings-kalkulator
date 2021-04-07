@@ -8,12 +8,10 @@ import {
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import {
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    lagResultatTekst,
-} from './utregningstekst-utils';
+import { lagResultatTekst } from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForAGP2';
 
 interface Props {
     tidslinje: DatoMedKategori[];

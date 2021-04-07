@@ -27,7 +27,7 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../SeResultat/Utregningstekst/utregningstekst-utils';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForAGP2';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatoIntervall,
     DatointervallKategori,
     DatoMedKategori,
 } from '../../typer';
@@ -20,40 +19,6 @@ import {
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
-
-export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
-    tidslinje: DatoMedKategori[],
-    dagensDato: Dayjs,
-    innføringsdatoAGP2: Dayjs,
-    antallDagerFørAGP2Inntreffer: number
-): DatoIntervall | undefined => {
-    const situasjon = finnPermitteringssituasjon(
-        tidslinje,
-        innføringsdatoAGP2,
-        210
-    );
-
-    switch (situasjon) {
-        case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
-            return til18mndsperiode(innføringsdatoAGP2);
-        case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const datoForAGP2 = finnDatoForAGP2(
-                tidslinje,
-                innføringsdatoAGP2,
-                antallDagerFørAGP2Inntreffer
-            )!;
-            return til18mndsperiode(datoForAGP2.subtract(1, 'day'));
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
-            return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                innføringsdatoAGP2,
-                dagensDato,
-                antallDagerFørAGP2Inntreffer
-            );
-        case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
-            return undefined;
-    }
-};
 
 interface ResultatTekst {
     konklusjon: string;
