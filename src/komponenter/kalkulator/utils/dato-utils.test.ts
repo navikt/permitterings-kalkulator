@@ -8,6 +8,7 @@ import {
     finnSisteTilDato,
     getTidligsteDato,
     finnTidligsteFraDato,
+    getOverlappendePeriode,
     getAntallOverlappendeDager,
     getSenesteDato,
     fraværInngårIPermitteringsperioder,
@@ -17,7 +18,7 @@ import { configureDayJS } from '../../../dayjs-config';
 
 configureDayJS();
 
-describe('Tester for utregninger.ts', () => {
+describe('Tester for dato-utils.ts', () => {
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
         const tidslinje = konstruerTidslinje(
             { permitteringer: [], andreFraværsperioder: [] },
@@ -169,8 +170,74 @@ describe('Tester for utregninger.ts', () => {
         ).toEqual(dayjs('2023-03-2'));
     });
 
-    describe('Tester for fraværInngårIPermitteringsperioder', () => {
+    describe('Tester for getOverlappendePeriode', () => {
+        test('Skal returnere overlappende periode for faste perioder', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    datoTil: dayjs('2021-03-20'),
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    datoTil: dayjs('2021-03-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                datoTil: dayjs('2021-03-10'),
+            });
+        });
 
+        test('Skal returnere overlappende periode for løpende perioder', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    erLøpende: true,
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                erLøpende: true,
+            });
+        });
+
+        test('Skal returnere overlappende periode hvis én periode er løpende og den andre er fast', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-02-13'),
+                    datoTil: dayjs('2021-03-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual({
+                datoFra: dayjs('2021-03-01'),
+                datoTil: dayjs('2021-03-10'),
+            });
+        });
+
+        test('Skal returnere undefined hvis periodene ikke overlapper', () => {
+            const overlappendePeriode = getOverlappendePeriode(
+                {
+                    datoFra: dayjs('2021-03-1'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-01-13'),
+                    datoTil: dayjs('2021-02-10'),
+                }
+            );
+            expect(overlappendePeriode).toEqual(undefined);
+        });
+    });
+
+    describe('Tester for fraværInngårIPermitteringsperioder', () => {
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
             expect(
                 fraværInngårIPermitteringsperioder(
@@ -232,6 +299,5 @@ describe('Tester for utregninger.ts', () => {
                 )
             ).toBeFalsy();
         });
-    })
-
+    });
 });

@@ -9,10 +9,15 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForAGP2,
     finnPermitteringssituasjon,
-    getPermitteringsoversikt,
+    getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
-import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
+import {
+    finnDato18MndTilbake,
+    formaterDato,
+    formaterDatoIntervall,
+    til18mndsperiode,
+} from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 
 interface ResultatTekst {
@@ -31,7 +36,7 @@ export const lagResultatTekst = (
         innføringsdatoAGP2,
         210
     );
-    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversikt(
+    const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         innføringsdatoAGP2
     );
@@ -89,21 +94,20 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(sisteDagI18mndsperiode)
-                            )}
-                            –{formaterDato(sisteDagI18mndsperiode)} være
-                            permittert i tilsammen 30 uker.
+                            {formaterDatoIntervall(
+                                til18mndsperiode(sisteDagI18mndsperiode)
+                            )}{' '}
+                            vært permittert i tilsammen 30 uker.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Arbeidsgiverperiode 2 inntreffer dagen den ansatte
                             har vært permittert i mer enn 30 uker i løpet av de
                             siste 18 månedene. I dette tilfellet blir 18
                             måneders perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(sisteDagI18mndsperiode)
-                            )}{' '}
-                            til {formaterDato(sisteDagI18mndsperiode)}.
+                            {formaterDatoIntervall(
+                                til18mndsperiode(sisteDagI18mndsperiode)
+                            )}
+                            .
                         </Normaltekst>
                     </>
                 ),
@@ -122,7 +126,7 @@ export const lagResultatTekst = (
                 };
             }
 
-            const oversiktOverPermittering = getPermitteringsoversikt(
+            const oversiktOverPermittering = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
                 aktuell18mndsperiode.datoTil
             );
@@ -137,13 +141,10 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(
-                                    aktuell18mndsperiode.datoTil
-                                )
-                            )}
-                            –{formaterDato(aktuell18mndsperiode.datoTil)} vært
-                            permittert i tilsammen{' '}
+                            {formaterDatoIntervall(
+                                til18mndsperiode(aktuell18mndsperiode.datoTil)
+                            )}{' '}
+                            vært permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermittering.dagerBrukt
                             )}
