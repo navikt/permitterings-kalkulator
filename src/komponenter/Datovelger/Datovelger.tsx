@@ -38,6 +38,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const { dagensDato } = useContext(PermitteringContext);
 
     const datepickernode = useRef<HTMLDivElement>(null);
+    const knappRef = useRef<HTMLButtonElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
     const selectedDate: Dayjs = props.value || dagensDato;
@@ -114,6 +115,8 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         if (erApen) {
             setFeilMelding('');
+        } else if (knappRef) {
+            knappRef.current?.focus();
         }
     }, [erApen]);
 
@@ -149,6 +152,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     disabled={props.disabled}
                     className={'datofelt__knapp'}
                     onClick={() => setErApen(!erApen)}
+                    ref={knappRef}
                 >
                     <img alt={''} src={kalender} />
                 </button>

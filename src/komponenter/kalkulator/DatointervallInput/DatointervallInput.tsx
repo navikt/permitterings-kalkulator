@@ -86,13 +86,13 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 aria-label="Slett periode"
                 onClick={props.slettPeriode}
             />
-            <Element
-                className="datointervall-input__feilmelding"
-                aria-live="polite"
+            {props.feilmelding.length > 0 && <Element
+                className='datointervall-input__feilmelding'
+                aria-live='polite'
                 aria-label={'feilmelding'}
             >
                 {props.feilmelding}
-            </Element>
+            </Element>}
         </div>
     );
 };
