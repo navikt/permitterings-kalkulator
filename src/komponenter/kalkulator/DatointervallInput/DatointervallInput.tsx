@@ -11,7 +11,7 @@ interface Props {
     datoIntervall: Partial<DatoIntervall>;
     setDatoIntervall: (datoIntervall: Partial<DatoIntervall>) => void;
     slettPeriode: () => void;
-    feilmeldingPåDatoIntervall: string;
+    feilmelding: string;
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
@@ -91,7 +91,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 aria-live="assertive"
                 aria-label={'feilmelding'}
             >
-                {props.feilmeldingPåDatoIntervall}
+                {props.feilmelding}
             </Element>
         </div>
     );

@@ -24,8 +24,8 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const [
-        beskjedFraværsperiodeUtenforPermittering,
-        setBeskjedFraværsperiodeUtenforPermittering,
+        feilmeldingFraværsperiodeUtenforPermittering,
+        setFeilmeldingFraværsperiodeUtenforPermittering,
     ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
@@ -63,11 +63,11 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 props.allePermitteringerOgFraværesPerioder.permitteringer, datoIntervall
             )
         ) {
-            setBeskjedFraværsperiodeUtenforPermittering(
-                'Merk at fraværsdager som ikke inngår i permitteringsperiodene ikke påvirker beregningen av Arbeidsgiverperiode 2.'
+            setFeilmeldingFraværsperiodeUtenforPermittering(
+                'Fraværsdager som ikke inngår i permitteringsperiodene ikke påvirker beregningen av Arbeidsgiverperiode 2.'
             );
         } else {
-            setBeskjedFraværsperiodeUtenforPermittering('');
+            setFeilmeldingFraværsperiodeUtenforPermittering('');
         }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
@@ -83,7 +83,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
-                    feilmeldingPåDatoIntervall={beskjedFraværsperiodeUtenforPermittering}
+                    feilmelding={feilmeldingFraværsperiodeUtenforPermittering}
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder
@@ -132,7 +132,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 className="fraværsperioder__legg-til-knapp"
                 onClick={leggTilNyFraværsperiode}
             >
-                + Legg til ny periode
+                + Legg til fravær
             </Knapp>
         </div>
     );

@@ -104,7 +104,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
-                feilmeldingPåDatoIntervall={feilmeldingPermitteringForeldet}
+                feilmelding={feilmeldingPermitteringForeldet}
             />
             {props.indeks ===
                 props.allePermitteringerOgFraværesPerioder.permitteringer
