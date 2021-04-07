@@ -7,7 +7,7 @@ import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 import {
     finnInitialgrenserForTidslinjedatoer,
@@ -16,9 +16,41 @@ import {
 } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
 
+// TODO Denne må fjernes
+const teststate: AllePermitteringerOgFraværesPerioder = {
+    permitteringer: [
+        {
+            datoFra: dayjs('2021-06-01'),
+            datoTil: dayjs('2021-07-01'),
+        },
+        {
+            datoFra: dayjs('2021-01-01'),
+            datoTil: dayjs('2021-03-01'),
+        },
+        {
+            datoFra: dayjs('2020-06-01'),
+            datoTil: dayjs('2020-07-01'),
+        },
+        {
+            datoFra: dayjs('2020-03-01'),
+            datoTil: dayjs('2020-04-01'),
+        },
+        {
+            datoFra: dayjs('2021-01-01'),
+            datoTil: dayjs('2021-02-01'),
+        },
+    ],
+    andreFraværsperioder: [],
+};
+
 const Kalkulator = () => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
 
+    const [
+        allePermitteringerOgFraværesPerioder,
+        setAllePermitteringerOgFraværesPerioder,
+    ] = useState<AllePermitteringerOgFraværesPerioder>(teststate);
+    /*
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
@@ -26,6 +58,7 @@ const Kalkulator = () => {
         permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
+    */
 
     const [
         sisteDagI18mndsPeriodeEndretAv,

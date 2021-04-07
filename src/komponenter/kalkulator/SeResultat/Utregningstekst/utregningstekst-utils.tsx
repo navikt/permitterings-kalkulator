@@ -16,6 +16,7 @@ import {
 import {
     finnDato18MndTilbake,
     formaterDato,
+    formaterDatoIntervall,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -128,10 +129,9 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(sisteDagI18mndsperiode)
-                            )}
-                            –{formaterDato(sisteDagI18mndsperiode)} være
+                            {formaterDatoIntervall(
+                                til18mndsperiode(sisteDagI18mndsperiode)
+                            )} vært
                             permittert i tilsammen 30 uker.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -139,10 +139,10 @@ export const lagResultatTekst = (
                             har vært permittert i mer enn 30 uker i løpet av de
                             siste 18 månedene. I dette tilfellet blir 18
                             måneders perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(sisteDagI18mndsperiode)
-                            )}{' '}
-                            til {formaterDato(sisteDagI18mndsperiode)}.
+                            {formaterDatoIntervall(
+                                til18mndsperiode(sisteDagI18mndsperiode)
+                            )}
+                            .
                         </Normaltekst>
                     </>
                 ),
@@ -176,13 +176,10 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
-                            {formaterDato(
-                                finnDato18MndTilbake(
-                                    aktuell18mndsperiode.datoTil
-                                )
-                            )}
-                            –{formaterDato(aktuell18mndsperiode.datoTil)} vært
-                            permittert i tilsammen{' '}
+                            {formaterDatoIntervall(
+                                til18mndsperiode(aktuell18mndsperiode.datoTil)
+                            )}{' '}
+                            vært permittert i tilsammen{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermittering.dagerBrukt
                             )}
