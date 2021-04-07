@@ -88,7 +88,7 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
             />
             <Element
                 className="datointervall-input__feilmelding"
-                aria-live="assertive"
+                aria-live="polite"
                 aria-label={'feilmelding'}
             >
                 {props.feilmelding}

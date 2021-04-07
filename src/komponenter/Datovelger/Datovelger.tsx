@@ -157,7 +157,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                 <DayPicker
                     aria-hidden={!erApen}
                     onKeyDown={(e) => {
-                        if (e.key === 'Escape' || e.key === 'Enter') {
+                        if (e.key === 'Escape') {
                             setErApen(!erApen);
                         }
                     }}
