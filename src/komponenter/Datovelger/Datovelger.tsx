@@ -38,6 +38,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const { dagensDato } = useContext(PermitteringContext);
 
     const datepickernode = useRef<HTMLDivElement>(null);
+    const knappRef = useRef<HTMLButtonElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
     const selectedDate: Dayjs = props.value || dagensDato;
@@ -47,11 +48,10 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const datovelgerId = guid();
 
     const tekstIInputfeltet = () => {
-        if (props.value) {
-            return editing ? tempDate : formaterDato(selectedDate);
-        } else {
+        if (!editing && !props.value) {
             return 'dd.mm.yyyy';
         }
+        return editing ? tempDate : formaterDato(selectedDate);
     };
 
     const onDatoClick = (date: Dayjs) => {
@@ -78,7 +78,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
         if (newDato.isValid()) {
             onDatoClick(newDato);
-        } else {
+        } else if (tekstIInputfeltet() !== 'dd.mm.yyyy') {
             setFeilMelding('dd.mm.yyyy');
             setErApen(false);
         }
@@ -115,6 +115,8 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         if (erApen) {
             setFeilMelding('');
+        } else if (knappRef) {
+            knappRef.current?.focus();
         }
     }, [erApen]);
 
@@ -145,9 +147,11 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     }}
                 />
                 <button
+                    aria-label={'Velg' + props.overtekst + ' dato'}
                     disabled={props.disabled}
                     className={'datofelt__knapp'}
                     onClick={() => setErApen(!erApen)}
+                    ref={knappRef}
                 >
                     <img alt={''} src={kalender} />
                 </button>

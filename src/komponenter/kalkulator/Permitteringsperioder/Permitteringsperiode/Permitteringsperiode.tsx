@@ -1,12 +1,21 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import '../../kalkulator.less';
 import './Permitteringsperiode.less';
 
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../../typer';
+import {
+    AllePermitteringerOgFraværesPerioder,
+    DatoIntervall,
+} from '../../typer';
 
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
-import { finnSisteTilDato } from '../../utils/dato-utils';
+import {
+    finnDato18MndTilbake,
+    finnSisteTilDato,
+    formaterDato, getSenesteDato, getSenesteDatoAvTo,
+    getTidligsteDato,
+} from '../../utils/dato-utils';
+import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
     indeks: number;
@@ -17,6 +26,12 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
+    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const [
+        feilmeldingPermitteringForeldet,
+        setFeilmeldingPermitteringForeldet,
+    ] = useState('');
+
     const leggTilNyPermitteringsperiode = () => {
         const sisteUtfyltePermitteringsdag = finnSisteTilDato(
             props.allePermitteringerOgFraværesPerioder.permitteringer
@@ -39,6 +54,21 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     };
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
+        const grenseDato = getSenesteDatoAvTo(innføringsdatoAGP2, dagensDato);
+        const datoErForGammel = getTidligsteDato([
+            datoIntervall.datoFra,
+            datoIntervall.datoTil,
+        ])?.isBefore(finnDato18MndTilbake(grenseDato));
+
+        if (datoErForGammel) {
+            setFeilmeldingPermitteringForeldet(
+                'Fyll inn perioder etter ' +
+                    formaterDato(finnDato18MndTilbake(grenseDato)) +
+                    '.'
+            );
+        } else {
+            setFeilmeldingPermitteringForeldet('');
+        }
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
         ];
@@ -75,6 +105,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
+                feilmelding={feilmeldingPermitteringForeldet}
             />
             {props.indeks ===
                 props.allePermitteringerOgFraværesPerioder.permitteringer
@@ -84,7 +115,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                     className={'permitteringsperiode__legg-til-knapp'}
                     onClick={leggTilNyPermitteringsperiode}
                 >
-                    + Legg til ny periode
+                    + Legg til permittering
                 </Knapp>
             )}
         </div>
