@@ -104,20 +104,12 @@ export const filtrerBortUdefinerteDatoIntervaller = (
         .filter((intervall) => intervall !== undefined) as DatoIntervall[];
 };
 
-const fjernUdefinerteDatoIntervaller = (
-    potensieltUdefinerteDatointervaller: Partial<DatoIntervall>[]
-): DatoIntervall[] => {
-    return potensieltUdefinerteDatointervaller
-        .map((intervall) => tilDatoIntervall(intervall))
-        .filter((intervall) => intervall !== undefined) as DatoIntervall[];
-};
-
 export const fraværInngårIPermitteringsperioder = (
     perioder: Partial<DatoIntervall>[],
     fraværsintervall: Partial<DatoIntervall>
 ): boolean => {
     let finnesOverLapp = false;
-    const definertePerioder = fjernUdefinerteDatoIntervaller(perioder);
+    const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
 
     const definertFraværsintervall = tilDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
@@ -172,7 +164,7 @@ export const getSenesteDato = (
 
 export const getSenesteDatoAvTo = (dato1: Dayjs, dato2: Dayjs): Dayjs => {
     return dato1.isAfter(dato2) ? dato1 : dato2;
-}
+};
 
 const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {
     const sorterteDatoer = [...datoer]
