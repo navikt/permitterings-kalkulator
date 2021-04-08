@@ -25,8 +25,8 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const [
-        feilmeldingFraværsperiodeUtenforPermittering,
-        setFeilmeldingFraværsperiodeUtenforPermittering,
+        advarselFraværsperiodeUtenforPermittering,
+        setAdvarselFraværsperiodeUtenforPermittering,
     ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
@@ -66,11 +66,11 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 datoIntervall
             )
         ) {
-            setFeilmeldingFraværsperiodeUtenforPermittering(
+            setAdvarselFraværsperiodeUtenforPermittering(
                 'Fraværsdager som ikke inngår i permitteringsperioder påvirker ikke beregningen av Arbeidsgiverperiode 2.'
             );
         } else {
-            setFeilmeldingFraværsperiodeUtenforPermittering('');
+            setAdvarselFraværsperiodeUtenforPermittering('');
         }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
@@ -86,7 +86,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
-                    feilmelding={feilmeldingFraværsperiodeUtenforPermittering}
+                    advarsel={advarselFraværsperiodeUtenforPermittering}
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder

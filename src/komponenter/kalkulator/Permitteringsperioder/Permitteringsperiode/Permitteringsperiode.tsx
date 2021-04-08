@@ -28,8 +28,8 @@ interface Props {
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
     const [
-        feilmeldingPermitteringForeldet,
-        setFeilmeldingPermitteringForeldet,
+        advarselPermitteringForeldet,
+        setAdvarselPermitteringForeldet,
     ] = useState('');
 
     const leggTilNyPermitteringsperiode = () => {
@@ -61,13 +61,13 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         ])?.isBefore(finnDato18MndTilbake(grenseDato));
 
         if (datoErForGammel) {
-            setFeilmeldingPermitteringForeldet(
+            setAdvarselPermitteringForeldet(
                 'Fyll inn perioder etter ' +
                     formaterDato(finnDato18MndTilbake(grenseDato)) +
                     '.'
             );
         } else {
-            setFeilmeldingPermitteringForeldet('');
+            setAdvarselPermitteringForeldet('');
         }
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
@@ -105,7 +105,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
-                feilmelding={feilmeldingPermitteringForeldet}
+                advarsel={advarselPermitteringForeldet}
             />
             {props.indeks ===
                 props.allePermitteringerOgFraværesPerioder.permitteringer
