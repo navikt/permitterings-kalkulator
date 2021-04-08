@@ -5,13 +5,13 @@ import Datovelger from '../../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
 import { Dayjs } from 'dayjs';
-import { Element } from 'nav-frontend-typografi';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     datoIntervall: Partial<DatoIntervall>;
     setDatoIntervall: (datoIntervall: Partial<DatoIntervall>) => void;
     slettPeriode: () => void;
-    feilmelding: string;
+    advarsel: string;
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
@@ -86,13 +86,17 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                 aria-label="Slett periode"
                 onClick={props.slettPeriode}
             />
-            {props.feilmelding.length > 0 && <Element
-                className='datointervall-input__feilmelding'
-                aria-live='polite'
-                aria-label={'feilmelding'}
-            >
-                {props.feilmelding}
-            </Element>}
+            {props.advarsel.length > 0 && (
+                <AlertStripe
+                    type="advarsel"
+                    form="inline"
+                    className="datointervall-input__advarsel"
+                    aria-live="polite"
+                    aria-label="Advarsel"
+                >
+                    {props.advarsel}
+                </AlertStripe>
+            )}
         </div>
     );
 };
