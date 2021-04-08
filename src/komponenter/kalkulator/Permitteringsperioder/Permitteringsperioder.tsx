@@ -47,9 +47,7 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                         Ikke fyll inn dagene du har lønnsplikt eller
                         permitteringer grunnet streik.
                     </li>
-                    <li>
-                        Ikke fyll inn permitteringer eldre enn 18 måneder.
-                    </li>
+                    <li>Ikke fyll inn permitteringer eldre enn 18 måneder.</li>
                 </Normaltekst>
             </Infotekst>
             {permitteringsobjekter}

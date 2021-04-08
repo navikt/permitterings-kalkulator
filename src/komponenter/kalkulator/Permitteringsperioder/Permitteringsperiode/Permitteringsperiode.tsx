@@ -12,7 +12,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import {
     finnDato18MndTilbake,
     finnSisteTilDato,
-    formaterDato, getSenesteDato, getSenesteDatoAvTo,
+    getSenesteDatoAvTo,
     getTidligsteDato,
 } from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
@@ -62,9 +62,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
 
         if (datoErForGammel) {
             setAdvarselPermitteringForeldet(
-                'Fyll inn perioder etter ' +
-                    formaterDato(finnDato18MndTilbake(grenseDato)) +
-                    '.'
+                'Permitteringer eldre enn 18 månder telles ikke med i beregningen'
             );
         } else {
             setAdvarselPermitteringForeldet('');

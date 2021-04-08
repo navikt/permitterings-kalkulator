@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
@@ -67,7 +67,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             )
         ) {
             setAdvarselFraværsperiodeUtenforPermittering(
-                'Fraværsdager som ikke inngår i permitteringsperioder påvirker ikke beregningen av Arbeidsgiverperiode 2.'
+                'Fravær som ikke inngår i permitteringsperioder telles ikke med i beregningen'
             );
         } else {
             setAdvarselFraværsperiodeUtenforPermittering('');
