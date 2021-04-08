@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
@@ -25,8 +25,8 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
 
     const [
-        feilmeldingFraværsperiodeUtenforPermittering,
-        setFeilmeldingFraværsperiodeUtenforPermittering,
+        advarselFraværsperiodeUtenforPermittering,
+        setAdvarselFraværsperiodeUtenforPermittering,
     ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
@@ -66,11 +66,11 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 datoIntervall
             )
         ) {
-            setFeilmeldingFraværsperiodeUtenforPermittering(
-                'Fraværsdager som ikke inngår i permitteringsperioder påvirker ikke beregningen av Arbeidsgiverperiode 2.'
+            setAdvarselFraværsperiodeUtenforPermittering(
+                'Fravær som ikke inngår i permitteringsperioder telles ikke med i beregningen'
             );
         } else {
-            setFeilmeldingFraværsperiodeUtenforPermittering('');
+            setAdvarselFraværsperiodeUtenforPermittering('');
         }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
@@ -86,7 +86,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         (fraværsintervall, indeks) => {
             return (
                 <DatoIntervallInput
-                    feilmelding={feilmeldingFraværsperiodeUtenforPermittering}
+                    advarsel={advarselFraværsperiodeUtenforPermittering}
                     key={indeks}
                     datoIntervall={
                         props.allePermitteringerOgFraværesPerioder
@@ -119,7 +119,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 2. Legg inn eventuelle fravær under permitteringen
             </Undertittel>
             <Infotekst imgSrc={timeglassSvg} imgAlt="Timeglass">
-                <Element>Følgende fravær skal legges inn</Element>
+                <Normaltekst>Følgende fravær skal legges inn:</Normaltekst>
                 <ul className="fraværsperioder__infotekst-liste">
                     <Normaltekst tag="li">
                         100&nbsp;% sykmelding (gjelder også deltidsstillinger)

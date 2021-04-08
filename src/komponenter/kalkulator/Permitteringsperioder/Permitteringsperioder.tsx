@@ -38,11 +38,16 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
             <Infotekst imgSrc={kalenderSvg} imgAlt="Kalender">
-                <Normaltekst>
-                    Hvis den ansatte har fått lønnskompensasjon, skal dette være
-                    med i periodene. <br />
-                    Periodene skal <strong>ikke</strong> inneholde dagene du har
-                    lønnsplikt, eller permitteringer grunnet streik.
+                <Normaltekst tag="ul">
+                    <li>
+                        Hvis den ansatte har fått lønnskompensasjon, skal dette
+                        være med i periodene.
+                    </li>
+                    <li>
+                        Ikke fyll inn dagene du har lønnsplikt eller
+                        permitteringer grunnet streik.
+                    </li>
+                    <li>Ikke fyll inn permitteringer eldre enn 18 måneder.</li>
                 </Normaltekst>
             </Infotekst>
             {permitteringsobjekter}

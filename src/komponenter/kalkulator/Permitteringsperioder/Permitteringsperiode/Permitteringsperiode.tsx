@@ -12,7 +12,7 @@ import { Knapp } from 'nav-frontend-knapper';
 import {
     finnDato18MndTilbake,
     finnSisteTilDato,
-    formaterDato, getSenesteDato, getSenesteDatoAvTo,
+    getSenesteDatoAvTo,
     getTidligsteDato,
 } from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
@@ -28,8 +28,8 @@ interface Props {
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
     const [
-        feilmeldingPermitteringForeldet,
-        setFeilmeldingPermitteringForeldet,
+        advarselPermitteringForeldet,
+        setAdvarselPermitteringForeldet,
     ] = useState('');
 
     const leggTilNyPermitteringsperiode = () => {
@@ -61,13 +61,11 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         ])?.isBefore(finnDato18MndTilbake(grenseDato));
 
         if (datoErForGammel) {
-            setFeilmeldingPermitteringForeldet(
-                'Fyll inn perioder etter ' +
-                    formaterDato(finnDato18MndTilbake(grenseDato)) +
-                    '.'
+            setAdvarselPermitteringForeldet(
+                'Permitteringer eldre enn 18 månder telles ikke med i beregningen'
             );
         } else {
-            setFeilmeldingPermitteringForeldet('');
+            setAdvarselPermitteringForeldet('');
         }
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
@@ -105,7 +103,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
-                feilmelding={feilmeldingPermitteringForeldet}
+                advarsel={advarselPermitteringForeldet}
             />
             {props.indeks ===
                 props.allePermitteringerOgFraværesPerioder.permitteringer
