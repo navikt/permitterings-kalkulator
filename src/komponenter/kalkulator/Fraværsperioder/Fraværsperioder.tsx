@@ -119,7 +119,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 2. Legg inn eventuelle fravær under permitteringen
             </Undertittel>
             <Infotekst imgSrc={timeglassSvg} imgAlt="Timeglass">
-                <Element>Følgende fravær skal legges inn</Element>
+                <Normaltekst>Følgende fravær skal legges inn:</Normaltekst>
                 <ul className="fraværsperioder__infotekst-liste">
                     <Normaltekst tag="li">
                         100&nbsp;% sykmelding (gjelder også deltidsstillinger)
