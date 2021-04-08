@@ -22,21 +22,12 @@ const UtregningAvEnkeltPeriode: FunctionComponent<Props> = ({
     } = permitteringsoversikt;
 
     return (
-        <div className="utregning-av-enkelt-periode">
-            <Element>
-                {permitteringsnr}. permitteringsperiode <br />(
-                {formaterDatoIntervall(permitteringsperiode)})
-            </Element>
-            <Normaltekst>
-                Antall dager permittert: {dagerPermittert}
-            </Normaltekst>
-            {dagerAnnetFravær > 0 && (
-                <Normaltekst>
-                    Antall dager fravær: {dagerAnnetFravær}
-                </Normaltekst>
-            )}
-            <Normaltekst>Totalt: {dagerBrukt}</Normaltekst>
-        </div>
+        <tr>
+            <td>{formaterDatoIntervall(permitteringsperiode)}</td>
+            <td>{dagerPermittert}</td>
+            <td>{dagerAnnetFravær}</td>
+            <td>{dagerBrukt}</td>
+        </tr>
     );
 };
 

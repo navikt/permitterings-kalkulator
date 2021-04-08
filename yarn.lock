@@ -8105,10 +8105,10 @@ nav-frontend-chevron@^1.0.28:
   resolved "https://registry.yarnpkg.com/nav-frontend-chevron/-/nav-frontend-chevron-1.0.28.tgz#1ec53e142f1b381ee9bd7874b505abd5bc3a6b2a"
   integrity sha512-gwM2eUTsUlEnxHoWJz4MU2nCGpmLWXBogiPDRd+gvdoDfD4qWMthm0ofaRz5yI3y7v5xKd+gzNq2Q2fDDO0Jvw==
 
-nav-frontend-core@^5.0.11:
-  version "5.0.11"
-  resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-5.0.11.tgz#d2611a79f5f5372166a467a5f6e5eaccb8725086"
-  integrity sha512-5b1FMK1mPfnpsXgHMDLY8Tj4SiPXVFg9hXj//qTaO3W2lwMY4Df3dKh4R595OiuVu7IRutAIuocPtXv3ysmsag==
+nav-frontend-core@^5.1.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/nav-frontend-core/-/nav-frontend-core-5.1.0.tgz#6d30be489516b30a9318e4cdf6ae35614f410b66"
+  integrity sha512-3u3rguYauM+zGLF5d/Vi8+f975zRTDg4USF4ubfuOUnwTQAHB/5GT2yGRCKT+YGSsPd4i7BXI7K6Q1SbVNw1aA==
 
 nav-frontend-ekspanderbartpanel-style@^1.0.41:
   version "1.0.42"
@@ -8147,10 +8147,10 @@ nav-frontend-js-utils@^1.0.17:
   dependencies:
     lodash.throttle "^4.1.1"
 
-nav-frontend-knapper-style@^1.0.16:
-  version "1.0.17"
-  resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-1.0.17.tgz#238088ebbe09eac8072ab74df20ac09b11141b88"
-  integrity sha512-jkucj5zh3+ToPqRigHHMwmA6iwKixPvwKbcnmsXc9idh7nsnf9wRDeQLizmqbNy7G3KGO4YgjXIYEZqeigqBGQ==
+nav-frontend-knapper-style@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/nav-frontend-knapper-style/-/nav-frontend-knapper-style-1.1.0.tgz#2718ef6e07cdac469a0d79307ec50f59d49f45b6"
+  integrity sha512-FmuPQctcSZHu0AwGZiNuoCVc8pfE+Ih08Lrs2biA1pRaIXYuFgnwnqe32nP9I101lRJQ5hYdOCf9M1BKx0FyYw==
 
 nav-frontend-knapper@^2.0.1:
   version "2.0.32"
@@ -8222,6 +8222,11 @@ nav-frontend-spinner@^2.0.2:
   resolved "https://registry.yarnpkg.com/nav-frontend-spinner/-/nav-frontend-spinner-2.0.16.tgz#71dad64ec5730f336309db63d79765c576105eb7"
   integrity sha512-En0IMZI5oFzf7rTtmKYOYWKGUn+GbiwdzEuXwdTYa1UGAVVl9FZcxTStt08upgdsmoH8bwkulB7B3zWXoMDsOA==
 
+nav-frontend-tabell-style@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/nav-frontend-tabell-style/-/nav-frontend-tabell-style-1.1.0.tgz#5adb4ef59d160ae0e0e737c81993dc59c2bdeeed"
+  integrity sha512-NuVuv9RAAGJSPVMgfNSxiaqTXXm5mbCSrBEjhiDdIYuSoukrbt3OZJqfQ40MggYVbaovO4UOb1bBGGWoBUgV7g==
+
 nav-frontend-tabs-style@^1.0.2:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/nav-frontend-tabs-style/-/nav-frontend-tabs-style-1.0.3.tgz#1dc3b6eaad22a614f45e8872be7f1be60c08b0fc"
@@ -8239,12 +8244,12 @@ nav-frontend-tekstomrade@^2.0.43:
   dependencies:
     "@navikt/textparser" "^2.0.0"
 
-nav-frontend-typografi-style@^1.0.35:
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-1.0.35.tgz#6c39faa4bf3623dc77aaefe5615e53dfd3d0b28a"
-  integrity sha512-JfVPy9TDoHegW3tVEuvdbjcW1bgqCtwFzk/rVpvS27U4WMNr9dTIYeS5HACN5Rm0SfS+5rmhBJzxJudDCTjJTg==
+nav-frontend-typografi-style@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/nav-frontend-typografi-style/-/nav-frontend-typografi-style-1.1.0.tgz#2b796909da60ecdb762c052acb79ce74a580acb3"
+  integrity sha512-BzrQXdZrxYWgTGOuwDM+rG/Z0UzU4pMViPOu9RMuptDyrjKw1CAMSZ5mmzOmbFVw/MR5yNJTfkRM3yNWY10Xxw==
   dependencies:
-    nav-frontend-core "^5.0.11"
+    nav-frontend-core "^5.1.0"
 
 nav-frontend-typografi@^3.0.3:
   version "3.0.4"

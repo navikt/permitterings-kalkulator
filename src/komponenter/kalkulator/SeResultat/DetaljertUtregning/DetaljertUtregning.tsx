@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react';
-import UtregningAvEnkeltPeriode from './UtregningAvEnkeltPeriode/UtregningAvEnkeltPeriode';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
-import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
+import 'nav-frontend-tabell-style';
 import {
     formaterDatoIntervall,
     getOverlappendePeriode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 import './DetaljertUtregning.less';
+import { Tabell } from './Tabell';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -30,21 +30,11 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
                 Detaljert utregning for 18-månedsperioden{' '}
                 {formaterDatoIntervall(aktuell18mndsperiode)}
             </Normaltekst>
-            <div className="detaljert-utregning__enkeltperioder">
-                {permitteringsperioderInnenfor18mndsperiode.map(
-                    (periode, index) => (
-                        <UtregningAvEnkeltPeriode
-                            key={index}
-                            permitteringsperiode={periode}
-                            permitteringsoversikt={getPermitteringsoversikt(
-                                tidslinje,
-                                periode
-                            )}
-                            permitteringsnr={index + 1}
-                        />
-                    )
-                )}
-            </div>
+            <Tabell
+                tidslinje={tidslinje}
+                aktuell18mndsperiode={aktuell18mndsperiode}
+                permitteringsperioder={permitteringsperioder}
+            />
         </div>
     );
 };
