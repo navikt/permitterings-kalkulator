@@ -51,6 +51,33 @@ export const finnPermitteringssituasjon = (
     }
 };
 
+enum Ukedag {
+    Mandag = 1,
+    Tirsdag = 2,
+    Onsdag = 3,
+    Torsdag = 4,
+    Fredag = 5,
+    Lørdag = 6,
+    Søndag = 7,
+}
+
+const erHelg = (dato: Dayjs): boolean => {
+    const isoWeekday = dato.isoWeekday();
+    return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
+};
+
+const get5NesteHverdager = (dato: Dayjs): Dayjs[] => {
+    const hverdager: Dayjs[] = [];
+    let dag = dato;
+    while (hverdager.length < 5) {
+        dag = dag.add(1, 'day');
+        if (!erHelg(dag)) {
+            hverdager.push(dag);
+        }
+    }
+    return hverdager;
+};
+
 export const finnDatoForAGP2 = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
