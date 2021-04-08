@@ -11,19 +11,13 @@ import './DetaljertUtregning.less';
 
 interface Props {
     tidslinje: DatoMedKategori[];
-    permitteringsperioder: DatoIntervall[];
-    aktuell18mndsperiode: DatoIntervall;
+    permitteringsperioderInnenfor18mndsperiode: DatoIntervall[];
 }
 
 export const Tabell: FunctionComponent<Props> = ({
     tidslinje,
-    permitteringsperioder,
-    aktuell18mndsperiode,
+    permitteringsperioderInnenfor18mndsperiode,
 }) => {
-    const permitteringsperioderInnenfor18mndsperiode: DatoIntervall[] = permitteringsperioder
-        .map((periode) => getOverlappendePeriode(periode, aktuell18mndsperiode))
-        .filter((periode) => periode !== undefined) as DatoIntervall[];
-
     return (
         <table className="tabell">
             <thead>

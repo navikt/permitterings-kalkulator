@@ -1,0 +1,29 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.attributt {
+    display: flex;
+    margin-bottom: 0.5rem;
+    color: @navGra80;
+
+    &__navn {
+        width: 40%;
+        min-width: 9rem;
+        color: @navGra60;
+    }
+
+    &__verdi {
+        width: 60%;
+        overflow-wrap: break-word;
+    }
+}
+
+@media (min-width: @screen-sm) {
+    .attributt {
+        margin-right: 2rem;
+
+        &__navn {
+            width: 30%;
+            min-width: 10rem;
+        }
+    }
+}

@@ -24,9 +24,9 @@ const UtregningAvEnkeltPeriode: FunctionComponent<Props> = ({
     return (
         <tr>
             <td>{formaterDatoIntervall(permitteringsperiode)}</td>
-            <td>{dagerPermittert}</td>
-            <td>{dagerAnnetFravær}</td>
-            <td>{dagerBrukt}</td>
+            <td>{dagerPermittert + ' dager'}</td>
+            <td>{dagerAnnetFravær + ' dager'}</td>
+            <td>{dagerBrukt + ' dager'}</td>
         </tr>
     );
 };

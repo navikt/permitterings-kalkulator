@@ -2,12 +2,14 @@ import React, { FunctionComponent } from 'react';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
 import 'nav-frontend-tabell-style';
 import {
+    antallDagerGått,
     formaterDatoIntervall,
     getOverlappendePeriode,
 } from '../../utils/dato-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import './DetaljertUtregning.less';
 import { Tabell } from './Tabell';
+import MobilversjonKort from './MobilversjonKort/MobilversjonKort';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -24,17 +26,40 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
         .map((periode) => getOverlappendePeriode(periode, aktuell18mndsperiode))
         .filter((periode) => periode !== undefined) as DatoIntervall[];
 
+    let sumBruktePermitteringsdager = 0;
+    permitteringsperioder.forEach(
+        (periode) =>
+            (sumBruktePermitteringsdager += antallDagerGått(
+                periode.datoFra,
+                periode.datoTil
+            ))
+    );
+
     return (
         <div className="detaljert-utregning">
             <Normaltekst>
                 Detaljert utregning for 18-månedsperioden{' '}
                 {formaterDatoIntervall(aktuell18mndsperiode)}
             </Normaltekst>
-            <Tabell
-                tidslinje={tidslinje}
-                aktuell18mndsperiode={aktuell18mndsperiode}
-                permitteringsperioder={permitteringsperioder}
-            />
+            <div className={'detaljert-utregning__tabellcontainer'}>
+                <Tabell
+                    permitteringsperioderInnenfor18mndsperiode={
+                        permitteringsperioderInnenfor18mndsperiode
+                    }
+                    tidslinje={tidslinje}
+                />
+            </div>
+            <div className={'detaljert-utregning__mobilversjon-kort-container'}>
+                <MobilversjonKort
+                    permitteringsperioderInnenfor18mndsperiode={
+                        permitteringsperioderInnenfor18mndsperiode
+                    }
+                    tidslinje={tidslinje}
+                />
+            </div>
+            <Element className={'detaljert-utregning__sum'}>
+                Totalt {sumBruktePermitteringsdager}
+            </Element>
         </div>
     );
 };

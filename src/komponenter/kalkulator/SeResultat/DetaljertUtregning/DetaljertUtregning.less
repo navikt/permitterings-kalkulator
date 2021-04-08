@@ -1,8 +1,42 @@
+@import 'node_modules/nav-frontend-core/less/_variabler';
+
 .detaljert-utregning {
+    display: flex;
+    flex-direction: column;
     margin-top: 2rem;
+
     &__enkeltperioder {
         display: flex;
         flex-wrap: wrap;
         margin: 0 -0.5rem;
+    }
+
+    &__tabellcontainer {
+        display: none;
+    }
+
+    &__mobilversjon-kort-container {
+        display: initial;
+    }
+
+    &__sum {
+        display: flex;
+        align-self: flex-start;
+    }
+}
+
+@media (min-width: @screen-sm) {
+    .detaljert-utregning {
+        &__tabellcontainer {
+            display: initial;
+        }
+
+        &__mobilversjon-kort-container {
+            display: none;
+        }
+        &__sum {
+            display: flex;
+            align-self: flex-end;
+        }
     }
 }
