@@ -7,7 +7,7 @@ import {
 import { Dayjs } from 'dayjs';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
+    finnSisteDatoFørAGP2,
     finnPermitteringssituasjon,
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon,
@@ -70,7 +70,7 @@ export const lagResultatTekst = (
                 ),
             };
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const datoAGP2: Dayjs = finnDatoForAGP2(
+            const datoAGP2: Dayjs = finnSisteDatoFørAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
                 210

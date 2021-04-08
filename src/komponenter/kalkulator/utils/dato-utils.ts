@@ -199,3 +199,40 @@ export const finnesIIntervall = (
         );
     }
 };
+
+enum Ukedag {
+    Mandag = 1,
+    Tirsdag = 2,
+    Onsdag = 3,
+    Torsdag = 4,
+    Fredag = 5,
+    Lørdag = 6,
+    Søndag = 7,
+}
+
+const erHelg = (dato: Dayjs): boolean => {
+    const isoWeekday = dato.isoWeekday();
+    return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
+};
+
+const getNesteHverdag = (dato: Dayjs): Dayjs => {
+    let dag = dato;
+    do {
+        dag = dag.add(1, 'day');
+    } while (erHelg(dag));
+    return dag;
+};
+
+const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
+    let dag = dato;
+    for (let i = 0; i < antall; i++) {
+        dag = getNesteHverdag(dag);
+    }
+    return dag;
+};
+
+export const get5NesteHverdager = (dato: Dayjs): Dayjs[] => {
+    return [1, 2, 3, 4, 5].map((antallDager) =>
+        leggTilHverdager(dato, antallDager)
+    );
+};
