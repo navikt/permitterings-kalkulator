@@ -54,7 +54,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         return editing ? tempDate : formaterDato(selectedDate);
     };
 
-    const onDatoClick = (date: Dayjs) => {
+    const velgDato = (date: Dayjs) => {
         const nyFeilmelding = datoValidering(
             date,
             props.skalVareEtter,
@@ -71,6 +71,10 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             setFeilMelding('');
         }
         setErApen(false);
+    };
+
+    const onDatoClick = (date: Dayjs) => {
+        velgDato(date);
         knappRef?.current?.focus();
     };
 
@@ -78,7 +82,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         setEditing(false);
         const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
         if (newDato.isValid()) {
-            onDatoClick(newDato);
+            velgDato(newDato);
         } else if (tekstIInputfeltet() !== 'dd.mm.yyyy') {
             setFeilMelding('dd.mm.yyyy');
             setErApen(false);
