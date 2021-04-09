@@ -10,6 +10,7 @@ import {
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
+    datoIntervallErGyldig,
     finnDato18MndTilbake,
     finnSisteTilDato,
     getSenesteDatoAvTo,
@@ -54,15 +55,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         props.setAllePermitteringerOgFraværesPerioder(
             kopiAvPermitterinsperioder
         );
-    };
-
-    const datoIntervallErGyldig = (datoIntervall: Partial<DatoIntervall>) => {
-        if (datoIntervall.erLøpende) {
-            return true;
-        }
-        if (datoIntervall.datoTil && datoIntervall.datoFra) {
-            return datoIntervall.datoFra.isSameOrBefore(datoIntervall.datoTil);
-        }
     };
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {

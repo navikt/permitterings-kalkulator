@@ -104,6 +104,17 @@ export const filtrerBortUdefinerteDatoIntervaller = (
         .filter((intervall) => intervall !== undefined) as DatoIntervall[];
 };
 
+export const datoIntervallErGyldig = (
+    datoIntervall: Partial<DatoIntervall>
+) => {
+    if (datoIntervall.erLøpende) {
+        return true;
+    }
+    if (datoIntervall.datoTil && datoIntervall.datoFra) {
+        return datoIntervall.datoFra.isSameOrBefore(datoIntervall.datoTil);
+    }
+};
+
 export const fraværInngårIPermitteringsperioder = (
     perioder: Partial<DatoIntervall>[],
     fraværsintervall: Partial<DatoIntervall>

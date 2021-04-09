@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
-import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
+import { AllePermitteringerOgFraværesPerioder } from '../typer';
 import { Knapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
 import { Infotekst } from '../Infotekst/Infotekst';
@@ -10,8 +9,8 @@ import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
     finnTidligsteFraDato,
-    fraværInngårIPermitteringsperioder,
 } from '../utils/dato-utils';
+import Fraværsperiode from './Fraværsperiode';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
@@ -23,11 +22,6 @@ interface Props {
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
     const antallFraværsperioder =
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
-
-    const [
-        advarselFraværsperiodeUtenforPermittering,
-        setAdvarselFraværsperiodeUtenforPermittering,
-    ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
@@ -55,63 +49,19 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (
-        indeks: number,
-        datoIntervall: Partial<DatoIntervall>
-    ) => {
-        if (
-            datoIntervall.datoFra &&
-            !fraværInngårIPermitteringsperioder(
-                props.allePermitteringerOgFraværesPerioder.permitteringer,
-                datoIntervall
-            )
-        ) {
-            setAdvarselFraværsperiodeUtenforPermittering(
-                'Fravær som ikke inngår i permitteringsperioder telles ikke med i beregningen'
-            );
-        } else {
-            setAdvarselFraværsperiodeUtenforPermittering('');
-        }
-        const kopiAvFraværsperioder = [
-            ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
-        ];
-        kopiAvFraværsperioder[indeks] = datoIntervall;
-        props.setAllePermitteringerOgFraværesPerioder({
-            ...props.allePermitteringerOgFraværesPerioder,
-            andreFraværsperioder: kopiAvFraværsperioder,
-        });
-    };
-
     const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
         (fraværsintervall, indeks) => {
             return (
-                <DatoIntervallInput
-                    advarsel={advarselFraværsperiodeUtenforPermittering}
-                    key={indeks}
-                    datoIntervall={
-                        props.allePermitteringerOgFraværesPerioder
-                            .andreFraværsperioder[indeks]
-                    }
-                    setDatoIntervall={(datoIntervall) =>
-                        oppdaterDatoIntervall(indeks, datoIntervall)
-                    }
-                    slettPeriode={() => slettFraværsperiode(indeks)}
+                <Fraværsperiode indeks={indeks}
+                   key={indeks}
+                   allePermitteringerOgFraværesPerioder={props.allePermitteringerOgFraværesPerioder}
+                   setAllePermitteringerOgFraværesPerioder={props.setAllePermitteringerOgFraværesPerioder}
                 />
             );
         }
     );
 
-    const slettFraværsperiode = (indeks: number) => {
-        const kopiAvAllPermitteringsInfo = {
-            ...props.allePermitteringerOgFraværesPerioder,
-        };
-        if (kopiAvAllPermitteringsInfo.andreFraværsperioder.length > 0) {
-            kopiAvAllPermitteringsInfo.andreFraværsperioder.splice(indeks, 1);
-        }
-        props.setAllePermitteringerOgFraværesPerioder(
-            kopiAvAllPermitteringsInfo
-        );
-    };
+
 
     return (
         <div className="fraværsperioder">

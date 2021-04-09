@@ -110,7 +110,10 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         if (props.tjenesteBestemtFeilmelding?.length) {
             setFeilMelding(props.tjenesteBestemtFeilmelding);
         }
-    }, [props.tjenesteBestemtFeilmelding]);
+        if (props.disabled) {
+            setFeilMelding('');
+        }
+    }, [props.tjenesteBestemtFeilmelding, props.disabled]);
 
     useEffect(() => {
         if (erApen) {
