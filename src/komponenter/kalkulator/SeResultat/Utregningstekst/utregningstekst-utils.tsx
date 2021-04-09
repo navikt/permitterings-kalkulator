@@ -16,7 +16,7 @@ import {
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
-    get5HverdagerFraDato, get5NesteHverdager,
+    get5NesteHverdager,
     getNesteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
@@ -96,11 +96,9 @@ export const lagResultatTekst = (
                             skal betale lønn for følgende fem dager:
                         </Normaltekst>
                         <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
-                            {get5NesteHverdager(datoAGP2).map(
-                                (dato, index) => (
-                                    <li key={index}>{formaterDato(dato)}</li>
-                                )
-                            )}
+                            {get5NesteHverdager(datoAGP2).map((dato, index) => (
+                                <li key={index}>{formaterDato(dato)}</li>
+                            ))}
                         </Normaltekst>
                     </>
                 ),

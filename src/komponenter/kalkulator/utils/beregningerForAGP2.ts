@@ -9,7 +9,7 @@ import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
-    finnesIIntervall, getFørsteHverdag, getNesteHverdag,
+    finnesIIntervall,
     til18mndsperiode,
 } from './dato-utils';
 import {
