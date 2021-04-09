@@ -235,8 +235,8 @@ const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
     return dag;
 };
 
-export const get5NesteHverdager = (dato: Dayjs): Dayjs[] => {
-    return [1, 2, 3, 4, 5].map((antallDager) =>
+export const get5HverdagerFraDato = (dato: Dayjs): Dayjs[] => {
+    return [0, 1, 2, 3, 4].map((antallDager) =>
         leggTilHverdager(dato, antallDager)
     );
 };

@@ -11,7 +11,7 @@ import {
     getOverlappendePeriode,
     getAntallOverlappendeDager,
     getSenesteDato,
-    fraværInngårIPermitteringsperioder, get5NesteHverdager,
+    fraværInngårIPermitteringsperioder, get5HverdagerFraDato,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -171,7 +171,7 @@ describe('Tester for dato-utils.ts', () => {
     });
 
     test('get5NesteHverdager skal returnere de 5 neste hverdagene', () => {
-        expect(get5NesteHverdager(dayjs('2021-04-8'))).toEqual([
+        expect(get5HverdagerFraDato(dayjs('2021-04-8'))).toEqual([
             dayjs('2021-04-9'),
             dayjs('2021-04-12'),
             dayjs('2021-04-13'),
