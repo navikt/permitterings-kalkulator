@@ -1,8 +1,7 @@
 import { DatoIntervall, Permitteringsoversikt } from '../../../typer';
 import React, { FunctionComponent } from 'react';
 import { formaterDatoIntervall } from '../../../utils/dato-utils';
-import { Normaltekst, Element } from 'nav-frontend-typografi';
-import './UtregningAvEnkeltPeriode.less';
+import './UtregningAvEnkeltPeriodeITabell.less';
 
 interface Props {
     permitteringsperiode: DatoIntervall;
@@ -10,7 +9,7 @@ interface Props {
     permitteringsnr: number;
 }
 
-const UtregningAvEnkeltPeriode: FunctionComponent<Props> = ({
+const UtregningAvEnkeltPeriodeITabell: FunctionComponent<Props> = ({
     permitteringsperiode,
     permitteringsoversikt,
     permitteringsnr,
@@ -31,4 +30,4 @@ const UtregningAvEnkeltPeriode: FunctionComponent<Props> = ({
     );
 };
 
-export default UtregningAvEnkeltPeriode;
+export default UtregningAvEnkeltPeriodeITabell;

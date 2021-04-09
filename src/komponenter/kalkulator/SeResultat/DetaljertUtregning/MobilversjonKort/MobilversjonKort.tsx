@@ -2,10 +2,7 @@ import React, { FunctionComponent } from 'react';
 
 import './MobilversjonKort.less';
 import { DatoIntervall, DatoMedKategori } from '../../../typer';
-import {
-    formaterDatoIntervall,
-    getOverlappendePeriode,
-} from '../../../utils/dato-utils';
+import { formaterDatoIntervall } from '../../../utils/dato-utils';
 import { getPermitteringsoversikt } from '../../../utils/beregningerForAGP2';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
 
@@ -30,7 +27,7 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                         periode
                     );
                     return (
-                        <ul className="mobilversjon-kort__liste">
+                        <div className="mobilversjon-kort__liste" role="list">
                             <AttributtVisning
                                 attributt="Permitteringsperiode"
                                 attributtVerdi={formaterDatoIntervall(periode)}
@@ -55,7 +52,7 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                                     permitteringsoversikt.dagerBrukt + ' dager'
                                 }
                             />
-                        </ul>
+                        </div>
                     );
                 }
             )}

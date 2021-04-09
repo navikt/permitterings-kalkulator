@@ -1,23 +1,25 @@
 import React, { FunctionComponent } from 'react';
-import UtregningAvEnkeltPeriode from './UtregningAvEnkeltPeriode/UtregningAvEnkeltPeriode';
+import UtregningAvEnkeltPeriodeITabell from './UtregningAvEnkeltPeriodeITabell/UtregningAvEnkeltPeriodeITabell';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
 import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
-import {
-    formaterDatoIntervall,
-    getOverlappendePeriode,
-} from '../../utils/dato-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 import './DetaljertUtregning.less';
 
 interface Props {
     tidslinje: DatoMedKategori[];
     permitteringsperioderInnenfor18mndsperiode: DatoIntervall[];
+    sumBruktePermitteringsdagerI18mnd: number;
 }
 
 export const Tabell: FunctionComponent<Props> = ({
     tidslinje,
     permitteringsperioderInnenfor18mndsperiode,
+    sumBruktePermitteringsdagerI18mnd,
 }) => {
+    console.log(
+        permitteringsperioderInnenfor18mndsperiode.length,
+        'antall permitteringer'
+    );
     return (
         <table className="tabell">
             <thead>
@@ -31,7 +33,7 @@ export const Tabell: FunctionComponent<Props> = ({
             <tbody>
                 {permitteringsperioderInnenfor18mndsperiode.map(
                     (periode, index) => (
-                        <UtregningAvEnkeltPeriode
+                        <UtregningAvEnkeltPeriodeITabell
                             key={index}
                             permitteringsperiode={periode}
                             permitteringsoversikt={getPermitteringsoversikt(
@@ -42,6 +44,16 @@ export const Tabell: FunctionComponent<Props> = ({
                         />
                     )
                 )}
+                <tr>
+                    <td />
+                    <td />
+                    <td />
+                    <td>
+                        <Element>
+                            Totalt {sumBruktePermitteringsdagerI18mnd} dager
+                        </Element>
+                    </td>
+                </tr>
             </tbody>
         </table>
     );
