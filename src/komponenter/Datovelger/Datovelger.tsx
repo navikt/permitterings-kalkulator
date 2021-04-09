@@ -71,6 +71,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             setFeilMelding('');
         }
         setErApen(false);
+        knappRef?.current?.focus();
     };
 
     const inputOnBlur = (event: any) => {
@@ -115,8 +116,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         if (erApen) {
             setFeilMelding('');
-        } else if (knappRef) {
-            knappRef.current?.focus();
         }
     }, [erApen]);
 
