@@ -51,7 +51,7 @@ const Fraværsperiode: FunctionComponent<Props> = ({ indeks, allePermitteringerO
         }
     };
 
-    const slettFraværsperiode = (indeks: number) => {
+    const slettFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
             ...allePermitteringerOgFraværesPerioder,
         };
@@ -63,7 +63,6 @@ const Fraværsperiode: FunctionComponent<Props> = ({ indeks, allePermitteringerO
         );
     };
 
-
     return (
         <DatoIntervallInput
             advarsel={advarselFraværsperiodeUtenforPermittering}
@@ -74,7 +73,7 @@ const Fraværsperiode: FunctionComponent<Props> = ({ indeks, allePermitteringerO
             setDatoIntervall={(datoIntervall) =>
                 oppdaterDatoIntervall(datoIntervall)
             }
-            slettPeriode={() => slettFraværsperiode(indeks)}
+            slettPeriode={() => slettFraværsperiode()}
         />
         )
 };
