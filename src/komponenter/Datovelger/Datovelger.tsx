@@ -55,6 +55,11 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     };
 
     const onDatoClick = (date: Dayjs) => {
+        props.onChange({
+            currentTarget: {
+                value: date,
+            },
+        });
         const nyFeilmelding = datoValidering(
             date,
             props.skalVareEtter,
@@ -63,11 +68,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         if (nyFeilmelding !== '') {
             setFeilMelding(nyFeilmelding);
         } else {
-            props.onChange({
-                currentTarget: {
-                    value: date,
-                },
-            });
             setFeilMelding('');
         }
         setErApen(false);
