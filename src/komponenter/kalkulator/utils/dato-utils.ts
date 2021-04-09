@@ -215,11 +215,15 @@ const erHelg = (dato: Dayjs): boolean => {
     return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
 };
 
-const getNesteHverdag = (dato: Dayjs): Dayjs => {
+export const getNesteHverdag = (dato: Dayjs): Dayjs => {
+    return getFørsteHverdag(dato.add(1, 'day'));
+};
+
+export const getFørsteHverdag = (dato: Dayjs): Dayjs => {
     let dag = dato;
-    do {
+    while (erHelg(dag)) {
         dag = dag.add(1, 'day');
-    } while (erHelg(dag));
+    }
     return dag;
 };
 

@@ -7,7 +7,7 @@ import {
 import { Dayjs } from 'dayjs';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnSisteDatoFørAGP2,
+    finnDatoForAGP2,
     finnPermitteringssituasjon,
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon,
@@ -16,12 +16,13 @@ import {
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
+    get5NesteHverdager, getNesteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 
 interface ResultatTekst {
-    konklusjon: string;
+    konklusjon: ReactElement | string;
     beskrivelse: ReactElement | null;
 }
 
@@ -70,7 +71,7 @@ export const lagResultatTekst = (
                 ),
             };
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const datoAGP2: Dayjs = finnSisteDatoFørAGP2(
+            const datoAGP2: Dayjs = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
                 210
@@ -85,11 +86,21 @@ export const lagResultatTekst = (
                 ? ', dersom permitteringen holdes løpende'
                 : '';
             return {
-                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                    datoAGP2
-                )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                    datoAGP2
-                )}.`,
+                konklusjon: (
+                    <>
+                        <Normaltekst>
+                            Arbeidsgiverperiode 2 vil intreffe{' '}
+                            {formaterDato(getNesteHverdag(datoAGP2))}
+                            {tilleggstekstLøpendePermittering}. Det betyr at du
+                            skal betale lønn følgende fem dager:
+                        </Normaltekst>
+                        <Normaltekst tag="ul">
+                            {get5NesteHverdager(datoAGP2).map((dato, index) => (
+                                <li key={index}>{formaterDato(dato)}</li>
+                            ))}
+                        </Normaltekst>
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>

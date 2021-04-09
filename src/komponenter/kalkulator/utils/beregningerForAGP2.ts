@@ -9,7 +9,7 @@ import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
-    finnesIIntervall,
+    finnesIIntervall, getFørsteHverdag, getNesteHverdag,
     til18mndsperiode,
 } from './dato-utils';
 import {
@@ -30,7 +30,7 @@ export const finnPermitteringssituasjon = (
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
 ): Permitteringssituasjon => {
-    const datoForAGP2 = finnSisteDatoFørAGP2(
+    const datoForAGP2 = finnDatoForAGP2(
         tidslinje,
         innføringsdatoAGP2,
         antallDagerFørAGP2Inntreffer
@@ -51,7 +51,7 @@ export const finnPermitteringssituasjon = (
     }
 };
 
-export const finnSisteDatoFørAGP2 = (
+export const finnDatoForAGP2 = (
     tidslinje: DatoMedKategori[],
     innføringsdatoAGP2: Dayjs,
     antallDagerFørAGP2Inntreffer: number
@@ -63,7 +63,7 @@ export const finnSisteDatoFørAGP2 = (
 
     if (oversiktVedInnføringsdato.dagerBrukt > antallDagerFørAGP2Inntreffer) {
         if (erPermittertVedDato(tidslinje, innføringsdatoAGP2)) {
-            return innføringsdatoAGP2;
+            return getFørsteHverdag(innføringsdatoAGP2);
         } else {
             return undefined;
         }
@@ -97,7 +97,7 @@ export const finnSisteDatoFørAGP2 = (
     if (antallDagerPermittert <= antallDagerFørAGP2Inntreffer) {
         return undefined;
     }
-    return potensiellDatoForAGP2;
+    return getFørsteHverdag(potensiellDatoForAGP2);
 };
 
 export const getPermitteringsoversiktFor18Måneder = (
@@ -257,7 +257,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
             return til18mndsperiode(innføringsdatoAGP2);
         case Permitteringssituasjon.AGP2_NÅDD_ETTER_INNFØRINGSDATO:
-            const datoForAGP2 = finnSisteDatoFørAGP2(
+            const datoForAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
                 antallDagerFørAGP2Inntreffer
