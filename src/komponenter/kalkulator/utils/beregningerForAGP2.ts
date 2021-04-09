@@ -63,7 +63,7 @@ export const finnDatoForAGP2 = (
 
     if (oversiktVedInnføringsdato.dagerBrukt > antallDagerFørAGP2Inntreffer) {
         if (erPermittertVedDato(tidslinje, innføringsdatoAGP2)) {
-            return getFørsteHverdag(innføringsdatoAGP2);
+            return innføringsdatoAGP2;
         } else {
             return undefined;
         }
@@ -97,7 +97,7 @@ export const finnDatoForAGP2 = (
     if (antallDagerPermittert <= antallDagerFørAGP2Inntreffer) {
         return undefined;
     }
-    return getFørsteHverdag(potensiellDatoForAGP2);
+    return potensiellDatoForAGP2;
 };
 
 export const getPermitteringsoversiktFor18Måneder = (

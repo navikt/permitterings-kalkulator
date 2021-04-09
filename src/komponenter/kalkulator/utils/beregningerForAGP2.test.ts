@@ -233,26 +233,6 @@ describe('Tester for beregningerForAGP2', () => {
             expect(datoAGP2).toEqual(innføringsdatoAGP2.add(25, 'weeks'));
         });
 
-        test('finnDatoForAGP2 skal returnere en hverdag, ikke helg', () => {
-            const innføringsdatoAGP2 = dayjs('2021-06-01');
-            const enLørdag = dayjs('2021-07-31');
-            const tidslinje = getTidslinje({
-                permitteringer: [
-                    {
-                        datoFra: enLørdag.subtract(210, 'days'),
-                        datoTil: enLørdag
-                    },
-                ],
-                andreFraværsperioder: [],
-            });
-            const datoAGP2 = finnDatoForAGP2(
-                tidslinje,
-                innføringsdatoAGP2,
-                210
-            );
-            expect(datoAGP2).toEqual(enLørdag.add(2, 'days'));
-        });
-
         test('finnDatoForAGP2 skal ikke gi en dato hvis permitteringen ikke _overskrider_ 210', () => {
             const innføringsdatoAGP2 = dayjs('2021-06-01');
             const permitteringsslutt = innføringsdatoAGP2.subtract(40, 'days');
