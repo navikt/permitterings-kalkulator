@@ -215,16 +215,16 @@ const erHelg = (dato: Dayjs): boolean => {
     return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
 };
 
-export const getNesteHverdag = (dato: Dayjs): Dayjs => {
-    return getFørsteHverdag(dato.add(1, 'day'));
-};
-
-export const getFørsteHverdag = (dato: Dayjs): Dayjs => {
+const getFørsteHverdag = (dato: Dayjs): Dayjs => {
     let dag = dato;
     while (erHelg(dag)) {
         dag = dag.add(1, 'day');
     }
     return dag;
+};
+
+export const getNesteHverdag = (dato: Dayjs): Dayjs => {
+    return getFørsteHverdag(dato.add(1, 'day'));
 };
 
 const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
@@ -234,13 +234,6 @@ const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
     }
     return dag;
 };
-
-export const get5HverdagerFraDato = (dato: Dayjs): Dayjs[] => {
-    return [0, 1, 2, 3, 4].map((antallDager) =>
-        leggTilHverdager(dato, antallDager)
-    );
-};
-
 
 export const get5NesteHverdager = (dato: Dayjs): Dayjs[] => {
     return [1, 2, 3, 4, 5].map((antallDager) =>
