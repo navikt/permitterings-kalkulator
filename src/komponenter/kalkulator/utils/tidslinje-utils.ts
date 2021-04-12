@@ -11,7 +11,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervaller,
     getSenesteDato,
-    tilDatoIntervall,
+    tilGyldigDatoIntervall,
 } from './dato-utils';
 
 export const finnInitialgrenserForTidslinjedatoer = (
@@ -32,10 +32,10 @@ const finnFørsteDefinertePermittering = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
 ): DatoIntervall | undefined => {
     const førsteDefinertePermittering = allePermitteringerOgFraværesPerioder.permitteringer.find(
-        (periode) => tilDatoIntervall(periode)
+        (periode) => tilGyldigDatoIntervall(periode)
     );
     return førsteDefinertePermittering
-        ? tilDatoIntervall(førsteDefinertePermittering)
+        ? tilGyldigDatoIntervall(førsteDefinertePermittering)
         : undefined;
 };
 

@@ -1,8 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
 import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
-import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
 import { Infotekst } from '../Infotekst/Infotekst';
@@ -12,6 +11,7 @@ import {
     finnTidligsteFraDato,
     fraværInngårIPermitteringsperioder,
 } from '../utils/dato-utils';
+import Fraværsperiode from './Fraværsperiode';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
@@ -23,11 +23,6 @@ interface Props {
 const Fraværsperioder: FunctionComponent<Props> = (props) => {
     const antallFraværsperioder =
         props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.length;
-
-    const [
-        advarselFraværsperiodeUtenforPermittering,
-        setAdvarselFraværsperiodeUtenforPermittering,
-    ] = useState<string>('');
 
     const leggTilNyFraværsperiode = () => {
         const kopiAvAllPermitteringsInfo = {
@@ -55,23 +50,10 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         );
     };
 
-    const oppdaterDatoIntervall = (
-        indeks: number,
-        datoIntervall: Partial<DatoIntervall>
+    const setFraværsperiode = (
+        datoIntervall: Partial<DatoIntervall>,
+        indeks: number
     ) => {
-        if (
-            datoIntervall.datoFra &&
-            !fraværInngårIPermitteringsperioder(
-                props.allePermitteringerOgFraværesPerioder.permitteringer,
-                datoIntervall
-            )
-        ) {
-            setAdvarselFraværsperiodeUtenforPermittering(
-                'Fravær som ikke inngår i permitteringsperioder telles ikke med i beregningen'
-            );
-        } else {
-            setAdvarselFraværsperiodeUtenforPermittering('');
-        }
         const kopiAvFraværsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.andreFraværsperioder,
         ];
@@ -81,25 +63,6 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             andreFraværsperioder: kopiAvFraværsperioder,
         });
     };
-
-    const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
-        (fraværsintervall, indeks) => {
-            return (
-                <DatoIntervallInput
-                    advarsel={advarselFraværsperiodeUtenforPermittering}
-                    key={indeks}
-                    datoIntervall={
-                        props.allePermitteringerOgFraværesPerioder
-                            .andreFraværsperioder[indeks]
-                    }
-                    setDatoIntervall={(datoIntervall) =>
-                        oppdaterDatoIntervall(indeks, datoIntervall)
-                    }
-                    slettPeriode={() => slettFraværsperiode(indeks)}
-                />
-            );
-        }
-    );
 
     const slettFraværsperiode = (indeks: number) => {
         const kopiAvAllPermitteringsInfo = {
@@ -112,6 +75,24 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             kopiAvAllPermitteringsInfo
         );
     };
+
+    const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
+        (fraværsintervall, indeks) => {
+            return (
+                <Fraværsperiode
+                    fraværsperiode={fraværsintervall}
+                    setFraværsperiode={(intervall) =>
+                        setFraværsperiode(intervall, indeks)
+                    }
+                    slettFraværsperiode={() => slettFraværsperiode(indeks)}
+                    inngårIPermitteringsperiode={fraværInngårIPermitteringsperioder(
+                        props.allePermitteringerOgFraværesPerioder.permitteringer,
+                        fraværsintervall
+                    )}
+                />
+            );
+        }
+    );
 
     return (
         <div className="fraværsperioder">

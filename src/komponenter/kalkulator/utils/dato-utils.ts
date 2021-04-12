@@ -75,9 +75,12 @@ export const getAntallOverlappendeDager = (
     return lengdePåIntervall(overlappendePeriode);
 };
 
-export const tilDatoIntervall = (
+export const tilGyldigDatoIntervall = (
     potensieltUdefinertDatointervall: Partial<DatoIntervall>
 ): DatoIntervall | undefined => {
+    if (!datoIntervallErGyldig(potensieltUdefinertDatointervall)) {
+        return undefined;
+    }
     const { datoFra, datoTil, erLøpende } = potensieltUdefinertDatointervall;
     if (datoFra !== undefined && datoTil !== undefined) {
         return { datoFra, datoTil };
@@ -100,8 +103,19 @@ export const filtrerBortUdefinerteDatoIntervaller = (
     potensieltUdefinerteIntervaller: Partial<DatoIntervall>[]
 ): DatoIntervall[] => {
     return potensieltUdefinerteIntervaller
-        .map((intervall) => tilDatoIntervall(intervall))
+        .map((intervall) => tilGyldigDatoIntervall(intervall))
         .filter((intervall) => intervall !== undefined) as DatoIntervall[];
+};
+
+export const datoIntervallErGyldig = (
+    datoIntervall: Partial<DatoIntervall>
+) => {
+    if (datoIntervall.erLøpende) {
+        return true;
+    }
+    if (datoIntervall.datoTil && datoIntervall.datoFra) {
+        return datoIntervall.datoFra.isSameOrBefore(datoIntervall.datoTil);
+    }
 };
 
 export const fraværInngårIPermitteringsperioder = (
@@ -111,7 +125,7 @@ export const fraværInngårIPermitteringsperioder = (
     let finnesOverLapp = false;
     const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
 
-    const definertFraværsintervall = tilDatoIntervall(fraværsintervall);
+    const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
         return false;
     }
@@ -184,7 +198,7 @@ export const finnesIIntervall = (
     dato: Dayjs,
     periode: Partial<DatoIntervall>
 ): boolean => {
-    const definertPeriode = tilDatoIntervall(periode);
+    const definertPeriode = tilGyldigDatoIntervall(periode);
     if (!definertPeriode) {
         return false;
     }
