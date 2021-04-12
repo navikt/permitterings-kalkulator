@@ -10,7 +10,6 @@ import {
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
 import { Knapp } from 'nav-frontend-knapper';
 import {
-    datoIntervallErGyldig,
     finnDato18MndTilbake,
     finnSisteTilDato,
     getSenesteDatoAvTo,
