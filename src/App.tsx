@@ -8,6 +8,7 @@ import ContextProvider from './komponenter/ContextProvider';
 import Kalkulator from './komponenter/kalkulator/kalkulator';
 import { Brødsmulesti } from './komponenter/Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
+import './App.less';
 
 export const HOVEDSIDE_PATH = '/arbeidsgiver-permittering';
 export const KALKULATOR_PATH = '/arbeidsgiver-permittering/kalkulator';
