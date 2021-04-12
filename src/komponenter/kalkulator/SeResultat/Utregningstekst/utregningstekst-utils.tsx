@@ -16,12 +16,14 @@ import {
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
+    get5FørsteHverdager,
+    getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
 
 interface ResultatTekst {
-    konklusjon: string;
+    konklusjon: ReactElement | string;
     beskrivelse: ReactElement | null;
 }
 
@@ -85,11 +87,23 @@ export const lagResultatTekst = (
                 ? ', dersom permitteringen holdes løpende'
                 : '';
             return {
-                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                    datoAGP2
-                )}${tilleggstekstLøpendePermittering}. Det betyr at du skal betale lønn i fem dager fra ${formaterDato(
-                    datoAGP2
-                )}.`,
+                konklusjon: (
+                    <>
+                        <Normaltekst>
+                            Arbeidsgiverperiode 2 vil inntreffe{' '}
+                            {formaterDato(getFørsteHverdag(datoAGP2))}
+                            {tilleggstekstLøpendePermittering}. Det betyr at du
+                            skal betale lønn for følgende fem dager:
+                        </Normaltekst>
+                        <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
+                            {get5FørsteHverdager(datoAGP2).map(
+                                (dato, index) => (
+                                    <li key={index}>{formaterDato(dato)}</li>
+                                )
+                            )}
+                        </Normaltekst>
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
