@@ -213,3 +213,44 @@ export const finnesIIntervall = (
         );
     }
 };
+
+enum Ukedag {
+    Mandag = 1,
+    Tirsdag = 2,
+    Onsdag = 3,
+    Torsdag = 4,
+    Fredag = 5,
+    Lørdag = 6,
+    Søndag = 7,
+}
+
+const erHelg = (dato: Dayjs): boolean => {
+    const isoWeekday = dato.isoWeekday();
+    return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
+};
+
+export const getFørsteHverdag = (dato: Dayjs): Dayjs => {
+    let dag = dato;
+    while (erHelg(dag)) {
+        dag = dag.add(1, 'day');
+    }
+    return dag;
+};
+
+const getNesteHverdag = (dato: Dayjs): Dayjs => {
+    return getFørsteHverdag(dato.add(1, 'day'));
+};
+
+const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
+    let dag = getFørsteHverdag(dato);
+    for (let i = 0; i < antall; i++) {
+        dag = getNesteHverdag(dag);
+    }
+    return dag;
+};
+
+export const get5FørsteHverdager = (dato: Dayjs): Dayjs[] => {
+    return [0, 1, 2, 3, 4].map((antallDager) =>
+        leggTilHverdager(dato, antallDager)
+    );
+};
