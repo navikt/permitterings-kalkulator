@@ -8,7 +8,7 @@ import {
     finnSisteTilDato,
     finnTidligsteFraDato,
     fraværInngårIPermitteringsperioder,
-    get5NesteHverdager,
+    get5FørsteHverdager,
     getAntallOverlappendeDager,
     getOverlappendePeriode,
     getSenesteDato,
@@ -171,13 +171,13 @@ describe('Tester for dato-utils.ts', () => {
         ).toEqual(dayjs('2023-03-2'));
     });
 
-    test('get5NesteHverdager skal returnere de 5 neste hverdagene', () => {
-        expect(get5NesteHverdager(dayjs('2021-04-8'))).toEqual([
+    test('get5FørsteHverdager skal returnere de 5 neste hverdagene', () => {
+        expect(get5FørsteHverdager(dayjs('2021-04-8'))).toEqual([
+            dayjs('2021-04-8'),
             dayjs('2021-04-9'),
             dayjs('2021-04-12'),
             dayjs('2021-04-13'),
             dayjs('2021-04-14'),
-            dayjs('2021-04-15'),
         ]);
     });
 

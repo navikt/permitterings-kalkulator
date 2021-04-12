@@ -16,8 +16,8 @@ import {
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
-    get5NesteHverdager,
-    getNesteHverdag,
+    get5FørsteHverdager,
+    getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst } from 'nav-frontend-typografi';
@@ -91,14 +91,16 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst>
                             Arbeidsgiverperiode 2 vil inntreffe{' '}
-                            {formaterDato(getNesteHverdag(datoAGP2))}
+                            {formaterDato(getFørsteHverdag(datoAGP2))}
                             {tilleggstekstLøpendePermittering}. Det betyr at du
                             skal betale lønn for følgende fem dager:
                         </Normaltekst>
                         <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
-                            {get5NesteHverdager(datoAGP2).map((dato, index) => (
-                                <li key={index}>{formaterDato(dato)}</li>
-                            ))}
+                            {get5FørsteHverdager(datoAGP2).map(
+                                (dato, index) => (
+                                    <li key={index}>{formaterDato(dato)}</li>
+                                )
+                            )}
                         </Normaltekst>
                     </>
                 ),
