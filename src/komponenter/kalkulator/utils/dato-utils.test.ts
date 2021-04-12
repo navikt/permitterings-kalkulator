@@ -7,7 +7,7 @@ import {
     antallDagerGått,
     finnSisteTilDato,
     finnTidligsteFraDato,
-    fraværInngårIPermitteringsperioder,
+    datoIntervallOverlapperMedPerioder,
     get5FørsteHverdager,
     getAntallOverlappendeDager,
     getOverlappendePeriode,
@@ -251,7 +251,7 @@ describe('Tester for dato-utils.ts', () => {
     describe('Tester for fraværInngårIPermitteringsperioder', () => {
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),
@@ -272,7 +272,7 @@ describe('Tester for dato-utils.ts', () => {
 
         test('fraværInngårIPermitteringsperioder skal gi true hvis fraværet overlapper helt eller delvis med permitteringsperiodene', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),
@@ -293,7 +293,7 @@ describe('Tester for dato-utils.ts', () => {
 
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet ikke er ordentlig definert', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),

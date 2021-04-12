@@ -1,10 +1,17 @@
 import React, { FunctionComponent } from 'react';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
-import { AllePermitteringerOgFraværesPerioder } from '../typer';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
+import {
+    datoIntervallOverlapperMedPerioder,
+    finnSisteTilDato,
+    perioderOverlapper,
+} from '../utils/dato-utils';
+import { Knapp } from 'nav-frontend-knapper';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -32,6 +39,31 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
         )
     );
 
+    const leggTilNyPermitteringsperiode = () => {
+        const sisteUtfyltePermitteringsdag = finnSisteTilDato(
+            allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
+            ? sisteUtfyltePermitteringsdag.add(1, 'day')
+            : undefined;
+        const nyPeriode: Partial<DatoIntervall> = {
+            datoFra: startdatoForNyPeriode,
+            datoTil: undefined,
+        };
+
+        const kopiAvPermitterinsperioder = {
+            ...allePermitteringerOgFraværesPerioder,
+        };
+        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode);
+        setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder);
+    };
+
+    const feilmelding = perioderOverlapper(
+        allePermitteringerOgFraværesPerioder.permitteringer
+    )
+        ? 'Du kan ikke ha overlappende permitteringsperioder'
+        : '';
+
     return (
         <div className="permitteringsperioder">
             <Undertittel tag="h2" className="permitteringsperioder__tittel">
@@ -51,6 +83,21 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 </Normaltekst>
             </Infotekst>
             {permitteringsobjekter}
+            {feilmelding.length > 0 && (
+                <Element
+                    className="permitteringsperioder__feilmelding"
+                    aria-live="polite"
+                    aria-label="Feilmelding"
+                >
+                    {feilmelding}
+                </Element>
+            )}
+            <Knapp
+                className={'permitteringsperioder__legg-til-knapp'}
+                onClick={leggTilNyPermitteringsperiode}
+            >
+                + Legg til permittering
+            </Knapp>
         </div>
     );
 };

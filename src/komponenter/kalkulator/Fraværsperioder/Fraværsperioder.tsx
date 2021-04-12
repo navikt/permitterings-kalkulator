@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import { Knapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';
@@ -9,7 +9,7 @@ import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
     finnTidligsteFraDato,
-    fraværInngårIPermitteringsperioder,
+    datoIntervallOverlapperMedPerioder, perioderOverlapper,
 } from '../utils/dato-utils';
 import Fraværsperiode from './Fraværsperiode';
 
@@ -50,6 +50,10 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         );
     };
 
+    const feilmelding = perioderOverlapper(props.allePermitteringerOgFraværesPerioder.andreFraværsperioder)
+        ? 'Du kan ikke ha overlappende fraværsperioder'
+        : '';
+
     const setFraværsperiode = (
         datoIntervall: Partial<DatoIntervall>,
         indeks: number
@@ -85,9 +89,9 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                         setFraværsperiode(intervall, indeks)
                     }
                     slettFraværsperiode={() => slettFraværsperiode(indeks)}
-                    inngårIPermitteringsperiode={fraværInngårIPermitteringsperioder(
-                        props.allePermitteringerOgFraværesPerioder.permitteringer,
-                        fraværsintervall
+                    inngårIPermitteringsperiode={datoIntervallOverlapperMedPerioder(
+                        props.allePermitteringerOgFraværesPerioder.permitteringer, fraværsintervall
+
                     )}
                 />
             );
@@ -112,6 +116,12 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 </ul>
             </Infotekst>
             {fraVærsperiodeElementer}
+            {feilmelding.length > 0 &&
+            <Element className="fraværsperioder__feilmelding" aria-live="polite"
+                     aria-label="Feilmelding">
+                {feilmelding}
+            </Element>
+            }
             <Knapp
                 className="fraværsperioder__legg-til-knapp"
                 onClick={leggTilNyFraværsperiode}

@@ -118,7 +118,7 @@ export const datoIntervallErGyldig = (
     }
 };
 
-export const fraværInngårIPermitteringsperioder = (
+export const datoIntervallOverlapperMedPerioder = (
     perioder: Partial<DatoIntervall>[],
     fraværsintervall: Partial<DatoIntervall>
 ): boolean => {
@@ -127,13 +127,28 @@ export const fraværInngårIPermitteringsperioder = (
 
     const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
-        return false;
+        return true;
     }
-
     definertePerioder.forEach((periode) => {
         if (getAntallOverlappendeDager(periode, definertFraværsintervall) > 0) {
             finnesOverLapp = true;
         }
+    });
+    return finnesOverLapp;
+};
+
+export const perioderOverlapper = (perioder: Partial<DatoIntervall>[]) => {
+    let finnesOverLapp = false;
+    const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
+    definertePerioder.forEach((periode1) => {
+        definertePerioder.forEach((periode2) => {
+            if (
+                getAntallOverlappendeDager(periode1, periode2) > 0 &&
+                periode1 !== periode2
+            ) {
+                finnesOverLapp = true;
+            }
+        });
     });
     return finnesOverLapp;
 };
