@@ -32,9 +32,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         advarselPermitteringForeldet,
         setAdvarselPermitteringForeldet,
     ] = useState('');
-    const [uvalidertDatoIntervall, setUvalidertDatoIntervall] = useState<
-        Partial<DatoIntervall>
-    >({ datoFra: undefined, datoTil: undefined });
 
     const leggTilNyPermitteringsperiode = () => {
         const sisteUtfyltePermitteringsdag = finnSisteTilDato(
@@ -58,33 +55,27 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     };
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
-        setUvalidertDatoIntervall(datoIntervall);
-        if (datoIntervallErGyldig(datoIntervall)) {
-            const grenseDato = getSenesteDatoAvTo(
-                innføringsdatoAGP2,
-                dagensDato
-            );
-            const datoErForGammel = getTidligsteDato([
-                datoIntervall.datoFra,
-                datoIntervall.datoTil,
-            ])?.isBefore(finnDato18MndTilbake(grenseDato));
+        const grenseDato = getSenesteDatoAvTo(innføringsdatoAGP2, dagensDato);
+        const datoErForGammel = getTidligsteDato([
+            datoIntervall.datoFra,
+            datoIntervall.datoTil,
+        ])?.isBefore(finnDato18MndTilbake(grenseDato));
 
-            if (datoErForGammel) {
-                setAdvarselPermitteringForeldet(
-                    'Permitteringer eldre enn 18 månder telles ikke med i beregningen'
-                );
-            } else {
-                setAdvarselPermitteringForeldet('');
-            }
-            const kopiAvPermitteringsperioder = [
-                ...props.allePermitteringerOgFraværesPerioder.permitteringer,
-            ];
-            kopiAvPermitteringsperioder[props.indeks] = datoIntervall;
-            props.setAllePermitteringerOgFraværesPerioder({
-                ...props.allePermitteringerOgFraværesPerioder,
-                permitteringer: kopiAvPermitteringsperioder,
-            });
+        if (datoErForGammel) {
+            setAdvarselPermitteringForeldet(
+                'Permitteringer eldre enn 18 månder telles ikke med i beregningen'
+            );
+        } else {
+            setAdvarselPermitteringForeldet('');
         }
+        const kopiAvPermitteringsperioder = [
+            ...props.allePermitteringerOgFraværesPerioder.permitteringer,
+        ];
+        kopiAvPermitteringsperioder[props.indeks] = datoIntervall;
+        props.setAllePermitteringerOgFraværesPerioder({
+            ...props.allePermitteringerOgFraværesPerioder,
+            permitteringer: kopiAvPermitteringsperioder,
+        });
     };
     const slettPeriode = () => {
         let nyePermitteringsperioder = [
@@ -106,7 +97,11 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
-                datoIntervall={uvalidertDatoIntervall}
+                datoIntervall={
+                    props.allePermitteringerOgFraværesPerioder.permitteringer[
+                        props.indeks
+                    ]
+                }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
                 advarsel={advarselPermitteringForeldet}
