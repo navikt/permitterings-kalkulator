@@ -68,8 +68,8 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Arbeidsgiverperiode 2 treffer ansatte som har vært
-                            permittert i 30 uker eller mer i løpet av 18
-                            måneders perioden 2. desember 2019 - 1. juni 2021,
+                            permittert i 30 uker eller mer i løpet av
+                            18-måneders perioden 2. desember 2019–1. juni 2021,
                             dersom de fremdeles er permittert 1. juni.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -214,11 +214,9 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            innen{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(aktuell18mndsperiode.datoTil)
-                            )}{' '}
-                            , vil arbeidsgiverperiode 2 inntreffe.
+                            innen {formaterDato(aktuell18mndsperiode.datoTil)}
+                            {', '}
+                            vil arbeidsgiverperiode 2 inntreffe.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Tips: Du kan fylle inn permitteringer framover i
@@ -241,7 +239,7 @@ export const lagResultatTekst = (
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}{' '}
                             . Arbeidsgiverperiode 2 er bare aktuelt for ansatte
-                            som er permittert 1. juni eller seinere{' '}
+                            som er permittert 1. juni eller seinere.{' '}
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Hvis du permitterer igjen inntreffer

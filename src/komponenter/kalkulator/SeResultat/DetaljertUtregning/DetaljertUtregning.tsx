@@ -33,7 +33,7 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
     return (
         <div className="detaljert-utregning">
             <Element>
-                Detaljert utregning for 18-månedsperioden{' '}
+                Detaljert utregning for 18-måneders perioden{' '}
                 {formaterDatoIntervall(aktuell18mndsperiode)}:
             </Element>
             <Normaltekst>
