@@ -6,13 +6,11 @@ import './UtregningAvEnkeltPeriodeITabell.less';
 interface Props {
     permitteringsperiode: DatoIntervall;
     permitteringsoversikt: Permitteringsoversikt;
-    permitteringsnr: number;
 }
 
 const UtregningAvEnkeltPeriodeITabell: FunctionComponent<Props> = ({
     permitteringsperiode,
     permitteringsoversikt,
-    permitteringsnr,
 }) => {
     const {
         dagerBrukt,

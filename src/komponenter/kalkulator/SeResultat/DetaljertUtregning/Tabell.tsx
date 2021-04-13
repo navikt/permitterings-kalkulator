@@ -3,7 +3,7 @@ import UtregningAvEnkeltPeriodeITabell from './UtregningAvEnkeltPeriodeITabell/U
 import { DatoIntervall, DatoMedKategori } from '../../typer';
 import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
 import { Element } from 'nav-frontend-typografi';
-import './DetaljertUtregning.less';
+import 'nav-frontend-tabell-style';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -16,10 +16,6 @@ export const Tabell: FunctionComponent<Props> = ({
     permitteringsperioderInnenfor18mndsperiode,
     sumBruktePermitteringsdagerI18mnd,
 }) => {
-    console.log(
-        permitteringsperioderInnenfor18mndsperiode.length,
-        'antall permitteringer'
-    );
     return (
         <table className="tabell">
             <thead>
@@ -40,7 +36,6 @@ export const Tabell: FunctionComponent<Props> = ({
                                 tidslinje,
                                 periode
                             )}
-                            permitteringsnr={index + 1}
                         />
                     )
                 )}

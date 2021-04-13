@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
-import 'nav-frontend-tabell-style';
 import {
     formaterDatoIntervall,
     getOverlappendePeriode,
