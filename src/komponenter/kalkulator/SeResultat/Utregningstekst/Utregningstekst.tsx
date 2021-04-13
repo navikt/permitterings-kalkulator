@@ -71,7 +71,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             </AlertStripe>
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetaleLonn">
-                    Les mer om Arbeidsgiverperiode 2
+                    Les mer om arbeidsgiverperiode 2
                 </Lenke>
                 <Lenke href="/arbeidsgiver-permittering">
                     Tilbake til permitteringsveiviseren
