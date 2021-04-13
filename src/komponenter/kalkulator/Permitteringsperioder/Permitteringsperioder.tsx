@@ -69,7 +69,7 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
                 <Normaltekst tag="ul">
                     <li>
                         Fyll inn permitteringsperiodene uavhengig av
-                        perimitteringsprosent og stillingsprosent
+                        perimitteringsprosent og stillingsprosent.
                     </li>
                     <li>
                         Hvis den ansatte har fått lønnskompensasjon, skal dette
