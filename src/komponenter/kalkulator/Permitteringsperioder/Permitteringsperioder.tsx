@@ -68,6 +68,10 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Infotekst imgSrc={kalenderSvg} imgAlt="Kalender">
                 <Normaltekst tag="ul">
                     <li>
+                        Fyll inn permitteringsperiodene uavhengig av
+                        perimitteringsprosent og stillingsprosent
+                    </li>
+                    <li>
                         Hvis den ansatte har fått lønnskompensasjon, skal dette
                         være med i periodene.
                     </li>
