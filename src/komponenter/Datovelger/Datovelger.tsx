@@ -54,11 +54,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         return editing ? tempDate : formaterDato(selectedDate);
     };
 
-    const lukkDatovelger = () => {
-        setErApen(false);
-        knappRef?.current?.focus();
-    };
-
     const velgDato = (date: Dayjs) => {
         const nyFeilmelding = datoValidering(
             date,
@@ -75,12 +70,14 @@ const Datovelger: FunctionComponent<Props> = (props) => {
             });
             setFeilMelding('');
         }
-        lukkDatovelger();
+        setErApen(false);
+        knappRef?.current?.focus();
     };
 
     const onDatoClick = (date: Dayjs) => {
         velgDato(date);
-        lukkDatovelger();
+        setErApen(false);
+        knappRef?.current?.focus();
     };
 
     const inputOnBlur = (event: any) => {
@@ -91,17 +88,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         } else if (tekstIInputfeltet() !== 'dd.mm.yyyy') {
             setFeilMelding('dd.mm.yyyy');
             setErApen(false);
-        }
-    };
-
-    const handleOutsideClick = (e: MouseEvent, erÅpenState: boolean) => {
-        const node = datepickernode.current;
-        // @ts-ignore
-        if (node && node.contains(e.target as HTMLElement)) {
-            return;
-        }
-        if (erÅpenState) {
-            lukkDatovelger();
         }
     };
 
@@ -129,13 +115,22 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     }, [erApen]);
 
     useEffect(() => {
-        const eventListener = (event: MouseEvent) =>
-            handleOutsideClick(event, erApen);
-        document.addEventListener('click', eventListener, false);
-        return () => {
-            document.removeEventListener('click', eventListener, false);
+        const handleOutsideClick = (e: MouseEvent) => {
+            const node = datepickernode.current;
+            // @ts-ignore
+            if (node && node.contains(e.target as HTMLElement)) {
+                return;
+            }
+            if (erApen) {
+                setErApen(false);
+                knappRef?.current?.focus();
+            }
         };
-    }, [erApen]);
+        document.addEventListener('click', handleOutsideClick, false);
+        return () => {
+            document.removeEventListener('click', handleOutsideClick, false);
+        };
+    }, [erApen, setErApen]);
 
     return (
         <div ref={datepickernode} className={'datofelt ' + props.className}>
@@ -170,7 +165,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                 <DayPicker
                     onKeyDown={(e) => {
                         if (e.key === 'Escape') {
-                            lukkDatovelger();
+                            setErApen(false);
                         }
                     }}
                     className={'datofelt__collapse'}
