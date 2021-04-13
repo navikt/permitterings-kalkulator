@@ -138,7 +138,7 @@ export const lagResultatTekst = (
             );
             if (!aktuell18mndsperiode) {
                 return {
-                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
+                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av arbeidsgiverperiode 2.`,
                     beskrivelse: <div />,
                 };
             }
@@ -158,7 +158,7 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            uten lønnsplikt før Arbeidsgiverperiode 2
+                            uten lønnsplikt før arbeidsgiverperiode 2
                             inntreffer.
                         </Element>
                         <AlertStripe
@@ -197,12 +197,12 @@ export const lagResultatTekst = (
                             {formaterDatoIntervall(
                                 til18mndsperiode(aktuell18mndsperiode.datoTil)
                             )}{' '}
-                            , vil Arbeidsgiverperiode 2 inntreffe.
+                            , vil arbeidsgiverperiode 2 inntreffe.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Tips: Du kan fylle inn permitteringer framover i
                             tid, kalkulatoren vil da regne ut når
-                            Arbeidsgiverperiode 2 inntreffer ved fremtidige
+                            arbeidsgiverperiode 2 inntreffer ved fremtidige
                             permitteringer.
                         </Normaltekst>
                     </>
@@ -210,8 +210,25 @@ export const lagResultatTekst = (
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `,
-                beskrivelse: null,
+                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen, selv om den ansatte per 1. juni har vært permittert i mer enn 30 uker de siste 18 månedene.  `,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            {' '}
+                            Per den 1. juni har den ansatte vært permittert i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                oversiktOverPermitteringVedInnføringsdato.dagerBrukt
+                            )}{' '}
+                            . Arbeidsgiverperiode 2 er bare aktuelt for ansatte
+                            som er permittert 1. juni eller seinere{' '}
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Hvis du permitterer igjen inntreffer
+                            arbeidsgiverperiode 1, deretter kan
+                            arbeidsgiverperiode 2 komme.
+                        </Normaltekst>
+                    </>
+                ),
             };
     }
 };
