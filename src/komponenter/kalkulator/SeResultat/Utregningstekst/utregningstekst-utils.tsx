@@ -138,8 +138,27 @@ export const lagResultatTekst = (
             );
             if (!aktuell18mndsperiode) {
                 return {
-                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av arbeidsgiverperiode 2.`,
-                    beskrivelse: <div />,
+                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i dette tilfellet. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å utløse arbeidsgiverperiode 2. `,
+                    beskrivelse: (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Hvis du permitterer den ansatte nå vil
+                                arbeidsgiverperiode 2 inntreffe dagen den
+                                ansatte har vært permittert i 30 uker i løpet av
+                                18 måneder.
+                            </Normaltekst>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Tips: Du kan fylle inn permitteringer framover i
+                                tid, kalkulatoren vil da regne ut når
+                                arbeidsgiverperiode 2 inntreffer ved fremtidige
+                                permitteringer.
+                            </Normaltekst>
+                        </>
+                    ),
                 };
             }
 
