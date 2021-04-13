@@ -21,9 +21,9 @@ export const Tabell: FunctionComponent<Props> = ({
             <thead>
                 <tr>
                     <th>Permitteringsperiode</th>
-                    <th>Lengde permittering</th>
+                    <th>Permittert</th>
                     <th>Fravær</th>
-                    <th>Permittering u/fravær</th>
+                    <th>Permittert u/fravær</th>
                 </tr>
             </thead>
             <tbody>
