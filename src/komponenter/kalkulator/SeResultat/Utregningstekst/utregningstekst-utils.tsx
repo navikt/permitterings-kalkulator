@@ -13,6 +13,7 @@ import {
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import {
+    erHelg,
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
@@ -114,6 +115,7 @@ export const lagResultatTekst = (
                                 )
                             )}
                         </Normaltekst>
+                        {alertOmForskyvingAvAGP2HvisHelg(datoAGP2)}
                     </>
                 ),
                 beskrivelse: (
@@ -285,6 +287,27 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
         return skrivUker(heleUkerPermittert) + dagerITekst;
     }
     return `${restIDager} dager`;
+};
+
+const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
+    if (erHelg(dato)) {
+        return (
+            <AlertStripe
+                type={'info'}
+                form={'inline'}
+                className="utregningstekst__alertstripe"
+            >
+                <Element>
+                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
+                </Element>
+                <Normaltekst>
+                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
+                    betaler du permitteringslønn i fem fortløpende dager fra og
+                    med førstkommende mandag.
+                </Normaltekst>
+            </AlertStripe>
+        );
+    }
 };
 
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
