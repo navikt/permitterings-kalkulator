@@ -12,7 +12,7 @@ import {
     getAntallOverlappendeDager,
     getOverlappendePeriode,
     getSenesteDato,
-    getTidligsteDato, perioderOverlapper,
+    getTidligsteDato, perioderOverlapper, tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -180,6 +180,10 @@ describe('Tester for dato-utils.ts', () => {
             dayjs('2021-04-14'),
         ]);
     });
+
+    test('tilGyldigDatoIntervall skal håndtere undefined input', () => {
+        expect(tilGyldigDatoIntervall({})).toEqual(undefined);
+    })
 
     describe('Tester for getOverlappendePeriode', () => {
         test('Skal returnere overlappende periode for faste perioder', () => {

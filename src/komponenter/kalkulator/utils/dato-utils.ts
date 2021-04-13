@@ -127,7 +127,7 @@ export const datoIntervallOverlapperMedPerioder = (
 
     const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
-        return true;
+        return false;
     }
     definertePerioder.forEach((periode) => {
         if (getAntallOverlappendeDager(periode, definertFraværsintervall) > 0) {
