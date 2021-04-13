@@ -33,7 +33,7 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                                 attributtVerdi={formaterDatoIntervall(periode)}
                             />
                             <AttributtVisning
-                                attributt="Lengde permittering"
+                                attributt="Permittert"
                                 attributtVerdi={
                                     permitteringsoversikt.dagerPermittert +
                                     ' dager'
@@ -47,7 +47,7 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                                 }
                             />
                             <AttributtVisning
-                                attributt="Permitteringsdager u/fravær"
+                                attributt="Permittert u/fravær"
                                 attributtVerdi={
                                     permitteringsoversikt.dagerBrukt + ' dager'
                                 }
