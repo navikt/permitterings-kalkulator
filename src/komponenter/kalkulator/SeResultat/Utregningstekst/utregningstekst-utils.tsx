@@ -20,7 +20,8 @@ import {
     getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -46,27 +47,38 @@ export const lagResultatTekst = (
     switch (situasjon) {
         case Permitteringssituasjon.AGP2_NÅDD_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Arbeidsgiverperiode 2 vil intreffe ${formaterDato(
-                    innføringsdatoAGP2
-                )}. Det betyr at du skal betale lønn for dagene 1., 2., 3., 4. og 7. juni, totalt 5 dager.`,
+                konklusjon: (
+                    <>
+                        <Element>
+                            Arbeidsgiverperiode 2 vil inntreffe{' '}
+                            {formaterDato(innføringsdatoAGP2)}. Det betyr at du
+                            skal betale lønn for følgende fem dager:
+                        </Element>
+                        <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
+                            {get5FørsteHverdager(innføringsdatoAGP2).map(
+                                (dato, index) => (
+                                    <li key={index}>{formaterDato(dato)}</li>
+                                )
+                            )}
+                        </Normaltekst>
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Arbeidsgiverperiode 2 treffer ansatte som har vært
-                            permittert i mer enn 30 uker i løpet av 18 måneders
-                            perioden 02.12.2019 – 01.06.2021, dersom de
-                            fremdeles er permittert 1. juni. Dette vil gjelde
-                            for deg og de fleste andre arbeidsgivere som har
-                            permittert ansatte i forbindelse med korona.
+                            permittert i 30 uker eller mer i løpet av 18
+                            måneders perioden 2. desember 2019 - 1. juni 2021,
+                            dersom de fremdeles er permittert 1. juni.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har vært permittert i{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}{' '}
-                            i 18-månedsperioden før første juni (02.12.2019 –
-                            01.06.2021). Dette overskrider 30 uker, dermed
-                            inntreffer Arbeidsgiverperiode 2 den 1. juni.
+                            i 18-måneders perioden fra 2. desember 2019 til 1.
+                            juni 2021. Dette overskrider 30 uker, dermed
+                            inntreffer arbeidsgiverperiode 2 den 1. juni 2021.
                         </Normaltekst>
                     </>
                 ),
@@ -89,12 +101,12 @@ export const lagResultatTekst = (
             return {
                 konklusjon: (
                     <>
-                        <Normaltekst>
+                        <Element>
                             Arbeidsgiverperiode 2 vil inntreffe{' '}
                             {formaterDato(getFørsteHverdag(datoAGP2))}
                             {tilleggstekstLøpendePermittering}. Det betyr at du
                             skal betale lønn for følgende fem dager:
-                        </Normaltekst>
+                        </Element>
                         <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
                             {get5FørsteHverdager(datoAGP2).map(
                                 (dato, index) => (
@@ -105,25 +117,16 @@ export const lagResultatTekst = (
                     </>
                 ),
                 beskrivelse: (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Den ansatte har i perioden{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(sisteDagI18mndsperiode)
-                            )}{' '}
-                            vært permittert i tilsammen 30 uker.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
-                            har vært permittert i mer enn 30 uker i løpet av de
-                            siste 18 månedene. I dette tilfellet blir 18
-                            måneders perioden{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(sisteDagI18mndsperiode)
-                            )}
-                            .
-                        </Normaltekst>
-                    </>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        Arbeidsgiverperiode 2 inntreffer dagen den ansatte har
+                        vært permittert i 30 uker i løpet av de siste 18
+                        månedene. I dette tilfellet vil den ansatte ha vært
+                        permittert i 30 uker i 18-måneders perioden{' '}
+                        {formaterDatoIntervall(
+                            til18mndsperiode(sisteDagI18mndsperiode)
+                        )}
+                        .
+                    </Normaltekst>
                 ),
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
@@ -135,8 +138,27 @@ export const lagResultatTekst = (
             );
             if (!aktuell18mndsperiode) {
                 return {
-                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i nær framtid. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å kunne gi utslag i beregningen av Arbeidsgiverperiode 2.`,
-                    beskrivelse: <div />,
+                    konklusjon: `Arbeidsgiverperiode 2 vil ikke inntreffe i dette tilfellet. Permitteringsperiodene du har fylt inn ligger for langt tilbake i tid til å utløse arbeidsgiverperiode 2. `,
+                    beskrivelse: (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Hvis du permitterer den ansatte nå vil
+                                arbeidsgiverperiode 2 inntreffe dagen den
+                                ansatte har vært permittert i 30 uker i løpet av
+                                18 måneder.
+                            </Normaltekst>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Tips: Du kan fylle inn permitteringer framover i
+                                tid, kalkulatoren vil da regne ut når
+                                arbeidsgiverperiode 2 inntreffer ved fremtidige
+                                permitteringer.
+                            </Normaltekst>
+                        </>
+                    ),
                 };
             }
 
@@ -146,11 +168,28 @@ export const lagResultatTekst = (
             );
 
             return {
-                konklusjon: `Du kan fram til ${formaterDato(
-                    aktuell18mndsperiode.datoTil
-                )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    210 - oversiktOverPermittering.dagerBrukt
-                )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
+                konklusjon: (
+                    <>
+                        <Element>
+                            Du kan fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)}{' '}
+                            permittere i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                210 - oversiktOverPermittering.dagerBrukt
+                            )}{' '}
+                            uten lønnsplikt før arbeidsgiverperiode 2
+                            inntreffer.
+                        </Element>
+                        <AlertStripe
+                            type={'advarsel'}
+                            form={'inline'}
+                            className={'utregningstekst__alertstripe'}
+                        >
+                            Vi tar forbehold om at endringer i regelverket kan
+                            påvirke denne beregningen.
+                        </AlertStripe>
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -162,21 +201,27 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermittering.dagerBrukt
                             )}
-                            . Det betyr at du kan ha den ansatte permittert uten
-                            lønnsplikt i{' '}
+                            .
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
+                            har vært permittert i 30 uker i løpet av de siste 18
+                            månedene. Hvis du permitterer den ansatte på nytt
+                            inntreffer arbeidsgiverperiode 1. Dersom du
+                            permitterer i ytterlige{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            før Arbeidsgiverperiode 2 inntreffer.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Når Arbeidsgiverperiode 2 inntreffer skal du betale
-                            lønn i fem dager.
+                            innen{' '}
+                            {formaterDatoIntervall(
+                                til18mndsperiode(aktuell18mndsperiode.datoTil)
+                            )}{' '}
+                            , vil arbeidsgiverperiode 2 inntreffe.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Tips: Du kan fylle inn permitteringer framover i
                             tid, kalkulatoren vil da regne ut når
-                            Arbeidsgiverperiode 2 inntreffer ved fremtidige
+                            arbeidsgiverperiode 2 inntreffer ved fremtidige
                             permitteringer.
                         </Normaltekst>
                     </>
@@ -184,8 +229,25 @@ export const lagResultatTekst = (
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Siden den ansatte ikke er permittert 1. juni, vil ikke Arbeidsgiverperiode 2 inntreffe på denne dagen. Arbeidsgiverperiode 2 kan komme dersom den ansatte blir permittert igjen. `,
-                beskrivelse: null,
+                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen, selv om den ansatte per 1. juni har vært permittert i mer enn 30 uker de siste 18 månedene.  `,
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            {' '}
+                            Per den 1. juni har den ansatte vært permittert i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                oversiktOverPermitteringVedInnføringsdato.dagerBrukt
+                            )}{' '}
+                            . Arbeidsgiverperiode 2 er bare aktuelt for ansatte
+                            som er permittert 1. juni eller seinere{' '}
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Hvis du permitterer igjen inntreffer
+                            arbeidsgiverperiode 1, deretter kan
+                            arbeidsgiverperiode 2 komme.
+                        </Normaltekst>
+                    </>
+                ),
             };
     }
 };
