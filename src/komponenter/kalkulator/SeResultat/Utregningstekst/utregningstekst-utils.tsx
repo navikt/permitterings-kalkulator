@@ -186,7 +186,7 @@ export const lagResultatTekst = (
                             className={'utregningstekst__alertstripe'}
                         >
                             Vi tar forbehold om at endringer i regelverket kan
-                            påvirke denne beregningen
+                            påvirke denne beregningen.
                         </AlertStripe>
                     </>
                 ),
