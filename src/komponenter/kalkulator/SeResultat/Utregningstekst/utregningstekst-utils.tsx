@@ -20,7 +20,7 @@ import {
     getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -89,12 +89,12 @@ export const lagResultatTekst = (
             return {
                 konklusjon: (
                     <>
-                        <Normaltekst>
+                        <Element>
                             Arbeidsgiverperiode 2 vil inntreffe{' '}
                             {formaterDato(getFørsteHverdag(datoAGP2))}
                             {tilleggstekstLøpendePermittering}. Det betyr at du
                             skal betale lønn for følgende fem dager:
-                        </Normaltekst>
+                        </Element>
                         <Normaltekst tag="ul" style={{ marginTop: '0.5rem' }}>
                             {get5FørsteHverdager(datoAGP2).map(
                                 (dato, index) => (
@@ -105,25 +105,16 @@ export const lagResultatTekst = (
                     </>
                 ),
                 beskrivelse: (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Den ansatte har i perioden{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(sisteDagI18mndsperiode)
-                            )}{' '}
-                            vært permittert i tilsammen 30 uker.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
-                            har vært permittert i mer enn 30 uker i løpet av de
-                            siste 18 månedene. I dette tilfellet blir 18
-                            måneders perioden{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(sisteDagI18mndsperiode)
-                            )}
-                            .
-                        </Normaltekst>
-                    </>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        Arbeidsgiverperiode 2 inntreffer dagen den ansatte har
+                        vært permittert i 30 uker i løpet av de siste 18
+                        månedene. I dette tilfellet vil den ansatte ha vært
+                        permittert i 30 uker i 18-måneders perioden{' '}
+                        {formaterDatoIntervall(
+                            til18mndsperiode(sisteDagI18mndsperiode)
+                        )}
+                        .
+                    </Normaltekst>
                 ),
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
