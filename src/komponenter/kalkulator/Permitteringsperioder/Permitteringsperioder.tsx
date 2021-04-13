@@ -84,13 +84,14 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             </Infotekst>
             {permitteringsobjekter}
             {feilmelding.length > 0 && (
-                <Element
+                <AlertStripe
+                    type={'feil'}
                     className="permitteringsperioder__feilmelding"
                     aria-live="polite"
                     aria-label="Feilmelding"
                 >
                     {feilmelding}
-                </Element>
+                </AlertStripe>
             )}
             <Knapp
                 className={'permitteringsperioder__legg-til-knapp'}

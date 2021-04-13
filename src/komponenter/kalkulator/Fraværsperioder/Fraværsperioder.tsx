@@ -14,6 +14,7 @@ import {
     tilGyldigDatoIntervall,
 } from '../utils/dato-utils';
 import Fraværsperiode from './Fraværsperiode';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
@@ -124,13 +125,14 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
             </Infotekst>
             {fraVærsperiodeElementer}
             {feilmelding.length > 0 && (
-                <Element
+                <AlertStripe
+                    type={'feil'}
                     className="fraværsperioder__feilmelding"
                     aria-live="polite"
                     aria-label="Feilmelding"
                 >
                     {feilmelding}
-                </Element>
+                </AlertStripe>
             )}
             <Knapp
                 className="fraværsperioder__legg-til-knapp"
