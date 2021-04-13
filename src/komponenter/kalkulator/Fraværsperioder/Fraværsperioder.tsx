@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './Fraværsperioder.less';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import { Knapp } from 'nav-frontend-knapper';
 import { Dayjs } from 'dayjs';

@@ -1,15 +1,11 @@
 import React, { FunctionComponent } from 'react';
-import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
 import kalenderSvg from './kalender.svg';
 import { Infotekst } from '../Infotekst/Infotekst';
-import {
-    datoIntervallOverlapperMedPerioder,
-    finnSisteTilDato,
-    perioderOverlapper,
-} from '../utils/dato-utils';
+import { finnSisteTilDato, perioderOverlapper } from '../utils/dato-utils';
 import { Knapp } from 'nav-frontend-knapper';
 import AlertStripe from 'nav-frontend-alertstriper';
 
