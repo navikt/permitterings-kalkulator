@@ -6,12 +6,13 @@ import dayjs from 'dayjs';
 import {
     antallDagerGått,
     finnSisteTilDato,
-    getTidligsteDato,
     finnTidligsteFraDato,
-    getOverlappendePeriode,
-    getAntallOverlappendeDager,
-    getSenesteDato,
     fraværInngårIPermitteringsperioder,
+    get5FørsteHverdager,
+    getAntallOverlappendeDager,
+    getOverlappendePeriode,
+    getSenesteDato,
+    getTidligsteDato,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -168,6 +169,16 @@ describe('Tester for dato-utils.ts', () => {
                 dayjs('2021-03-1'),
             ])
         ).toEqual(dayjs('2023-03-2'));
+    });
+
+    test('get5FørsteHverdager skal returnere de 5 neste hverdagene', () => {
+        expect(get5FørsteHverdager(dayjs('2021-04-8'))).toEqual([
+            dayjs('2021-04-8'),
+            dayjs('2021-04-9'),
+            dayjs('2021-04-12'),
+            dayjs('2021-04-13'),
+            dayjs('2021-04-14'),
+        ]);
     });
 
     describe('Tester for getOverlappendePeriode', () => {

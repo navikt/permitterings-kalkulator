@@ -75,9 +75,12 @@ export const getAntallOverlappendeDager = (
     return lengdePåIntervall(overlappendePeriode);
 };
 
-export const tilDatoIntervall = (
+export const tilGyldigDatoIntervall = (
     potensieltUdefinertDatointervall: Partial<DatoIntervall>
 ): DatoIntervall | undefined => {
+    if (!datoIntervallErGyldig(potensieltUdefinertDatointervall)) {
+        return undefined;
+    }
     const { datoFra, datoTil, erLøpende } = potensieltUdefinertDatointervall;
     if (datoFra !== undefined && datoTil !== undefined) {
         return { datoFra, datoTil };
@@ -100,8 +103,19 @@ export const filtrerBortUdefinerteDatoIntervaller = (
     potensieltUdefinerteIntervaller: Partial<DatoIntervall>[]
 ): DatoIntervall[] => {
     return potensieltUdefinerteIntervaller
-        .map((intervall) => tilDatoIntervall(intervall))
+        .map((intervall) => tilGyldigDatoIntervall(intervall))
         .filter((intervall) => intervall !== undefined) as DatoIntervall[];
+};
+
+export const datoIntervallErGyldig = (
+    datoIntervall: Partial<DatoIntervall>
+) => {
+    if (datoIntervall.erLøpende) {
+        return true;
+    }
+    if (datoIntervall.datoTil && datoIntervall.datoFra) {
+        return datoIntervall.datoFra.isSameOrBefore(datoIntervall.datoTil);
+    }
 };
 
 export const fraværInngårIPermitteringsperioder = (
@@ -111,7 +125,7 @@ export const fraværInngårIPermitteringsperioder = (
     let finnesOverLapp = false;
     const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
 
-    const definertFraværsintervall = tilDatoIntervall(fraværsintervall);
+    const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
         return false;
     }
@@ -184,7 +198,7 @@ export const finnesIIntervall = (
     dato: Dayjs,
     periode: Partial<DatoIntervall>
 ): boolean => {
-    const definertPeriode = tilDatoIntervall(periode);
+    const definertPeriode = tilGyldigDatoIntervall(periode);
     if (!definertPeriode) {
         return false;
     }
@@ -198,4 +212,45 @@ export const finnesIIntervall = (
             '[]'
         );
     }
+};
+
+enum Ukedag {
+    Mandag = 1,
+    Tirsdag = 2,
+    Onsdag = 3,
+    Torsdag = 4,
+    Fredag = 5,
+    Lørdag = 6,
+    Søndag = 7,
+}
+
+const erHelg = (dato: Dayjs): boolean => {
+    const isoWeekday = dato.isoWeekday();
+    return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
+};
+
+export const getFørsteHverdag = (dato: Dayjs): Dayjs => {
+    let dag = dato;
+    while (erHelg(dag)) {
+        dag = dag.add(1, 'day');
+    }
+    return dag;
+};
+
+const getNesteHverdag = (dato: Dayjs): Dayjs => {
+    return getFørsteHverdag(dato.add(1, 'day'));
+};
+
+const leggTilHverdager = (dato: Dayjs, antall: number): Dayjs => {
+    let dag = getFørsteHverdag(dato);
+    for (let i = 0; i < antall; i++) {
+        dag = getNesteHverdag(dag);
+    }
+    return dag;
+};
+
+export const get5FørsteHverdager = (dato: Dayjs): Dayjs[] => {
+    return [0, 1, 2, 3, 4].map((antallDager) =>
+        leggTilHverdager(dato, antallDager)
+    );
 };
