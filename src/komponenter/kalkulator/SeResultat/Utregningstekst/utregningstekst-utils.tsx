@@ -21,6 +21,7 @@ import {
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -148,11 +149,28 @@ export const lagResultatTekst = (
             );
 
             return {
-                konklusjon: `Du kan fram til ${formaterDato(
-                    aktuell18mndsperiode.datoTil
-                )}  permittere i ${skrivDagerIHeleUkerPlussDager(
-                    210 - oversiktOverPermittering.dagerBrukt
-                )} uten lønnsplikt før Arbeidsgiverperiode 2 inntreffer.`,
+                konklusjon: (
+                    <>
+                        <Element>
+                            Du kan fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)}{' '}
+                            permittere i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                210 - oversiktOverPermittering.dagerBrukt
+                            )}{' '}
+                            uten lønnsplikt før Arbeidsgiverperiode 2
+                            inntreffer.
+                        </Element>
+                        <AlertStripe
+                            type={'advarsel'}
+                            form={'inline'}
+                            className={'utregningstekst__advarsel'}
+                        >
+                            Vi tar forbehold om at endringer i regelverket kan
+                            påvirke denne beregningen
+                        </AlertStripe>
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -164,16 +182,22 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermittering.dagerBrukt
                             )}
-                            . Det betyr at du kan ha den ansatte permittert uten
-                            lønnsplikt i{' '}
+                            .
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Arbeidsgiverperiode 2 inntreffer dagen den ansatte
+                            har vært permittert i 30 uker i løpet av de siste 18
+                            månedene. Hvis du permitterer den ansatte på nytt
+                            inntreffer arbeidsgiverperiode 1. Dersom du
+                            permitterer i ytterlige{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            før Arbeidsgiverperiode 2 inntreffer.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Når Arbeidsgiverperiode 2 inntreffer skal du betale
-                            lønn i fem dager.
+                            innen{' '}
+                            {formaterDatoIntervall(
+                                til18mndsperiode(aktuell18mndsperiode.datoTil)
+                            )}{' '}
+                            , vil Arbeidsgiverperiode 2 inntreffe.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Tips: Du kan fylle inn permitteringer framover i
