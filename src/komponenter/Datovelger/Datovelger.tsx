@@ -74,12 +74,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         knappRef?.current?.focus();
     };
 
-    const onDatoClick = (date: Dayjs) => {
-        velgDato(date);
-        setErApen(false);
-        knappRef?.current?.focus();
-    };
-
     const inputOnBlur = (event: any) => {
         setEditing(false);
         const newDato = dayjs(event.currentTarget.value, 'DD.MM.YYYY');
@@ -177,7 +171,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                             setErApen(!erApen);
                         }
                     }}
-                    onDayClick={(day: Date) => onDatoClick(dayjs(day))}
+                    onDayClick={(day: Date) => velgDato(dayjs(day))}
                     months={MONTHS['no']}
                     weekdaysLong={WEEKDAYS_LONG['no']}
                     weekdaysShort={WEEKDAYS_SHORT['no']}
