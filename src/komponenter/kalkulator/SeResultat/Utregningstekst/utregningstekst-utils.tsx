@@ -229,7 +229,7 @@ export const lagResultatTekst = (
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen, selv om den ansatte per 1. juni har vært permittert i mer enn 30 uker de siste 18 månedene.  `,
+                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen.`,
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -237,9 +237,9 @@ export const lagResultatTekst = (
                             Per den 1. juni har den ansatte vært permittert i{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
-                            )}{' '}
+                            )}
                             . Arbeidsgiverperiode 2 er bare aktuelt for ansatte
-                            som er permittert 1. juni eller seinere{' '}
+                            som er permittert 1. juni eller seinere.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Hvis du permitterer igjen inntreffer
