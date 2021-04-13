@@ -183,7 +183,7 @@ export const lagResultatTekst = (
                         <AlertStripe
                             type={'advarsel'}
                             form={'inline'}
-                            className={'utregningstekst__advarsel'}
+                            className={'utregningstekst__alertstripe'}
                         >
                             Vi tar forbehold om at endringer i regelverket kan
                             påvirke denne beregningen
