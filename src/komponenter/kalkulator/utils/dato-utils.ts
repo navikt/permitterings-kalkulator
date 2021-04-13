@@ -138,19 +138,16 @@ export const datoIntervallOverlapperMedPerioder = (
 };
 
 export const perioderOverlapper = (perioder: Partial<DatoIntervall>[]) => {
-    let finnesOverLapp = false;
     const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
-    definertePerioder.forEach((periode1) => {
-        definertePerioder.forEach((periode2) => {
-            if (
-                getAntallOverlappendeDager(periode1, periode2) > 0 &&
-                periode1 !== periode2
-            ) {
-                finnesOverLapp = true;
-            }
-        });
-    });
-    return finnesOverLapp;
+
+    const periodeSomOverlapperMedAndre = definertePerioder.find(
+        (periode, index) => {
+            const andrePerioder = [...definertePerioder];
+            andrePerioder.splice(index, 1);
+            return datoIntervallOverlapperMedPerioder(andrePerioder, periode);
+        }
+    );
+    return !!periodeSomOverlapperMedAndre;
 };
 
 export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
