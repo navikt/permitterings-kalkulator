@@ -7,12 +7,12 @@ import {
     antallDagerGått,
     finnSisteTilDato,
     finnTidligsteFraDato,
-    fraværInngårIPermitteringsperioder,
+    datoIntervallOverlapperMedPerioder,
     get5FørsteHverdager,
     getAntallOverlappendeDager,
     getOverlappendePeriode,
     getSenesteDato,
-    getTidligsteDato,
+    getTidligsteDato, perioderOverlapper, tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -181,6 +181,10 @@ describe('Tester for dato-utils.ts', () => {
         ]);
     });
 
+    test('tilGyldigDatoIntervall skal håndtere undefined input', () => {
+        expect(tilGyldigDatoIntervall({})).toEqual(undefined);
+    })
+
     describe('Tester for getOverlappendePeriode', () => {
         test('Skal returnere overlappende periode for faste perioder', () => {
             const overlappendePeriode = getOverlappendePeriode(
@@ -248,10 +252,39 @@ describe('Tester for dato-utils.ts', () => {
         });
     });
 
+    describe('Tester for perioderOverlapper', () => {
+        test('Skal returnere true hvis periodene overlapper', () => {
+            const overlapper = perioderOverlapper([
+                {
+                    datoFra: dayjs('2021-02-10'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-01-13'),
+                    datoTil: dayjs('2021-02-10'),
+                }
+            ]);
+            expect(overlapper).toBeTruthy();
+        });
+        test('Skal returnere false hvis periodene ikke overlapper', () => {
+            const overlapper = perioderOverlapper([
+                {
+                    datoFra: dayjs('2021-02-11'),
+                    erLøpende: true,
+                },
+                {
+                    datoFra: dayjs('2021-01-13'),
+                    datoTil: dayjs('2021-02-10'),
+                }
+            ]);
+            expect(overlapper).toBeFalsy();
+        });
+    })
+
     describe('Tester for fraværInngårIPermitteringsperioder', () => {
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),
@@ -272,7 +305,7 @@ describe('Tester for dato-utils.ts', () => {
 
         test('fraværInngårIPermitteringsperioder skal gi true hvis fraværet overlapper helt eller delvis med permitteringsperiodene', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),
@@ -293,7 +326,7 @@ describe('Tester for dato-utils.ts', () => {
 
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet ikke er ordentlig definert', () => {
             expect(
-                fraværInngårIPermitteringsperioder(
+                datoIntervallOverlapperMedPerioder(
                     [
                         {
                             datoFra: dayjs('2021-03-1'),

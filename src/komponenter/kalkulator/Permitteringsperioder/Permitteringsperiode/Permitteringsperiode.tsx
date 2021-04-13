@@ -8,10 +8,8 @@ import {
 } from '../../typer';
 
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
-import { Knapp } from 'nav-frontend-knapper';
 import {
     finnDato18MndTilbake,
-    finnSisteTilDato,
     getSenesteDatoAvTo,
     getTidligsteDato,
 } from '../../utils/dato-utils';
@@ -31,27 +29,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         advarselPermitteringForeldet,
         setAdvarselPermitteringForeldet,
     ] = useState('');
-
-    const leggTilNyPermitteringsperiode = () => {
-        const sisteUtfyltePermitteringsdag = finnSisteTilDato(
-            props.allePermitteringerOgFraværesPerioder.permitteringer
-        );
-        const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
-            ? sisteUtfyltePermitteringsdag.add(1, 'day')
-            : undefined;
-        const nyPeriode: Partial<DatoIntervall> = {
-            datoFra: startdatoForNyPeriode,
-            datoTil: undefined,
-        };
-
-        const kopiAvPermitterinsperioder = {
-            ...props.allePermitteringerOgFraværesPerioder,
-        };
-        kopiAvPermitterinsperioder.permitteringer.push(nyPeriode);
-        props.setAllePermitteringerOgFraværesPerioder(
-            kopiAvPermitterinsperioder
-        );
-    };
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
         const grenseDato = getSenesteDatoAvTo(innføringsdatoAGP2, dagensDato);
@@ -105,17 +82,6 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 slettPeriode={slettPeriode}
                 advarsel={advarselPermitteringForeldet}
             />
-            {props.indeks ===
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-                    .length -
-                    1 && (
-                <Knapp
-                    className={'permitteringsperiode__legg-til-knapp'}
-                    onClick={leggTilNyPermitteringsperiode}
-                >
-                    + Legg til permittering
-                </Knapp>
-            )}
         </div>
     );
 };

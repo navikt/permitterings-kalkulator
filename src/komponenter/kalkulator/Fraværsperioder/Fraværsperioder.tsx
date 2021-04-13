@@ -9,9 +9,12 @@ import timeglassSvg from './timeglass.svg';
 import {
     finnSisteTilDato,
     finnTidligsteFraDato,
-    fraværInngårIPermitteringsperioder,
+    datoIntervallOverlapperMedPerioder,
+    perioderOverlapper,
+    tilGyldigDatoIntervall,
 } from '../utils/dato-utils';
 import Fraværsperiode from './Fraværsperiode';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     setAllePermitteringerOgFraværesPerioder: (
@@ -50,6 +53,12 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
         );
     };
 
+    const feilmelding = perioderOverlapper(
+        props.allePermitteringerOgFraværesPerioder.andreFraværsperioder
+    )
+        ? 'Du kan ikke ha overlappende fraværsperioder'
+        : '';
+
     const setFraværsperiode = (
         datoIntervall: Partial<DatoIntervall>,
         indeks: number
@@ -78,6 +87,12 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
 
     const fraVærsperiodeElementer = props.allePermitteringerOgFraværesPerioder.andreFraværsperioder.map(
         (fraværsintervall, indeks) => {
+            const inngårIPermitteringsperiode =
+                !tilGyldigDatoIntervall(fraværsintervall) ||
+                datoIntervallOverlapperMedPerioder(
+                    props.allePermitteringerOgFraværesPerioder.permitteringer,
+                    fraværsintervall
+                );
             return (
                 <Fraværsperiode
                     fraværsperiode={fraværsintervall}
@@ -85,10 +100,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                         setFraværsperiode(intervall, indeks)
                     }
                     slettFraværsperiode={() => slettFraværsperiode(indeks)}
-                    inngårIPermitteringsperiode={fraværInngårIPermitteringsperioder(
-                        props.allePermitteringerOgFraværesPerioder.permitteringer,
-                        fraværsintervall
-                    )}
+                    inngårIPermitteringsperiode={inngårIPermitteringsperiode}
                 />
             );
         }
@@ -112,6 +124,16 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 </ul>
             </Infotekst>
             {fraVærsperiodeElementer}
+            {feilmelding.length > 0 && (
+                <AlertStripe
+                    type={'feil'}
+                    className="fraværsperioder__feilmelding"
+                    aria-live="polite"
+                    aria-label="Feilmelding"
+                >
+                    {feilmelding}
+                </AlertStripe>
+            )}
             <Knapp
                 className="fraværsperioder__legg-til-knapp"
                 onClick={leggTilNyFraværsperiode}
