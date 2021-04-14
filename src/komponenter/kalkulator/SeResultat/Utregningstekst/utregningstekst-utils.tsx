@@ -78,7 +78,7 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}{' '}
-                            i 18-måneders perioden fra 2. desember 2019 til 1.
+                            i 18-månedersperioden fra 2. desember 2019 til 1.
                             juni 2021. Dette overskrider 30 uker, dermed
                             inntreffer arbeidsgiverperiode 2 den 1. juni 2021.
                         </Normaltekst>
@@ -123,7 +123,7 @@ export const lagResultatTekst = (
                         Arbeidsgiverperiode 2 inntreffer dagen den ansatte har
                         vært permittert i 30 uker i løpet av de siste 18
                         månedene. I dette tilfellet vil den ansatte ha vært
-                        permittert i 30 uker i 18-måneders perioden{' '}
+                        permittert i 30 uker i 18-månedersperioden{' '}
                         {formaterDatoIntervall(
                             til18mndsperiode(sisteDagI18mndsperiode)
                         )}
@@ -266,7 +266,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     if (finnesPermitteringerFørGittDato) {
         return `Merk at permitteringer før ${formaterDato(
             startDato18mndsIntervall
-        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-måneders-intervallet (${formaterDato(
+        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-månedersintervallet (${formaterDato(
             startDato18mndsIntervall
         )}-${formaterDato(sluttDato18mndsIntervall)}).`;
     }
