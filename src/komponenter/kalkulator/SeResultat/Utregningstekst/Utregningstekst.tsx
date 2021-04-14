@@ -12,7 +12,6 @@ import { lagResultatTekst } from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
 import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForAGP2';
-import AlertStripe from 'nav-frontend-alertstriper';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -55,20 +54,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     aktuell18mndsperiode={aktuell18mndsperiode}
                 />
             )}
-            <AlertStripe
-                type={'info'}
-                form={'inline'}
-                className="utregningstekst__alertstripe"
-            >
-                <Element>
-                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
-                </Element>
-                <Normaltekst>
-                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
-                    betaler du permitteringslønn i fem fortløpende dager fra og
-                    med førstkommende mandag.
-                </Normaltekst>
-            </AlertStripe>
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale">
                     Les mer om arbeidsgiverperiode 2

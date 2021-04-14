@@ -236,7 +236,7 @@ enum Ukedag {
     Søndag = 7,
 }
 
-const erHelg = (dato: Dayjs): boolean => {
+export const erHelg = (dato: Dayjs): boolean => {
     const isoWeekday = dato.isoWeekday();
     return isoWeekday === Ukedag.Lørdag || isoWeekday === Ukedag.Søndag;
 };

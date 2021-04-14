@@ -13,6 +13,7 @@ import {
     Permitteringssituasjon,
 } from '../../utils/beregningerForAGP2';
 import {
+    erHelg,
     finnDato18MndTilbake,
     formaterDato,
     formaterDatoIntervall,
@@ -67,8 +68,8 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Arbeidsgiverperiode 2 treffer ansatte som har vært
-                            permittert i 30 uker eller mer i løpet av 18
-                            måneders perioden 2. desember 2019 - 1. juni 2021,
+                            permittert i 30 uker eller mer i løpet av
+                            18-måneders perioden 2. desember 2019–1. juni 2021,
                             dersom de fremdeles er permittert 1. juni.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -114,6 +115,7 @@ export const lagResultatTekst = (
                                 )
                             )}
                         </Normaltekst>
+                        {alertOmForskyvingAvAGP2HvisHelg(datoAGP2)}
                     </>
                 ),
                 beskrivelse: (
@@ -212,11 +214,9 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            innen{' '}
-                            {formaterDatoIntervall(
-                                til18mndsperiode(aktuell18mndsperiode.datoTil)
-                            )}{' '}
-                            , vil arbeidsgiverperiode 2 inntreffe.
+                            innen {formaterDato(aktuell18mndsperiode.datoTil)}
+                            {', '}
+                            vil arbeidsgiverperiode 2 inntreffe.
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Tips: Du kan fylle inn permitteringer framover i
@@ -285,6 +285,27 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
         return skrivUker(heleUkerPermittert) + dagerITekst;
     }
     return `${restIDager} dager`;
+};
+
+const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
+    if (erHelg(dato)) {
+        return (
+            <AlertStripe
+                type={'info'}
+                form={'inline'}
+                className="utregningstekst__alertstripe"
+            >
+                <Element>
+                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
+                </Element>
+                <Normaltekst>
+                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
+                    betaler du permitteringslønn i fem fortløpende dager fra og
+                    med førstkommende mandag.
+                </Normaltekst>
+            </AlertStripe>
+        );
+    }
 };
 
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
