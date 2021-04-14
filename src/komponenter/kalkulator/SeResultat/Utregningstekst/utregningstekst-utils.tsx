@@ -355,15 +355,19 @@ const advarselHvisPermitteringEtterInnføringsDato = (
             <AlertStripe
                 type={'advarsel'}
                 className={'utregningstekst__alertstripe'}
+                form={'inline'}
             >
-                Vi kan dessverre ikke beregne om du får arbeidsgiverperiode 2
-                ved permittering etter 1. juni i dette tilfellet. Vi jobber med
-                å forbedre løsningen. Hvis du har spørsmål kan de rettes til{' '}
-                <Lenke href={'tel'}>
-                    {' '}
-                    Arbeidsgivertelefonen på 55 55 33 36
-                </Lenke>
-                .
+                <Normaltekst>
+                    Vi kan dessverre ikke beregne om du får arbeidsgiverperiode
+                    2 ved permittering etter 1. juni i dette tilfellet. Vi
+                    jobber med å forbedre løsningen. Hvis du har spørsmål kan de
+                    rettes til{' '}
+                    <Lenke href={'tel'}>
+                        {' '}
+                        Arbeidsgivertelefonen på 55 55 33 36
+                    </Lenke>
+                    .
+                </Normaltekst>
             </AlertStripe>
         );
     }
