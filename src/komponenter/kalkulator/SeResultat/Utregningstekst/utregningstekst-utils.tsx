@@ -4,7 +4,7 @@ import {
     DatointervallKategori,
     DatoMedKategori,
 } from '../../typer';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForAGP2,
@@ -22,6 +22,8 @@ import {
 } from '../../utils/dato-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
+
+const datoPotensiellRegelendring = dayjs('2021-10-01');
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -180,14 +182,10 @@ export const lagResultatTekst = (
                             uten lønnsplikt før arbeidsgiverperiode 2
                             inntreffer.
                         </Element>
-                        <AlertStripe
-                            type={'advarsel'}
-                            form={'inline'}
-                            className={'utregningstekst__alertstripe'}
-                        >
-                            Vi tar forbehold om at endringer i regelverket kan
-                            påvirke denne beregningen.
-                        </AlertStripe>
+                        {advarselOmForbeholdAvRegelEndringVedSeinDato(
+                            aktuell18mndsperiode.datoTil,
+                            datoPotensiellRegelendring
+                        )}
                     </>
                 ),
                 beskrivelse: (
@@ -291,3 +289,21 @@ const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
 
 const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
+
+const advarselOmForbeholdAvRegelEndringVedSeinDato = (
+    dato: Dayjs,
+    senesteDato: Dayjs
+) => {
+    if (dato.isSameOrAfter(senesteDato)) {
+        return (
+            <AlertStripe
+                type={'advarsel'}
+                form={'inline'}
+                className={'utregningstekst__alertstripe'}
+            >
+                Vi tar forbehold om at endringer i regelverket kan påvirke denne
+                beregningen.
+            </AlertStripe>
+        );
+    }
+};
