@@ -4,7 +4,7 @@ import {
     DatointervallKategori,
     DatoMedKategori,
 } from '../../typer';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForAGP2,
@@ -23,6 +23,8 @@ import {
 } from '../../utils/dato-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
+
+const datoPotensiellRegelendring = dayjs('2021-10-01');
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -77,7 +79,7 @@ export const lagResultatTekst = (
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}{' '}
-                            i 18-måneders perioden fra 2. desember 2019 til 1.
+                            i 18-månedersperioden fra 2. desember 2019 til 1.
                             juni 2021. Dette overskrider 30 uker, dermed
                             inntreffer arbeidsgiverperiode 2 den 1. juni 2021.
                         </Normaltekst>
@@ -123,7 +125,7 @@ export const lagResultatTekst = (
                         Arbeidsgiverperiode 2 inntreffer dagen den ansatte har
                         vært permittert i 30 uker i løpet av de siste 18
                         månedene. I dette tilfellet vil den ansatte ha vært
-                        permittert i 30 uker i 18-måneders perioden{' '}
+                        permittert i 30 uker i 18-månedersperioden{' '}
                         {formaterDatoIntervall(
                             til18mndsperiode(sisteDagI18mndsperiode)
                         )}
@@ -182,14 +184,10 @@ export const lagResultatTekst = (
                             uten lønnsplikt før arbeidsgiverperiode 2
                             inntreffer.
                         </Element>
-                        <AlertStripe
-                            type={'advarsel'}
-                            form={'inline'}
-                            className={'utregningstekst__alertstripe'}
-                        >
-                            Vi tar forbehold om at endringer i regelverket kan
-                            påvirke denne beregningen.
-                        </AlertStripe>
+                        {advarselOmForbeholdAvRegelEndringVedSeinDato(
+                            aktuell18mndsperiode.datoTil,
+                            datoPotensiellRegelendring
+                        )}
                     </>
                 ),
                 beskrivelse: (
@@ -268,7 +266,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     if (finnesPermitteringerFørGittDato) {
         return `Merk at permitteringer før ${formaterDato(
             startDato18mndsIntervall
-        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-måneders-intervallet (${formaterDato(
+        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-månedersintervallet (${formaterDato(
             startDato18mndsIntervall
         )}-${formaterDato(sluttDato18mndsIntervall)}).`;
     }
@@ -312,3 +310,21 @@ const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
 
 const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
+
+const advarselOmForbeholdAvRegelEndringVedSeinDato = (
+    dato: Dayjs,
+    senesteDato: Dayjs
+) => {
+    if (dato.isSameOrAfter(senesteDato)) {
+        return (
+            <AlertStripe
+                type={'advarsel'}
+                form={'inline'}
+                className={'utregningstekst__alertstripe'}
+            >
+                Vi tar forbehold om at endringer i regelverket kan påvirke denne
+                beregningen.
+            </AlertStripe>
+        );
+    }
+};

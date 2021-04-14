@@ -8,11 +8,7 @@ import {
 } from '../../typer';
 
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
-import {
-    finnDato18MndTilbake,
-    getSenesteDatoAvTo,
-    getTidligsteDato,
-} from '../../utils/dato-utils';
+import { finnDato18MndTilbake, getTidligsteDato } from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
@@ -24,18 +20,17 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
-    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const { dagensDato } = useContext(PermitteringContext);
     const [
         advarselPermitteringForeldet,
         setAdvarselPermitteringForeldet,
     ] = useState('');
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
-        const grenseDato = getSenesteDatoAvTo(innføringsdatoAGP2, dagensDato);
         const datoErForGammel = getTidligsteDato([
             datoIntervall.datoFra,
             datoIntervall.datoTil,
-        ])?.isBefore(finnDato18MndTilbake(grenseDato));
+        ])?.isBefore(finnDato18MndTilbake(dagensDato));
 
         if (datoErForGammel) {
             setAdvarselPermitteringForeldet(

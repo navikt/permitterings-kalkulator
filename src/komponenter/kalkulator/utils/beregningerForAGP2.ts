@@ -271,6 +271,6 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 antallDagerFørAGP2Inntreffer
             );
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
-            return undefined;
+            return til18mndsperiode(innføringsdatoAGP2);
     }
 };
