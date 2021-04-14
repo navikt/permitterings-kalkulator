@@ -23,6 +23,8 @@ import {
 } from '../../utils/dato-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
+import Lenke from 'nav-frontend-lenker';
 
 const datoPotensiellRegelendring = dayjs('2021-10-01');
 
@@ -227,7 +229,18 @@ export const lagResultatTekst = (
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen.`,
+                konklusjon: (
+                    <>
+                        <Element>
+                            Hvis den ansatte ikke er permittert 1. juni, vil
+                            ikke arbeidsgiverperiode 2 inntreffe på denne dagen.
+                        </Element>
+                        {advarselHvisPermitteringEtterInnføringsDato(
+                            tidslinje,
+                            innføringsdatoAGP2
+                        )}
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -324,6 +337,33 @@ const advarselOmForbeholdAvRegelEndringVedSeinDato = (
             >
                 Vi tar forbehold om at endringer i regelverket kan påvirke denne
                 beregningen.
+            </AlertStripe>
+        );
+    }
+};
+
+const advarselHvisPermitteringEtterInnføringsDato = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs
+) => {
+    const finnesPermittering = finnFørsteDatoMedPermitteringUtenFravær(
+        tidslinje,
+        innføringsdatoAGP2
+    );
+    if (finnesPermittering) {
+        return (
+            <AlertStripe
+                type={'advarsel'}
+                className={'utregningstekst__alertstripe'}
+            >
+                Vi kan dessverre ikke beregne om du får arbeidsgiverperiode 2
+                ved permittering etter 1. juni i dette tilfellet. Vi jobber med
+                å forbedre løsningen. Hvis du har spørsmål kan de rettes til{' '}
+                <Lenke href={'tel'}>
+                    {' '}
+                    Arbeidsgivertelefonen på 55 55 33 36
+                </Lenke>
+                .
             </AlertStripe>
         );
     }
