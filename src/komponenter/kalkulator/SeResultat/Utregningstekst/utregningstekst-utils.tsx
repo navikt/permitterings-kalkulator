@@ -177,14 +177,15 @@ export const lagResultatTekst = (
                 konklusjon: (
                     <>
                         <Element>
-                            Du kan fram til{' '}
-                            {formaterDato(aktuell18mndsperiode.datoTil)}{' '}
-                            permittere i{' '}
+                            Ved ytterligere permittering i tiden fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} vil
+                            arbeidsgiverperiode 2 inntreffe etter{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            uten lønnsplikt før arbeidsgiverperiode 2
-                            inntreffer.
+                            uten lønn. Merk at du ved ny permittering alltid
+                            skal betale lønn i arbeidsgiverperiode 1 fra starten
+                            av permitteringen.
                         </Element>
                         {advarselOmForbeholdAvRegelEndringVedSeinDato(
                             aktuell18mndsperiode.datoTil,
@@ -245,7 +246,7 @@ export const lagResultatTekst = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             {' '}
-                            Per den 1. juni har den ansatte vært permittert i{' '}
+                            Per 1. juni har den ansatte vært permittert i{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}
@@ -355,18 +356,14 @@ const advarselHvisPermitteringEtterInnføringsDato = (
             <AlertStripe
                 type={'advarsel'}
                 className={'utregningstekst__alertstripe'}
-                form={'inline'}
             >
                 <Normaltekst>
-                    Vi kan dessverre ikke beregne om du får arbeidsgiverperiode
-                    2 ved permittering etter 1. juni i dette tilfellet. Vi
-                    jobber med å forbedre løsningen. Hvis du har spørsmål kan de
-                    rettes til{' '}
-                    <Lenke href={'tel'}>
-                        {' '}
-                        Arbeidsgivertelefonen på 55 55 33 36
-                    </Lenke>
-                    .
+                    Kalkulatoren kan dessverre ikke beregne om du får
+                    arbeidsgiverperiode 2 ved permittering etter 1. juni i dette
+                    tilfellet. Vi jobber med å forbedre løsningen. Du kan
+                    kontakte NAVs arbeidsgivertelefon på{' '}
+                    <Lenke href={'tlf:55553336'}> 55 55 33 36</Lenke>, for å få
+                    hjelp til denne beregningen.
                 </Normaltekst>
             </AlertStripe>
         );
