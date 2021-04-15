@@ -16,7 +16,7 @@ export const Infotekst: FunctionComponent<Props> = (props) => {
                 alt={props.imgAlt}
                 className="infotekst__ikon"
             />
-            <div className={'intotekst__children-wrapper'}>
+            <div className={'infotekst__children-wrapper'}>
                 {props.children}
             </div>
         </div>

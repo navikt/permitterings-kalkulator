@@ -1,12 +1,13 @@
 @import '~nav-frontend-core/less/_variabler';
 
 .infotekst {
-    background: #d0e0f1;
+    background: @navLysBlaLighten80;
     display: flex;
     flex-direction: column;
     padding: 1rem;
     align-items: center;
     border-radius: 0.25rem;
+    border: 1px solid @navLysBlaLighten40;
 
     &__ikon {
         margin-bottom: 1rem;
@@ -18,6 +19,7 @@
 
     @media (min-width: @screen-sm-min) {
         flex-direction: row;
+        align-items: start;
 
         &__ikon {
             margin-bottom: 0;
