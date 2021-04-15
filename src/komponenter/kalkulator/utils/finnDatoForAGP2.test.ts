@@ -61,7 +61,7 @@ describe('Tester for finnDatoForAGP2', () => {
         expect(datoAGP2).toEqual(innføringsdatoAGP2);
     });
 
-    test('Skal IKKE gi dato for AGP2 hvis permittert mer enn 30 uker før innføringsdato, men ikke permittert på selve innføringsdato', () => {
+    test('Skal ikke gi dato for AGP2 hvis permittert mer enn 30 uker før innføringsdato, men ikke permittert på selve innføringsdato', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const tidslinje = getTidslinje({
             permitteringer: [
@@ -106,22 +106,7 @@ describe('Tester for finnDatoForAGP2', () => {
         expect(datoAGP2).toEqual(innføringsdatoAGP2.add(15, 'weeks'));
     });
 
-    test('finnDatoForAGP2 skal finne dato for AGP2 ved løpende permittering', () => {
-        const innføringsdatoAGP2 = dayjs('2021-06-01');
-        const tidslinje = getTidslinje({
-            permitteringer: [
-                {
-                    datoFra: innføringsdatoAGP2.subtract(5, 'weeks'),
-                    erLøpende: true,
-                },
-            ],
-            andreFraværsperioder: [],
-        });
-        const datoAGP2 = finnDatoForAGP2(tidslinje, innføringsdatoAGP2, 210);
-        expect(datoAGP2).toEqual(innføringsdatoAGP2.add(25, 'weeks'));
-    });
-
-    test('finnDatoForAGP2 skal ikke gi en dato hvis permitteringen ikke _overskrider_ 210', () => {
+    test('Skal ikke gi dato for AGP2 hvis permitteringen ikke _overskrider_ 210', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const permitteringsslutt = innføringsdatoAGP2.subtract(40, 'days');
         const tidslinje = getTidslinje({
@@ -142,7 +127,22 @@ describe('Tester for finnDatoForAGP2', () => {
         expect(datoAGP2).toEqual(undefined);
     });
 
-    test('skal håndtere løpende permittering etter innføringsdato', () => {
+    test('Skal finne dato for AGP2 ved løpende permittering', () => {
+        const innføringsdatoAGP2 = dayjs('2021-06-01');
+        const tidslinje = getTidslinje({
+            permitteringer: [
+                {
+                    datoFra: innføringsdatoAGP2.subtract(5, 'weeks'),
+                    erLøpende: true,
+                },
+            ],
+            andreFraværsperioder: [],
+        });
+        const datoAGP2 = finnDatoForAGP2(tidslinje, innføringsdatoAGP2, 210);
+        expect(datoAGP2).toEqual(innføringsdatoAGP2.add(25, 'weeks'));
+    });
+
+    test('Skal håndtere løpende permittering etter innføringsdato', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const tidslinje = getTidslinje({
             permitteringer: [
@@ -157,7 +157,7 @@ describe('Tester for finnDatoForAGP2', () => {
         expect(datoAGP2).toEqual(dayjs('2021-07-01').add(210, 'days'));
     });
 
-    test('skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ved telling av løpende permittering', () => {
+    test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ved telling av løpende permittering', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const tidslinje = getTidslinje({
             permitteringer: [
@@ -176,7 +176,7 @@ describe('Tester for finnDatoForAGP2', () => {
         expect(datoAGP2).toEqual(dayjs('2021-09-14'));
     });
 
-    test('skal håndtere lang permitteringsperiode etter innføringsdato', () => {
+    test('Skal håndtere lang permitteringsperiode etter innføringsdato', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const tidslinje = getTidslinje({
             permitteringer: [
@@ -212,4 +212,8 @@ describe('Tester for finnDatoForAGP2', () => {
         const datoAGP2 = finnDatoForAGP2(tidslinje, innføringsdatoAGP2, 210);
         expect(datoAGP2).toEqual(innføringsdatoAGP2);
     });
+
+    describe('Tester skrevet i samarbeid med fagjurist', () => {
+
+    })
 });
