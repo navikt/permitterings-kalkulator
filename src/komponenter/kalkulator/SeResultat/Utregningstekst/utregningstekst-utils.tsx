@@ -23,6 +23,8 @@ import {
 } from '../../utils/dato-utils';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
+import Lenke from 'nav-frontend-lenker';
 
 const datoPotensiellRegelendring = dayjs('2021-10-01');
 
@@ -175,14 +177,15 @@ export const lagResultatTekst = (
                 konklusjon: (
                     <>
                         <Element>
-                            Du kan fram til{' '}
-                            {formaterDato(aktuell18mndsperiode.datoTil)}{' '}
-                            permittere i{' '}
+                            Ved ytterligere permittering i tiden fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} vil
+                            arbeidsgiverperiode 2 inntreffe etter{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 210 - oversiktOverPermittering.dagerBrukt
                             )}{' '}
-                            uten lønnsplikt før arbeidsgiverperiode 2
-                            inntreffer.
+                            uten lønn. Merk at du ved ny permittering alltid
+                            skal betale lønn i arbeidsgiverperiode 1 fra starten
+                            av permitteringen.
                         </Element>
                         {advarselOmForbeholdAvRegelEndringVedSeinDato(
                             aktuell18mndsperiode.datoTil,
@@ -227,12 +230,23 @@ export const lagResultatTekst = (
             };
         case Permitteringssituasjon.AGP2_IKKE_NÅDD_PGA_IKKE_PERMITTERT_VED_INNFØRINGSDATO:
             return {
-                konklusjon: `Hvis den ansatte ikke er permittert 1. juni, vil ikke arbeidsgiverperiode 2 inntreffe på denne dagen.`,
+                konklusjon: (
+                    <>
+                        <Element>
+                            Hvis den ansatte ikke er permittert 1. juni, vil
+                            ikke arbeidsgiverperiode 2 inntreffe på denne dagen.
+                        </Element>
+                        {advarselHvisPermitteringEtterInnføringsDato(
+                            tidslinje,
+                            innføringsdatoAGP2
+                        )}
+                    </>
+                ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             {' '}
-                            Per den 1. juni har den ansatte vært permittert i{' '}
+                            Per 1. juni har den ansatte vært permittert i{' '}
                             {skrivDagerIHeleUkerPlussDager(
                                 oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                             )}
@@ -324,6 +338,33 @@ const advarselOmForbeholdAvRegelEndringVedSeinDato = (
             >
                 Vi tar forbehold om at endringer i regelverket kan påvirke denne
                 beregningen.
+            </AlertStripe>
+        );
+    }
+};
+
+const advarselHvisPermitteringEtterInnføringsDato = (
+    tidslinje: DatoMedKategori[],
+    innføringsdatoAGP2: Dayjs
+) => {
+    const finnesPermittering = finnFørsteDatoMedPermitteringUtenFravær(
+        tidslinje,
+        innføringsdatoAGP2
+    );
+    if (finnesPermittering) {
+        return (
+            <AlertStripe
+                type={'advarsel'}
+                className={'utregningstekst__alertstripe'}
+            >
+                <Normaltekst>
+                    Kalkulatoren kan dessverre ikke beregne om du får
+                    arbeidsgiverperiode 2 ved permittering etter 1. juni i dette
+                    tilfellet. Vi jobber med å forbedre løsningen. Du kan
+                    kontakte NAVs arbeidsgivertelefon på{' '}
+                    <Lenke href={'tlf:55553336'}> 55 55 33 36</Lenke>, for å få
+                    hjelp til denne beregningen.
+                </Normaltekst>
             </AlertStripe>
         );
     }
