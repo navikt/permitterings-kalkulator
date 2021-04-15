@@ -362,8 +362,8 @@ const advarselHvisPermitteringEtterInnføringsDato = (
                     arbeidsgiverperiode 2 ved permittering etter 1. juni i dette
                     tilfellet. Vi jobber med å forbedre løsningen. Du kan
                     kontakte NAVs arbeidsgivertelefon på{' '}
-                    <Lenke href={'tlf:55553336'}> 55 55 33 36</Lenke>, for å få
-                    hjelp til denne beregningen.
+                    <Lenke href={'tel:+4755553336'}> 55 55 33 36</Lenke>, for å
+                    få hjelp til denne beregningen.
                 </Normaltekst>
             </AlertStripe>
         );
