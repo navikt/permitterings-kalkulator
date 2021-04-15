@@ -165,6 +165,12 @@ interface KnappProps {
 const GetKnapp = (props: KnappProps) => {
     return (
         <KnappBase
+            style={{
+                display: 'block',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+            }}
             type={props.type}
             onClick={() => (window.location.href = props.url)}
         >

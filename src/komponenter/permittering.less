@@ -10,6 +10,14 @@ html {
 .permittering {
     background-color: #e6e6e6;
 
+    .knapp {
+        display: block !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 20rem;
+    }
+
     .textair {
         padding-top: 0.75rem;
     }
@@ -154,6 +162,10 @@ html {
     }
 
     @media (min-width: 768px) {
+        .knapp {
+            max-width: 30rem;
+        }
+
         &__info-ark {
             padding: 2rem 1.5rem 1rem 1.5rem;
             background-color: white;

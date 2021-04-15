@@ -63,6 +63,6 @@ describe('Tester for tidslinje-utils.ts', () => {
             },
             dayjs('2021-04-02')
         );
-        expect(dato).toEqual(finnDato18MndFram(dayjs('2020-07-01')))
+        expect(dato).toEqual(finnDato18MndFram(dayjs('2020-07-01')));
     });
 });

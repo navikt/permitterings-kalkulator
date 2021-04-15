@@ -1,7 +1,8 @@
 import dayjs, { Dayjs } from 'dayjs';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2, getPermitteringsoversikt,
+    finnDatoForAGP2,
+    getPermitteringsoversikt,
     getPermitteringsoversiktFor18Måneder,
 } from './beregningerForAGP2';
 import { configureDayJS } from '../../../dayjs-config';
@@ -262,28 +263,29 @@ describe('Tester for finnDatoForAGP2', () => {
                 dagensDato,
                 210
             );
-            const oversikt = getPermitteringsoversikt(tidslinje, aktuell18mndsperiode!);
+            const oversikt = getPermitteringsoversikt(
+                tidslinje,
+                aktuell18mndsperiode!
+            );
             expect(datoAGP2).toEqual(undefined);
             expect(aktuell18mndsperiode?.datoTil).toEqual(dayjs('2022-05-26'));
             expect(210 - oversikt.dagerBrukt).toEqual(24);
         });
 
         test('Test 3', () => {
-            const tidslinje = getTidslinje(
-                {
-                    permitteringer: [
-                        {
-                            datoFra: dayjs('2020-11-27'),
-                            datoTil: dayjs('2021-05-31'),
-                        },
-                        {
-                            datoFra: dayjs('2021-06-14'),
-                            erLøpende: true,
-                        },
-                    ],
-                    andreFraværsperioder: [],
-                }
-            );
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: dayjs('2020-11-27'),
+                        datoTil: dayjs('2021-05-31'),
+                    },
+                    {
+                        datoFra: dayjs('2021-06-14'),
+                        erLøpende: true,
+                    },
+                ],
+                andreFraværsperioder: [],
+            });
             const datoAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
@@ -293,26 +295,24 @@ describe('Tester for finnDatoForAGP2', () => {
         });
 
         test('Test 4', () => {
-            const tidslinje = getTidslinje(
-                {
-                    permitteringer: [
-                        {
-                            datoFra: dayjs('2020-11-27'),
-                            datoTil: dayjs('2021-05-31'),
-                        },
-                        {
-                            datoFra: dayjs('2021-06-14'),
-                            erLøpende: true,
-                        },
-                    ],
-                    andreFraværsperioder: [
-                        {
-                            datoFra: dayjs('2021-02-01'),
-                            datoTil: dayjs('2021-02-28'),
-                        },
-                    ],
-                }
-            );
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: dayjs('2020-11-27'),
+                        datoTil: dayjs('2021-05-31'),
+                    },
+                    {
+                        datoFra: dayjs('2021-06-14'),
+                        erLøpende: true,
+                    },
+                ],
+                andreFraværsperioder: [
+                    {
+                        datoFra: dayjs('2021-02-01'),
+                        datoTil: dayjs('2021-02-28'),
+                    },
+                ],
+            });
             const datoAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
@@ -322,26 +322,24 @@ describe('Tester for finnDatoForAGP2', () => {
         });
 
         test('Test 5', () => {
-            const tidslinje = getTidslinje(
-                {
-                    permitteringer: [
-                        {
-                            datoFra: dayjs('2020-03-23'),
-                            datoTil: dayjs('2020-12-31'),
-                        },
-                        {
-                            datoFra: dayjs('2020-02-22'),
-                            datoTil: dayjs('2020-03-31'),
-                        },
-                    ],
-                    andreFraværsperioder: [
-                        {
-                            datoFra: dayjs('2020-11-14'),
-                            datoTil: dayjs('2020-11-14'),
-                        },
-                    ],
-                }
-            );
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: dayjs('2020-03-23'),
+                        datoTil: dayjs('2020-12-31'),
+                    },
+                    {
+                        datoFra: dayjs('2020-02-22'),
+                        datoTil: dayjs('2020-03-31'),
+                    },
+                ],
+                andreFraværsperioder: [
+                    {
+                        datoFra: dayjs('2020-11-14'),
+                        datoTil: dayjs('2020-11-14'),
+                    },
+                ],
+            });
             const datoAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,
@@ -351,30 +349,28 @@ describe('Tester for finnDatoForAGP2', () => {
         });
 
         test('Test 6', () => {
-            const tidslinje = getTidslinje(
-                {
-                    permitteringer: [
-                        {
-                            datoFra: dayjs('2020-03-23'),
-                            datoTil: dayjs('2020-12-31'),
-                        },
-                        {
-                            datoFra: dayjs('2020-02-22'),
-                            datoTil: dayjs('2020-03-31'),
-                        },
-                        {
-                            datoFra: dayjs('2021-04-01'),
-                            datoTil: dayjs('2021-06-30'),
-                        },
-                    ],
-                    andreFraværsperioder: [
-                        {
-                            datoFra: dayjs('2020-11-14'),
-                            datoTil: dayjs('2020-11-14'),
-                        },
-                    ],
-                }
-            );
+            const tidslinje = getTidslinje({
+                permitteringer: [
+                    {
+                        datoFra: dayjs('2020-03-23'),
+                        datoTil: dayjs('2020-12-31'),
+                    },
+                    {
+                        datoFra: dayjs('2020-02-22'),
+                        datoTil: dayjs('2020-03-31'),
+                    },
+                    {
+                        datoFra: dayjs('2021-04-01'),
+                        datoTil: dayjs('2021-06-30'),
+                    },
+                ],
+                andreFraværsperioder: [
+                    {
+                        datoFra: dayjs('2020-11-14'),
+                        datoTil: dayjs('2020-11-14'),
+                    },
+                ],
+            });
             const datoAGP2 = finnDatoForAGP2(
                 tidslinje,
                 innføringsdatoAGP2,

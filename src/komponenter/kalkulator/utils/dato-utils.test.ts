@@ -12,7 +12,9 @@ import {
     getAntallOverlappendeDager,
     getOverlappendePeriode,
     getSenesteDato,
-    getTidligsteDato, perioderOverlapper, tilGyldigDatoIntervall,
+    getTidligsteDato,
+    perioderOverlapper,
+    tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
 import { configureDayJS } from '../../../dayjs-config';
@@ -183,7 +185,7 @@ describe('Tester for dato-utils.ts', () => {
 
     test('tilGyldigDatoIntervall skal håndtere undefined input', () => {
         expect(tilGyldigDatoIntervall({})).toEqual(undefined);
-    })
+    });
 
     describe('Tester for getOverlappendePeriode', () => {
         test('Skal returnere overlappende periode for faste perioder', () => {
@@ -262,7 +264,7 @@ describe('Tester for dato-utils.ts', () => {
                 {
                     datoFra: dayjs('2021-01-13'),
                     datoTil: dayjs('2021-02-10'),
-                }
+                },
             ]);
             expect(overlapper).toBeTruthy();
         });
@@ -275,11 +277,11 @@ describe('Tester for dato-utils.ts', () => {
                 {
                     datoFra: dayjs('2021-01-13'),
                     datoTil: dayjs('2021-02-10'),
-                }
+                },
             ]);
             expect(overlapper).toBeFalsy();
         });
-    })
+    });
 
     describe('Tester for fraværInngårIPermitteringsperioder', () => {
         test('fraværInngårIPermitteringsperioder skal gi false hvis fraværet er helt utenfor permitteringsperiodene', () => {

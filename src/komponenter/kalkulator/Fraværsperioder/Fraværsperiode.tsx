@@ -13,7 +13,7 @@ const Fraværsperiode: FunctionComponent<Props> = ({
     fraværsperiode,
     setFraværsperiode,
     slettFraværsperiode,
-    inngårIPermitteringsperiode
+    inngårIPermitteringsperiode,
 }) => {
     const advarsel = inngårIPermitteringsperiode
         ? ''
@@ -25,7 +25,6 @@ const Fraværsperiode: FunctionComponent<Props> = ({
             datoIntervall={fraværsperiode}
             setDatoIntervall={setFraværsperiode}
             slettPeriode={slettFraværsperiode}
-
         />
     );
 };

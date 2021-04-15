@@ -10,9 +10,7 @@ const Topp: FunctionComponent = () => {
                     Du har lønnsplikt når den ansatte har vært permittert i 30
                     uker. Kalkulatoren regner ut når du skal betale lønn.
                 </Element>
-                <Element>
-                    Denne informasjonen trenger du
-                </Element>
+                <Element>Denne informasjonen trenger du</Element>
                 <ul className="topp__liste">
                     <Normaltekst tag="li">
                         Periodene den ansatte har vært permittert
