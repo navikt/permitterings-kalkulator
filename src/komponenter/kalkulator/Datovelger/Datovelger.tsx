@@ -20,8 +20,8 @@ import {
 import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
-import { PermitteringContext } from '../ContextProvider';
-import { formaterDato } from '../kalkulator/utils/dato-utils';
+import { PermitteringContext } from '../../ContextProvider';
+import { formaterDato } from '../utils/dato-utils';
 
 interface Props {
     overtekst: string;

@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Redirect from './Redirect';
-import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
 import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
 import ContextProvider from './komponenter/ContextProvider';
@@ -10,7 +9,7 @@ import { Brødsmulesti } from './komponenter/Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
 import './App.less';
 
-export const HOVEDSIDE_PATH = '/arbeidsgiver-permittering';
+export const HOVEDSIDE_PATH = '/permittering-kalkulator';
 export const KALKULATOR_PATH = '/arbeidsgiver-permittering/kalkulator';
 
 export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
@@ -24,7 +23,7 @@ export const KALKULATOR_BRØDSMULE: Breadcrumb = {
     handleInApp: true,
 };
 
-const App = () => {
+export const App = () => {
     useEffect(skrivTilMalingBesokerSide);
     return (
         <BrowserRouter>
@@ -33,12 +32,6 @@ const App = () => {
                     <ContextProvider>
                         <Redirect>
                             <Route path={HOVEDSIDE_PATH} exact={true}>
-                                <Brødsmulesti
-                                    brødsmuler={[HOVEDSIDE_BRØDSMULE]}
-                                />
-                                <Permittering />
-                            </Route>
-                            <Route path={KALKULATOR_PATH} exact={true}>
                                 <Brødsmulesti
                                     brødsmuler={[
                                         HOVEDSIDE_BRØDSMULE,

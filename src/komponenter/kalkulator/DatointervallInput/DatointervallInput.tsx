@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import './DatointervallInput.less';
 import { DatoIntervall } from '../typer';
-import Datovelger from '../../Datovelger/Datovelger';
+import Datovelger from '../Datovelger/Datovelger';
 import { Checkbox } from 'nav-frontend-skjema';
 import Lukknapp from 'nav-frontend-lukknapp';
 import { Dayjs } from 'dayjs';

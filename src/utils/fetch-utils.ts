@@ -1,11 +1,8 @@
-import { DocumentTypes } from '../komponenter/ContextProvider';
-
 interface Innhold {
-    data: DocumentTypes[];
     env: string[];
 }
 
-export const BASE_URL = '/arbeidsgiver-permittering';
+export const BASE_URL = '/permittering-kalkulator';
 
 export const isProduction = (): boolean =>
     process.env.NODE_ENV === 'production';
