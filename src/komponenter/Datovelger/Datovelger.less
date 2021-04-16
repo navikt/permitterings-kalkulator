@@ -1,0 +1,47 @@
+@import '~nav-frontend-core/less/_variabler';
+
+.datofelt {
+    margin-right: 2rem;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    .skjemaelement__input {
+        width: 9.5rem;
+    }
+
+    &__input-container {
+        display: flex;
+    }
+
+    .ReactCollapse--collapse {
+        position: absolute;
+        top: 6rem;
+        left: 0;
+        z-index: 999;
+        background-color: @white;
+    }
+
+    .ReactCollapse--content {
+        border: 1px solid @navGra60;
+    }
+
+    &__knapp {
+        position: absolute;
+        background-color: white;
+        height: 2.5rem;
+        width: 2.5rem;
+        border: 1px solid @navBlaDarken40;
+        left: 7rem;
+
+        &:focus {
+            outline: none;
+            border: 2px solid @navBlaDarken40;
+        }
+
+        &:hover {
+            background-color: @navBlaLighten80;
+            border: 2px solid @navBlaDarken40;
+        }
+    }
+}
