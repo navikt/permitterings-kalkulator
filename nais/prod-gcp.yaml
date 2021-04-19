@@ -1,0 +1,22 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: permittering-kalkulator
+  namespace: arbeidsgiver
+  labels:
+    team: arbeidsgiver
+spec:
+  image: {{image}}
+  team: arbeidsgiver
+  port: 3000
+  ingresses:
+    - arbeidsgiver/permittering/kalkulator
+  liveness:
+    path: /permittering-kalkulator/internal/isReady
+    initialDelay: 50
+  readiness:
+    path: /permittering-kalkulator/internal/isReady
+    initialDelay: 50
+  env:
+    - name: NODE_EXTRA_CA_CERTS
+      value: "/etc/ssl/ca-bundle.pem"

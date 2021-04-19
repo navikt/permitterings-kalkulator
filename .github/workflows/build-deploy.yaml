@@ -14,8 +14,10 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+
       - name: Enhetstesting av applikasjon
-          run: yarn test-ci
+        run: yarn test-ci
+
       - name: Build tag and push Docker container
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
