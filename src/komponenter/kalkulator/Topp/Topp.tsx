@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './Topp.less';
-import { Normaltekst, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 
 const Topp: FunctionComponent = () => {
     return (
