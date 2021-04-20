@@ -14,10 +14,6 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
-
-      - name: Enhetstesting av applikasjon
-        run: yarn test-ci
-
       - name: Build tag and push Docker container
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -26,6 +22,8 @@ jobs:
           echo ${GITHUB_TOKEN} | docker login ghcr.io --username ${GITHUB_REPOSITORY} --password-stdin
           echo ${IMAGE}
           docker push ${IMAGE}
+      - name: Enhetstesting av applikasjon
+          run: yarn test-ci
 
   deploy-to-dev-gcp:
     name: Deploy to dev-gcp
