@@ -30,9 +30,6 @@ jobs:
           echo ${IMAGE}
           docker push ${IMAGE}
 
-      - name: Enhetstesting av applikasjon
-        run: yarn test-ci
-
   deploy-to-dev-gcp:
     name: Deploy to dev-gcp
     if: github.ref == 'refs/heads/main'
