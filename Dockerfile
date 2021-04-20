@@ -3,8 +3,10 @@ FROM navikt/node-express:12.2.0-alpine
 
 ENV NODE_ENV=production
 
-COPY server/ server/
-COPY static/ static/
+WORKDIR /app
+
+COPY server ./server
+COPY build/ ./build
 COPY package.json package.json
 COPY yarn.lock yarn.lock
 
