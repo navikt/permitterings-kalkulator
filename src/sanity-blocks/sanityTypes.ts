@@ -75,6 +75,11 @@ export interface EkspanderbartpanelType extends CommonContentType {
     innhold: string;
 }
 
+export interface AlertstripePanelType extends CommonContentType {
+    alerttype: string[];
+    innhold: BlockType[];
+}
+
 export interface FargeEditor extends CommonContentType {
     color: Farge | undefined;
     innhold: BlockType[];

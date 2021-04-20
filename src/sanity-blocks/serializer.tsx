@@ -22,12 +22,14 @@ import {
     LesMerType,
     VeilederPanelType,
     KnappeParType,
+    AlertstripePanelType,
 } from './sanityTypes';
 import BlockContent from '@sanity/block-content-to-react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
 import Lesmerpanel from 'nav-frontend-lesmerpanel';
 import { skrivTilMalingVideoBlirSpilt } from '../utils/amplitudeUtils';
 import KnappBase from 'nav-frontend-knapper';
+import AlertStripe from 'nav-frontend-alertstriper';
 
 export enum TypoStyle {
     H1 = 'h1',
@@ -58,7 +60,8 @@ interface SerializerNodeTypes {
         | VeilederPanelType
         | LesMerType
         | EnkeltKnapp
-        | KnappeParType;
+        | KnappeParType
+        | AlertstripePanelType;
     children: React.ReactElement[] | string[];
     options: {
         imageOptions: {};
@@ -101,6 +104,10 @@ interface KnappeParNode extends SerializerNodeTypes {
     node: KnappeParType;
 }
 
+interface AlertTypeNode extends SerializerNodeTypes {
+    node: AlertstripePanelType;
+}
+
 const typoComponents = {
     [TypoStyle.H1]: Sidetittel,
     [TypoStyle.H2]: Innholdstittel,
@@ -138,6 +145,34 @@ const veilederpanelSerializer = (panel: VeilederPanelNode) => {
         </div>
     ) : (
         <div />
+    );
+};
+
+const alertstripeSerializer = (alert: AlertTypeNode) => {
+    const type = alert.node.alerttype[0];
+    return (
+        <AlertStripe
+            type={
+                type === 'info'
+                    ? 'info'
+                    : type === 'suksess'
+                    ? 'suksess'
+                    : type === 'feil'
+                    ? 'feil'
+                    : 'advarsel'
+            }
+        >
+            {alert.node.innhold.map((block: any, index: any) => {
+                return (
+                    <React.Fragment key={index}>
+                        <BlockContent
+                            blocks={block}
+                            serializers={serializers}
+                        />
+                    </React.Fragment>
+                );
+            })}
+        </AlertStripe>
     );
 };
 
@@ -338,6 +373,7 @@ export const serializers = {
         fargetTekst: fargetTekstSerializer,
         fargeEditor: fargeEditorSerializer,
         iframe: videoSerializer,
+        alertstripe: alertstripeSerializer,
     },
     marks: {
         highlightGreen: (props: Highlighted) => (
