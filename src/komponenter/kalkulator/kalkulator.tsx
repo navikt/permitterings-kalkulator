@@ -75,28 +75,26 @@ const Kalkulator = () => {
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
                     <Normaltekst className="kalkulator__advarsel-bold">
-                        {formaterDato(dayjs('2021-04-19'))}
+                        {formaterDato(dayjs('2021-04-21'))}
                     </Normaltekst>
                     <Normaltekst>
                         <span className="kalkulator__advarsel-bold">
-                            Ny partsavtale om arbeid under permitteringsperioden
+                            NAV kjenner til at LO og NHO er enige om nye
+                            permitteringsregler.
                         </span>{' '}
-                        NHO og LO har inngått ny avtale om forlenge den
-                        tidligere avbruddsperioden fra 6 til 10 uker som gjør at
-                        en ansatt kan bli tatt tilbake tilbake til noe
-                        arbeid/korte oppdrag under permitteringsperioden.{' '}
+                        Dette kan bety at beregningen som kalkulatoren gir nå
+                        ikke er riktig etter at de nye reglene er iverksatt.
+                        Merk at det kun er beregninger der den permitterte
+                        jobber under permitteringen som eventuelt vil bli
+                        berørt. Vi jobber med å tilpasse kalkulatoren og vil
+                        legge ut informasjon så snart vi vet mer om de nye
+                        reglene.{' '}
                         <a
                             href="https://www.nho.no/tema/arbeidsliv/artikler/nye-permitteringsregler/"
                             className="lenke"
                         >
-                            Se NHO-side om avtalen.
+                            Les mer om reglene på nettsiden til NHO
                         </a>
-                    </Normaltekst>
-
-                    <Normaltekst className="kalkulator__advarsel-bold">
-                        <br />
-                        Vi jobber nå med å tydeliggjøre detailene fra avtalen og
-                        vil implementer dette i denne veiviseren!
                     </Normaltekst>
                 </AlertStripeAdvarsel>
                 <Innholdstittel tag="h2">
