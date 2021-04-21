@@ -19,7 +19,6 @@ module.exports = {
             extends: ['plugin:jsx-a11y/recommended'],
             rules: {
                 '@typescript-eslint/no-use-before-define': 'off',
-                'no-unused-vars': ['warn'],
             },
         },
     },

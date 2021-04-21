@@ -28,17 +28,6 @@ export const finnInitialgrenserForTidslinjedatoer = (
     };
 };
 
-const finnFørsteDefinertePermittering = (
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
-): DatoIntervall | undefined => {
-    const førsteDefinertePermittering = allePermitteringerOgFraværesPerioder.permitteringer.find(
-        (periode) => tilGyldigDatoIntervall(periode)
-    );
-    return førsteDefinertePermittering
-        ? tilGyldigDatoIntervall(førsteDefinertePermittering)
-        : undefined;
-};
-
 const finneKategori = (
     dato: Dayjs,
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder
