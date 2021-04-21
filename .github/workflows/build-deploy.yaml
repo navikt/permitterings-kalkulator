@@ -14,6 +14,15 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
+      - name: Installer avhengigheter (yarn ci)
+        run: |
+          yarn install --frozen-lockfile
+
+      - name: Enhetstesting av applikasjon
+        run: yarn test-ci
+
+      - name: Bygg (yarn run build)
+        run: yarn run build
 
       - name: Login to ghcr.io
         uses: docker/login-action@v1
