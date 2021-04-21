@@ -11,5 +11,8 @@ COPY yarn.lock yarn.lock
 RUN yarn install --frozen-lockfile
 RUN yarn build
 
+WORKDIR /app/server
+RUN yarn install --frozen-lockfile
+
 EXPOSE 3000
 ENTRYPOINT ["yarn", "server"]
