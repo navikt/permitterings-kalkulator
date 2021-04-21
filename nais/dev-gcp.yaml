@@ -10,7 +10,7 @@ spec:
   team: arbeidsgiver
   port: 3000
   ingresses:
-    - https://arbeidsgiver-permittering/kalkulator.dev.nav.no/arbeidsgiver-permittering/kalkulator
+    - https://arbeidsgiver-permittering.dev.nav.no/arbeidsgiver-permittering/kalkulator
   liveness:
     path: /arbeidsgiver-permittering/kalkulator/internal/isAlive
     initialDelay: 50
