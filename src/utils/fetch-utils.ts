@@ -2,7 +2,7 @@ interface Innhold {
     env: string[];
 }
 
-export const BASE_URL = '/permittering-kalkulator';
+export const BASE_URL = '/arbeidsgiver-permittering/kalkulator';
 
 export const isProduction = (): boolean =>
     process.env.NODE_ENV === 'production';

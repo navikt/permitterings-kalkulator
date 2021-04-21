@@ -9,8 +9,8 @@ import { Brødsmulesti } from './komponenter/Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
 import './App.less';
 
-export const HOVEDSIDE_PATH = '/permittering-kalkulator';
-export const KALKULATOR_PATH = '/arbeidsgiver-permittering/kalkulator';
+export const HOVEDSIDE_PATH = '/arbeidsgiver-permittering/kalkulator';
+export const KALKULATOR_PATH = '/arbeidsgiver-permittering';
 
 export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
     url: HOVEDSIDE_PATH,
