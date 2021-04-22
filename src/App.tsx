@@ -9,17 +9,17 @@ import { Brødsmulesti } from './komponenter/Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
 import './App.less';
 
-export const HOVEDSIDE_PATH = '/arbeidsgiver-permittering';
-export const KALKULATOR_PATH = '/permittering-kalkulator';
+const HOVEDSIDE_PATH = '/permittering-kalkulator';
+const PERMITTERINGSSIDE_PATH = '/arbeidsgiver-permittering';
 
-export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
+export const KALKULATOR_BRØDSMULE: Breadcrumb = {
     url: HOVEDSIDE_PATH,
-    title: 'Veiviser for permittering',
+    title: 'Kalkulator',
     handleInApp: true,
 };
-export const KALKULATOR_BRØDSMULE: Breadcrumb = {
-    url: KALKULATOR_PATH,
-    title: 'Kalkulator',
+export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
+    url: PERMITTERINGSSIDE_PATH,
+    title: 'Arbeidsgiver permittering',
     handleInApp: true,
 };
 
@@ -31,7 +31,7 @@ export const App = () => {
                 <Switch>
                     <ContextProvider>
                         <Redirect>
-                            <Route path={KALKULATOR_PATH} exact={true}>
+                            <Route path={HOVEDSIDE_PATH} exact={true}>
                                 <Brødsmulesti
                                     brødsmuler={[
                                         HOVEDSIDE_BRØDSMULE,

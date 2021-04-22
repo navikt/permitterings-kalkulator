@@ -2,7 +2,7 @@
     "name": "permittering-kalkulator",
     "version": "0.1.0",
     "private": true,
-    "homepage": "/arbeidsgiver-permittering",
+    "homepage": "/permittering-kalkulator",
     "dependencies": {
         "@craco/craco": "^6.1.1",
         "@navikt/fnrvalidator": "^1.1.3",
