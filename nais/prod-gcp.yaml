@@ -1,8 +1,8 @@
 apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
-  name: arbeidsgiver-permittering
-  namespace: default
+  name: permittering-kalkulator
+  namespace: arbeidsgiver
   labels:
     team: arbeidsgiver
 spec:
@@ -10,16 +10,13 @@ spec:
   team: arbeidsgiver
   port: 3000
   ingresses:
-    - {{ingress}}
+    - https://arbeidsgiver.nav.no/permittering-kalkulator
   liveness:
-    path: /arbeidsgiver-permittering/internal/isReady
+    path: /permittering-kalkulator/internal/isReady
     initialDelay: 50
   readiness:
-    path: /arbeidsgiver-permittering/internal/isReady
+    path: /permittering-kalkulator/internal/isReady
     initialDelay: 50
-  vault:
-    enabled: true
-  webproxy: true
   env:
     - name: NODE_EXTRA_CA_CERTS
       value: "/etc/ssl/ca-bundle.pem"

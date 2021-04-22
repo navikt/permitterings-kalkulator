@@ -1,10 +1,6 @@
-import { FunctionComponent, useEffect } from 'react';
-import {
-    Breadcrumb,
-    onBreadcrumbClick,
-    setBreadcrumbs,
-} from '@navikt/nav-dekoratoren-moduler';
-import { useHistory } from 'react-router';
+import {FunctionComponent, useEffect} from 'react';
+import {Breadcrumb, onBreadcrumbClick, setBreadcrumbs,} from '@navikt/nav-dekoratoren-moduler';
+import {useHistory} from 'react-router';
 
 interface Props {
     brødsmuler: Breadcrumb[];

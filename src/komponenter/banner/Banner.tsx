@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import React, { FunctionComponent } from 'react';
 import BEMHelper from '../../utils/bem';
 import { Sidetittel } from 'nav-frontend-typografi';
 import './banner.less';

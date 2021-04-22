@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Redirect from './Redirect';
-import Permittering from './komponenter/Permittering';
 import './assets/styling/dekorator-override.less';
 import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
 import ContextProvider from './komponenter/ContextProvider';
@@ -10,21 +9,21 @@ import { Brødsmulesti } from './komponenter/Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
 import './App.less';
 
-export const HOVEDSIDE_PATH = '/arbeidsgiver-permittering';
-export const KALKULATOR_PATH = '/arbeidsgiver-permittering/kalkulator';
+const HOVEDSIDE_PATH = '/permittering-kalkulator';
+const PERMITTERINGSSIDE_PATH = '/arbeidsgiver-permittering';
 
-export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
-    url: HOVEDSIDE_PATH,
-    title: 'Veiviser for permittering',
-    handleInApp: true,
-};
 export const KALKULATOR_BRØDSMULE: Breadcrumb = {
-    url: KALKULATOR_PATH,
+    url: HOVEDSIDE_PATH,
     title: 'Kalkulator',
     handleInApp: true,
 };
+export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
+    url: PERMITTERINGSSIDE_PATH,
+    title: 'Arbeidsgiver permittering',
+    handleInApp: true,
+};
 
-const App = () => {
+export const App = () => {
     useEffect(skrivTilMalingBesokerSide);
     return (
         <BrowserRouter>
@@ -33,12 +32,6 @@ const App = () => {
                     <ContextProvider>
                         <Redirect>
                             <Route path={HOVEDSIDE_PATH} exact={true}>
-                                <Brødsmulesti
-                                    brødsmuler={[HOVEDSIDE_BRØDSMULE]}
-                                />
-                                <Permittering />
-                            </Route>
-                            <Route path={KALKULATOR_PATH} exact={true}>
                                 <Brødsmulesti
                                     brødsmuler={[
                                         HOVEDSIDE_BRØDSMULE,

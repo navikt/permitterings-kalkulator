@@ -21,7 +21,7 @@ import {
     getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
-import { Normaltekst, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
 import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
 import Lenke from 'nav-frontend-lenker';

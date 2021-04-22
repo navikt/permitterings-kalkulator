@@ -5,9 +5,9 @@ import {
 import dayjs from 'dayjs';
 import {
     antallDagerGått,
+    datoIntervallOverlapperMedPerioder,
     finnSisteTilDato,
     finnTidligsteFraDato,
-    datoIntervallOverlapperMedPerioder,
     get5FørsteHverdager,
     getAntallOverlappendeDager,
     getOverlappendePeriode,
