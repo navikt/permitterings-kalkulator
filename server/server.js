@@ -9,7 +9,7 @@ const helmet = require('helmet');
 const server = express();
 const PORT = process.env.PORT || 3000;
 const buildPath = path.join(__dirname, '../build');
-const BASE_PATH = '/arbeidsgiver-permittering/kalkulator';
+const BASE_PATH = '/permittering-kalkulator';
 
 const startServer = () => {
     server.use(

@@ -10,12 +10,12 @@ spec:
   team: arbeidsgiver
   port: 3000
   ingresses:
-    - https://arbeidsgiver-permittering.dev.nav.no/arbeidsgiver-permittering/kalkulator
+    - https://permittering-kalkulator.dev.nav.no/permittering-kalkulator
   liveness:
-    path: /arbeidsgiver-permittering/kalkulator/internal/isAlive
+    path: /permittering-kalkulator/internal/isAlive
     initialDelay: 50
   readiness:
-    path: /arbeidsgiver-permittering/kalkulator/internal/isReady
+    path: /arbeidsgiver-kalkulator/internal/isReady
     initialDelay: 50
   env:
     - name: NODE_EXTRA_CA_CERTS
