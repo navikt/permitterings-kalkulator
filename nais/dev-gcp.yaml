@@ -15,7 +15,7 @@ spec:
     path: /permittering-kalkulator/internal/isAlive
     initialDelay: 50
   readiness:
-    path: /arbeidsgiver-kalkulator/internal/isReady
+    path: /permittering-kalkulator/internal/isReady
     initialDelay: 50
   env:
     - name: NODE_EXTRA_CA_CERTS
