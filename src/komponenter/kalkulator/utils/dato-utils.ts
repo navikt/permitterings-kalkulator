@@ -68,7 +68,6 @@ export const getAntallOverlappendeDager = (
         return 0;
     }
     if (overlappendePeriode.erLøpende) {
-        console.log('error her');
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'
         );
