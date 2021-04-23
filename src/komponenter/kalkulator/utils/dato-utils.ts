@@ -127,16 +127,12 @@ export const datoIntervallOverlapperMedPerioder = (
 ): boolean => {
     let finnesOverLapp = false;
     const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
-    if (finnesLøpendePeriode(perioder) && fraværsintervall.erLøpende) {
-        return true;
-    }
-
     const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {
         return false;
     }
     definertePerioder.forEach((periode) => {
-        if (getAntallOverlappendeDager(periode, definertFraværsintervall) > 0) {
+        if (toPerioderOverlapper(definertFraværsintervall, periode)) {
             finnesOverLapp = true;
         }
     });
@@ -154,6 +150,16 @@ export const perioderOverlapper = (perioder: Partial<DatoIntervall>[]) => {
         }
     );
     return !!periodeSomOverlapperMedAndre;
+};
+
+const toPerioderOverlapper = (
+    periode1: DatoIntervall,
+    periode2: DatoIntervall
+) => {
+    if (periode1.erLøpende && periode2.erLøpende) {
+        return true;
+    }
+    return getAntallOverlappendeDager(periode1, periode2) > 0;
 };
 
 export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
