@@ -68,6 +68,7 @@ export const getAntallOverlappendeDager = (
         return 0;
     }
     if (overlappendePeriode.erLøpende) {
+        console.log('error her');
         throw new Error(
             'Kan ikke regne ut overlappende dager mellom løpende intervaller'
         );
@@ -118,12 +119,18 @@ export const datoIntervallErGyldig = (
     }
 };
 
+export const finnesLøpendePeriode = (datoIntervall: Partial<DatoIntervall>[]) =>
+    !!datoIntervall.find((permittering) => permittering.erLøpende);
+
 export const datoIntervallOverlapperMedPerioder = (
     perioder: Partial<DatoIntervall>[],
     fraværsintervall: Partial<DatoIntervall>
 ): boolean => {
     let finnesOverLapp = false;
     const definertePerioder = filtrerBortUdefinerteDatoIntervaller(perioder);
+    if (finnesLøpendePeriode(perioder) && fraværsintervall.erLøpende) {
+        return true;
+    }
 
     const definertFraværsintervall = tilGyldigDatoIntervall(fraværsintervall);
     if (!definertFraværsintervall) {

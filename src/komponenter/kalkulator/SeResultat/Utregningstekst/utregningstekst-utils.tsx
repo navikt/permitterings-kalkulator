@@ -15,6 +15,7 @@ import {
 import {
     erHelg,
     finnDato18MndTilbake,
+    finnesLøpendePeriode,
     formaterDato,
     formaterDatoIntervall,
     get5FørsteHverdager,
@@ -96,11 +97,9 @@ export const lagResultatTekst = (
             )!;
             const sisteDagI18mndsperiode = datoAGP2.subtract(1, 'day');
 
-            const finnesLøpendePermittering = !!allePermitteringerOgFraværesPerioder.permitteringer.find(
-                (permittering) => permittering.erLøpende
-            );
-
-            const tilleggstekstLøpendePermittering = finnesLøpendePermittering
+            const tilleggstekstLøpendePermittering = finnesLøpendePeriode(
+                allePermitteringerOgFraværesPerioder.permitteringer
+            )
                 ? ', dersom permitteringen holdes løpende'
                 : '';
             return {
