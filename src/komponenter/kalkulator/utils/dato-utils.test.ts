@@ -42,6 +42,25 @@ describe('Tester for dato-utils.ts', () => {
         }
     });
 
+    test('Hvis fravær er løpende og det finnes en løpende permitteringsperiode returneres true', () => {
+        const løpendePermitteringsIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-04-23'),
+            datoTil: undefined,
+            erLøpende: true,
+        };
+        const løpendeFraværsIntervall: DatoIntervall = {
+            datoFra: dayjs('2021-02-23'),
+            datoTil: undefined,
+            erLøpende: true,
+        };
+        expect(
+            datoIntervallOverlapperMedPerioder(
+                [løpendePermitteringsIntervall],
+                løpendeFraværsIntervall
+            )
+        ).toBeTruthy();
+    });
+
     test('Antall dager mellom to datoer', () => {
         const enDagIFebruar = dayjs('2021-02-20');
         const nesteDagIFebruar = dayjs('2021-02-21');

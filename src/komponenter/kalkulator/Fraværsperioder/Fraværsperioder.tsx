@@ -95,6 +95,7 @@ const Fraværsperioder: FunctionComponent<Props> = (props) => {
                 );
             return (
                 <Fraværsperiode
+                    key={indeks}
                     fraværsperiode={fraværsintervall}
                     setFraværsperiode={(intervall) =>
                         setFraværsperiode(intervall, indeks)

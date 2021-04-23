@@ -1,4 +1,3 @@
-require('./set-env-variables');
 require('console-stamp')(console, '[HH:MM:ss.l]');
 
 const express = require('express');
