@@ -3,7 +3,7 @@ const {
 } = require('@navikt/nav-dekoratoren-moduler/ssr');
 
 const decoratorConfig = {
-    env: process.env.NAIS_CLUSTER_NAME === 'prod-sbs' ? 'prod' : 'q0',
+    env: process.env.NAIS_CLUSTER_NAME === 'dev-gcp' ? 'dev-gcp' : 'prod-sbs',
     context: 'arbeidsgiver',
     language: 'nb',
 };
