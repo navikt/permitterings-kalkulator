@@ -2,9 +2,6 @@ import React from 'react';
 import { render } from '@testing-library/react';
 import ContextProvider from '../ContextProvider';
 import Kalkulator from './kalkulator';
-import { configureDayJS } from '../../dayjs-config';
-
-configureDayJS();
 
 test('Tester at kalkulator renderes med basic innhold', () => {
     const { getByText } = render(

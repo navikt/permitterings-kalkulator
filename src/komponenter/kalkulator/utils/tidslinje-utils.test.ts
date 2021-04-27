@@ -4,10 +4,7 @@ import {
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
 import dayjs from 'dayjs';
-import { configureDayJS } from '../../../dayjs-config';
 import { finnDato18MndFram } from './dato-utils';
-
-configureDayJS();
 
 describe('Tester for tidslinje-utils.ts', () => {
     test('datoene i tidslinjen har kun én dags mellomrom mellom hver indeks', () => {

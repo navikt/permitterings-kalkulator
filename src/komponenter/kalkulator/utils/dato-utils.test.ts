@@ -17,9 +17,6 @@ import {
     tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
-import { configureDayJS } from '../../../dayjs-config';
-
-configureDayJS();
 
 describe('Tester for dato-utils.ts', () => {
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {

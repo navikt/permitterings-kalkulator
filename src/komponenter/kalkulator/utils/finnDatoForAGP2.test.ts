@@ -5,7 +5,6 @@ import {
     getPermitteringsoversikt,
     getPermitteringsoversiktFor18Måneder,
 } from './beregningerForAGP2';
-import { configureDayJS } from '../../../dayjs-config';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
@@ -15,8 +14,6 @@ import {
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
 import { finnDato18MndTilbake } from './dato-utils';
-
-configureDayJS();
 
 const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
