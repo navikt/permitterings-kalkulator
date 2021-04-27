@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Redirect from './Redirect';
 import './assets/styling/dekorator-override.less';
 import ContextProvider from './komponenter/ContextProvider';
 import Kalkulator from './komponenter/kalkulator/kalkulator';
@@ -28,17 +27,15 @@ export const App = () => {
             <div className="arbeidsgiver-permittering">
                 <Switch>
                     <ContextProvider>
-                        <Redirect>
-                            <Route path={HOVEDSIDE_PATH} exact={true}>
-                                <Brødsmulesti
-                                    brødsmuler={[
-                                        HOVEDSIDE_BRØDSMULE,
-                                        KALKULATOR_BRØDSMULE,
-                                    ]}
-                                />
-                                <Kalkulator />
-                            </Route>
-                        </Redirect>
+                        <Route path={HOVEDSIDE_PATH} exact={true}>
+                            <Brødsmulesti
+                                brødsmuler={[
+                                    HOVEDSIDE_BRØDSMULE,
+                                    KALKULATOR_BRØDSMULE,
+                                ]}
+                            />
+                            <Kalkulator />
+                        </Route>
                     </ContextProvider>
                 </Switch>
             </div>
