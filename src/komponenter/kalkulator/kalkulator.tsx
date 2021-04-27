@@ -67,7 +67,7 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator__bakgrunn'}>
-            <Banner classname={'banner'}>
+            <Banner>
                 <span aria-label="Permitteringskalkulator">
                     Permitterings&shy;kalkulator
                 </span>

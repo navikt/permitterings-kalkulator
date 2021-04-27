@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Redirect from './Redirect';
 import './assets/styling/dekorator-override.less';
-import { skrivTilMalingBesokerSide } from './utils/amplitudeUtils';
 import ContextProvider from './komponenter/ContextProvider';
 import Kalkulator from './komponenter/kalkulator/kalkulator';
 import { Brødsmulesti } from './komponenter/Brødsmulesti';
@@ -24,7 +23,6 @@ export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
 };
 
 export const App = () => {
-    useEffect(skrivTilMalingBesokerSide);
     return (
         <BrowserRouter>
             <div className="arbeidsgiver-permittering">
