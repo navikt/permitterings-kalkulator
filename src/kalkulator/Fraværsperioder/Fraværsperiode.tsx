@@ -1,5 +1,5 @@
-import React, {FunctionComponent} from 'react';
-import {DatoIntervall} from '../typer';
+import React, { FunctionComponent } from 'react';
+import { DatoIntervall } from '../typer';
 import DatoIntervallInput from '../DatointervallInput/DatointervallInput';
 
 interface Props {

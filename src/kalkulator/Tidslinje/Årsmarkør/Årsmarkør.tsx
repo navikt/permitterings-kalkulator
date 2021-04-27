@@ -1,7 +1,7 @@
-import React, {FunctionComponent} from 'react';
+import React, { FunctionComponent } from 'react';
 import './Årsmarkør.less';
-import {Undertekst} from 'nav-frontend-typografi';
-import {Dayjs} from 'dayjs';
+import { Undertekst } from 'nav-frontend-typografi';
+import { Dayjs } from 'dayjs';
 
 interface Props {
     dato: Dayjs;
