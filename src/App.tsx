@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import './assets/styling/dekorator-override.less';
 import ContextProvider from './komponenter/ContextProvider';
 import Kalkulator from './komponenter/kalkulator/kalkulator';
 import { Brødsmulesti } from './komponenter/Brødsmulesti';
