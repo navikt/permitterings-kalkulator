@@ -4,45 +4,13 @@
         <meta charset="utf-8" />
         <link
             rel="icon"
-            type="image/x-icon"
-            href="https://www.nav.no/dekoratoren/media/favicon.ico"
-        />
-        <link
-            rel="shortcut icon"
             href="https://www.nav.no/dekoratoren/media/favicon.ico"
             type="image/x-icon"
         />
         <meta
             name="description"
-            content="Permittering informasjon for arbeidsgivere.
-                Informasjon til arbeidsgivere som på grunn av korona må permittere ansatte. Samspill mellom NAV og arbeidsgiver."
+            content="Regn ut når du treffes av Arbeidsgiverperiode 2."
         />
-        <meta
-            property="og:description"
-            content="Permittering informasjon for arbeidsgivere.
-             Informasjon til arbeidsgivere som på grunn av korona må permittere ansatte. Samspill mellom NAV og arbeidsgiver."
-        />
-        <meta
-            name="keywords"
-            content="nav.no, arbeidsgiver permittering, permittering, permittering av ansatte, informasjon til arbeidsgiver rundt permittering, permittere ansatte"
-        />
-        <meta
-            property="og:keywords"
-            content="nav.no, arbeidsgiver permittering, permittering, permittering av ansatte, informasjon til arbeidsgiver rundt permittering, permittere ansatte"
-        />
-        <meta
-            name="image"
-            content="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/permittering.nav.illustrasjon.png"
-        />
-        <meta
-            property="og:image"
-            content="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/permittering.nav.illustrasjon.png"
-        />
-        <meta
-            name="twitter:card"
-            content="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/permittering.nav.illustrasjon.png"
-        />
-
         <meta
             name="google-site-verification"
             content="TVAmr_ViIvtIQoYdr5_oW2hVODYgyoDi80zC8Dfkns4"
@@ -50,58 +18,10 @@
         <meta name="author" content="@navikt/team/arbeidsgiver" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-        <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-        <div id="scripts"><%=htmlWebpackPlugin.options.scripts %></div>
-        <div
-            id="megamenuResources"
-            role="navigation"
-            aria-labelledby="megamenuResources"
-        >
-            <%=htmlWebpackPlugin.options.megamenuResources %>
-        </div>
-        <div id="styles"><%=htmlWebpackPlugin.options.styles %></div>
-
-        <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
-
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-        <title>Arbeidsgiver permittering</title>
+        <title>Permitteringskalkulator</title>
     </head>
     <body>
-        <div
-            id="headerWithmenu"
-            role="navigation"
-            aria-labelledby="headerWithmenu"
-        >
-            <%=htmlWebpackPlugin.options.headerWithmenu %>
-        </div>
         <noscript>You need to enable JavaScript to run this app.</noscript>
         <div id="root" role="main"></div>
-        <div
-            id="footerWithmenu"
-            role="navigation"
-            aria-labelledby="footerWithmenu"
-        >
-            <%=htmlWebpackPlugin.options.footerWithmenu %>
-        </div>
-        <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    --></body>
+    </body>
 </html>
