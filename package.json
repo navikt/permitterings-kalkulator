@@ -65,13 +65,9 @@
         "typescript": "^4.2.2"
     },
     "scripts": {
-        "start": "npm-run-all -p -r start-with-menu dev-server",
-        "start-with-menu": "cross-env ENABLE_EXTERNAL_MENU=true craco start ",
-        "start-plain": "craco start",
+        "start": "craco start",
         "build": "craco build",
-        "build-prod": "cross-env GIT_COMMIT_HASH=$(git log -n 1 --pretty=format:'%h') craco build",
         "server": "node server/server.js",
-        "dev-server": "cross-env PORT=3001 nodemon server/server.js",
         "test": "react-scripts test",
         "test-ci": "CI=true react-scripts test"
     },
