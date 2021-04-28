@@ -71,7 +71,10 @@ const startServer = () => {
             res.send(await getHtmlWithDecorator(buildPath + '/index.html'));
         } catch (e) {
             console.error(e);
-            res.status(500).send(e);
+            console.warn(
+                'Kunne ikke hente dekoratør (header/footer). Appen serves uten dekoratør.'
+            );
+            res.sendFile(buildPath + '/index.html');
         }
     });
 
