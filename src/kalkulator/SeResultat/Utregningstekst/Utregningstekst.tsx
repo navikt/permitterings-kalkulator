@@ -12,6 +12,9 @@ import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
 import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForAGP2';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
+import { harLøpendePermitteringMedOppstartFørRegelendring } from '../../utils/beregningerForRegelverksendring1Okt';
+import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
+import dayjs from 'dayjs';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -23,13 +26,26 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         PermitteringContext
     );
 
-    const resultatTekst = lagResultatTekstForPermitteringsStartFør1Juli(
-        props.tidslinje,
+    const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
         props.allePermitteringerOgFraværesPerioder,
-        dagensDato,
         regelEndringsDato1Oktober
     );
 
+    const resultatTekst = oppstartFørRegelendring
+        ? lagResultatTekstForPermitteringsStartFør1Juli(
+              props.tidslinje,
+              props.allePermitteringerOgFraværesPerioder,
+              dagensDato,
+              regelEndringsDato1Oktober
+          )
+        : lagResultatTekstNormaltRegelverk(
+              props.tidslinje,
+              props.allePermitteringerOgFraværesPerioder,
+              dagensDato,
+              dayjs('2021-07-01')
+          );
+
+    //denne brukes bare i tabellen
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         props.tidslinje,
         dagensDato,
