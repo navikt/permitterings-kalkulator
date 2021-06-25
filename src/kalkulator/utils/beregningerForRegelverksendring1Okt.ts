@@ -1,4 +1,5 @@
 import {
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
     DatointervallKategori,
     DatoMedKategori,
@@ -10,7 +11,9 @@ import {
     finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervall,
+    finnPermitteringsIntervallMedsisteFraDato,
     til18mndsperiode,
+    tilGyldigDatoIntervall,
 } from './dato-utils';
 import {
     erPermittertVedDato,
@@ -274,4 +277,25 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
         case Permitteringssituasjon1Oktober.IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER:
             return til18mndsperiode(innføringsdatoRegelendring);
     }
+};
+
+export const harLøpendePermitteringMedOppstartFørRegelendring = (
+    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    datoRegelEndring: Dayjs
+) => {
+    const sistePermitteringsPeriode = finnPermitteringsIntervallMedsisteFraDato(
+        allePermitteringerOgFraværesPerioder.permitteringer
+    );
+    const gyldigPermitteringsIntervall = sistePermitteringsPeriode
+        ? tilGyldigDatoIntervall(sistePermitteringsPeriode)
+        : undefined;
+    if (!gyldigPermitteringsIntervall) {
+        return false;
+    }
+    if (gyldigPermitteringsIntervall.datoFra?.isBefore(datoRegelEndring)) {
+        if (gyldigPermitteringsIntervall.erLøpende) {
+            return true;
+        }
+    }
+    return false;
 };
