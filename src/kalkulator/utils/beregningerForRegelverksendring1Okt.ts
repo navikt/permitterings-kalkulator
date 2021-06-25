@@ -28,7 +28,7 @@ export enum Permitteringssituasjon1Oktober {
     IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER = 'IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER',
 }
 
-export const finnPermitteringssituasjon = (
+export const finnPermitteringssituasjon1Oktober = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
@@ -251,7 +251,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): DatoIntervall | undefined => {
-    const situasjon = finnPermitteringssituasjon(
+    const situasjon = finnPermitteringssituasjon1Oktober(
         tidslinje,
         innføringsdatoRegelendring,
         210

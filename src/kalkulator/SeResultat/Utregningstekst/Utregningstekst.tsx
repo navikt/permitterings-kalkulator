@@ -8,10 +8,10 @@ import {
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import { lagResultatTekst } from './utregningstekst-utils';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
 import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForAGP2';
+import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -19,19 +19,21 @@ interface Props {
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const { dagensDato, regelEndringsDato1Oktober } = useContext(
+        PermitteringContext
+    );
 
-    const resultatTekst = lagResultatTekst(
+    const resultatTekst = lagResultatTekstForPermitteringsStartFør1Juli(
         props.tidslinje,
         props.allePermitteringerOgFraværesPerioder,
         dagensDato,
-        innføringsdatoAGP2
+        regelEndringsDato1Oktober
     );
 
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         props.tidslinje,
         dagensDato,
-        innføringsdatoAGP2,
+        regelEndringsDato1Oktober,
         210
     );
 
