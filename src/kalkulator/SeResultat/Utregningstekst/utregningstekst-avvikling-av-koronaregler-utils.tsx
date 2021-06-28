@@ -5,19 +5,13 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
-    getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon,
-} from '../../utils/beregningerForAGP2';
+import { getPermitteringsoversiktFor18Måneder } from '../../utils/beregningerForAGP2';
 import {
     erHelg,
     finnDato18MndTilbake,
     finnesLøpendePeriode,
     formaterDato,
     formaterDatoIntervall,
-    get5FørsteHverdager,
     getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
@@ -30,8 +24,6 @@ import {
     finnPermitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
 
-const datoPotensiellRegelendring = dayjs('2021-10-01');
-
 interface ResultatTekst {
     konklusjon: ReactElement | string;
     beskrivelse: ReactElement | null;
@@ -39,7 +31,6 @@ interface ResultatTekst {
 
 export enum Permitteringssituasjon1Oktober {
     MAKS_NÅDD_1_OKTOBER = 'MAKS_NÅDD_1_OKTOBER',
-    MAKS_NÅDD_ETTER_1_OKTOBER = 'MAKS_NÅDD_ETTER_1_OKTOBE',
     IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT = 'IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT',
     IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER = 'IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER',
 }
@@ -74,14 +65,12 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        For permitteringer iverksatt før 1. juli er maks antall
-                        uker en ansatt kan være permittert uten at du har
-                        lønnsplikt 49 uker i løpet av 18 måneder. Pågrunn av at
-                        svært mange måtte permittere lengre ble det gjort et
-                        unntak slik at antall dager var ubegrenset. Denne
-                        unntaksregelen avvikles 1. oktober, slik at man må
-                        betale lønn til sine ansatte dersom de har vært
-                        permittert i 49 uker eller mer.
+                        For permitteringer iverksatt før 1. juli har det ikke
+                        vært noen begrensning på hvor lenge en ansatt kan være
+                        permittert. Fra og med 1. oktober vil derimot maks
+                        antall uker en ansatt kan være permittert være 49 uker i
+                        løpet av de siste 18 månedene, for permitteringer
+                        iverksatt før 1. juli.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -91,6 +80,17 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         i 18-månedersperioden fra 2. mars 2020 til 1. oktober
                         2021. Dette overskrider 49 uker, og du har dermed
                         lønnsplikt fra 1. oktober 2021.
+                    </Normaltekst>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        Dette betyr at du må betale lønn til din ansatte fra 1.
+                        oktober. Hvis du har permitteringsgrunnlag for å
+                        permittere din ansatt videre, er du nødt til å
+                        iverksette en ny permittering. Du vil da få en ny
+                        lønnsplikt
+                    </Normaltekst>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        For nye permitteringer er maks antall uker du kan ha den
+                        ansatte permittert 26 uker i løpet av 18 måneder.
                     </Normaltekst>
                 </>
             ),
@@ -135,36 +135,17 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             til18mndsperiode(sisteDagI18mndsperiode)
                         )}
                     , vil du måtte betale lønn fra{' '}
-                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}. Dersom du
-                    avslutter permitteringen vil nye regler gjelde for
-                    permitteringer iverksatt fra og med 1. juli.
+                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}.
+                </Normaltekst>
+                <Normaltekst className={'utregningstekst__beskrivelse'}>
+                    Dersom du avslutter permitteringen vil nye regler gjelde for
+                    permitteringer iverksatt fra og med 1. juli. For
+                    permitteringer etter 1. juli er maks antall uker en ansatt
+                    kan være permittert uten lønn 26 uker i løpet av 18 måneder.
                 </Normaltekst>
             </>
         ),
     };
-};
-
-const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
-    tidslinje: DatoMedKategori[],
-    sluttDato18mndsIntervall: Dayjs
-) => {
-    const startDato18mndsIntervall = finnDato18MndTilbake(
-        sluttDato18mndsIntervall
-    );
-    const finnesPermitteringerFørGittDato = tidslinje.find(
-        (datoMedKategori) =>
-            datoMedKategori.kategori ===
-                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
-            datoMedKategori.dato.isBefore(startDato18mndsIntervall)
-    );
-    if (finnesPermitteringerFørGittDato) {
-        return `Merk at permitteringer før ${formaterDato(
-            startDato18mndsIntervall
-        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-månedersintervallet (${formaterDato(
-            startDato18mndsIntervall
-        )}-${formaterDato(sluttDato18mndsIntervall)}).`;
-    }
-    return false;
 };
 
 const skrivDagerIHeleUkerPlussDager = (dager: number) => {
@@ -218,33 +199,6 @@ const advarselOmForbeholdAvRegelEndringVedSeinDato = (
             >
                 Vi tar forbehold om at endringer i regelverket kan påvirke denne
                 beregningen.
-            </AlertStripe>
-        );
-    }
-};
-
-const advarselHvisPermitteringEtterInnføringsDato = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs
-) => {
-    const finnesPermittering = finnFørsteDatoMedPermitteringUtenFravær(
-        tidslinje,
-        innføringsdatoAGP2
-    );
-    if (finnesPermittering) {
-        return (
-            <AlertStripe
-                type={'advarsel'}
-                className={'utregningstekst__alertstripe'}
-            >
-                <Normaltekst>
-                    Kalkulatoren kan dessverre ikke beregne om du får
-                    arbeidsgiverperiode 2 ved permittering etter 1. juni i dette
-                    tilfellet. Vi jobber med å forbedre løsningen. Du kan
-                    kontakte NAVs arbeidsgivertelefon på{' '}
-                    <Lenke href={'tel:+4755553336'}> 55 55 33 36</Lenke>, for å
-                    få hjelp til denne beregningen.
-                </Normaltekst>
             </AlertStripe>
         );
     }
