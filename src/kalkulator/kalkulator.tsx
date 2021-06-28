@@ -98,7 +98,7 @@ const Kalkulator = () => {
                     </Normaltekst>
                 </AlertStripeAdvarsel>
                 <Innholdstittel tag="h2">
-                    Regn ut når du skal betale arbeidsgiverperiode 2
+                    Hvor lenge kan du permittere ansatte uten lønnsplikt?
                 </Innholdstittel>
                 <Topp />
                 <Permitteringsperioder

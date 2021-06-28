@@ -14,7 +14,6 @@ Dette gir disse konsekvensene:
 1. 1. oktober vil mange permitteringer opphøre. Dette vil være permitteringer som har overgått 49 uker ila 18 måneder per 1.oktober.
 
 
-
 Permitteringer som begynte før 1. juli men som ikke har nådd 49 uker, kan vare helt til det permitteringen har vart i 49 uker tilsammen siste 18 månedene.
 
 Hvis det finnes en permittering etter 1. juli, regner vi ut som på samme måte som dato for AGP2 med 210 byttet ut med 26*7. vi gir enten ut datoen maks er nådd, ellers gir vi ut hvor lenge personen kan permittere i resten av 18 mnds intervallet.

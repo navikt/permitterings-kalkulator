@@ -7,8 +7,10 @@ const Topp: FunctionComponent = () => {
         <div className={'topp'}>
             <div className={'topp__generell-info'}>
                 <Element className="topp__introtekst">
-                    Du har lønnsplikt når den ansatte har vært permittert i 30
-                    uker. Kalkulatoren regner ut når du skal betale lønn.
+                    Det er begrenset hvor lenge du kan permittere ansatte uten
+                    lønn. Denne kalkulatoren er et verktøy for å forstå
+                    regelverket rundt permittering og hva som gjelder for dine
+                    ansatte.
                 </Element>
                 <Element>Denne informasjonen trenger du</Element>
                 <ul className="topp__liste">
