@@ -14,17 +14,12 @@ import {
 import {
     erHelg,
     finnDato18MndTilbake,
-    finnesLøpendePeriode,
     formaterDato,
     formaterDatoIntervall,
-    get5FørsteHverdager,
-    getFørsteHverdag,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
-import Lenke from 'nav-frontend-lenker';
 import {
     finnDatoForMaksPermittering,
     slettPermitteringsdagerFørDato,
@@ -58,17 +53,17 @@ export const lagResultatTekstNormaltRegelverk = (
             konklusjon: (
                 <>
                     <Element>
-                        Du må betale lønn fra
-                        {formaterDato(datoForMaksPermitteringOppbrukt)}. Det
-                        betyr at du skal betale lønn for følgende fem dager:
+                        Maksgrensen for uker en ansatt kan være permittert er
+                        nådd {formaterDato(datoForMaksPermitteringOppbrukt)}.
                     </Element>
                 </>
             ),
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du må betale lønn når den ansatte som har vært
-                        permittert i 26 uker eller mer i løpet av 18-måneder.
+                        Du kan ikke ha en ansatt permittert lenger enn 26 uker i
+                        løpet av 18 måneder. Den ansatte vil ikke ha rett på
+                        dagpenger som følge av permittering.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -108,19 +103,14 @@ export const lagResultatTekstNormaltRegelverk = (
                 <>
                     <Element>
                         Ved ytterligere permittering i tiden fram til{' '}
-                        {' ' + formaterDato(aktuell18mndsperiode.datoTil)} vil
-                        du måtte betale lønn etter
-                        {' ' +
-                            skrivDagerIHeleUkerPlussDager(
-                                26 * 7 - oversiktOverPermittering.dagerBrukt
-                            )}{' '}
+                        {formaterDato(aktuell18mndsperiode.datoTil)} vil du
+                        måtte betale avbryte permitteringen etter{' '}
+                        {skrivDagerIHeleUkerPlussDager(
+                            26 * 7 - oversiktOverPermittering.dagerBrukt
+                        )}
                         . Merk at du ved ny permittering alltid skal betale lønn
                         i arbeidsgiverperiode 1 fra starten av permitteringen.
                     </Element>
-                    {advarselOmForbeholdAvRegelEndringVedSeinDato(
-                        aktuell18mndsperiode.datoTil,
-                        datoPotensiellRegelendring
-                    )}
                 </>
             ),
             beskrivelse: (
@@ -160,14 +150,14 @@ export const lagResultatTekstNormaltRegelverk = (
         beskrivelse: (
             <>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    Regelverket er nå tilbakestilt til normalen. Om du
-                    permitterer nå kan du permittere i 26 uker i løpet av 18
-                    måneder.
+                    De midlertidige ordningene som gjaldt under COVID-19
+                    avvikles fra 1. oktober. Om du permitterer nå kan du
+                    permittere i 26 uker i løpet av 18 måneder.
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Tips: Du kan fylle inn permitteringer framover i tid,
-                    kalkulatoren vil da regne ut når arbeidsgiverperiode 2
-                    inntreffer ved fremtidige permitteringer.
+                    kalkulatoren vil da regne ut hvor lenge du kan ha ansatte
+                    permittert uten lønn.
                 </Normaltekst>
             </>
         ),
@@ -234,48 +224,3 @@ const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
 
 const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
-
-const advarselOmForbeholdAvRegelEndringVedSeinDato = (
-    dato: Dayjs,
-    senesteDato: Dayjs
-) => {
-    if (dato.isSameOrAfter(senesteDato)) {
-        return (
-            <AlertStripe
-                type={'advarsel'}
-                form={'inline'}
-                className={'utregningstekst__alertstripe'}
-            >
-                Vi tar forbehold om at endringer i regelverket kan påvirke denne
-                beregningen.
-            </AlertStripe>
-        );
-    }
-};
-
-const advarselHvisPermitteringEtterInnføringsDato = (
-    tidslinje: DatoMedKategori[],
-    innføringsdatoAGP2: Dayjs
-) => {
-    const finnesPermittering = finnFørsteDatoMedPermitteringUtenFravær(
-        tidslinje,
-        innføringsdatoAGP2
-    );
-    if (finnesPermittering) {
-        return (
-            <AlertStripe
-                type={'advarsel'}
-                className={'utregningstekst__alertstripe'}
-            >
-                <Normaltekst>
-                    Kalkulatoren kan dessverre ikke beregne om du får
-                    arbeidsgiverperiode 2 ved permittering etter 1. juni i dette
-                    tilfellet. Vi jobber med å forbedre løsningen. Du kan
-                    kontakte NAVs arbeidsgivertelefon på{' '}
-                    <Lenke href={'tel:+4755553336'}> 55 55 33 36</Lenke>, for å
-                    få hjelp til denne beregningen.
-                </Normaltekst>
-            </AlertStripe>
-        );
-    }
-};
