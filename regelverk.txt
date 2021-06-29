@@ -1,0 +1,22 @@
+Dette er en kalkulator for å illustrere og gi informasjon om permitteringsregelverket
+
+Regler som skal formidles
+
+1. Permitteringer innført før 1. juli har en makslengde på 49 uker i utgangspunktet, men det ble gjort enda et nytt unntak som gjorde permitteringsperioden ubegrenset fram til 1. oktober (for permitteringer som startet før 1. juli)
+
+2. Permitteringer fra og med 1. juli har en maksgrense på 26 uker.
+
+3. For nyoppstartede permitteringsperioder etter 1.juli blir permitteringsdager FØR 1.juli fjernet av beregningen av 26 uker ila siste 18 mnd.
+
+
+Dette gir disse konsekvensene:
+
+1. 1. oktober vil mange permitteringer opphøre. Dette vil være permitteringer som har overgått 49 uker ila 18 måneder per 1.oktober.
+
+
+Permitteringer som begynte før 1. juli men som ikke har nådd 49 uker, kan vare helt til det permitteringen har vart i 49 uker tilsammen siste 18 månedene.
+
+Hvis det finnes en permittering etter 1. juli, regner vi ut som på samme måte som dato for AGP2 med 210 byttet ut med 26*7. vi gir enten ut datoen maks er nådd, ellers gir vi ut hvor lenge personen kan permittere i resten av 18 mnds intervallet.
+
+Hvis permitteringen starter FØR 1. juli blir utregningen "lik" som da vi regnet ut AGP2 ved innføringsdato. Antall dager blir istedet for 210 lik 49*7. innføringsdato blir 1. oktober. case løpende permittering er relevant.
+Hvis permitteringen er avsluttet før 1. juli, er det kanskje ikke relevant.

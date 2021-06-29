@@ -184,6 +184,19 @@ export const finnSisteTilDato = (
     );
 };
 
+export const finnPermitteringsIntervallMedsisteFraDato = (
+    datointervaller: Partial<DatoIntervall>[]
+): Partial<DatoIntervall> | undefined => {
+    const senestePermitteringsStart = getSenesteDato(
+        datointervaller.map((intervall) => intervall.datoFra)
+    );
+    if (senestePermitteringsStart) {
+        return datointervaller.find((datointervall) =>
+            datointervall.datoFra?.isSame(senestePermitteringsStart, 'day')
+        );
+    }
+};
+
 export const getTidligsteDato = (
     datoer: (Dayjs | undefined)[]
 ): Dayjs | undefined => {

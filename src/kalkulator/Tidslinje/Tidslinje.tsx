@@ -181,7 +181,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         </div>
     );
 
-    const erInteraktiv = process.env.NODE_ENV === 'development';
+    const erInteraktiv = process.env.NODE_ENV !== 'production';
 
     return (
         <div className={'tidslinje'}>
