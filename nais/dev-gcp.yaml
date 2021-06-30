@@ -2,12 +2,12 @@ apiVersion: nais.io/v1alpha1
 kind: Application
 metadata:
   name: permittering-kalkulator
-  namespace: arbeidsgiver
+  namespace: permittering-og-nedbemanning
   labels:
-    team: arbeidsgiver
+    team: permittering-og-nedbemanning
 spec:
   image: {{image}}
-  team: arbeidsgiver
+  team: permittering-og-nedbemanning
   port: 3000
   ingresses:
     - https://permittering-kalkulator.dev.nav.no/permittering-kalkulator
