@@ -7,7 +7,7 @@
         "@navikt/nav-dekoratoren-moduler": "^1.2.2",
         "@sanity/client": "1.149.7",
         "classnames": "^2.2.6",
-        "console-stamp": "0.2.9",
+        "console-stamp": "3.0.2",
         "dotenv": "8.2.0",
         "fs-extra": "8.1.0",
         "helmet": "^4.4.1",
