@@ -16,23 +16,17 @@ import {
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
-import Lenke from 'nav-frontend-lenker';
+
 import {
     finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
+    getPermitteringsoversiktFor18Måneder,
+    Permitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
-import { getPermitteringsoversiktFor18Måneder } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
     beskrivelse: ReactElement | null;
-}
-
-export enum Permitteringssituasjon1Oktober {
-    MAKS_NÅDD_1_OKTOBER = 'MAKS_NÅDD_1_OKTOBER',
-    IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT = 'IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT',
-    IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER = 'IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER',
 }
 
 export const lagResultatTekstForPermitteringsStartFør1Juli = (

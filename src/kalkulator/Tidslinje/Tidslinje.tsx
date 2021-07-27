@@ -41,7 +41,9 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
-    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const { dagensDato, regelEndringsDato1Oktober } = useContext(
+        PermitteringContext
+    );
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
@@ -82,9 +84,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                 props.tidslinje,
                 dagensDato,
-                innføringsdatoAGP2,
+                regelEndringsDato1Oktober,
                 210
-            )?.datoTil || innføringsdatoAGP2;
+            )?.datoTil || regelEndringsDato1Oktober;
         props.set18mndsPeriode(sluttAv18mndsPeriode);
     }, [props.tidslinje]);
 

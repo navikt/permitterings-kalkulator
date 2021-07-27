@@ -12,7 +12,6 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPermitteringsIntervallMedsisteFraDato,
-    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -25,8 +24,6 @@ import {
 export enum Permitteringssituasjon1Oktober {
     MAKS_NÅDD_1_OKTOBER = 'MAKS_NÅDD_1_OKTOBER',
     MAKS_NÅDD_ETTER_1_OKTOBER = 'MAKS_NÅDD_ETTER_1_OKTOBE',
-    IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT = 'IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT',
-    IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER = 'IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER',
 }
 
 export const finnPermitteringssituasjon1Oktober = (
@@ -39,23 +36,14 @@ export const finnPermitteringssituasjon1Oktober = (
         innføringsdatoRegelendring,
         maksAntallDagerUtenLønnsplikt
     );
-    if (datoNåddMaksPermitteringsdager) {
-        return datoNåddMaksPermitteringsdager.isSame(
-            innføringsdatoRegelendring,
-            'date'
-        )
-            ? Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER
-            : Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER;
-    } else {
-        const antallBruktePermitteringsdagerVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
-            tidslinje,
-            innføringsdatoRegelendring
-        ).dagerBrukt;
-        return antallBruktePermitteringsdagerVedInnføringsdato <=
-            maksAntallDagerUtenLønnsplikt
-            ? Permitteringssituasjon1Oktober.IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT
-            : Permitteringssituasjon1Oktober.IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER;
-    }
+    //datoNåddMaksPermitteringsdager vil være definert siden denne casen forutsetter at det finnes en løpende permittering iverksatt før 1. juli
+
+    return datoNåddMaksPermitteringsdager!!.isSame(
+        innføringsdatoRegelendring,
+        'date'
+    )
+        ? Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER
+        : Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER;
 };
 
 //her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
@@ -175,7 +163,8 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
 
     while (
         overskuddAvPermitteringsdagerITidsintervall > 0 &&
-        overskuddAvPermitteringsdagerITidsintervall < 210
+        overskuddAvPermitteringsdagerITidsintervall <
+            maksAntallDagerUtenLønnsplikt
     ) {
         potensiellSisteDatoIIntervall = potensiellSisteDatoIIntervall.add(
             overskuddAvPermitteringsdagerITidsintervall,
@@ -259,7 +248,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     const situasjon = finnPermitteringssituasjon1Oktober(
         tidslinje,
         innføringsdatoRegelendring,
-        210
+        maksAntallDagerUtenLønnsplikt
     );
 
     switch (situasjon) {
@@ -272,18 +261,10 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 maksAntallDagerUtenLønnsplikt
             )!;
             return til18mndsperiode(datoForAGP2.subtract(1, 'day'));
-        case Permitteringssituasjon1Oktober.IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT:
-            return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                innføringsdatoRegelendring,
-                dagensDato,
-                maksAntallDagerUtenLønnsplikt
-            );
-        case Permitteringssituasjon1Oktober.IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER:
-            return til18mndsperiode(innføringsdatoRegelendring);
     }
 };
 
+//sjekk om man får feil ved overlappende perioder dersom siste start overlapper med en tidligere permittering som ikker er løpende
 export const harLøpendePermitteringMedOppstartFørRegelendring = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     datoRegelEndring: Dayjs

@@ -7,8 +7,8 @@ interface Props {
 
 export interface Context {
     dagensDato: Dayjs;
-    innføringsdatoAGP2: Dayjs;
     regelEndringsDato1Oktober: Dayjs;
+    regelEndring1Juli: Dayjs;
 }
 
 export const PermitteringContext = React.createContext({} as Context);
@@ -18,8 +18,8 @@ const ContextProvider = (props: Props) => {
 
     const contextData: Context = {
         dagensDato: dagensDato,
-        innføringsdatoAGP2: dayjs('2021-06-01'),
         regelEndringsDato1Oktober: dayjs('2021-10-01'),
+        regelEndring1Juli: dayjs('2021-07-01'),
     };
 
     return (

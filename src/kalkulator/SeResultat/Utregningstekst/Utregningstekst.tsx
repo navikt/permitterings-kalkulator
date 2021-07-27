@@ -24,13 +24,15 @@ interface Props {
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const { dagensDato, regelEndringsDato1Oktober } = useContext(
-        PermitteringContext
-    );
+    const {
+        dagensDato,
+        regelEndring1Juli,
+        regelEndringsDato1Oktober,
+    } = useContext(PermitteringContext);
 
     const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
         props.allePermitteringerOgFraværesPerioder,
-        regelEndringsDato1Oktober
+        regelEndring1Juli
     );
 
     const resultatTekst = oppstartFørRegelendring
