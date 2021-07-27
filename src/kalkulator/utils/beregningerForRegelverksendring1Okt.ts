@@ -12,6 +12,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPermitteringsIntervallMedsisteFraDato,
+    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -159,6 +160,7 @@ export const finn18mndsperiodeForMaksimeringAvPermitteringsdager = (
         tidslinje,
         finnDato18MndTilbake(innføringsdatoRegelendring)
     );
+
     if (!førstePermitteringStart) return undefined;
 
     let potensiellSisteDatoIIntervall: Dayjs = dayjs(
