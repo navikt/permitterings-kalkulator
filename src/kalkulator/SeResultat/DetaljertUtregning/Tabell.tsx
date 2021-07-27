@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import UtregningAvEnkeltPeriodeITabell from './UtregningAvEnkeltPeriodeITabell/UtregningAvEnkeltPeriodeITabell';
 import { DatoIntervall, DatoMedKategori } from '../../typer';
-import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
 import { Element } from 'nav-frontend-typografi';
 import 'nav-frontend-tabell-style';
+import { getPermitteringsoversikt } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];

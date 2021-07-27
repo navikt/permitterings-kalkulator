@@ -5,7 +5,6 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import { getPermitteringsoversiktFor18Måneder } from '../../utils/beregningerForAGP2';
 import {
     erHelg,
     finnDato18MndTilbake,
@@ -23,6 +22,7 @@ import {
     finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
+import { getPermitteringsoversiktFor18Måneder } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;

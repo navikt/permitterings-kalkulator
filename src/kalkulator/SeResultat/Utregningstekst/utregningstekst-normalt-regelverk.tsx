@@ -5,12 +5,7 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
-    getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon,
-} from '../../utils/beregningerForAGP2';
+
 import {
     erHelg,
     finnDato18MndTilbake,
@@ -21,7 +16,9 @@ import {
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
 import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
+    getPermitteringsoversiktFor18Måneder,
     slettPermitteringsdagerFørDato,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 

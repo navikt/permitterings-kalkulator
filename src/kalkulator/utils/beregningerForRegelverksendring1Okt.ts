@@ -33,13 +33,16 @@ export const finnPermitteringssituasjon1Oktober = (
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): Permitteringssituasjon1Oktober => {
-    const datoForAGP2 = finnDatoForMaksPermittering(
+    const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallDagerUtenLønnsplikt
     );
-    if (datoForAGP2) {
-        return datoForAGP2.isSame(innføringsdatoRegelendring, 'date')
+    if (datoNåddMaksPermitteringsdager) {
+        return datoNåddMaksPermitteringsdager.isSame(
+            innføringsdatoRegelendring,
+            'date'
+        )
             ? Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER
             : Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER;
     } else {

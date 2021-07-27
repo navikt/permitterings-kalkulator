@@ -3,8 +3,8 @@ import React, { FunctionComponent } from 'react';
 import './MobilversjonKort.less';
 import { DatoIntervall, DatoMedKategori } from '../../../typer';
 import { formaterDatoIntervall } from '../../../utils/dato-utils';
-import { getPermitteringsoversikt } from '../../../utils/beregningerForAGP2';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
+import { getPermitteringsoversikt } from '../../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];
