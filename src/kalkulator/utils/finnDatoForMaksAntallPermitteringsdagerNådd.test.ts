@@ -1,10 +1,5 @@
 import dayjs, { Dayjs } from 'dayjs';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
-    getPermitteringsoversikt,
-    getPermitteringsoversiktFor18Måneder,
-} from './beregningerForAGP2';
+
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
@@ -14,6 +9,7 @@ import {
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
 import { finnDato18MndTilbake } from './dato-utils';
+import {finnDatoForMaksPermittering} from "./beregningerForRegelverksendring1Okt";
 
 const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
@@ -32,20 +28,23 @@ const getTidslinje = (
 
 describe('Tester for finnDatoForAGP2', () => {
     test('AGP2 skal komme på innføringsdato hvis permittert i 30 uker og 1 dag ved innføringsdato', () => {
-        const innføringsdatoAGP2 = dayjs('2021-06-01');
+        const maksAntallPermitteringsdager = 49 * 7;
+        const innføringsdatoRegelendring = dayjs('2021-10-01');
         const tidslinje = getTidslinje({
             permitteringer: [
                 {
-                    datoFra: innføringsdatoAGP2.subtract(210, 'days'),
+                    datoFra: innføringsdatoRegelendring.subtract(maksAntallPermitteringsdager, 'days'),
                     erLøpende: true,
                 },
             ],
             andreFraværsperioder: [],
         });
-        const datoAGP2 = finnDatoForAGP2(tidslinje, innføringsdatoAGP2, 210);
-        expect(datoAGP2).toEqual(innføringsdatoAGP2);
+        const datoAGP2 = finnDatoForMaksPermittering(tidslinje, innføringsdatoRegelendring, maksAntallPermitteringsdager);
+        expect(datoAGP2).toEqual(innføringsdatoRegelendring);
     });
+})
 
+/*
     test('AGP2 skal komme på innføringsdato selv om man er permittert vesentlig mer enn 30 uker', () => {
         const innføringsdatoAGP2 = dayjs('2021-06-01');
         const tidslinje = getTidslinje({
@@ -377,3 +376,5 @@ describe('Tester for finnDatoForAGP2', () => {
         });
     });
 });
+
+ */
