@@ -12,6 +12,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPermitteringsIntervallMedsisteFraDato,
+    finnPotensiellLøpendePermittering,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -269,12 +270,14 @@ export const harLøpendePermitteringMedOppstartFørRegelendring = (
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     datoRegelEndring: Dayjs
 ) => {
-    const sistePermitteringsPeriode = finnPermitteringsIntervallMedsisteFraDato(
+    const sistePermitteringsPeriode = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
     );
-    const gyldigPermitteringsIntervall = sistePermitteringsPeriode
-        ? tilGyldigDatoIntervall(sistePermitteringsPeriode)
-        : undefined;
+    const gyldigPermitteringsIntervall =
+        sistePermitteringsPeriode &&
+        sistePermitteringsPeriode?.datoFra?.isBefore(datoRegelEndring)
+            ? tilGyldigDatoIntervall(sistePermitteringsPeriode)
+            : undefined;
     if (!gyldigPermitteringsIntervall) {
         return false;
     }

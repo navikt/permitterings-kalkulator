@@ -8,7 +8,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
     erHelg,
     finnDato18MndTilbake,
-    finnesLøpendePeriode,
+    finnPotensiellLøpendePermittering,
     formaterDato,
     formaterDatoIntervall,
     getFørsteHverdag,
@@ -98,7 +98,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     )!;
     const sisteDagI18mndsperiode = datoAGP2.subtract(1, 'day');
 
-    const tilleggstekstLøpendePermittering = finnesLøpendePeriode(
+    const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
     )
         ? ', dersom permitteringen holdes løpende'

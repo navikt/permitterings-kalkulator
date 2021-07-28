@@ -11,6 +11,7 @@ import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
+import { perioderOverlapper } from '../utils/dato-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -27,7 +28,12 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         setResultatVises(false);
 
-        if (props.tidslinje.length > 0) {
+        if (
+            props.tidslinje.length > 0 &&
+            !perioderOverlapper(
+                props.allePermitteringerOgFraværesPerioder.permitteringer
+            )
+        ) {
             props.setEndringAv('datovelger');
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);

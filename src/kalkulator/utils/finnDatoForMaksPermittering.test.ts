@@ -278,7 +278,8 @@ test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendrin
 /*
 
 describe('Tester skrevet i samarbeid med fagjurist', () => {
-    const innføringsdatoAGP2 = dayjs('2021-06-01');
+    const innføringsdatoRegelendring = dayjs('2021-10-01');
+    const maksAntallPermitteringsdager = 49 * 7;
     const dagensDato = dayjs('2021-04-15');
 
     test('Test 1', () => {
