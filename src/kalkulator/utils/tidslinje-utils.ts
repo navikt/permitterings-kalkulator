@@ -111,7 +111,7 @@ export const finnFørsteDatoMedPermitteringUtenFravær = (
         (datoMedKategori) =>
             datoMedKategori.kategori ===
                 DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
-            datoMedKategori.dato.isSameOrAfter(skalVæreEtter)
+            datoMedKategori.dato.isAfter(skalVæreEtter)
     );
 };
 export const erPermittertVedDato = (

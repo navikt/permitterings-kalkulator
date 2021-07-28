@@ -17,6 +17,7 @@ import {
     tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
+import { harLøpendePermitteringMedOppstartFørRegelendring } from './beregningerForRegelverksendring1Okt';
 
 describe('Tester for dato-utils.ts', () => {
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
@@ -146,6 +147,47 @@ describe('Tester for dato-utils.ts', () => {
                 )
             )
         ).toEqual(dayjs('2021-06-02'));
+    });
+
+    test('Finner om det finnes en løpende permitteringsperiode iverksatt før 1. juli', () => {
+        const regelendringsDato = dayjs('2021-07-01');
+        const startPermitteringsPeriode1 = dayjs('2021-02-14');
+        const sluttPermitteringsPeriode1 = dayjs('2021-03-02');
+        const startPermitteringsPeriode2 = dayjs('2021-01-10');
+        const sluttPermitteringsPeriode2 = dayjs('2021-01-25');
+        const startPermitteringsPeriode3 = dayjs('2021-04-14');
+        const startPermitteringsPeriode4 = dayjs('2021-05-14');
+        const sluttPermitteringsPeriode4 = dayjs('2021-06-02');
+
+        const permitteringsPeriode1: DatoIntervall = {
+            datoFra: startPermitteringsPeriode1,
+            datoTil: sluttPermitteringsPeriode1,
+        };
+        const permitteringsPeriode2: DatoIntervall = {
+            datoFra: startPermitteringsPeriode2,
+            datoTil: sluttPermitteringsPeriode2,
+        };
+        const permitteringsPeriode3: DatoIntervall = {
+            datoFra: startPermitteringsPeriode3,
+            erLøpende: true,
+            datoTil: undefined,
+        };
+        const permitteringsPeriode4: DatoIntervall = {
+            datoFra: startPermitteringsPeriode4,
+            datoTil: sluttPermitteringsPeriode4,
+        };
+
+        expect(
+            harLøpendePermitteringMedOppstartFørRegelendring(
+                [
+                    permitteringsPeriode1,
+                    permitteringsPeriode2,
+                    permitteringsPeriode3,
+                    permitteringsPeriode4,
+                ],
+                regelendringsDato
+            )
+        ).toBeTruthy();
     });
 
     test('getAntallOverlappendeDager skal telle riktig når ett intervall er løpende', () => {

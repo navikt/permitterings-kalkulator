@@ -267,11 +267,11 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
 
 //sjekk om man får feil ved overlappende perioder dersom siste start overlapper med en tidligere permittering som ikker er løpende
 export const harLøpendePermitteringMedOppstartFørRegelendring = (
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
+    permitteringer: Partial<DatoIntervall>[],
     datoRegelEndring: Dayjs
 ) => {
     const sistePermitteringsPeriode = finnPotensiellLøpendePermittering(
-        allePermitteringerOgFraværesPerioder.permitteringer
+        permitteringer
     );
     const gyldigPermitteringsIntervall =
         sistePermitteringsPeriode &&

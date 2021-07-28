@@ -26,8 +26,8 @@ const getTidslinje = (
     );
 };
 
-describe('Tester for finnDatoForMaksPermittering', () => {
-    test('Maks antall dager permittering skal komme på regelverksending 10. oktober hvis permittert i 49 uker og 1 dag ved 10. oktober og permitteringen er iverksatt før 1. juli', () => {
+describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt før 1. juli ', () => {
+    test('Maks antall dager permittering skal komme på regelverksendring 10. oktober hvis permittert i 49 uker og 1 dag ved 10. oktober og permitteringen er iverksatt før 1. juli', () => {
         const maksAntallPermitteringsdager = 49 * 7;
         const innføringsdatoRegelendring = dayjs('2021-10-01');
         const tidslinje = getTidslinje({
@@ -144,7 +144,7 @@ test('Skal ikke gi dato for maks permittering nådd når det er permittert mindr
     const datoAGP2 = finnDatoForMaksPermittering(
         tidslinje,
         innføringsdatoRegelendring,
-        210
+        maksAntallPermitteringsdager
     );
     const dagerBrukt = getPermitteringsoversiktFor18Måneder(
         tidslinje,
@@ -166,15 +166,17 @@ test('Skal finne dato for maks antall dager ved løpende permittering med oppsta
         ],
         andreFraværsperioder: [],
     });
-    const datoAGP2 = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerNådd = finnDatoForMaksPermittering(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsuker * 7
     );
-    expect(datoAGP2).toEqual(innføringsdatoRegelendring.add(49 - 5, 'weeks'));
+    expect(datoMaksAntallDagerNådd).toEqual(
+        innføringsdatoRegelendring.add(49 - 5, 'weeks')
+    );
 });
 
-//denne returnerer 1 dag feil
+//denne returnerer 1 dag feil i et tilfelle (muligens klokka var før 12.00)
 test('Skal håndtere løpende permittering etter regelsendring 1. juli', () => {
     const maksAntallPermitteringsdager = 26 * 7;
     const innføringsdatoRegelendring = dayjs('2021-07-01');
