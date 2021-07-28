@@ -31,7 +31,7 @@ const getTidslinje = (
     );
 };
 
-describe('Tester for beregning av permitteringssituasjon ved regelverksendring. 10 oktober 2021', () => {
+describe('Tester for beregning av permitteringssituasjon ved regelverksendring 10. oktober 2021', () => {
     describe('Tester for finnPermitteringssituasjon1Oktober', () => {
         test('Skal returnere MAKS_NÅDD_1_OKTOBER i riktig tilfelle', () => {
             const maksAntallPermitteringsdager = 49 * 7;
