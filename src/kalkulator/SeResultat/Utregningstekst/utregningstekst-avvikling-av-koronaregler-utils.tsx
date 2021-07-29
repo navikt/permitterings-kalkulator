@@ -91,12 +91,15 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         };
     }
 
-    const datoAGP2: Dayjs = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerPermittertNådd: Dayjs = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring,
         49 * 7
     )!;
-    const sisteDagI18mndsperiode = datoAGP2.subtract(1, 'day');
+    const sisteDagI18mndsperiode = datoMaksAntallDagerPermittertNådd.subtract(
+        1,
+        'day'
+    );
 
     const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
@@ -108,11 +111,16 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             <>
                 <Element>
                     Du har lønnsplikt fra
-                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}
+                    {' ' +
+                        formaterDato(
+                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
+                        )}
                     {tilleggstekstLøpendePermittering}. Da er maks antall dager
                     for permittering uten lønnsplikt nådd.
                 </Element>
-                {alertOmForskyvingAvAGP2HvisHelg(datoAGP2)}
+                {alertOmForskyvingAvMaksgrenseNåddHvisHelg(
+                    datoMaksAntallDagerPermittertNådd
+                )}
             </>
         ),
         beskrivelse: (
@@ -129,7 +137,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             til18mndsperiode(sisteDagI18mndsperiode)
                         )}
                     , vil du måtte betale lønn fra{' '}
-                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}.
+                    {' ' +
+                        formaterDato(
+                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
+                        )}
+                    .
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Dersom du avslutter permitteringen vil nye regler gjelde for
@@ -154,7 +166,7 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     return `${restIDager} dager`;
 };
 
-const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
+const alertOmForskyvingAvMaksgrenseNåddHvisHelg = (dato: Dayjs) => {
     if (erHelg(dato)) {
         return (
             <AlertStripe
