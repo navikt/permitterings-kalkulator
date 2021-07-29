@@ -27,7 +27,11 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                         periode
                     );
                     return (
-                        <div className="mobilversjon-kort__liste" role="list">
+                        <div
+                            className="mobilversjon-kort__liste"
+                            role="list"
+                            key={index}
+                        >
                             <AttributtVisning
                                 attributt="Permitteringsperiode"
                                 attributtVerdi={formaterDatoIntervall(periode)}

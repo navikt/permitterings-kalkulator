@@ -9,18 +9,19 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
     erHelg,
     finnDato18MndTilbake,
+    finnTidligsteFraDato,
     formaterDato,
     formaterDatoIntervall,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import AlertStripe from 'nav-frontend-alertstriper';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
     getPermitteringsoversiktFor18Måneder,
     slettPermitteringsdagerFørDato,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { harLøpendePermitteringMedOppstartFørRegelendring } from '../../utils/beregningerForRegelverksendring1Okt';
 
 const datoPotensiellRegelendring = dayjs('2021-10-01');
 
@@ -59,8 +60,9 @@ export const lagResultatTekstNormaltRegelverk = (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Du kan ikke ha en ansatt permittert lenger enn 26 uker i
-                        løpet av 18 måneder. Den ansatte vil ikke ha rett på
-                        dagpenger som følge av permittering.
+                        løpet av 18 måneder. Den ansatte vil ikke lenger ha rett
+                        på dagpenger som følge av permittering. Du vil da være
+                        pliktig til å betale lønn.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -138,6 +140,10 @@ export const lagResultatTekstNormaltRegelverk = (
                         kalkulatoren vil da regne ut når når lønnsplikten
                         inntreffer igjen.
                     </Normaltekst>
+                    {finnTidligsteFraDato(
+                        allePermitteringerOgFraværesPerioder.permitteringer
+                    )?.isBefore(innføringsdatoRegelEndring) &&
+                        tekstOmPermitteringFør1Juli()}
                 </>
             ),
         };
@@ -194,6 +200,17 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
         return skrivUker(heleUkerPermittert) + dagerITekst;
     }
     return `${restIDager} dager`;
+};
+
+const tekstOmPermitteringFør1Juli = () => {
+    return (
+        <Normaltekst className={'utregningstekst__beskrivelse'}>
+            Permitteringsdager før 1. juli er nullstilt grunnet unntakstilstand
+            i forbindelse med koronaepidemien. Det betyr at permitteringsdager
+            før 1. juli ikke telles med i antall dager du kan ha den ansatte
+            permittert.
+        </Normaltekst>
+    );
 };
 
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
