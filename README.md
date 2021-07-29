@@ -1,2 +1,2 @@
 # permitterings-kalkulator
-Kalkulator for å beregne Arbeidsperiode 2
+Kalkulator for å gi informasjon og permitteringsregelverket.

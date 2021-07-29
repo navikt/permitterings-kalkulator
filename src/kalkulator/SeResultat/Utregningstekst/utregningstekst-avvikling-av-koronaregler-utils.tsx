@@ -76,11 +76,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         lønnsplikt fra 1. oktober 2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Dette betyr at du må betale lønn til din ansatte fra 1.
-                        oktober. Hvis du har permitteringsgrunnlag for å
+                        Dette betyr at du må betale lønn til arbeidstakeren fra
+                        1. oktober. Hvis du har permitteringsgrunnlag for å
                         permittere din ansatt videre, er du nødt til å
                         iverksette en ny permittering. Du vil da få en ny
-                        lønnsplikt
+                        lønnspliktsperiode (arbeidsgiverperiode 1).
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For nye permitteringer er maks antall uker du kan ha den
@@ -175,12 +175,12 @@ const alertOmForskyvingAvMaksgrenseNåddHvisHelg = (dato: Dayjs) => {
                 className="utregningstekst__alertstripe"
             >
                 <Element>
-                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
+                    NB! Lørdager og søndager forskyver dagen lønnsplikten
+                    inntreffer.
                 </Element>
                 <Normaltekst>
-                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
-                    betaler du permitteringslønn i fem fortløpende dager fra og
-                    med førstkommende mandag.
+                    Hvis første dag du har lønnsplikt havner på en helgedag,
+                    betaler du lønn fra med førstkommende mandag.
                 </Normaltekst>
             </AlertStripe>
         );

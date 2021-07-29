@@ -103,7 +103,7 @@ export const lagResultatTekstNormaltRegelverk = (
                     <Element>
                         Ved ytterligere permittering i tiden fram til{' '}
                         {formaterDato(aktuell18mndsperiode.datoTil)} vil du
-                        måtte betale avbryte permitteringen etter{' '}
+                        måtte avbryte permitteringen etter{' '}
                         {skrivDagerIHeleUkerPlussDager(
                             26 * 7 - oversiktOverPermittering.dagerBrukt
                         )}
@@ -137,8 +137,8 @@ export const lagResultatTekstNormaltRegelverk = (
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
-                        kalkulatoren vil da regne ut når når lønnsplikten
-                        inntreffer igjen.
+                        kalkulatoren vil da regne ut når lønnsplikten inntreffer
+                        igjen.
                     </Normaltekst>
                     {finnTidligsteFraDato(
                         allePermitteringerOgFraværesPerioder.permitteringer

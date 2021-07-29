@@ -90,9 +90,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 />
             )}
             <Normaltekst className="utregningstekst__informasjonslenker">
-                <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale">
-                    Les mer om arbeidsgiverperiode 2
-                </Lenke>
                 <Lenke href="/arbeidsgiver-permittering">
                     Tilbake til permitteringsveiviseren
                 </Lenke>
