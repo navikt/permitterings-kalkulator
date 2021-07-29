@@ -23,6 +23,11 @@ interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
+export enum Permitteringssregelverk {
+    KORONA_ORDNING = 'KORONA_ORDNING',
+    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
+}
+
 const Utregningstekst: FunctionComponent<Props> = (props) => {
     const {
         dagensDato,
@@ -31,9 +36,13 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
 
     const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-        props.allePermitteringerOgFraværesPerioder,
+        props.allePermitteringerOgFraværesPerioder.permitteringer,
         regelEndring1Juli
     );
+
+    const gjeldendeRegelverk = oppstartFørRegelendring
+        ? Permitteringssregelverk.KORONA_ORDNING
+        : Permitteringssregelverk.NORMALT_REGELVERK;
 
     const resultatTekst = oppstartFørRegelendring
         ? lagResultatTekstForPermitteringsStartFør1Juli(
@@ -49,12 +58,16 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               dayjs('2021-07-01')
           );
 
-    //denne brukes bare i tabellen
+    const maksDagerUtenLønnsplikt = oppstartFørRegelendring ? 49 * 7 : 26 * 7;
+    const datoRegelEndring = oppstartFørRegelendring
+        ? regelEndringsDato1Oktober
+        : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+        gjeldendeRegelverk,
         props.tidslinje,
         dagensDato,
-        regelEndringsDato1Oktober,
-        210
+        datoRegelEndring,
+        maksDagerUtenLønnsplikt
     );
 
     return (

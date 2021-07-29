@@ -38,7 +38,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
-    const skalViseTidslinje = false; // Når tidslinjen skal slås på, erstatt 'false' med: props.tidslinje.length
+    const skalViseTidslinje =
+        process.env.NODE_ENV === 'development' && props.tidslinje.length;
 
     return (
         <>

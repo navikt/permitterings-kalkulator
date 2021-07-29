@@ -1,6 +1,5 @@
 import { DatoIntervall } from '../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import { slettPermitteringsdagerFørDato } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
     finnInitialgrenserForTidslinjedatoer,
