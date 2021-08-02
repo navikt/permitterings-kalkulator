@@ -1,2 +1,2 @@
 # permitterings-kalkulator
-Kalkulator for å gi informasjon og permitteringsregelverket.
+Kalkulator for å gi informasjon om permitteringsregelverket.
