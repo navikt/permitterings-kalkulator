@@ -46,6 +46,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     );
 
     if (situasjon === Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER) {
+        console.log('maks nådd 1 oktober');
         return {
             konklusjon: (
                 <>

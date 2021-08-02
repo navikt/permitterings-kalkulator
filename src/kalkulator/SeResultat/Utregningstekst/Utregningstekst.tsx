@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import './Utregningstekst.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -35,16 +40,27 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndringsDato1Oktober,
     } = useContext(PermitteringContext);
 
-    const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-        props.allePermitteringerOgFraværesPerioder.permitteringer,
-        regelEndring1Juli
-    );
+    const [
+        harOppstartFørRegelEndring,
+        setHarOppstartFørRegelEndring,
+    ] = useState(false);
 
-    const gjeldendeRegelverk = oppstartFørRegelendring
+    useEffect(() => {
+        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        );
+        setHarOppstartFørRegelEndring(oppstartFørRegelendring);
+    }, [
+        props.allePermitteringerOgFraværesPerioder.permitteringer,
+        regelEndring1Juli,
+    ]);
+
+    const gjeldendeRegelverk = harOppstartFørRegelEndring
         ? Permitteringssregelverk.KORONA_ORDNING
         : Permitteringssregelverk.NORMALT_REGELVERK;
 
-    const resultatTekst = oppstartFørRegelendring
+    const resultatTekst = harOppstartFørRegelEndring
         ? lagResultatTekstForPermitteringsStartFør1Juli(
               props.tidslinje,
               props.allePermitteringerOgFraværesPerioder,
@@ -58,8 +74,10 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               dayjs('2021-07-01')
           );
 
-    const maksDagerUtenLønnsplikt = oppstartFørRegelendring ? 49 * 7 : 26 * 7;
-    const datoRegelEndring = oppstartFørRegelendring
+    const maksDagerUtenLønnsplikt = harOppstartFørRegelEndring
+        ? 49 * 7
+        : 26 * 7;
+    const datoRegelEndring = harOppstartFørRegelEndring
         ? regelEndringsDato1Oktober
         : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(

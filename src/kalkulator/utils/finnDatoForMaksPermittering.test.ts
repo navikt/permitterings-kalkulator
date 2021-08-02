@@ -141,7 +141,7 @@ test('Skal ikke gi dato for maks permittering nådd når det er permittert mindr
         ],
         andreFraværsperioder: [],
     });
-    const datoAGP2 = finnDatoForMaksPermittering(
+    const datoForMaksPermitteringNådd = finnDatoForMaksPermittering(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -151,7 +151,7 @@ test('Skal ikke gi dato for maks permittering nådd når det er permittert mindr
         permitteringsslutt.add(100, 'days')
     ).dagerBrukt;
     expect(dagerBrukt).toEqual(maksAntallPermitteringsdager);
-    expect(datoAGP2).toEqual(undefined);
+    expect(datoForMaksPermitteringNådd).toEqual(undefined);
 });
 
 test('Skal finne dato for maks antall dager ved løpende permittering med oppstart før 1. juli (regelendring 1. juli)', () => {

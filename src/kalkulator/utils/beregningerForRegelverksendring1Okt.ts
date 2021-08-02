@@ -267,12 +267,14 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
         case Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER:
             return til18mndsperiode(innføringsdatoRegelendring);
         case Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER:
-            const datoForAGP2 = finnDatoForMaksPermittering(
+            const datoMaksPermitteringNådd = finnDatoForMaksPermittering(
                 tidslinje,
                 innføringsdatoRegelendring,
                 maksAntallDagerUtenLønnsplikt
             )!;
-            return til18mndsperiode(datoForAGP2.subtract(1, 'day'));
+            return til18mndsperiode(
+                datoMaksPermitteringNådd.subtract(1, 'day')
+            );
         case PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD:
             return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
