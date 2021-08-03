@@ -5,11 +5,10 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import { getPermitteringsoversiktFor18Måneder } from '../../utils/beregningerForAGP2';
 import {
     erHelg,
     finnDato18MndTilbake,
-    finnesLøpendePeriode,
+    finnPotensiellLøpendePermittering,
     formaterDato,
     formaterDatoIntervall,
     getFørsteHverdag,
@@ -17,22 +16,17 @@ import {
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
-import Lenke from 'nav-frontend-lenker';
+
 import {
     finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
+    getPermitteringsoversiktFor18Måneder,
+    Permitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
     beskrivelse: ReactElement | null;
-}
-
-export enum Permitteringssituasjon1Oktober {
-    MAKS_NÅDD_1_OKTOBER = 'MAKS_NÅDD_1_OKTOBER',
-    IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT = 'IKKE_NÅDD_PGA_FOR_LITE_PERMITTERT',
-    IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER = 'IKKE_NÅDD_PGA_IKKE_PERMITTERT_1_OKTOBER',
 }
 
 export const lagResultatTekstForPermitteringsStartFør1Juli = (
@@ -52,6 +46,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     );
 
     if (situasjon === Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER) {
+        console.log('maks nådd 1 oktober');
         return {
             konklusjon: (
                 <>
@@ -82,11 +77,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         lønnsplikt fra 1. oktober 2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Dette betyr at du må betale lønn til din ansatte fra 1.
-                        oktober. Hvis du har permitteringsgrunnlag for å
+                        Dette betyr at du må betale lønn til arbeidstakeren fra
+                        1. oktober. Hvis du har permitteringsgrunnlag for å
                         permittere din ansatt videre, er du nødt til å
                         iverksette en ny permittering. Du vil da få en ny
-                        lønnsplikt
+                        lønnspliktsperiode (arbeidsgiverperiode 1).
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For nye permitteringer er maks antall uker du kan ha den
@@ -97,14 +92,17 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         };
     }
 
-    const datoAGP2: Dayjs = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerPermittertNådd: Dayjs = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring,
         49 * 7
     )!;
-    const sisteDagI18mndsperiode = datoAGP2.subtract(1, 'day');
+    const sisteDagI18mndsperiode = datoMaksAntallDagerPermittertNådd.subtract(
+        1,
+        'day'
+    );
 
-    const tilleggstekstLøpendePermittering = finnesLøpendePeriode(
+    const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
     )
         ? ', dersom permitteringen holdes løpende'
@@ -114,11 +112,16 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             <>
                 <Element>
                     Du har lønnsplikt fra
-                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}
+                    {' ' +
+                        formaterDato(
+                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
+                        )}
                     {tilleggstekstLøpendePermittering}. Da er maks antall dager
                     for permittering uten lønnsplikt nådd.
                 </Element>
-                {alertOmForskyvingAvAGP2HvisHelg(datoAGP2)}
+                {alertOmForskyvingAvMaksgrenseNåddHvisHelg(
+                    datoMaksAntallDagerPermittertNådd
+                )}
             </>
         ),
         beskrivelse: (
@@ -135,7 +138,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             til18mndsperiode(sisteDagI18mndsperiode)
                         )}
                     , vil du måtte betale lønn fra{' '}
-                    {' ' + formaterDato(getFørsteHverdag(datoAGP2))}.
+                    {' ' +
+                        formaterDato(
+                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
+                        )}
+                    .
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Dersom du avslutter permitteringen vil nye regler gjelde for
@@ -160,7 +167,7 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     return `${restIDager} dager`;
 };
 
-const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
+const alertOmForskyvingAvMaksgrenseNåddHvisHelg = (dato: Dayjs) => {
     if (erHelg(dato)) {
         return (
             <AlertStripe
@@ -169,12 +176,12 @@ const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
                 className="utregningstekst__alertstripe"
             >
                 <Element>
-                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
+                    NB! Lørdager og søndager forskyver dagen lønnsplikten
+                    inntreffer.
                 </Element>
                 <Normaltekst>
-                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
-                    betaler du permitteringslønn i fem fortløpende dager fra og
-                    med førstkommende mandag.
+                    Hvis første dag du har lønnsplikt havner på en helgedag,
+                    betaler du lønn fra med førstkommende mandag.
                 </Normaltekst>
             </AlertStripe>
         );

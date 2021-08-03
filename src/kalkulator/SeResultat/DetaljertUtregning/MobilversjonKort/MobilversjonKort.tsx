@@ -3,8 +3,8 @@ import React, { FunctionComponent } from 'react';
 import './MobilversjonKort.less';
 import { DatoIntervall, DatoMedKategori } from '../../../typer';
 import { formaterDatoIntervall } from '../../../utils/dato-utils';
-import { getPermitteringsoversikt } from '../../../utils/beregningerForAGP2';
 import AttributtVisning from './AttributtVisning/AttributtVisning';
+import { getPermitteringsoversikt } from '../../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -27,7 +27,11 @@ const MobilversjonKort: FunctionComponent<Props> = ({
                         periode
                     );
                     return (
-                        <div className="mobilversjon-kort__liste" role="list">
+                        <div
+                            className="mobilversjon-kort__liste"
+                            role="list"
+                            key={index}
+                        >
                             <AttributtVisning
                                 attributt="Permitteringsperiode"
                                 attributtVerdi={formaterDatoIntervall(periode)}

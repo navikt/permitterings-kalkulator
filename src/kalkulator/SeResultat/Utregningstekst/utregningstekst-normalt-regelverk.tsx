@@ -5,25 +5,23 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForAGP2,
-    getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon,
-} from '../../utils/beregningerForAGP2';
+
 import {
     erHelg,
     finnDato18MndTilbake,
+    finnTidligsteFraDato,
     formaterDato,
     formaterDatoIntervall,
     til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import AlertStripe from 'nav-frontend-alertstriper';
 import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
+    getPermitteringsoversiktFor18Måneder,
     slettPermitteringsdagerFørDato,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { harLøpendePermitteringMedOppstartFørRegelendring } from '../../utils/beregningerForRegelverksendring1Okt';
 
 const datoPotensiellRegelendring = dayjs('2021-10-01');
 
@@ -62,8 +60,9 @@ export const lagResultatTekstNormaltRegelverk = (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Du kan ikke ha en ansatt permittert lenger enn 26 uker i
-                        løpet av 18 måneder. Den ansatte vil ikke ha rett på
-                        dagpenger som følge av permittering.
+                        løpet av 18 måneder. Den ansatte vil ikke lenger ha rett
+                        på dagpenger som følge av permittering. Du vil da være
+                        pliktig til å betale lønn.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -104,7 +103,7 @@ export const lagResultatTekstNormaltRegelverk = (
                     <Element>
                         Ved ytterligere permittering i tiden fram til{' '}
                         {formaterDato(aktuell18mndsperiode.datoTil)} vil du
-                        måtte betale avbryte permitteringen etter{' '}
+                        måtte avbryte permitteringen etter{' '}
                         {skrivDagerIHeleUkerPlussDager(
                             26 * 7 - oversiktOverPermittering.dagerBrukt
                         )}
@@ -138,9 +137,13 @@ export const lagResultatTekstNormaltRegelverk = (
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
-                        kalkulatoren vil da regne ut når når lønnsplikten
-                        inntreffer igjen.
+                        kalkulatoren vil da regne ut når lønnsplikten inntreffer
+                        igjen.
                     </Normaltekst>
+                    {finnTidligsteFraDato(
+                        allePermitteringerOgFraværesPerioder.permitteringer
+                    )?.isBefore(innføringsdatoRegelEndring) &&
+                        tekstOmPermitteringFør1Juli()}
                 </>
             ),
         };
@@ -199,25 +202,15 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     return `${restIDager} dager`;
 };
 
-const alertOmForskyvingAvAGP2HvisHelg = (dato: Dayjs) => {
-    if (erHelg(dato)) {
-        return (
-            <AlertStripe
-                type={'info'}
-                form={'inline'}
-                className="utregningstekst__alertstripe"
-            >
-                <Element>
-                    NB! Lørdager og søndager forskyver arbeidsgiverperiode 2
-                </Element>
-                <Normaltekst>
-                    Hvis arbeidsgiverperiode 2 inntreffer på en helgedag,
-                    betaler du permitteringslønn i fem fortløpende dager fra og
-                    med førstkommende mandag.
-                </Normaltekst>
-            </AlertStripe>
-        );
-    }
+const tekstOmPermitteringFør1Juli = () => {
+    return (
+        <Normaltekst className={'utregningstekst__beskrivelse'}>
+            Permitteringsdager før 1. juli er nullstilt grunnet unntakstilstand
+            i forbindelse med koronaepidemien. Det betyr at permitteringsdager
+            før 1. juli ikke telles med i antall dager du kan ha den ansatte
+            permittert.
+        </Normaltekst>
+    );
 };
 
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');

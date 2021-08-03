@@ -8,7 +8,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import './DetaljertUtregning.less';
 import { Tabell } from './Tabell';
 import MobilversjonKort from './MobilversjonKort/MobilversjonKort';
-import { getPermitteringsoversikt } from '../../utils/beregningerForAGP2';
+import { getPermitteringsoversikt } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];

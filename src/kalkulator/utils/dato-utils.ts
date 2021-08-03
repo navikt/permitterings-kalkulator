@@ -118,8 +118,11 @@ export const datoIntervallErGyldig = (
     }
 };
 
-export const finnesLøpendePeriode = (datoIntervall: Partial<DatoIntervall>[]) =>
-    !!datoIntervall.find((permittering) => permittering.erLøpende);
+export const finnPotensiellLøpendePermittering = (
+    datoIntervall: Partial<DatoIntervall>[]
+): Partial<DatoIntervall> | undefined => {
+    return datoIntervall.find((permittering) => permittering.erLøpende);
+};
 
 export const datoIntervallOverlapperMedPerioder = (
     perioder: Partial<DatoIntervall>[],

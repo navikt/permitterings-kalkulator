@@ -27,7 +27,11 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForAGP2';
+import {
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    harLøpendePermitteringMedOppstartFørRegelendring,
+} from '../utils/beregningerForRegelverksendring1Okt';
+import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -41,7 +45,11 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
-    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const {
+        dagensDato,
+        regelEndringsDato1Oktober,
+        regelEndring1Juli,
+    } = useContext(PermitteringContext);
     const [
         absoluttPosisjonFraVenstreDragElement,
         setAbsoluttPosisjonFraVenstreDragElement,
@@ -78,13 +86,27 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
+        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        );
+        const gjeldendeRegelverk = oppstartFørRegelendring
+            ? Permitteringssregelverk.KORONA_ORDNING
+            : Permitteringssregelverk.NORMALT_REGELVERK;
+        const maksDagerUtenLønnsplikt = oppstartFørRegelendring
+            ? 49 * 7
+            : 26 * 7;
+        const datoRegelEndring = oppstartFørRegelendring
+            ? regelEndringsDato1Oktober
+            : regelEndring1Juli;
         const sluttAv18mndsPeriode =
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+                gjeldendeRegelverk,
                 props.tidslinje,
                 dagensDato,
-                innføringsdatoAGP2,
-                210
-            )?.datoTil || innføringsdatoAGP2;
+                datoRegelEndring,
+                maksDagerUtenLønnsplikt
+            )?.datoTil || regelEndring1Juli;
         props.set18mndsPeriode(sluttAv18mndsPeriode);
     }, [props.tidslinje]);
 

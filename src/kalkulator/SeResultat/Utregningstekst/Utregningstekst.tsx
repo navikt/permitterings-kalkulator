@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useContext } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import './Utregningstekst.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -10,9 +15,11 @@ import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForAGP2';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
-import { harLøpendePermitteringMedOppstartFørRegelendring } from '../../utils/beregningerForRegelverksendring1Okt';
+import {
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    harLøpendePermitteringMedOppstartFørRegelendring,
+} from '../../utils/beregningerForRegelverksendring1Okt';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 
@@ -21,17 +28,39 @@ interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
 }
 
+export enum Permitteringssregelverk {
+    KORONA_ORDNING = 'KORONA_ORDNING',
+    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
+}
+
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const { dagensDato, regelEndringsDato1Oktober } = useContext(
-        PermitteringContext
-    );
+    const {
+        dagensDato,
+        regelEndring1Juli,
+        regelEndringsDato1Oktober,
+    } = useContext(PermitteringContext);
 
-    const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-        props.allePermitteringerOgFraværesPerioder,
-        regelEndringsDato1Oktober
-    );
+    const [
+        harOppstartFørRegelEndring,
+        setHarOppstartFørRegelEndring,
+    ] = useState(false);
 
-    const resultatTekst = oppstartFørRegelendring
+    useEffect(() => {
+        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        );
+        setHarOppstartFørRegelEndring(oppstartFørRegelendring);
+    }, [
+        props.allePermitteringerOgFraværesPerioder.permitteringer,
+        regelEndring1Juli,
+    ]);
+
+    const gjeldendeRegelverk = harOppstartFørRegelEndring
+        ? Permitteringssregelverk.KORONA_ORDNING
+        : Permitteringssregelverk.NORMALT_REGELVERK;
+
+    const resultatTekst = harOppstartFørRegelEndring
         ? lagResultatTekstForPermitteringsStartFør1Juli(
               props.tidslinje,
               props.allePermitteringerOgFraværesPerioder,
@@ -45,12 +74,18 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               dayjs('2021-07-01')
           );
 
-    //denne brukes bare i tabellen
+    const maksDagerUtenLønnsplikt = harOppstartFørRegelEndring
+        ? 49 * 7
+        : 26 * 7;
+    const datoRegelEndring = harOppstartFørRegelEndring
+        ? regelEndringsDato1Oktober
+        : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+        gjeldendeRegelverk,
         props.tidslinje,
         dagensDato,
-        regelEndringsDato1Oktober,
-        210
+        datoRegelEndring,
+        maksDagerUtenLønnsplikt
     );
 
     return (
@@ -73,9 +108,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 />
             )}
             <Normaltekst className="utregningstekst__informasjonslenker">
-                <Lenke href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale">
-                    Les mer om arbeidsgiverperiode 2
-                </Lenke>
                 <Lenke href="/arbeidsgiver-permittering">
                     Tilbake til permitteringsveiviseren
                 </Lenke>

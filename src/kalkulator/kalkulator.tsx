@@ -19,7 +19,9 @@ import { formaterDato } from './utils/dato-utils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 
 const Kalkulator = () => {
-    const { dagensDato, innføringsdatoAGP2 } = useContext(PermitteringContext);
+    const { dagensDato, regelEndringsDato1Oktober } = useContext(
+        PermitteringContext
+    );
 
     const [
         allePermitteringerOgFraværesPerioder,
@@ -35,7 +37,7 @@ const Kalkulator = () => {
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        innføringsdatoAGP2
+        regelEndringsDato1Oktober
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [
