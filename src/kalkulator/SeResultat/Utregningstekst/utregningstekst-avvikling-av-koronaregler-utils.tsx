@@ -46,7 +46,6 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     );
 
     if (situasjon === Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER) {
-        console.log('maks nådd 1 oktober');
         return {
             konklusjon: (
                 <>
@@ -133,11 +132,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Hvis du holder permitteringen løpende fram til
-                    {' ' +
-                        formaterDatoIntervall(
-                            til18mndsperiode(sisteDagI18mndsperiode)
-                        )}
-                    , vil du måtte betale lønn fra{' '}
+                    {' ' + formaterDato(sisteDagI18mndsperiode)}, vil du måtte
+                    betale lønn fra{' '}
                     {' ' +
                         formaterDato(
                             getFørsteHverdag(datoMaksAntallDagerPermittertNådd)

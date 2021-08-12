@@ -11,6 +11,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPotensiellLøpendePermittering,
+    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -62,11 +63,7 @@ export const finnDatoForMaksPermittering = (
     );
 
     if (oversiktVedInnføringsdato.dagerBrukt > maksAntallDagerUtenLønnsplikt) {
-        if (erPermittertVedDato(tidslinje, innføringsdatoRegelendring)) {
-            return innføringsdatoRegelendring;
-        } else {
-            return undefined;
-        }
+        return innføringsdatoRegelendring;
     }
 
     let potensiellDatoForMaksPeriode: Dayjs = dayjs(innføringsdatoRegelendring);

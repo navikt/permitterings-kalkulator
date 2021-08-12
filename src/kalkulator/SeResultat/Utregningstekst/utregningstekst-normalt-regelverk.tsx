@@ -19,11 +19,7 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
     getPermitteringsoversiktFor18Måneder,
-    slettPermitteringsdagerFørDato,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
-import { harLøpendePermitteringMedOppstartFørRegelendring } from '../../utils/beregningerForRegelverksendring1Okt';
-
-const datoPotensiellRegelendring = dayjs('2021-10-01');
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -31,15 +27,11 @@ interface ResultatTekst {
 }
 
 export const lagResultatTekstNormaltRegelverk = (
-    tidslinje: DatoMedKategori[],
+    tidslinjeUtenPermitteringFor1Juli: DatoMedKategori[],
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
     innføringsdatoRegelEndring: Dayjs
 ): ResultatTekst => {
-    const tidslinjeUtenPermitteringFor1Juli = slettPermitteringsdagerFørDato(
-        tidslinje,
-        innføringsdatoRegelEndring
-    );
     const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring,
@@ -79,6 +71,10 @@ export const lagResultatTekstNormaltRegelverk = (
                             ),
                             datoTil: datoForMaksPermitteringOppbrukt,
                         })}
+                        {finnTidligsteFraDato(
+                            allePermitteringerOgFraværesPerioder.permitteringer
+                        )?.isBefore(innføringsdatoRegelEndring) &&
+                            tekstOmPermitteringFør1Juli()}
                     </Normaltekst>
                 </>
             ),
@@ -154,8 +150,8 @@ export const lagResultatTekstNormaltRegelverk = (
             <>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     De midlertidige ordningene som gjaldt under COVID-19
-                    avvikles fra 1. oktober. Om du permitterer nå kan du
-                    permittere i 26 uker i løpet av 18 måneder.
+                    avvikles fra 1. juli. Om du permitterer nå kan du permittere
+                    i 26 uker i løpet av 18 måneder.
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Tips: Du kan fylle inn permitteringer framover i tid,

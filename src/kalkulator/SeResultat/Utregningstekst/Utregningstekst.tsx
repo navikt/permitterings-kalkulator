@@ -22,6 +22,7 @@ import {
 } from '../../utils/beregningerForRegelverksendring1Okt';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
+import { slettPermitteringsdagerFørDato } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -60,15 +61,19 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         ? Permitteringssregelverk.KORONA_ORDNING
         : Permitteringssregelverk.NORMALT_REGELVERK;
 
+    const gjeldendeTidslinje = harOppstartFørRegelEndring
+        ? props.tidslinje
+        : slettPermitteringsdagerFørDato(props.tidslinje, regelEndring1Juli);
+
     const resultatTekst = harOppstartFørRegelEndring
         ? lagResultatTekstForPermitteringsStartFør1Juli(
-              props.tidslinje,
+              gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
               dagensDato,
               regelEndringsDato1Oktober
           )
         : lagResultatTekstNormaltRegelverk(
-              props.tidslinje,
+              gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
               dagensDato,
               dayjs('2021-07-01')
@@ -82,7 +87,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
-        props.tidslinje,
+        gjeldendeTidslinje,
         dagensDato,
         datoRegelEndring,
         maksDagerUtenLønnsplikt
@@ -99,7 +104,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             {resultatTekst.beskrivelse}
             {aktuell18mndsperiode && (
                 <DetaljertUtregning
-                    tidslinje={props.tidslinje}
+                    tidslinje={gjeldendeTidslinje}
                     permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
                         props.allePermitteringerOgFraværesPerioder
                             .permitteringer
