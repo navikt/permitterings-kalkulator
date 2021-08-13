@@ -29,26 +29,28 @@ export const slettPermitteringsdagerFørDato = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs
 ) => {
-    const kopiAvTidlinje = [...tidslinje];
-    kopiAvTidlinje.forEach((datomedKategori) => {
+    const avkuttetTidslinje: DatoMedKategori[] = [];
+    tidslinje.forEach((datomedKategori) => {
         if (datomedKategori.dato.isBefore(dato)) {
-            datomedKategori.kategori = DatointervallKategori.IKKE_PERMITTERT;
+            avkuttetTidslinje.push({
+                dato: datomedKategori.dato,
+                kategori: DatointervallKategori.IKKE_PERMITTERT,
+            });
         } else {
-            return kopiAvTidlinje;
+            avkuttetTidslinje.push({
+                dato: datomedKategori.dato,
+                kategori: datomedKategori.kategori,
+            });
         }
     });
-    return kopiAvTidlinje;
+    return avkuttetTidslinje;
 };
 
 export const finnPermitteringssituasjonNormalRegelverk = (
-    tidslinje: DatoMedKategori[],
+    tidslinjeUtenPermitteringFor1Juli: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonStandarkRegelverk => {
-    const tidslinjeUtenPermitteringFor1Juli = slettPermitteringsdagerFørDato(
-        tidslinje,
-        innføringsdatoRegelendring
-    );
     const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelendring,

@@ -1,4 +1,4 @@
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
