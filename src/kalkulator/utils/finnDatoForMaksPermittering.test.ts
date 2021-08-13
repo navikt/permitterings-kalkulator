@@ -71,26 +71,6 @@ test('Maks antall dager permittering skal komme på regelverksending 10. oktober
     expect(datoOverskriderMaksgrense).toEqual(innføringsdatoRegelendring);
 });
 
-test('Skal ikke gi dato for permittert mer enn 49 uker før innføringsdato, men ikke permittert på selve innføringsdato', () => {
-    const maksAntallPermitteringsdager = 49 * 7;
-    const innføringsdatoRegelendring = dayjs('2021-10-01');
-    const tidslinje = getTidslinje({
-        permitteringer: [
-            {
-                datoFra: innføringsdatoRegelendring.subtract(49 + 5, 'weeks'),
-                datoTil: innføringsdatoRegelendring.subtract(1, 'day'),
-            },
-        ],
-        andreFraværsperioder: [],
-    });
-    const datoOverskriderMaksgrense = finnDatoForMaksPermittering(
-        tidslinje,
-        innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
-    );
-    expect(datoOverskriderMaksgrense).toEqual(undefined);
-});
-
 /*
 
 // Denne testen feiler. Funksjonaliteten implementeres i fremtiden.
