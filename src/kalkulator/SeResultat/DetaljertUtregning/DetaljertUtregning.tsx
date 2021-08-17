@@ -14,12 +14,14 @@ interface Props {
     tidslinje: DatoMedKategori[];
     permitteringsperioder: DatoIntervall[];
     aktuell18mndsperiode: DatoIntervall;
+    permitteringsDagerFør1JuliSlettet: boolean;
 }
 
 export const DetaljertUtregning: FunctionComponent<Props> = ({
     tidslinje,
     permitteringsperioder,
     aktuell18mndsperiode,
+    permitteringsDagerFør1JuliSlettet,
 }) => {
     const permitteringsperioderInnenfor18mndsperiode: DatoIntervall[] = permitteringsperioder
         .map((periode) => getOverlappendePeriode(periode, aktuell18mndsperiode))
@@ -30,16 +32,17 @@ export const DetaljertUtregning: FunctionComponent<Props> = ({
         aktuell18mndsperiode
     ).dagerBrukt;
 
+    const tekstHvisPermitteringFør1JuliErSlettet = permitteringsDagerFør1JuliSlettet
+        ? 'Permitteringer før 1. juli er nullstilt og vil derfor ikke vises i oversikten'
+        : '';
+
     return (
         <div className="detaljert-utregning">
             <Element>
                 Detaljert utregning for 18-månedersperioden{' '}
                 {formaterDatoIntervall(aktuell18mndsperiode)}:
             </Element>
-            <Normaltekst>
-                Permitteringsdager utenfor denne perioden kommer ikke med
-                beregningen
-            </Normaltekst>
+            <Normaltekst>{tekstHvisPermitteringFør1JuliErSlettet}</Normaltekst>
             <div className={'detaljert-utregning__tabellcontainer'}>
                 <Tabell
                     permitteringsperioderInnenfor18mndsperiode={

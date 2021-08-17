@@ -25,10 +25,11 @@ export enum PermitteringssituasjonStandarkRegelverk {
     IKKE_NÅDD = 'IKKE_NÅDD',
 }
 
-export const slettPermitteringsdagerFørDato = (
+export const lagNyListeHvisPermitteringFør1Juli = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs
 ) => {
+    let harPermitteringFørRegelEndring = false;
     const avkuttetTidslinje: DatoMedKategori[] = [];
     tidslinje.forEach((datomedKategori) => {
         if (datomedKategori.dato.isBefore(dato)) {
@@ -36,6 +37,12 @@ export const slettPermitteringsdagerFørDato = (
                 dato: datomedKategori.dato,
                 kategori: DatointervallKategori.IKKE_PERMITTERT,
             });
+            if (
+                datomedKategori.kategori !==
+                DatointervallKategori.IKKE_PERMITTERT
+            ) {
+                harPermitteringFørRegelEndring = true;
+            }
         } else {
             avkuttetTidslinje.push({
                 dato: datomedKategori.dato,
@@ -43,7 +50,9 @@ export const slettPermitteringsdagerFørDato = (
             });
         }
     });
-    return avkuttetTidslinje;
+    if (harPermitteringFørRegelEndring) {
+        return avkuttetTidslinje;
+    }
 };
 
 export const finnPermitteringssituasjonNormalRegelverk = (
@@ -96,7 +105,7 @@ export const finnDatoForMaksPermittering = (
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    return potensiellDatoForMaksPeriode;
+    return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
 export const getPermitteringsoversiktFor18Måneder = (

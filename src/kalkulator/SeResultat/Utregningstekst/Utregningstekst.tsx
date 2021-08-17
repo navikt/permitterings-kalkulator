@@ -22,7 +22,7 @@ import {
 } from '../../utils/beregningerForRegelverksendring1Okt';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
-import { slettPermitteringsdagerFørDato } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -42,8 +42,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
 
     const [
-        harOppstartFørRegelEndring,
-        setHarOppstartFørRegelEndring,
+        harLøpendePermitteringFør1Juli,
+        setHarLøpendePermitteringFør1Juli,
     ] = useState(false);
 
     useEffect(() => {
@@ -51,21 +51,27 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             props.allePermitteringerOgFraværesPerioder.permitteringer,
             regelEndring1Juli
         );
-        setHarOppstartFørRegelEndring(oppstartFørRegelendring);
+        setHarLøpendePermitteringFør1Juli(oppstartFørRegelendring);
     }, [
         props.allePermitteringerOgFraværesPerioder.permitteringer,
         regelEndring1Juli,
     ]);
 
-    const gjeldendeRegelverk = harOppstartFørRegelEndring
+    const gjeldendeRegelverk = harLøpendePermitteringFør1Juli
         ? Permitteringssregelverk.KORONA_ORDNING
         : Permitteringssregelverk.NORMALT_REGELVERK;
+    const nyListeHvisPermitteringsdagerErSlettet = harLøpendePermitteringFør1Juli
+        ? undefined
+        : lagNyListeHvisPermitteringFør1Juli(
+              props.tidslinje,
+              regelEndring1Juli
+          );
 
-    const gjeldendeTidslinje = harOppstartFørRegelEndring
-        ? props.tidslinje
-        : slettPermitteringsdagerFørDato(props.tidslinje, regelEndring1Juli);
+    const gjeldendeTidslinje = nyListeHvisPermitteringsdagerErSlettet
+        ? nyListeHvisPermitteringsdagerErSlettet
+        : props.tidslinje;
 
-    const resultatTekst = harOppstartFørRegelEndring
+    const resultatTekst = harLøpendePermitteringFør1Juli
         ? lagResultatTekstForPermitteringsStartFør1Juli(
               gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
@@ -79,10 +85,10 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               dayjs('2021-07-01')
           );
 
-    const maksDagerUtenLønnsplikt = harOppstartFørRegelEndring
+    const maksDagerUtenLønnsplikt = harLøpendePermitteringFør1Juli
         ? 49 * 7
         : 26 * 7;
-    const datoRegelEndring = harOppstartFørRegelEndring
+    const datoRegelEndring = harLøpendePermitteringFør1Juli
         ? regelEndringsDato1Oktober
         : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
@@ -104,6 +110,9 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             {resultatTekst.beskrivelse}
             {aktuell18mndsperiode && (
                 <DetaljertUtregning
+                    permitteringsDagerFør1JuliSlettet={
+                        !!nyListeHvisPermitteringsdagerErSlettet
+                    }
                     tidslinje={gjeldendeTidslinje}
                     permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
                         props.allePermitteringerOgFraværesPerioder
