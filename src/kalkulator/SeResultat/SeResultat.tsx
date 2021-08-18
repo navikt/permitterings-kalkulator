@@ -12,6 +12,7 @@ import { Undertittel } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
 import { perioderOverlapper } from '../utils/dato-utils';
+import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -49,7 +50,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             <div className="se-resultat__innhold">
                 <Hovedknapp
                     className="se-resultat__knapp"
-                    onClick={() => setResultatVises(true)}
+                    onClick={() => {
+                        setResultatVises(true);
+                        loggKnappTrykketPå('Se beregningen');
+                    }}
                 >
                     <PekIkon className="se-resultat__knapp-ikon" />
                     Se beregningen

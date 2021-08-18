@@ -14,7 +14,10 @@ import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
-import { filtrerBortUdefinerteDatoIntervaller } from '../../utils/dato-utils';
+import {
+    filtrerBortUdefinerteDatoIntervaller,
+    finnPotensiellLøpendePermittering,
+} from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
@@ -23,6 +26,11 @@ import {
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import {
+    finnFørsteDatoMedPermitteringUtenFravær,
+    finnSisteDatoMedPermitteringUtenFravær,
+} from '../../utils/tidslinje-utils';
+import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -57,6 +65,34 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndring1Juli,
     ]);
 
+    useEffect(() => {
+        const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(
+            props.tidslinje
+        );
+        const forsteApril2020 = dayjs('2020-04-01');
+        if (tidligstePermitteringsDato?.dato.isBefore(forsteApril2020)) {
+            loggPermitteringsSituasjon(
+                'Har permittering iverksatt før 1. april 2020'
+            );
+        }
+        if (!harLøpendePermitteringFør1Juli) {
+            const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
+                props.tidslinje
+            );
+            const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
+                props.allePermitteringerOgFraværesPerioder.permitteringer
+            );
+            if (
+                !løpendePermitteringEtter1Juli &&
+                sistePermitteringsDato.isAfter(dagensDato)
+            ) {
+                loggPermitteringsSituasjon(
+                    'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
+                );
+            }
+        }
+    }, [props.tidslinje]);
+
     const gjeldendeRegelverk = harLøpendePermitteringFør1Juli
         ? Permitteringssregelverk.KORONA_ORDNING
         : Permitteringssregelverk.NORMALT_REGELVERK;
@@ -82,7 +118,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
               dagensDato,
-              dayjs('2021-07-01')
+              regelEndring1Juli
           );
 
     const maksDagerUtenLønnsplikt = harLøpendePermitteringFør1Juli

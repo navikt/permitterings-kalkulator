@@ -9,6 +9,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import {
     erHelg,
     finnDato18MndTilbake,
+    finnPotensiellLøpendePermittering,
     finnTidligsteFraDato,
     formaterDato,
     formaterDatoIntervall,
@@ -20,6 +21,7 @@ import {
     finnDatoForMaksPermittering,
     getPermitteringsoversiktFor18Måneder,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -39,6 +41,16 @@ export const lagResultatTekstNormaltRegelverk = (
     );
 
     if (datoForMaksPermitteringOppbrukt) {
+        const harLøpendePermittering = finnPotensiellLøpendePermittering(
+            allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        if (!harLøpendePermittering) {
+            if (datoForMaksPermitteringOppbrukt.isBefore(dagensDato)) {
+                loggPermitteringsSituasjon(
+                    'Arbeidsgiver har permittert mer enn tillatt.'
+                );
+            }
+        }
         return {
             konklusjon: (
                 <>

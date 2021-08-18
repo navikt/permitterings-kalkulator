@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
@@ -11,7 +11,6 @@ import {
     finnDato18MndTilbake,
     finnesIIntervaller,
     getSenesteDato,
-    tilGyldigDatoIntervall,
 } from './dato-utils';
 
 export const finnInitialgrenserForTidslinjedatoer = (
@@ -105,15 +104,35 @@ export const konstruerTidslinje = (
 };
 export const finnFørsteDatoMedPermitteringUtenFravær = (
     tidslinje: DatoMedKategori[],
-    skalVæreEtter: Dayjs
+    skalVæreEtter?: Dayjs
 ): DatoMedKategori | undefined => {
     return tidslinje.find(
         (datoMedKategori) =>
+            (skalVæreEtter &&
+                datoMedKategori.kategori ===
+                    DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
+                datoMedKategori.dato.isAfter(skalVæreEtter)) ||
             datoMedKategori.kategori ===
-                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
-            datoMedKategori.dato.isAfter(skalVæreEtter)
+                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR
     );
 };
+
+export const finnSisteDatoMedPermitteringUtenFravær = (
+    tidslinje: DatoMedKategori[]
+): Dayjs => {
+    let tempSisteDato = tidslinje[0].dato;
+    tidslinje.forEach((datoMedKategori) => {
+        if (
+            datoMedKategori.kategori !==
+                DatointervallKategori.IKKE_PERMITTERT &&
+            datoMedKategori.dato.isAfter(tempSisteDato)
+        ) {
+            tempSisteDato = datoMedKategori.dato;
+        }
+    });
+    return tempSisteDato;
+};
+
 export const erPermittertVedDato = (
     tidslinje: DatoMedKategori[],
     dato: Dayjs

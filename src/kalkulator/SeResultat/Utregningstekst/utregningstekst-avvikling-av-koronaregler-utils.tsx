@@ -23,6 +23,8 @@ import {
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
+import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -44,8 +46,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         tidslinje,
         datoRegelEndring
     );
-
     if (situasjon === Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER) {
+        loggPermitteringsSituasjon(
+            'Maks permittering nådd 1. oktober. Maks permitteringstid er 49 uker'
+        );
         return {
             konklusjon: (
                 <>
@@ -106,6 +110,9 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     )
         ? ', dersom permitteringen holdes løpende'
         : '';
+    loggPermitteringsSituasjon(
+        'maks permittering nådd etter 1. oktober. Maks permitteringstid er 49 uker.'
+    );
     return {
         konklusjon: (
             <>
