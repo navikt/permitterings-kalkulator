@@ -112,8 +112,9 @@ export const finnFørsteDatoMedPermitteringUtenFravær = (
                 datoMedKategori.kategori ===
                     DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
                 datoMedKategori.dato.isAfter(skalVæreEtter)) ||
-            datoMedKategori.kategori ===
-                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR
+            (!skalVæreEtter &&
+                datoMedKategori.kategori ===
+                    DatointervallKategori.PERMITTERT_UTEN_FRAVÆR)
     );
 };
 
