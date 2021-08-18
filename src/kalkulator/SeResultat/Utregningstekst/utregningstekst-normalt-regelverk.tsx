@@ -4,10 +4,9 @@ import {
     DatointervallKategori,
     DatoMedKategori,
 } from '../../typer';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 
 import {
-    erHelg,
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     finnTidligsteFraDato,

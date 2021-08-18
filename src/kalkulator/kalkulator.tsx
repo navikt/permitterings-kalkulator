@@ -86,16 +86,14 @@ const Kalkulator = () => {
                     </Normaltekst>
                     <Normaltekst>
                         <span className="kalkulator__advarsel-bold">
-                            NAV kjenner til at LO og NHO er enige om nye
-                            permitteringsregler.
+                            LO og NHO er enige om nye permitteringsregler.
                         </span>{' '}
-                        Dette kan bety at beregningen som kalkulatoren gir nå
-                        ikke er riktig etter at de nye reglene er iverksatt.
-                        Merk at det kun er beregninger der den permitterte
-                        jobber under permitteringen som eventuelt vil bli
-                        berørt. Vi jobber med å tilpasse kalkulatoren og vil
-                        legge ut informasjon så snart vi vet mer om de nye
-                        reglene.{' '}
+                        LO og NHO har avtalt nye permitteringsregler som vil
+                        gjelde i perioden fra 8. mai 2021 til og med 30.
+                        september 2021. Hvis din virksomhet er omfattet av
+                        avtalen vil ikke denne permitteringskalkulatoren gi
+                        riktig beregning i de tilfellene der den ansatte har
+                        jobbet under permitteringen.{' '}
                         <a
                             href="https://www.nho.no/tema/arbeidsliv/artikler/nye-permitteringsregler/"
                             className="lenke"
