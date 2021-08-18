@@ -17,6 +17,7 @@ import {
 import { SeResultat } from './SeResultat/SeResultat';
 import { formaterDato } from './utils/dato-utils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
+import { loggSidevinsing } from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
     const { dagensDato, regelEndringsDato1Oktober } = useContext(
@@ -46,6 +47,10 @@ const Kalkulator = () => {
     ] = useState<Dayjs>(
         finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
     );
+
+    useEffect(() => {
+        loggSidevinsing();
+    }, []);
 
     useEffect(() => {
         setTidslinje(
