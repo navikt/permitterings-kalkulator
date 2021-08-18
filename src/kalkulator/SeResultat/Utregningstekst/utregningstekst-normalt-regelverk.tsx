@@ -72,7 +72,10 @@ export const lagResultatTekstNormaltRegelverk = (
                         {skrivDagerIHeleUkerPlussDager(
                             getPermitteringsoversiktFor18Måneder(
                                 tidslinjeUtenPermitteringFor1Juli,
-                                datoForMaksPermitteringOppbrukt
+                                datoForMaksPermitteringOppbrukt.subtract(
+                                    1,
+                                    'day'
+                                )
                             ).dagerBrukt
                         )}{' '}
                         i 18-månedersperioden{' '}

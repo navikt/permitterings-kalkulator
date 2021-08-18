@@ -12,6 +12,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPermitteringsIntervallMedsisteFraDato,
+    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -105,7 +106,7 @@ export const finnDatoForMaksPermittering = (
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    return potensiellDatoForMaksPeriode.subtract(1, 'day');
+    return potensiellDatoForMaksPeriode;
 };
 
 export const getPermitteringsoversiktFor18Måneder = (
