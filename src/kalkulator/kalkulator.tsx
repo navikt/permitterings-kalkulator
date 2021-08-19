@@ -81,13 +81,7 @@ const Kalkulator = () => {
             </Banner>
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
-                    <Normaltekst className="kalkulator__advarsel-bold">
-                        {formaterDato(dayjs('2021-04-21'))}
-                    </Normaltekst>
                     <Normaltekst>
-                        <span className="kalkulator__advarsel-bold">
-                            LO og NHO er enige om nye permitteringsregler.
-                        </span>{' '}
                         LO og NHO har avtalt nye permitteringsregler som vil
                         gjelde i perioden fra 8. mai 2021 til og med 30.
                         september 2021. Hvis din virksomhet er omfattet av
