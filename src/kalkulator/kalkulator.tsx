@@ -89,7 +89,7 @@ const Kalkulator = () => {
                         riktig beregning i de tilfellene der den ansatte har
                         jobbet under permitteringen.{' '}
                         <a
-                            href="https://www.nho.no/tema/arbeidsliv/artikler/nye-permitteringsregler/"
+                            href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                             className="lenke"
                         >
                             Les mer om reglene på nettsiden til NHO
