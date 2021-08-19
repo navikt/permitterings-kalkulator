@@ -30,7 +30,10 @@ import {
     finnFørsteDatoMedPermitteringUtenFravær,
     finnSisteDatoMedPermitteringUtenFravær,
 } from '../../utils/tidslinje-utils';
-import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
+import {
+    loggKnappTrykketPå,
+    loggPermitteringsSituasjon,
+} from '../../../utils/amplitudeEvents';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -158,7 +161,14 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 />
             )}
             <Normaltekst className="utregningstekst__informasjonslenker">
-                <Lenke href="/arbeidsgiver-permittering">
+                <Lenke
+                    href="/arbeidsgiver-permittering"
+                    onClick={() =>
+                        loggKnappTrykketPå(
+                            'Tilbake til permitteringsveiviseren'
+                        )
+                    }
+                >
                     Tilbake til permitteringsveiviseren
                 </Lenke>
             </Normaltekst>
