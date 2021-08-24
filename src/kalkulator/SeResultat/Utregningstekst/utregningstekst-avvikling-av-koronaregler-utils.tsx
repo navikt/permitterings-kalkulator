@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react';
 import {
     AllePermitteringerOgFraværesPerioder,
-    DatointervallKategori,
     DatoMedKategori,
 } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
@@ -18,13 +17,13 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
 
 import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon1Oktober,
 } from '../../utils/beregningerForRegelverksendring1Okt';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -95,15 +94,12 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         };
     }
 
-    const datoMaksAntallDagerPermittertNådd: Dayjs = finnDatoForMaksPermittering(
+    const sisteDagI18mndsperiode: Dayjs = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
         tidslinje,
         datoRegelEndring,
+        dagensDato,
         49 * 7
-    )!;
-    const sisteDagI18mndsperiode = datoMaksAntallDagerPermittertNådd.subtract(
-        1,
-        'day'
-    );
+    )!.datoTil;
 
     const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
@@ -119,14 +115,12 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 <Element>
                     Du har lønnsplikt fra
                     {' ' +
-                        formaterDato(
-                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
-                        )}
+                        formaterDato(getFørsteHverdag(sisteDagI18mndsperiode))}
                     {tilleggstekstLøpendePermittering}. Da er maks antall dager
                     for permittering uten lønnsplikt nådd.
                 </Element>
                 {alertOmForskyvingAvMaksgrenseNåddHvisHelg(
-                    datoMaksAntallDagerPermittertNådd
+                    sisteDagI18mndsperiode
                 )}
             </>
         ),
@@ -142,9 +136,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                     {' ' + formaterDato(sisteDagI18mndsperiode)}, vil du måtte
                     betale lønn fra{' '}
                     {' ' +
-                        formaterDato(
-                            getFørsteHverdag(datoMaksAntallDagerPermittertNådd)
-                        )}
+                        formaterDato(getFørsteHverdag(sisteDagI18mndsperiode))}
                     .
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>

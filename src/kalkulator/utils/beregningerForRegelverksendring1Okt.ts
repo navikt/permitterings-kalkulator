@@ -90,6 +90,11 @@ export const finnDatoForMaksPermittering = (
             tidslinje,
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
+        console.log(
+            'dager brukt',
+            antallDagerPermittert,
+            formaterDato(potensiellDatoForMaksPeriode)
+        );
     }
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;
@@ -264,14 +269,13 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
         case Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER:
             return til18mndsperiode(innføringsdatoRegelendring);
         case Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER:
-            const datoMaksPermitteringNådd = finnDatoForMaksPermittering(
+            const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 innføringsdatoRegelendring,
+                dagensDato,
                 maksAntallDagerUtenLønnsplikt
             )!;
-            return til18mndsperiode(
-                datoMaksPermitteringNådd.subtract(1, 'day')
-            );
+            return periode18mndsPeriodeNås;
         case PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD:
             return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
