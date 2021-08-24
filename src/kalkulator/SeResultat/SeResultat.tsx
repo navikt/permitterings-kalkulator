@@ -40,7 +40,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     const skalViseTidslinje =
-        process.env.NODE_ENV === 'development' && props.tidslinje.length;
+        (window.location.href.includes('labs') ||
+            process.env.NODE_ENV === 'development') &&
+        props.tidslinje.length;
 
     return (
         <>

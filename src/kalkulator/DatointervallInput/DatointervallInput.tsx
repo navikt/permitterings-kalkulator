@@ -12,6 +12,7 @@ interface Props {
     setDatoIntervall: (datoIntervall: Partial<DatoIntervall>) => void;
     slettPeriode: () => void;
     advarsel: string;
+    kanVæreLøpende: boolean;
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
@@ -75,12 +76,14 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
-            <Checkbox
-                className="datointervall-input__checkbox"
-                label="Ingen sluttdato"
-                checked={erLøpende}
-                onChange={onErLøpendeChange}
-            />
+            {props.kanVæreLøpende && (
+                <Checkbox
+                    className="datointervall-input__checkbox"
+                    label="Ingen sluttdato"
+                    checked={erLøpende}
+                    onChange={onErLøpendeChange}
+                />
+            )}
             <Lukknapp
                 className="datointervall-input__slett-knapp"
                 aria-label="Slett periode"

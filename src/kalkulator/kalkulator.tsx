@@ -92,7 +92,7 @@ const Kalkulator = () => {
                             href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                             className="lenke"
                         >
-                            Les mer om avtalen i veiviser for permittering.
+                            Les mer om reglene på nettsiden til NHO
                         </a>
                     </Normaltekst>
                 </AlertStripeAdvarsel>

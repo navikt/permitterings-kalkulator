@@ -21,6 +21,7 @@ const Fraværsperiode: FunctionComponent<Props> = ({
 
     return (
         <DatoIntervallInput
+            kanVæreLøpende={false}
             advarsel={advarsel}
             datoIntervall={fraværsperiode}
             setDatoIntervall={setFraværsperiode}

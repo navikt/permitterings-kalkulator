@@ -9,7 +9,7 @@ import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
 } from '../typer';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Element } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
@@ -29,6 +29,7 @@ import {
 } from '../utils/dato-utils';
 import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    getPermitteringsoversiktFor18Måneder,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../utils/beregningerForRegelverksendring1Okt';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
@@ -245,6 +246,15 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             </div>
                         </div>
                         <Fargeforklaringer />
+                        <Element>
+                            Dager permittert i 18-månedersperiode:{' '}
+                            {
+                                getPermitteringsoversiktFor18Måneder(
+                                    props.tidslinje,
+                                    datoVisesPaDragElement
+                                ).dagerBrukt
+                            }
+                        </Element>
                     </div>
                 </>
             }

@@ -138,16 +138,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         maksDagerUtenLønnsplikt
     );
 
-    return (
-        <div className="utregningstekst">
-            <img
-                className="utregningstekst__lampeikon"
-                src={lampeikon}
-                alt=""
-            />
-            <Element>{resultatTekst.konklusjon}</Element>
-            {resultatTekst.beskrivelse}
-            {aktuell18mndsperiode && (
+    /*
+    {aktuell18mndsperiode && (
                 <DetaljertUtregning
                     permitteringsDagerFør1JuliSlettet={
                         !!nyListeHvisPermitteringsdagerErSlettet
@@ -160,6 +152,18 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     aktuell18mndsperiode={aktuell18mndsperiode}
                 />
             )}
+     */
+
+    return (
+        <div className="utregningstekst">
+            <img
+                className="utregningstekst__lampeikon"
+                src={lampeikon}
+                alt=""
+            />
+            <Element>{resultatTekst.konklusjon}</Element>
+            {resultatTekst.beskrivelse}
+
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke
                     href="/arbeidsgiver-permittering"
