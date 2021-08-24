@@ -90,11 +90,6 @@ export const finnDatoForMaksPermittering = (
             tidslinje,
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
-        console.log(
-            'dager brukt',
-            antallDagerPermittert,
-            formaterDato(potensiellDatoForMaksPeriode)
-        );
     }
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;

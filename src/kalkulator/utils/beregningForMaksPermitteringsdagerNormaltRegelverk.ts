@@ -72,7 +72,6 @@ export const finnPermitteringssituasjonNormalRegelverk = (
     return PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD;
 };
 
-//her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
 export const finnDatoForMaksPermittering = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,

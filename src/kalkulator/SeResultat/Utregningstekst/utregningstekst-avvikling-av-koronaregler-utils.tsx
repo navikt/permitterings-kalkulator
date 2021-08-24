@@ -3,22 +3,18 @@ import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
 } from '../../typer';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import {
     erHelg,
-    finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     formaterDato,
-    formaterDatoIntervall,
     getFørsteHverdag,
-    til18mndsperiode,
 } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
 
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon1Oktober,
