@@ -14,7 +14,7 @@ import { Element, Normaltekst } from 'nav-frontend-typografi';
 import AlertStripe from 'nav-frontend-alertstriper';
 
 import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
+    finnDatoForMaksPermittering,
     finnPermitteringssituasjon1Oktober,
     getPermitteringsoversiktFor18Måneder,
     Permitteringssituasjon1Oktober,
@@ -90,12 +90,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         };
     }
 
-    const sisteDagI18mndsperiode: Dayjs = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+    const datoMaksPermitteringNådd: Dayjs = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring,
-        dagensDato,
         49 * 7
-    )!.datoTil;
+    )!;
 
     const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
@@ -111,12 +110,14 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 <Element>
                     Du har lønnsplikt fra
                     {' ' +
-                        formaterDato(getFørsteHverdag(sisteDagI18mndsperiode))}
+                        formaterDato(
+                            getFørsteHverdag(datoMaksPermitteringNådd)
+                        )}
                     {tilleggstekstLøpendePermittering}. Da er maks antall dager
                     for permittering uten lønnsplikt nådd.
                 </Element>
                 {alertOmForskyvingAvMaksgrenseNåddHvisHelg(
-                    sisteDagI18mndsperiode
+                    datoMaksPermitteringNådd
                 )}
             </>
         ),
@@ -129,10 +130,12 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Hvis du holder permitteringen løpende fram til
-                    {' ' + formaterDato(sisteDagI18mndsperiode)}, vil du måtte
+                    {' ' + formaterDato(datoMaksPermitteringNådd)}, vil du måtte
                     betale lønn fra{' '}
                     {' ' +
-                        formaterDato(getFørsteHverdag(sisteDagI18mndsperiode))}
+                        formaterDato(
+                            getFørsteHverdag(datoMaksPermitteringNådd)
+                        )}
                     .
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>

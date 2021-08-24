@@ -69,6 +69,14 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
             (permittering) => permittering.datoFra
         )
     );
+    const sisteEndtFraværsperiode = getSenesteDato(
+        allePermitteringerOgFravær.andreFraværsperioder.map(
+            (fravær) => fravær.datoTil
+        )
+    );
+    const forstePermitteringsDagEtterSisteFravarsDato18mndFram = sisteEndtFraværsperiode
+        ? finnDato18MndFram(sisteEndtFraværsperiode)
+        : undefined;
     const sisteDatoIsisteMulige18mndsPeriode = sistePermitteringsstart
         ? finnDato18MndFram(sistePermitteringsstart)
         : undefined;
@@ -76,6 +84,7 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
     return getSenesteDato([
         senesteDatoPåTidslinje,
         sisteDatoIsisteMulige18mndsPeriode,
+        forstePermitteringsDagEtterSisteFravarsDato18mndFram,
     ])!;
 };
 
