@@ -204,8 +204,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         </div>
     );
 
-    const erInteraktiv = process.env.NODE_ENV !== 'production';
-
     return (
         <div className={'tidslinje'}>
             {
@@ -219,18 +217,15 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             className={'kalkulator__tidslinje-container start'}
                             id={'kalkulator-tidslinje-container'}
                         >
-                            {erInteraktiv ? (
-                                <Draggable
-                                    axis={'x'}
-                                    bounds={'parent'}
-                                    onStop={() => OnTidslinjeDragRelease()}
-                                    onDrag={() => OnTidslinjeDrag()}
-                                >
-                                    {get18mndsperiode()}
-                                </Draggable>
-                            ) : (
-                                get18mndsperiode()
-                            )}
+                            <Draggable
+                                axis={'x'}
+                                bounds={'parent'}
+                                onStop={() => OnTidslinjeDragRelease()}
+                                onDrag={() => OnTidslinjeDrag()}
+                            >
+                                {get18mndsperiode()}
+                            </Draggable>
+                            ) : ( get18mndsperiode()
                             <div
                                 className={'kalkulator__tidslinje-underlag'}
                                 id={'kalkulator__tidslinje'}
