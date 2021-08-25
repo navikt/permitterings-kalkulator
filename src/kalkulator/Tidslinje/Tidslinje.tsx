@@ -225,7 +225,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             >
                                 {get18mndsperiode()}
                             </Draggable>
-                            ) : ( get18mndsperiode()
                             <div
                                 className={'kalkulator__tidslinje-underlag'}
                                 id={'kalkulator__tidslinje'}
