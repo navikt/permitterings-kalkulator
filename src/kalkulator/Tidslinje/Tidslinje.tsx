@@ -193,6 +193,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             className={'kalkulator__draggable-periode'}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
+            <Element className={'kalkulator__draggable-tekst'}>
+                {' '}
+                18 måneder{' '}
+            </Element>
             <div className={'kalkulator__draggable-kant høyre'} />
             <Normaltekst className={'venstre-dato '}>
                 {formaterDato(finnDato18MndTilbake(datoVisesPaDragElement))}
@@ -208,6 +212,25 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         <div className={'tidslinje'}>
             {
                 <>
+                    <Element
+                        className={
+                            'kalkulator__tidslinje-drag-element-forklaring'
+                        }
+                    >
+                        Dager permittert i den markerte 18-månedersperioden:{' '}
+                        {
+                            getPermitteringsoversiktFor18Måneder(
+                                props.tidslinje,
+                                datoVisesPaDragElement
+                            ).dagerBrukt
+                        }{' '}
+                        dager
+                    </Element>
+                    <Normaltekst>
+                        Du kan dra i det blå drag-elementet (markert med
+                        "18-måneder") for å se hvor mange brukte
+                        permitteringsdager som er innenfor 18-månedersperioden.
+                    </Normaltekst>
                     <div
                         role="img"
                         aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
@@ -240,15 +263,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             </div>
                         </div>
                         <Fargeforklaringer />
-                        <Element>
-                            Dager permittert i 18-månedersperiode:{' '}
-                            {
-                                getPermitteringsoversiktFor18Måneder(
-                                    props.tidslinje,
-                                    datoVisesPaDragElement
-                                ).dagerBrukt
-                            }
-                        </Element>
                     </div>
                 </>
             }
