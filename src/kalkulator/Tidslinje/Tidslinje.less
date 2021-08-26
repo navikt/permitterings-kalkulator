@@ -8,7 +8,7 @@
         border-radius: 8px 8px 0 0;
         left: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: center;
         z-index: 2;
 
         .høyre {
@@ -43,12 +43,20 @@
         background-color: @navBla;
     }
 
+    &__draggable-tekst {
+        color: @navLysGra;
+    }
+
     &__tidslinje-container {
         display: flex;
         flex-direction: column;
         position: relative;
         margin-bottom: 6rem;
         margin-top: 6rem;
+    }
+
+    &__tidslinje-drag-element-forklaring {
+        margin: 2rem 0 0.5rem;
     }
 
     &__tidslinje-datoer {
