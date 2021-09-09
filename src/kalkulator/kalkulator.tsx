@@ -83,16 +83,17 @@ const Kalkulator = () => {
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
                     <>
                         <Element>
-                            Regjeringen foreslår å forlenge
-                            permitteringsordningen til 1. november
+                            Endringer i permitteringsordningen kan påvirke
+                            utregningen i kalkulatoren
                         </Element>
                         <Normaltekst>
                             Permitteringsreglene som ble innført i forbindelse
-                            med koronaepidimien skulle i utgangspunktet avvikles
-                            1. oktober. Regjeringen foreslår nå å forlenge
-                            ordningen til 1. november. Kalkulatoren vil ikke gi
-                            riktig beregning før vi har fått utredet
-                            konsekvensene av dette.{' '}
+                            med epidemien skulle i utgangspunktet avvikles 1.
+                            oktober 2021. Regjeringen foreslår å forlenge retten
+                            til dagpenger for permitterte frem til 1. november
+                            2021. Kalkulatoren tar ikke denne endringen med i
+                            beregningen. Vi oppdaterer kalkulatoren så snart
+                            regelverket er avklart.{' '}
                         </Normaltekst>
                         <Element>Avtale med LO og NHO</Element>
                         <Normaltekst>
