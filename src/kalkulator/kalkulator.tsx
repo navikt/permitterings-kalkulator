@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
+import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
@@ -81,20 +81,35 @@ const Kalkulator = () => {
             </Banner>
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
-                    <Normaltekst>
-                        LO og NHO har avtalt nye permitteringsregler som vil
-                        gjelde i perioden fra 8. mai 2021 til og med 30.
-                        september 2021. Hvis din virksomhet er omfattet av
-                        avtalen vil ikke denne permitteringskalkulatoren gi
-                        riktig beregning i de tilfellene der den ansatte har
-                        jobbet under permitteringen.{' '}
-                        <a
-                            href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
-                            className="lenke"
-                        >
-                            Les mer om avtalen i veiviser for permittering.
-                        </a>
-                    </Normaltekst>
+                    <>
+                        <Element>
+                            Regjeringen foreslår å forlenge
+                            permitteringsordningen til 1. november
+                        </Element>
+                        <Normaltekst>
+                            Permitteringsreglene som ble innført i forbindelse
+                            med koronaepidimien skulle i utgangspunktet avvikles
+                            1. oktober. Regjeringen foreslår nå å forlenge
+                            ordningen til 1. november. Kalkulatoren vil ikke gi
+                            riktig beregning før vi har fått utredet
+                            konsekvensene av dette.{' '}
+                        </Normaltekst>
+                        <Element>Avtale med LO og NHO</Element>
+                        <Normaltekst>
+                            LO og NHO har avtalt nye permitteringsregler som vil
+                            gjelde i perioden fra 8. mai 2021 til og med 30.
+                            september 2021. Hvis din virksomhet er omfattet av
+                            avtalen vil ikke denne permitteringskalkulatoren gi
+                            riktig beregning i de tilfellene der den ansatte har
+                            jobbet under permitteringen.{' '}
+                            <a
+                                href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
+                                className="lenke"
+                            >
+                                Les mer om avtalen i veiviser for permittering.
+                            </a>
+                        </Normaltekst>
+                    </>
                 </AlertStripeAdvarsel>
                 <Innholdstittel tag="h2">
                     Hvor lenge kan du ha ansatte permittert?
