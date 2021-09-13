@@ -89,10 +89,11 @@ const Kalkulator = () => {
                         <Normaltekst>
                             Permitteringsreglene som ble innført i forbindelse
                             med epidemien skulle i utgangspunktet avvikles 1.
-                            oktober 2021. Regjeringen foreslår å forlenge retten
-                            til dagpenger for permitterte frem til 1. november
-                            2021. Kalkulatoren tar ikke denne endringen med i
-                            beregningen.{' '}
+                            oktober 2021. Regjeringen foreslår nå å forlenge
+                            dagpenge- og permitteringsperioder som nærmer seg
+                            slutten frem til og med 31. oktober 2021.
+                            Kalkulatoren tar foreløpig ikke denne forlengelsen
+                            med i utregningen.{' '}
                         </Normaltekst>
                         <Element>Avtale med LO og NHO</Element>
                         <Normaltekst>
