@@ -15,10 +15,10 @@ import AlertStripe from 'nav-frontend-alertstriper';
 
 import {
     finnDatoForMaksPermittering,
-    finnPermitteringssituasjon1Oktober,
+    finnPermitteringssituasjon1November,
     getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon1Oktober,
-} from '../../utils/beregningerForRegelverksendring1Okt';
+    Permitteringssituasjon1November,
+} from '../../utils/beregningerForRegelverksendring1Nov';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 
 interface ResultatTekst {
@@ -32,7 +32,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     dagensDato: Dayjs,
     datoRegelEndring: Dayjs
 ): ResultatTekst => {
-    const situasjon = finnPermitteringssituasjon1Oktober(
+    const situasjon = finnPermitteringssituasjon1November(
         tidslinje,
         datoRegelEndring,
         49 * 7
@@ -41,9 +41,9 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         tidslinje,
         datoRegelEndring
     );
-    if (situasjon === Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER) {
+    if (situasjon === Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER) {
         loggPermitteringsSituasjon(
-            'Maks permittering nådd 1. oktober. Maks permitteringstid er 49 uker'
+            'Maks permittering nådd 1. november. Maks permitteringstid er 49 uker'
         );
         return {
             konklusjon: (
@@ -60,7 +60,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For permitteringer iverksatt før 1. juli har det ikke
                         vært noen begrensning på hvor lenge en ansatt kan være
-                        permittert. Fra og med 1. oktober vil derimot maks
+                        permittert. Fra og med 1. november vil derimot maks
                         antall uker en ansatt kan være permittert være 49 uker i
                         løpet av de siste 18 månedene, for permitteringer
                         iverksatt før 1. juli.
@@ -70,13 +70,13 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         {skrivDagerIHeleUkerPlussDager(
                             oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                         )}{' '}
-                        i 18-månedersperioden fra 2. mars 2020 til 1. oktober
+                        i 18-månedersperioden fra 2. mars 2020 til 1. november
                         2021. Dette overskrider 49 uker, og du har dermed
-                        lønnsplikt fra 1. oktober 2021.
+                        lønnsplikt fra 1. november 2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Dette betyr at du må betale lønn til arbeidstakeren fra
-                        1. oktober. Hvis du har permitteringsgrunnlag for å
+                        1. november. Hvis du har permitteringsgrunnlag for å
                         permittere din ansatt videre, er du nødt til å
                         iverksette en ny permittering. Du vil da få en ny
                         lønnspliktsperiode (arbeidsgiverperiode 1).
@@ -102,7 +102,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         ? ', dersom permitteringen holdes løpende'
         : '';
     loggPermitteringsSituasjon(
-        'maks permittering nådd etter 1. oktober. Maks permitteringstid er 49 uker.'
+        'maks permittering nådd etter 1. november. Maks permitteringstid er 49 uker.'
     );
     return {
         konklusjon: (

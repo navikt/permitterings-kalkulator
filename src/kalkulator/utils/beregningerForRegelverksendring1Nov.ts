@@ -26,16 +26,16 @@ import {
     PermitteringssituasjonStandarkRegelverk,
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 
-export enum Permitteringssituasjon1Oktober {
-    MAKS_NÅDD_1_OKTOBER = 'MAKS_NÅDD_1_OKTOBER',
-    MAKS_NÅDD_ETTER_1_OKTOBER = 'MAKS_NÅDD_ETTER_1_OKTOBE',
+export enum Permitteringssituasjon1November {
+    MAKS_NÅDD_1_NOVEMBER = 'MAKS_NÅDD_1_NOVEMBER',
+    MAKS_NÅDD_ETTER_1_NOVEMBER = 'MAKS_NÅDD_ETTER_1_NOVEMBER',
 }
 
-export const finnPermitteringssituasjon1Oktober = (
+export const finnPermitteringssituasjon1November = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
-): Permitteringssituasjon1Oktober => {
+): Permitteringssituasjon1November => {
     const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
         innføringsdatoRegelendring,
@@ -47,8 +47,8 @@ export const finnPermitteringssituasjon1Oktober = (
         innføringsdatoRegelendring,
         'date'
     )
-        ? Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER
-        : Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER;
+        ? Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER
+        : Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER;
 };
 
 //her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
@@ -249,7 +249,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
 ): DatoIntervall | undefined => {
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
-            ? finnPermitteringssituasjon1Oktober(
+            ? finnPermitteringssituasjon1November(
                   tidslinje,
                   innføringsdatoRegelendring,
                   maksAntallDagerUtenLønnsplikt
@@ -261,9 +261,9 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
               );
 
     switch (situasjon) {
-        case Permitteringssituasjon1Oktober.MAKS_NÅDD_1_OKTOBER:
+        case Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER:
             return til18mndsperiode(innføringsdatoRegelendring);
-        case Permitteringssituasjon1Oktober.MAKS_NÅDD_ETTER_1_OKTOBER:
+        case Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER:
             const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 innføringsdatoRegelendring,

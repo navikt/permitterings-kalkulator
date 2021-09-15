@@ -8,7 +8,7 @@ import {
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
-import { finnDatoForMaksPermittering } from './beregningerForRegelverksendring1Okt';
+import { finnDatoForMaksPermittering } from './beregningerForRegelverksendring1Nov';
 import { getPermitteringsoversiktFor18Måneder } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 const getTidslinje = (
@@ -27,9 +27,9 @@ const getTidslinje = (
 };
 
 describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt før 1. juli ', () => {
-    test('Maks antall dager permittering skal komme på regelverksendring 10. oktober hvis permittert i 49 uker og 1 dag ved 10. oktober og permitteringen er iverksatt før 1. juli', () => {
+    test('Maks antall dager permittering skal komme på regelverksendring 1 november hvis permittert i 49 uker og 1 dag ved 1 november og permitteringen er iverksatt før 1. juli', () => {
         const maksAntallPermitteringsdager = 49 * 7;
-        const innføringsdatoRegelendring = dayjs('2021-10-01');
+        const innføringsdatoRegelendring = dayjs('2021-11-01');
         const tidslinje = getTidslinje({
             permitteringer: [
                 {
@@ -51,9 +51,9 @@ describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt f�
     });
 });
 
-test('Maks antall dager permittering skal komme på regelverksending 10. oktober hvis permittert er vesentlig mer enn 49 uker per 10. oktober og permitteringen er iverksatt før 1. juli', () => {
+test('Maks antall dager permittering skal komme på regelverksending 1. november hvis permittert er vesentlig mer enn 49 uker per 1. november og permitteringen er iverksatt før 1. juli', () => {
     const maksAntallPermitteringsdager = 49 * 7;
-    const innføringsdatoRegelendring = dayjs('2021-10-01');
+    const innføringsdatoRegelendring = dayjs('2021-11-01');
     const tidslinje = getTidslinje({
         permitteringer: [
             {
@@ -107,7 +107,7 @@ test('TESTEN ER UGYLDIG. Skal gi dato for AGP2 hvis man først er permittert > 3
 
 test('Skal ikke gi dato for maks permittering nådd når det er permittert mindre en maks antall dager', () => {
     const maksAntallPermitteringsdager = 49 * 7;
-    const innføringsdatoRegelendring = dayjs('2021-10-01');
+    const innføringsdatoRegelendring = dayjs('2021-11-01');
     const permitteringsslutt = innføringsdatoRegelendring.subtract(40, 'days');
     const tidslinje = getTidslinje({
         permitteringer: [
@@ -230,7 +230,7 @@ test('Skal håndtere lang permitteringsperiode etter innføringsdato for regelen
 });
 
 test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendring, selv om det er et fravær på den datoen', () => {
-    const innføringsdatoRegelendring = dayjs('2021-10-01');
+    const innføringsdatoRegelendring = dayjs('2021-11-01');
     const maksAntallPermitteringsdager = 49 * 7;
     const tidslinje = getTidslinje({
         permitteringer: [
@@ -260,7 +260,7 @@ test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendrin
 /*
 
 describe('Tester skrevet i samarbeid med fagjurist', () => {
-    const innføringsdatoRegelendring = dayjs('2021-10-01');
+    const innføringsdatoRegelendring = dayjs('2021-11-01');
     const maksAntallPermitteringsdager = 49 * 7;
     const dagensDato = dayjs('2021-04-15');
 

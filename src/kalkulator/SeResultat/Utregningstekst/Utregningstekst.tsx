@@ -13,16 +13,12 @@ import {
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
-import {
-    filtrerBortUdefinerteDatoIntervaller,
-    finnPotensiellLøpendePermittering,
-} from '../../utils/dato-utils';
+import { finnPotensiellLøpendePermittering } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
     harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../../utils/beregningerForRegelverksendring1Okt';
+} from '../../utils/beregningerForRegelverksendring1Nov';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
@@ -49,7 +45,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const {
         dagensDato,
         regelEndring1Juli,
-        regelEndringsDato1Oktober,
+        regelEndringsDato1November,
     } = useContext(PermitteringContext);
 
     const [
@@ -115,7 +111,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
               dagensDato,
-              regelEndringsDato1Oktober
+              regelEndringsDato1November
           )
         : lagResultatTekstNormaltRegelverk(
               gjeldendeTidslinje,
@@ -128,7 +124,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         ? 49 * 7
         : 26 * 7;
     const datoRegelEndring = harLøpendePermitteringFør1Juli
-        ? regelEndringsDato1Oktober
+        ? regelEndringsDato1November
         : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
