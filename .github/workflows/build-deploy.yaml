@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-labs-gcp:
     name: Deploy to labs-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/legg-til-labs'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/endre-1-okt-til-1-november'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:
