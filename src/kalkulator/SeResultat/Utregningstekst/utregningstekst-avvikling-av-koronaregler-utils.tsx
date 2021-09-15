@@ -70,7 +70,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         {skrivDagerIHeleUkerPlussDager(
                             oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                         )}{' '}
-                        i 18-månedersperioden fra 2. mars 2020 til 1. november
+                        i 18-månedersperioden fra 2. mai 2020 til 1. november
                         2021. Dette overskrider 49 uker, og du har dermed
                         lønnsplikt fra 1. november 2021.
                     </Normaltekst>
