@@ -169,7 +169,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                         )
                     }
                 >
-                    Tilbake til permitteringsveiviseren
+                    Gå til veiviser for permittering
                 </Lenke>
             </Normaltekst>
         </div>

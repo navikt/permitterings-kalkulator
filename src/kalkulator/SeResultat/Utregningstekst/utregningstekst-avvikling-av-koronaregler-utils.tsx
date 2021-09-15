@@ -20,6 +20,7 @@ import {
     Permitteringssituasjon1November,
 } from '../../utils/beregningerForRegelverksendring1Nov';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
+import Lenke from 'nav-frontend-lenker';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -58,12 +59,9 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        For permitteringer iverksatt før 1. juli har det ikke
-                        vært noen begrensning på hvor lenge en ansatt kan være
-                        permittert. Fra og med 1. november vil derimot maks
-                        antall uker en ansatt kan være permittert være 49 uker i
-                        løpet av de siste 18 månedene, for permitteringer
-                        iverksatt før 1. juli.
+                        1. november 2021 vil lønnsplikten gjeninntre for løpende
+                        permitteringer som startet før 1. juli der du til sammen
+                        har permittert i 49 uker eller mer de siste 18 månedene.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -75,15 +73,20 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         lønnsplikt fra 1. november 2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Dette betyr at du må betale lønn til arbeidstakeren fra
-                        1. november. Hvis du har permitteringsgrunnlag for å
-                        permittere din ansatt videre, er du nødt til å
-                        iverksette en ny permittering. Du vil da få en ny
-                        lønnspliktsperiode (arbeidsgiverperiode 1).
-                    </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For nye permitteringer er maks antall uker du kan ha den
                         ansatte permittert 26 uker i løpet av 18 måneder.
+                    </Normaltekst>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        Hvis du ønsker å permittere på nytt, gjelder nye regler.{' '}
+                        <Lenke
+                            href={
+                                'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'
+                            }
+                        >
+                            Les mer om permitteringsreglene i veiviser for
+                            permittering
+                        </Lenke>
+                        .
                     </Normaltekst>
                 </>
             ),
@@ -124,25 +127,27 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         beskrivelse: (
             <>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    For permitteringer iverksatt før 1. juli er maks antall uker
-                    en ansatt kan være permittert uten at du har lønnsplikt 49
-                    uker i løpet av 18 måneder.
+                    For permitteringer som startet før 1. juli, kan du
+                    permittere inntil 49 uker innenfor en periode på 18 måneder
+                    før lønnsplikten gjeninntrer.
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    Hvis du holder permitteringen løpende fram til
-                    {' ' + formaterDato(datoMaksPermitteringNådd)}, vil du måtte
-                    betale lønn fra{' '}
-                    {' ' +
-                        formaterDato(
-                            getFørsteHverdag(datoMaksPermitteringNådd)
-                        )}
+                    Hvis du holder permitteringen løpende, vil du nå 49 uker
+                    permittering og måtte betale lønn fra{' '}
+                    {' ' + formaterDato(datoMaksPermitteringNådd)}.
+                </Normaltekst>
+                <Normaltekst className={'utregningstekst__beskrivelse'}>
+                    Hvis du avslutter permitteringen, men ønsker å permittere på
+                    nytt, gjelder nye regler for permitteringen.{' '}
+                    <Lenke
+                        href={
+                            'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'
+                        }
+                    >
+                        Les mer om permitteringsreglene i veiviser for
+                        permittering
+                    </Lenke>
                     .
-                </Normaltekst>
-                <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    Dersom du avslutter permitteringen vil nye regler gjelde for
-                    permitteringer iverksatt fra og med 1. juli. For
-                    permitteringer etter 1. juli er maks antall uker en ansatt
-                    kan være permittert uten lønn 26 uker i løpet av 18 måneder.
                 </Normaltekst>
             </>
         ),
