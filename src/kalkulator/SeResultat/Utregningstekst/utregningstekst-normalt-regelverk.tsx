@@ -33,6 +33,9 @@ export const lagResultatTekstNormaltRegelverk = (
     dagensDato: Dayjs,
     innføringsdatoRegelEndring: Dayjs
 ): ResultatTekst => {
+    const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
+        allePermitteringerOgFraværesPerioder.permitteringer
+    );
     const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring,
@@ -51,7 +54,16 @@ export const lagResultatTekstNormaltRegelverk = (
             }
         }
         return {
-            konklusjon: (
+            konklusjon: finnesLøpendePermittering ? (
+                <>
+                    <Element>
+                        Du har lønnsplikt fra{' '}
+                        {formaterDato(datoForMaksPermitteringOppbrukt)}, dersom
+                        permitteringen holdes løpende. Da er maks antall dager
+                        for permittering uten lønnsplikt nådd.
+                    </Element>
+                </>
+            ) : (
                 <>
                     <Element>
                         Maksgrensen for uker en ansatt kan være permittert er
@@ -62,10 +74,9 @@ export const lagResultatTekstNormaltRegelverk = (
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du kan ikke ha en ansatt permittert lenger enn 26 uker i
-                        løpet av 18 måneder. Den ansatte vil ikke lenger ha rett
-                        på dagpenger som følge av permittering. Du vil da være
-                        pliktig til å betale lønn.
+                        For permitteringer som startet 1. juli eller senere, kan
+                        du permittere inntil 26 uker innenfor en periode på 18
+                        måneder før lønnsplikten gjeninntrer.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Den ansatte har vært permittert i{' '}
@@ -163,9 +174,12 @@ export const lagResultatTekstNormaltRegelverk = (
         beskrivelse: (
             <>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    De midlertidige ordningene som gjaldt under COVID-19
-                    avvikles fra 1. juli. Om du permitterer nå kan du permittere
-                    i 26 uker i løpet av 18 måneder.
+                    For nye permitteringstilfeller fra 1. juli 2021 skal du ikke
+                    telle med eventuelle permitteringsperioder før 1. juli 2021
+                    i 18-månedersperioden. Permitteringsdager før 1. juli blir
+                    derfor utelatt og påvirker ikke utregningen for denne
+                    permitteringen. Les mer om permitteringsreglene i veiviser
+                    for permittering.
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
                     Tips: Du kan fylle inn permitteringer framover i tid,
@@ -215,10 +229,10 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
 const tekstOmPermitteringFør1Juli = () => {
     return (
         <Normaltekst className={'utregningstekst__beskrivelse'}>
-            Permitteringsdager før 1. juli er nullstilt grunnet unntakstilstand
-            i forbindelse med koronaepidemien. Det betyr at permitteringsdager
-            før 1. juli ikke telles med i antall dager du kan ha den ansatte
-            permittert.
+            For nye permitteringstilfeller fra 1. juli 2021 skal du ikke telle
+            med eventuelle permitteringsperioder før 1. juli 2021 i
+            18-månedersperioden. Permitteringsdager før 1. juli blir derfor
+            utelatt og påvirker ikke utregningen for denne permitteringen.
         </Normaltekst>
     );
 };
