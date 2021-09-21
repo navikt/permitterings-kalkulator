@@ -89,7 +89,7 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
         senesteDatoPåTidslinje,
         sisteDatoIsisteMulige18mndsPeriode,
         forstePermitteringsDagEtterFraværDato18mndFram,
-    ])!;
+    ])?.add(3, 'months')!;
 };
 
 export const konstruerTidslinje = (

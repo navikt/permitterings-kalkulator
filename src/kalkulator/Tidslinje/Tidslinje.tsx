@@ -31,7 +31,7 @@ import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
     getPermitteringsoversiktFor18Måneder,
     harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../utils/beregningerForRegelverksendring1Okt';
+} from '../utils/beregningerForRegelverksendring1Nov';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 
 interface Props {
@@ -48,7 +48,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const {
         dagensDato,
-        regelEndringsDato1Oktober,
+        regelEndringsDato1November,
         regelEndring1Juli,
     } = useContext(PermitteringContext);
     const [
@@ -98,7 +98,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? 49 * 7
             : 26 * 7;
         const datoRegelEndring = oppstartFørRegelendring
-            ? regelEndringsDato1Oktober
+            ? regelEndringsDato1November
             : regelEndring1Juli;
         const sluttAv18mndsPeriode =
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
