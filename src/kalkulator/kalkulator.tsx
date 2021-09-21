@@ -15,7 +15,6 @@ import {
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
-import { formaterDato } from './utils/dato-utils';
 import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
@@ -82,19 +81,6 @@ const Kalkulator = () => {
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
                     <>
-                        <Element>
-                            Endringer i permitteringsordningen kan påvirke
-                            utregningen i kalkulatoren
-                        </Element>
-                        <Normaltekst>
-                            Permitteringsreglene som ble innført i forbindelse
-                            med epidemien skulle i utgangspunktet avvikles 1.
-                            oktober 2021. Regjeringen foreslår nå å forlenge
-                            dagpenge- og permitteringsperioder som nærmer seg
-                            slutten frem til og med 31. oktober 2021.
-                            Kalkulatoren tar foreløpig ikke denne forlengelsen
-                            med i utregningen.{' '}
-                        </Normaltekst>
                         <Element>Avtale med LO og NHO</Element>
                         <Normaltekst>
                             LO og NHO har avtalt nye permitteringsregler som vil
