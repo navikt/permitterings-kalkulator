@@ -180,10 +180,9 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 src={lampeikon}
                 alt=""
             />
+            <Element>{beskjedOmMaksPermitteringNåddIFortiden}</Element>
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
-            <Element>{beskjedOmMaksPermitteringNåddIFortiden}</Element>
-
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke
                     href="/arbeidsgiver-permittering"

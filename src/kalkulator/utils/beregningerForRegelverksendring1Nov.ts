@@ -62,10 +62,8 @@ export const finnDatoForMaksPermittering = (
         tidslinje,
         innføringsdatoRegelendring
     );
-    console.log('denne bli også kallt');
 
     if (oversiktVedInnføringsdato.dagerBrukt > maksAntallDagerUtenLønnsplikt) {
-        console.log('innføringsdato');
         return innføringsdatoRegelendring;
     }
 
@@ -97,7 +95,6 @@ export const finnDatoForMaksPermittering = (
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    console.log(potensiellDatoForMaksPeriode);
     return potensiellDatoForMaksPeriode;
 };
 
@@ -325,7 +322,6 @@ export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
     datoRegelendring1Juli: Dayjs
 ) => {
     const indeks1Nov = finnIndeksForDato(datoRegelendring1nov, tidslinje);
-    console.log('denne bli kallt');
     if (
         tidslinje[indeks1Nov].kategori !== DatointervallKategori.IKKE_PERMITTERT
     ) {
@@ -336,16 +332,11 @@ export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
         const permitteringStartetFør1Juli = datoPermitteringsStart.isBefore(
             datoRegelendring1Juli
         );
-        console.log(permitteringStartetFør1Juli, 'før 1. juli');
         if (permitteringStartetFør1Juli) {
             const potensiellDatoForMaksPermittering = finnDatoForMaksPermittering(
                 tidslinje,
                 datoRegelendring1nov,
                 49 * 7
-            );
-            console.log(
-                formaterDato(potensiellDatoForMaksPermittering!!),
-                'here'
             );
             if (potensiellDatoForMaksPermittering) {
                 const permitteringsStartAvPermittering = finnStartDatoForPermitteringUtIfraSluttdato(
