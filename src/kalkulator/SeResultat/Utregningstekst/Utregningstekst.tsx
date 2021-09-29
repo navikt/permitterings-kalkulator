@@ -13,16 +13,22 @@ import {
 import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import { finnPotensiellLøpendePermittering } from '../../utils/dato-utils';
+import {
+    finnPotensiellLøpendePermittering,
+    formaterDato,
+} from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import {
+    finnDatoForMaksPermittering,
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../../utils/beregningerForRegelverksendring1Nov';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
+    erPermittertVedDato,
     finnFørsteDatoMedPermitteringUtenFravær,
     finnSisteDatoMedPermitteringUtenFravær,
 } from '../../utils/tidslinje-utils';
@@ -134,6 +140,23 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         maksDagerUtenLønnsplikt
     );
 
+    const beskjedOmMaksPermitteringNåddIFortiden =
+        Permitteringssregelverk.NORMALT_REGELVERK &&
+        finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
+            props.tidslinje,
+            regelEndringsDato1November,
+            regelEndring1Juli
+        )
+            ? 'OBS Du bryter reglene den: ' +
+              formaterDato(
+                  finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
+                      props.tidslinje,
+                      regelEndringsDato1November,
+                      regelEndring1Juli
+                  )!!
+              )
+            : '';
+
     /*
     {aktuell18mndsperiode && (
                 <DetaljertUtregning
@@ -159,6 +182,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             />
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
+            <Element>{beskjedOmMaksPermitteringNåddIFortiden}</Element>
 
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke

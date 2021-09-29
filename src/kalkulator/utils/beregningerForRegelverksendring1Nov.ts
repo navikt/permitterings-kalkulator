@@ -25,6 +25,7 @@ import {
     finnPermitteringssituasjonNormalRegelverk,
     PermitteringssituasjonStandarkRegelverk,
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 
 export enum Permitteringssituasjon1November {
     MAKS_NÅDD_1_NOVEMBER = 'MAKS_NÅDD_1_NOVEMBER',
@@ -61,8 +62,10 @@ export const finnDatoForMaksPermittering = (
         tidslinje,
         innføringsdatoRegelendring
     );
+    console.log('denne bli også kallt');
 
     if (oversiktVedInnføringsdato.dagerBrukt > maksAntallDagerUtenLønnsplikt) {
+        console.log('innføringsdato');
         return innføringsdatoRegelendring;
     }
 
@@ -94,6 +97,7 @@ export const finnDatoForMaksPermittering = (
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
+    console.log(potensiellDatoForMaksPeriode);
     return potensiellDatoForMaksPeriode;
 };
 
@@ -313,4 +317,63 @@ export const harLøpendePermitteringMedOppstartFørRegelendring = (
         }
     }
     return false;
+};
+
+export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
+    tidslinje: DatoMedKategori[],
+    datoRegelendring1nov: Dayjs,
+    datoRegelendring1Juli: Dayjs
+) => {
+    const indeks1Nov = finnIndeksForDato(datoRegelendring1nov, tidslinje);
+    console.log('denne bli kallt');
+    if (
+        tidslinje[indeks1Nov].kategori !== DatointervallKategori.IKKE_PERMITTERT
+    ) {
+        const datoPermitteringsStart = finnStartDatoForPermitteringUtIfraSluttdato(
+            datoRegelendring1nov,
+            tidslinje
+        );
+        const permitteringStartetFør1Juli = datoPermitteringsStart.isBefore(
+            datoRegelendring1Juli
+        );
+        console.log(permitteringStartetFør1Juli, 'før 1. juli');
+        if (permitteringStartetFør1Juli) {
+            const potensiellDatoForMaksPermittering = finnDatoForMaksPermittering(
+                tidslinje,
+                datoRegelendring1nov,
+                49 * 7
+            );
+            console.log(
+                formaterDato(potensiellDatoForMaksPermittering!!),
+                'here'
+            );
+            if (potensiellDatoForMaksPermittering) {
+                const permitteringsStartAvPermittering = finnStartDatoForPermitteringUtIfraSluttdato(
+                    potensiellDatoForMaksPermittering,
+                    tidslinje
+                );
+                if (
+                    permitteringsStartAvPermittering.isBefore(
+                        datoRegelendring1Juli
+                    )
+                ) {
+                    return potensiellDatoForMaksPermittering;
+                }
+            }
+        }
+    }
+};
+
+const finnStartDatoForPermitteringUtIfraSluttdato = (
+    sluttdato: Dayjs,
+    tidslinje: DatoMedKategori[]
+) => {
+    const indeksSluttDato = finnIndeksForDato(sluttdato, tidslinje);
+    let indeks = indeksSluttDato;
+    while (
+        tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
+    ) {
+        indeks--;
+    }
+    return tidslinje[indeks].dato;
 };
