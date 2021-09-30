@@ -364,7 +364,10 @@ const finnStartDatoForPermitteringUtIfraSluttdato = (
     while (
         tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
     ) {
+        if (tidslinje[indeks].dato.isBefore(finnDato18MndTilbake(sluttdato))) {
+            return finnDato18MndTilbake(sluttdato);
+        }
         indeks--;
     }
-    return tidslinje[indeks].dato;
+    return tidslinje[indeks + 1].dato;
 };
