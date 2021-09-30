@@ -3,7 +3,7 @@ name: Bygg alle brancher. Deploy master branch
 on: [push]
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+  IMAGE: ghcr.io/${{ github.repository }}/permitterings-kalkulator:${{ github.sha }}
 
 jobs:
   compile-test-and-build:
