@@ -25,6 +25,7 @@ import { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
+    finnPotensiellLøpendePermittering,
     formaterDato,
 } from '../utils/dato-utils';
 import {
@@ -100,6 +101,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const datoRegelEndring = oppstartFørRegelendring
             ? regelEndringsDato1November
             : regelEndring1Juli;
+        const finnesLøpende = !!finnPotensiellLøpendePermittering(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
         const sluttAv18mndsPeriode =
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                 gjeldendeRegelverk,
@@ -107,7 +111,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 dagensDato,
                 regelEndringsDato1November,
                 regelEndring1Juli,
-                maksDagerUtenLønnsplikt
+                maksDagerUtenLønnsplikt,
+                finnesLøpende
             )?.datoTil || regelEndring1Juli;
         props.set18mndsPeriode(sluttAv18mndsPeriode);
     }, [props.tidslinje]);

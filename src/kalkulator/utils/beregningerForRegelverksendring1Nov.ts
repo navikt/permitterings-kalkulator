@@ -37,7 +37,8 @@ export const finnPermitteringssituasjon1November = (
     tidslinje: DatoMedKategori[],
     datoRegelEndring1Nov: Dayjs,
     datoRegelEndring1Juli: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number
+    maksAntallDagerUtenLønnsplikt: number,
+    erLøpendePermittering: boolean
 ): Permitteringssituasjon1November => {
     const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
@@ -50,7 +51,8 @@ export const finnPermitteringssituasjon1November = (
             tidslinje,
             datoRegelEndring1Nov,
             datoRegelEndring1Juli
-        )
+        ) &&
+        !erLøpendePermittering
     ) {
         return Permitteringssituasjon1November.MAKS_NÅDD_IKKE_LØPENDE;
     }
@@ -257,7 +259,8 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     dagensDato: Dayjs,
     datoRegelendring1Nov: Dayjs,
     datoRegelEndring1Juli: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number
+    maksAntallDagerUtenLønnsplikt: number,
+    finnesLøpendePermittering: boolean
 ): DatoIntervall | undefined => {
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
@@ -265,7 +268,8 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                   tidslinje,
                   datoRegelendring1Nov,
                   datoRegelEndring1Juli,
-                  maksAntallDagerUtenLønnsplikt
+                  maksAntallDagerUtenLønnsplikt,
+                  finnesLøpendePermittering
               )
             : finnPermitteringssituasjonNormalRegelverk(
                   tidslinje,

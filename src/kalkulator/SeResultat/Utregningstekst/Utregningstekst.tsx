@@ -141,7 +141,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const datoRegelEndring = harNåddMaksKoronaRegelverk
         ? regelEndringsDato1November
         : regelEndring1Juli;
-    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+    /*const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
         gjeldendeTidslinje,
         dagensDato,
@@ -149,6 +149,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndring1Juli,
         maksDagerUtenLønnsplikt
     );
+
+     */
 
     /*
     {aktuell18mndsperiode && (

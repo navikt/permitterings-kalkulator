@@ -53,58 +53,60 @@ export const lagResultatTekstNormaltRegelverk = (
                     'Arbeidsgiver har permittert mer enn tillatt.'
                 );
             }
+        } else {
+            return {
+                konklusjon: finnesLøpendePermittering ? (
+                    <>
+                        <Element>
+                            Du har lønnsplikt fra{' '}
+                            {formaterDato(datoForMaksPermitteringOppbrukt)},
+                            dersom permitteringen holdes løpende. Da er maks
+                            antall dager for permittering uten lønnsplikt nådd.
+                        </Element>
+                    </>
+                ) : (
+                    <>
+                        <Element>
+                            Maksgrensen for uker en ansatt kan være permittert
+                            er nådd{' '}
+                            {formaterDato(datoForMaksPermitteringOppbrukt)}.
+                        </Element>
+                    </>
+                ),
+                beskrivelse: (
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            For permitteringer som startet 1. juli eller senere,
+                            kan du permittere inntil 26 uker innenfor en periode
+                            på 18 måneder før lønnsplikten gjeninntrer.
+                        </Normaltekst>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Den ansatte har vært permittert i{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                getPermitteringsoversiktFor18Måneder(
+                                    tidslinjeUtenPermitteringFor1Juli,
+                                    datoForMaksPermitteringOppbrukt.subtract(
+                                        1,
+                                        'day'
+                                    )
+                                ).dagerBrukt
+                            )}{' '}
+                            i 18-månedersperioden{' '}
+                            {formaterDatoIntervall({
+                                datoFra: finnDato18MndTilbake(
+                                    datoForMaksPermitteringOppbrukt
+                                ),
+                                datoTil: datoForMaksPermitteringOppbrukt,
+                            })}
+                            {finnTidligsteFraDato(
+                                allePermitteringerOgFraværesPerioder.permitteringer
+                            )?.isBefore(innføringsdatoRegelEndring) &&
+                                tekstOmPermitteringFør1Juli()}
+                        </Normaltekst>
+                    </>
+                ),
+            };
         }
-        return {
-            konklusjon: finnesLøpendePermittering ? (
-                <>
-                    <Element>
-                        Du har lønnsplikt fra{' '}
-                        {formaterDato(datoForMaksPermitteringOppbrukt)}, dersom
-                        permitteringen holdes løpende. Da er maks antall dager
-                        for permittering uten lønnsplikt nådd.
-                    </Element>
-                </>
-            ) : (
-                <>
-                    <Element>
-                        Maksgrensen for uker en ansatt kan være permittert er
-                        nådd {formaterDato(datoForMaksPermitteringOppbrukt)}.
-                    </Element>
-                </>
-            ),
-            beskrivelse: (
-                <>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        For permitteringer som startet 1. juli eller senere, kan
-                        du permittere inntil 26 uker innenfor en periode på 18
-                        måneder før lønnsplikten gjeninntrer.
-                    </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Den ansatte har vært permittert i{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            getPermitteringsoversiktFor18Måneder(
-                                tidslinjeUtenPermitteringFor1Juli,
-                                datoForMaksPermitteringOppbrukt.subtract(
-                                    1,
-                                    'day'
-                                )
-                            ).dagerBrukt
-                        )}{' '}
-                        i 18-månedersperioden{' '}
-                        {formaterDatoIntervall({
-                            datoFra: finnDato18MndTilbake(
-                                datoForMaksPermitteringOppbrukt
-                            ),
-                            datoTil: datoForMaksPermitteringOppbrukt,
-                        })}
-                        {finnTidligsteFraDato(
-                            allePermitteringerOgFraværesPerioder.permitteringer
-                        )?.isBefore(innføringsdatoRegelEndring) &&
-                            tekstOmPermitteringFør1Juli()}
-                    </Normaltekst>
-                </>
-            ),
-        };
     }
 
     const aktuell18mndsperiode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(

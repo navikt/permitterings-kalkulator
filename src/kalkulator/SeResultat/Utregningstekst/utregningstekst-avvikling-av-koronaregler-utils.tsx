@@ -36,11 +36,15 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     datoRegelendring1Nov: Dayjs,
     datoRegelEndring1Juli: Dayjs
 ): ResultatTekst => {
+    const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
+        allePermitteringerOgFraværesPerioder.permitteringer
+    );
     const situasjon = finnPermitteringssituasjon1November(
         tidslinje,
         datoRegelendring1Nov,
         datoRegelEndring1Juli,
-        49 * 7
+        49 * 7,
+        finnesLøpendePermittering
     );
     const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
