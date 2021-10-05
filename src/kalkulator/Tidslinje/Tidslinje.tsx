@@ -105,7 +105,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 gjeldendeRegelverk,
                 props.tidslinje,
                 dagensDato,
-                datoRegelEndring,
+                regelEndringsDato1November,
+                regelEndring1Juli,
                 maksDagerUtenLønnsplikt
             )?.datoTil || regelEndring1Juli;
         props.set18mndsPeriode(sluttAv18mndsPeriode);

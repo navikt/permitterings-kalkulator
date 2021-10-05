@@ -54,7 +54,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER
+                Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE
             );
         });
 
@@ -79,7 +79,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER
+                Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE
             );
         });
     });
