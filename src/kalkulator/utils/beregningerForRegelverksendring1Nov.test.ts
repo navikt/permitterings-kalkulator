@@ -33,38 +33,42 @@ const getTidslinje = (
 
 describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1. november 2021', () => {
     describe('Tester for finnPermitteringssituasjon1November', () => {
-        test('Skal returnere MAKS_NÅDD_1_OKTOBER i riktig tilfelle', () => {
+        test('Skal returnere MAKS_NÅDD_1_NOVEMBER i riktig tilfelle', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
+            const innføringsdatoRegelendring1November = dayjs('2021-11-01');
+            const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoRegelendring.subtract(
+                        datoFra: innføringsdatoRegelendring1November.subtract(
                             maksAntallPermitteringsdager,
                             'days'
                         ),
-                        datoTil: innføringsdatoRegelendring,
+                        datoTil: innføringsdatoRegelendring1November,
                     },
                 ],
                 andreFraværsperioder: [],
             });
             const situasjon = finnPermitteringssituasjon1November(
                 tidslinje,
-                innføringsdatoRegelendring,
-                maksAntallPermitteringsdager
+                innføringsdatoRegelendring1November,
+                innføringsdatoRegelendring1Juli,
+                maksAntallPermitteringsdager,
+                true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER
+                Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE
             );
         });
 
         test('Skal returnere at maks antall dager er nådd etter 10. november ved løpende permittering iverksatt før 1. juli', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
+            const innføringsdatoRegelendring1November = dayjs('2021-11-01');
+            const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoRegelendring.subtract(
+                        datoFra: innføringsdatoRegelendring1November.subtract(
                             maksAntallPermitteringsdager - 1,
                             'days'
                         ),
@@ -75,11 +79,13 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             });
             const situasjon = finnPermitteringssituasjon1November(
                 tidslinje,
-                innføringsdatoRegelendring,
-                maksAntallPermitteringsdager
+                innføringsdatoRegelendring1November,
+                innføringsdatoRegelendring1Juli,
+                maksAntallPermitteringsdager,
+                true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER
+                Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE
             );
         });
     });
