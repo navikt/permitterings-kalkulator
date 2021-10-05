@@ -77,7 +77,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         regler gjeldende fra 01.07.2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Den ansatte har vært permittert i tilsammen
+                        Den ansatte har vært permittert i tilsammen{' '}
                         {skrivDagerIHeleUkerPlussDager(
                             oversiktOverPermitteringsdagerFra1Juli.dagerBrukt
                         )}{' '}
@@ -92,12 +92,12 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             26 * 7 -
                                 oversiktOverPermitteringsdagerFra1Juli.dagerBrukt
                         )}{' '}
-                        innen 30.12.2022, vil du måtte avslutte permitteringen.
+                        innen 30.12.2022, vil du måtte avslutte permitteringen.{' '}
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
                         kalkulatoren vil da regne ut når lønnsplikten inntreffer
-                        igjen.
+                        igjen.{' '}
                         <Lenke
                             href={
                                 'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'
