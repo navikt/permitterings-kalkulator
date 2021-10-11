@@ -69,7 +69,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 props.allePermitteringerOgFraværesPerioder
                             }
                         />
-                        <div id="tidslinje-wrapper">
+                        <div
+                            className={'se-resultat__tidslinje-wrapper'}
+                            id="tidslinje-wrapper"
+                        >
                             {skalViseTidslinje && (
                                 <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
                                     <Tidslinje

@@ -35,6 +35,7 @@ import {
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../utils/beregningerForRegelverksendring1Nov';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
+import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -203,8 +204,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             <div className={'kalkulator__draggable-tekst-container'}>
                 <Normaltekst>
                     {formaterDatoIntervall({
-                        datoTil: finnDato18MndTilbake(datoVisesPaDragElement),
-                        datoFra: datoVisesPaDragElement,
+                        datoFra: finnDato18MndTilbake(datoVisesPaDragElement),
+                        datoTil: datoVisesPaDragElement,
                     })}
                 </Normaltekst>
                 <Element className={'kalkulator__draggable-tekst'}>
@@ -220,40 +221,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         <div className={'tidslinje'}>
             {
                 <>
-                    <Element
-                        className={
-                            'kalkulator__tidslinje-drag-element-forklaring'
-                        }
-                    >
-                        Oversikt over permitteringsperiodene{' '}
-                        {
-                            getPermitteringsoversiktFor18Måneder(
-                                props.tidslinje,
-                                datoVisesPaDragElement
-                            ).dagerBrukt
-                        }{' '}
-                        dager
-                    </Element>
-                    <Normaltekst>
-                        Illustrasjonen viser permitteringsperiodene du har
-                        plottet inn og plasserer de i en tidslinje
-                    </Normaltekst>
-                    <Normaltekst>
-                        Den aktuelle 18-månedsperioden er markert med blått.
-                        Perioden din ansatte når eller potensielt når maks
-                        antall permitteringsdager er{' '}
-                        {formaterDatoIntervall({
-                            datoFra: finnDato18MndTilbake(
-                                props.sisteDagIPeriode
-                            ),
-                            datoTil: props.sisteDagIPeriode,
-                        })}
-                    </Normaltekst>
-                    <Normaltekst>
-                        Du kan dra det blå drag-elementet for å se hvor mange
-                        permitteringsdager som er innenfor den markerte
-                        18-månedsperioden.
-                    </Normaltekst>
+                    <Tekstforklaring
+                        tidslinje={props.tidslinje}
+                        sisteDagIPeriode={props.sisteDagIPeriode}
+                        datoVisesPaDragElement={datoVisesPaDragElement}
+                    />
+
                     <div
                         role="img"
                         aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
