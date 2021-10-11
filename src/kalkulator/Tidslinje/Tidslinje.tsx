@@ -27,6 +27,7 @@ import {
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     formaterDato,
+    formaterDatoIntervall,
 } from '../utils/dato-utils';
 import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
@@ -199,18 +200,19 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             className={'kalkulator__draggable-periode'}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
-            <Element className={'kalkulator__draggable-tekst'}>
-                {' '}
-                18 måneder{' '}
-            </Element>
+            <div className={'kalkulator__draggable-tekst-container'}>
+                <Normaltekst>
+                    {formaterDatoIntervall({
+                        datoTil: finnDato18MndTilbake(datoVisesPaDragElement),
+                        datoFra: datoVisesPaDragElement,
+                    })}
+                </Normaltekst>
+                <Element className={'kalkulator__draggable-tekst'}>
+                    {' '}
+                    18 måneder{' '}
+                </Element>
+            </div>
             <div className={'kalkulator__draggable-kant høyre'} />
-            <Normaltekst className={'venstre-dato '}>
-                {formaterDato(finnDato18MndTilbake(datoVisesPaDragElement))}
-            </Normaltekst>
-
-            <Normaltekst className={'høyre-dato'}>
-                {formaterDato(datoVisesPaDragElement)}
-            </Normaltekst>
         </div>
     );
 
@@ -223,7 +225,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             'kalkulator__tidslinje-drag-element-forklaring'
                         }
                     >
-                        Dager permittert i den markerte 18-månedersperioden:{' '}
+                        Oversikt over permitteringsperiodene{' '}
                         {
                             getPermitteringsoversiktFor18Måneder(
                                 props.tidslinje,
@@ -233,9 +235,24 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                         dager
                     </Element>
                     <Normaltekst>
-                        Du kan dra i det blå drag-elementet (markert med
-                        "18-måneder") for å se hvor mange brukte
-                        permitteringsdager som er innenfor 18-månedersperioden.
+                        Illustrasjonen viser permitteringsperiodene du har
+                        plottet inn og plasserer de i en tidslinje
+                    </Normaltekst>
+                    <Normaltekst>
+                        Den aktuelle 18-månedsperioden er markert med blått.
+                        Perioden din ansatte når eller potensielt når maks
+                        antall permitteringsdager er{' '}
+                        {formaterDatoIntervall({
+                            datoFra: finnDato18MndTilbake(
+                                props.sisteDagIPeriode
+                            ),
+                            datoTil: props.sisteDagIPeriode,
+                        })}
+                    </Normaltekst>
+                    <Normaltekst>
+                        Du kan dra det blå drag-elementet for å se hvor mange
+                        permitteringsdager som er innenfor den markerte
+                        18-månedsperioden.
                     </Normaltekst>
                     <div
                         role="img"

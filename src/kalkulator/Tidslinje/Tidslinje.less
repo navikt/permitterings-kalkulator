@@ -7,9 +7,10 @@
         background-color: @navBla;
         border-radius: 8px 8px 0 0;
         left: 0;
+        margin-top: -1.5rem;
         display: flex;
         justify-content: center;
-        z-index: 2;
+        z-index: 11;
 
         .høyre {
             position: absolute;
@@ -26,18 +27,28 @@
         .venstre-dato {
             position: absolute;
             left: -2rem;
-            top: 3.5rem;
+            top: 5rem;
         }
 
         .høyre-dato {
             position: absolute;
             right: -2rem;
-            top: 3.5rem;
+            top: 5rem;
         }
     }
 
+    &__draggable-tekst-container {
+        text-align: center;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 3rem;
+        top: -1.5rem;
+    }
+
     &__draggable-kant {
-        height: 2.5rem;
+        height: 3.5rem;
         width: 3px;
         border-radius: 20px;
         background-color: @navBla;
@@ -91,7 +102,6 @@
 
         .tidslinje-dagens-dato-markør {
             position: absolute;
-            bottom: 3px;
             width: 0.5px;
             display: flex;
             flex-direction: column;
@@ -114,12 +124,11 @@
             height: 0.75rem;
             background-color: goldenrod;
             position: absolute;
-            bottom: -1px;
         }
 
         .tidslinje-dagens-dato-markør-tekst {
             position: absolute;
-            top: -3rem;
+            top: 3rem;
             left: -2rem;
         }
 
