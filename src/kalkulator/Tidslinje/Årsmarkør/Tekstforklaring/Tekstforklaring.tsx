@@ -29,18 +29,18 @@ const Tekstforklaring: FunctionComponent<Props> = (props) => {
             </Element>
             <Normaltekst>
                 Perioden din ansatte når eller potensielt når maks
-                antall permitteringsdager er{' '}
-                {formaterDatoIntervall({
-                    datoFra: finnDato18MndTilbake(
-                        props.sisteDagIPeriode
-                    ),
-                    datoTil: props.sisteDagIPeriode,
-                })}. Ved å dra i det blå drag-elementet har du mulighet for å se hvor lenge den ansatte er permittering i den markerte 18-månedsperioden.
+                antall permitteringsdager er:
             </Normaltekst>
+            <Element className="tidslinje__tekstforklaring-periode">{formaterDatoIntervall({
+                datoFra: finnDato18MndTilbake(
+                    props.sisteDagIPeriode
+                ),
+                datoTil: props.sisteDagIPeriode,
+            })}</Element>
             <Normaltekst>
                 Du kan dra det blå drag-elementet for å se hvor mange
-                permitteringsdager som er innenfor den markerte
-                18-månedsperioden.
+                permitteringsdager som er innenfor en bestemt
+                18-månedsperiode.
             </Normaltekst>
             <Element
                 className={
