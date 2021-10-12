@@ -7,6 +7,7 @@ import React, {
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
+    DatointervallKategori,
     DatoMedKategori,
 } from '../typer';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
@@ -49,6 +50,9 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
+    const [tidslinjeSomSkalVises, setTidslinjeSomSkalVises] = useState<
+        DatoMedKategori[]
+    >(props.tidslinje);
     const {
         dagensDato,
         regelEndringsDato1November,
@@ -59,7 +63,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
         regnUtPosisjonFraVenstreGittSluttdato(
-            props.tidslinje,
+            tidslinjeSomSkalVises,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         )
@@ -82,6 +86,33 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         | 'sticky'
         | undefined
     >('absolute');
+
+    useEffect(() => {
+        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        );
+        if (!oppstartFørRegelendring) {
+            const nyTidslinje: DatoMedKategori[] = [];
+            props.tidslinje.forEach((datoMedKategori, index) => {
+                if (
+                    datoMedKategori.kategori !==
+                        DatointervallKategori.IKKE_PERMITTERT &&
+                    datoMedKategori.dato.isBefore(regelEndring1Juli)
+                ) {
+                    const nyDatoMedKategori: DatoMedKategori = {
+                        dato: datoMedKategori.dato,
+                        kategori:
+                            DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+                    };
+                    nyTidslinje.push(nyDatoMedKategori);
+                } else {
+                    nyTidslinje.push({ ...datoMedKategori });
+                }
+            });
+            setTidslinjeSomSkalVises(nyTidslinje);
+        }
+    }, [props.tidslinje, regelEndring1Juli]);
 
     useEffect(() => {
         if (props.endringAv === 'datovelger') {
@@ -109,7 +140,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const sluttAv18mndsPeriode =
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                 gjeldendeRegelverk,
-                props.tidslinje,
+                tidslinjeSomSkalVises,
                 dagensDato,
                 regelEndringsDato1November,
                 regelEndring1Juli,
@@ -117,17 +148,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 finnesLøpende
             )?.datoTil || regelEndring1Juli;
         props.set18mndsPeriode(sluttAv18mndsPeriode);
-    }, [props.tidslinje]);
+    }, [tidslinjeSomSkalVises]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
-            props.tidslinje,
+            tidslinjeSomSkalVises,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
         if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
-                props.tidslinje,
+                tidslinjeSomSkalVises,
                 props.breddeAvDatoObjektIProsent,
                 datoOnDrag
             );
@@ -141,16 +172,16 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         datoOnDrag,
         props.sisteDagIPeriode,
         props.breddeAvDatoObjektIProsent,
-        props.tidslinje,
+        tidslinjeSomSkalVises,
     ]);
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
-        props.tidslinje,
+        tidslinjeSomSkalVises,
         props.breddeAvDatoObjektIProsent,
         dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
-        lagObjektForRepresentasjonAvPerioderMedFarge(props.tidslinje),
+        lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
         props.breddeAvDatoObjektIProsent
     );
 
@@ -169,7 +200,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 indeksStartDato = indeks;
             }
         });
-        setDatoOnDrag(props.tidslinje[indeksStartDato].dato);
+        setDatoOnDrag(tidslinjeSomSkalVises[indeksStartDato].dato);
     };
 
     const datoVisesPaDragElement =
@@ -216,7 +247,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             {
                 <>
                     <Tekstforklaring
-                        tidslinje={props.tidslinje}
+                        tidslinje={tidslinjeSomSkalVises}
                         sisteDagIPeriode={props.sisteDagIPeriode}
                         datoVisesPaDragElement={datoVisesPaDragElement}
                     />

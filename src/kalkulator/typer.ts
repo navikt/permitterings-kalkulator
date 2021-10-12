@@ -4,6 +4,7 @@ export enum DatointervallKategori {
     PERMITTERT_UTEN_FRAVÆR,
     PERMITTERT_MED_FRAVÆR,
     IKKE_PERMITTERT,
+    SLETTET_PERMITTERING_FØR_1_JULI,
 }
 
 export interface AllePermitteringerOgFraværesPerioder {
