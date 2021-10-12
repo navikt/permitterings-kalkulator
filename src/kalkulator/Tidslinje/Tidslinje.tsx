@@ -154,12 +154,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         props.breddeAvDatoObjektIProsent
     );
 
-    const OnTidslinjeDragRelease = () => {
-        if (datoOnDrag) {
-            props.set18mndsPeriode(datoOnDrag);
-        }
-    };
-
     const OnTidslinjeDrag = () => {
         props.setEndringAv('tidslinje');
         setPosisjonsStylingDragElement('static');
@@ -239,7 +233,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             <Draggable
                                 axis={'x'}
                                 bounds={'parent'}
-                                onStop={() => OnTidslinjeDragRelease()}
                                 onDrag={() => OnTidslinjeDrag()}
                             >
                                 {get18mndsperiode()}
