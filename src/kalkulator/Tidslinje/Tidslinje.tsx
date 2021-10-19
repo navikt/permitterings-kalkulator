@@ -31,8 +31,8 @@ import {
     formaterDatoIntervall,
 } from '../utils/dato-utils';
 import {
+    finnDatoForMaksPermittering,
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    getPermitteringsoversiktFor18Måneder,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../utils/beregningerForRegelverksendring1Nov';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
@@ -131,13 +131,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const maksDagerUtenLønnsplikt = oppstartFørRegelendring
             ? 49 * 7
             : 26 * 7;
-        const datoRegelEndring = oppstartFørRegelendring
-            ? regelEndringsDato1November
-            : regelEndring1Juli;
         const finnesLøpende = !!finnPotensiellLøpendePermittering(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
-        const sluttAv18mndsPeriode =
+        console.log(
+            'formatert 18 mndsperiode',
             finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                 gjeldendeRegelverk,
                 tidslinjeSomSkalVises,
@@ -146,8 +144,25 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 regelEndring1Juli,
                 maksDagerUtenLønnsplikt,
                 finnesLøpende
-            )?.datoTil || regelEndring1Juli;
+            )
+        );
+        const sluttAv18mndsPeriode = finnesLøpende
+            ? finnDatoForMaksPermittering(
+                  tidslinjeSomSkalVises,
+                  regelEndringsDato1November,
+                  49 * 7
+              )!
+            : finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+                  gjeldendeRegelverk,
+                  tidslinjeSomSkalVises,
+                  dagensDato,
+                  regelEndringsDato1November,
+                  regelEndring1Juli,
+                  maksDagerUtenLønnsplikt,
+                  finnesLøpende
+              )?.datoTil || regelEndring1Juli;
         props.set18mndsPeriode(sluttAv18mndsPeriode);
+        console.log(formaterDato(sluttAv18mndsPeriode));
     }, [tidslinjeSomSkalVises]);
 
     useEffect(() => {

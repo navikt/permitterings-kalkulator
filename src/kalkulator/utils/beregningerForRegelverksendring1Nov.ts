@@ -281,6 +281,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
         case Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE:
             return til18mndsperiode(datoRegelendring1Nov);
         case Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE:
+            console.log('maks nådd ette 1 nov');
             const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 datoRegelendring1Nov,
