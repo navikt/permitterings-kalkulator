@@ -21,6 +21,7 @@ const Tekstforklaring: FunctionComponent<Props> = (props) => {
         props.datoVisesPaDragElement
     ).dagerBrukt;
 
+
     return (
         <div className="tidslinje__tekstforklaring">
             <Element className={"tidslinje__tekstforklaring-element"}>

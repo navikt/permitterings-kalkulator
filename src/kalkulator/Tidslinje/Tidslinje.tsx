@@ -33,7 +33,10 @@ import {
 import {
     finnDatoForMaksPermittering,
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
+    finnPermitteringssituasjon1November,
     harLøpendePermitteringMedOppstartFørRegelendring,
+    Permitteringssituasjon1November,
 } from '../utils/beregningerForRegelverksendring1Nov';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
@@ -92,6 +95,20 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.allePermitteringerOgFraværesPerioder.permitteringer,
             regelEndring1Juli
         );
+        const finnesLøpende = !!finnPotensiellLøpendePermittering(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        const situasjon = finnPermitteringssituasjon1November(
+            props.tidslinje,
+            regelEndringsDato1November,
+            regelEndring1Juli,
+            49 * 7,
+            finnesLøpende
+        );
+        if (
+            situasjon === Permitteringssituasjon1November.MAKS_NÅDD_IKKE_LØPENDE
+        ) {
+        }
         if (!oppstartFørRegelendring) {
             const nyTidslinje: DatoMedKategori[] = [];
             props.tidslinje.forEach((datoMedKategori, index) => {
@@ -112,7 +129,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             });
             setTidslinjeSomSkalVises(nyTidslinje);
         }
-    }, [props.tidslinje, regelEndring1Juli]);
+    }, [
+        props.tidslinje,
+        regelEndring1Juli,
+        props.allePermitteringerOgFraværesPerioder,
+    ]);
 
     useEffect(() => {
         if (props.endringAv === 'datovelger') {
@@ -134,36 +155,46 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const finnesLøpende = !!finnPotensiellLøpendePermittering(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
-        console.log(
-            'formatert 18 mndsperiode',
-            finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-                gjeldendeRegelverk,
-                tidslinjeSomSkalVises,
-                dagensDato,
-                regelEndringsDato1November,
-                regelEndring1Juli,
-                maksDagerUtenLønnsplikt,
-                finnesLøpende
-            )
+
+        const situasjon = finnPermitteringssituasjon1November(
+            props.tidslinje,
+            regelEndringsDato1November,
+            regelEndring1Juli,
+            49 * 7,
+            finnesLøpende
         );
-        const sluttAv18mndsPeriode = finnesLøpende
-            ? finnDatoForMaksPermittering(
-                  tidslinjeSomSkalVises,
-                  regelEndringsDato1November,
-                  49 * 7
-              )!
-            : finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-                  gjeldendeRegelverk,
-                  tidslinjeSomSkalVises,
-                  dagensDato,
-                  regelEndringsDato1November,
-                  regelEndring1Juli,
-                  maksDagerUtenLønnsplikt,
-                  finnesLøpende
-              )?.datoTil || regelEndring1Juli;
-        props.set18mndsPeriode(sluttAv18mndsPeriode);
-        console.log(formaterDato(sluttAv18mndsPeriode));
-    }, [tidslinjeSomSkalVises]);
+        if (
+            situasjon === Permitteringssituasjon1November.MAKS_NÅDD_IKKE_LØPENDE
+        ) {
+            const datoMaksNådd = finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
+                props.tidslinje,
+                regelEndringsDato1November,
+                regelEndring1Juli
+            );
+            props.set18mndsPeriode(datoMaksNådd!!);
+        } else {
+            const sluttAv18mndsPeriode = finnesLøpende
+                ? finnDatoForMaksPermittering(
+                      tidslinjeSomSkalVises,
+                      regelEndringsDato1November,
+                      maksDagerUtenLønnsplikt
+                  )!
+                : finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+                      gjeldendeRegelverk,
+                      tidslinjeSomSkalVises,
+                      dagensDato,
+                      regelEndringsDato1November,
+                      regelEndring1Juli,
+                      maksDagerUtenLønnsplikt,
+                      finnesLøpende
+                  )?.datoTil || regelEndring1Juli;
+            props.set18mndsPeriode(sluttAv18mndsPeriode);
+        }
+    }, [
+        tidslinjeSomSkalVises,
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+    ]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
