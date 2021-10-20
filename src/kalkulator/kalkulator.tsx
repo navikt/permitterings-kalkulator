@@ -81,14 +81,33 @@ const Kalkulator = () => {
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
                     <>
-                        <Element>Avtale med LO og NHO</Element>
+                        <Element>
+                            Endringer i permitteringsordningen kan påvirke
+                            kalkulatoren
+                        </Element>
                         <Normaltekst>
-                            LO og NHO har avtalt nye permitteringsregler som vil
-                            gjelde i perioden fra 8. mai 2021 til og med 30.
-                            september 2021. Hvis din virksomhet er omfattet av
-                            avtalen vil ikke denne permitteringskalkulatoren gi
-                            riktig beregning i de tilfellene der den ansatte har
-                            jobbet under permitteringen.{' '}
+                            Endringer i permitteringsordningen kan påvirke
+                            kalkulatoren Regjeringen foreslår at dagpenge- og
+                            permitteringsperioder som nærmer seg slutten
+                            forlenges frem til og med 31. desember 2021.
+                            Kalkulatoren tar foreløpig ikke denne endringen med
+                            i beregningen. Vi oppdaterer kalkulatoren når
+                            regelverket er avklart.{' '}
+                            <a
+                                href="https://www.regjeringen.no/no/aktuelt/forlenger-koronatiltak-i-arbeidslivet-ut-aret/id2878080/"
+                                className="lenke"
+                            >
+                                Les mer om forslaget på regjeringen.no
+                            </a>
+                        </Normaltekst>
+                        <Element>Avtale mellom LO og NHO</Element>
+                        <Normaltekst>
+                            LO og NHO avtalte nye permitteringsregler som gjaldt
+                            i perioden fra 8. mai 2021 til og med 30. september
+                            2021. Hvis din virksomhet var omfattet av avtalen
+                            vil ikke denne kalkulatoren gi riktig beregning i de
+                            tilfellene der den ansatte jobbet under
+                            permitteringen.{' '}
                             <a
                                 href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                                 className="lenke"
