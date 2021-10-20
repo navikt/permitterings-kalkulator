@@ -86,8 +86,7 @@ const Kalkulator = () => {
                             kalkulatoren
                         </Element>
                         <Normaltekst>
-                            Endringer i permitteringsordningen kan påvirke
-                            kalkulatoren Regjeringen foreslår at dagpenge- og
+                            Regjeringen foreslår at dagpenge- og
                             permitteringsperioder som nærmer seg slutten
                             forlenges frem til og med 31. desember 2021.
                             Kalkulatoren tar foreløpig ikke denne endringen med
@@ -106,8 +105,8 @@ const Kalkulator = () => {
                             i perioden fra 8. mai 2021 til og med 30. september
                             2021. Hvis din virksomhet var omfattet av avtalen
                             vil ikke denne kalkulatoren gi riktig beregning i de
-                            tilfellene der den ansatte jobbet under
-                            permitteringen.{' '}
+                            tilfellene der den ansatte jobbet i denne perioden
+                            under permitteringen.{' '}
                             <a
                                 href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                                 className="lenke"

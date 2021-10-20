@@ -8,9 +8,15 @@ const Topp: FunctionComponent = () => {
             <div className={'topp__generell-info'}>
                 <Element className="topp__introtekst">
                     Det er begrenset hvor lenge du kan permittere ansatte uten
-                    lønn. Denne kalkulatoren er et verktøy for å forstå
-                    regelverket rundt permittering og hva som gjelder for dine
-                    ansatte.
+                    lønn. Denne kalkulatoren er et verktøy for å hjelpe deg å
+                    beregne når lønnsplikten gjeninntrer. Merk at det er andre
+                    regler som styrer de{' '}
+                    <a
+                        href="https://www.nav.no/arbeid/permittert#hvor-lenge-kan-du-fa-dagpenger"
+                        className="lenke"
+                    >
+                        ansattes rettigheter til dagpenger.
+                    </a>
                 </Element>
                 <Element>Denne informasjonen trenger du</Element>
                 <ul className="topp__liste">
