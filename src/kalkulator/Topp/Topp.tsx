@@ -8,7 +8,7 @@ const Topp: FunctionComponent = () => {
             <div className={'topp__generell-info'}>
                 <Element className="topp__introtekst">
                     Det er begrenset hvor lenge du kan permittere ansatte uten
-                    lønn. Denne kalkulatoren er et verktøy for å hjelpe deg å
+                    lønn. Denne kalkulatoren er et verktøy som hjelper deg å
                     beregne når lønnsplikten gjeninntrer. Merk at det er andre
                     regler som styrer de{' '}
                     <a
