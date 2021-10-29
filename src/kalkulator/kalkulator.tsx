@@ -86,18 +86,11 @@ const Kalkulator = () => {
                             kalkulatoren
                         </Element>
                         <Normaltekst>
-                            Regjeringen foreslår at dagpenge- og
-                            permitteringsperioder som nærmer seg slutten
-                            forlenges frem til og med 31. desember 2021.
+                            Dagpenge- og permitteringsperioder som nærmer seg
+                            slutten forlenges frem til og med 31. desember 2021.
                             Kalkulatoren tar foreløpig ikke denne endringen med
-                            i beregningen. Vi oppdaterer kalkulatoren når
-                            regelverket er avklart.{' '}
-                            <a
-                                href="https://www.regjeringen.no/no/aktuelt/forlenger-koronatiltak-i-arbeidslivet-ut-aret/id2878080/"
-                                className="lenke"
-                            >
-                                Les mer om forslaget på regjeringen.no
-                            </a>
+                            i beregningen. Vi oppdaterer informasjonen her når
+                            kalkulatoren beregner etter de nye reglene.
                         </Normaltekst>
                         <Element>Avtale mellom LO og NHO</Element>
                         <Normaltekst>
