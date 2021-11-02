@@ -84,16 +84,27 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         i 18-månedersperioden fra 1. juli 2021 til 30. desember
                         2022.
                     </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Ved nye permitteringer kan du maksimalt permittere en
-                        ansatt i 26 uker i løpet av 18 måneder. Dersom du
-                        permitterer i ytterlige{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            26 * 7 -
-                                oversiktOverPermitteringsdagerFra1Juli.dagerBrukt
-                        )}{' '}
-                        innen 30.12.2022, vil du måtte avslutte permitteringen.{' '}
-                    </Normaltekst>
+                    {oversiktOverPermitteringsdagerFra1Juli.dagerBrukt >=
+                    26 * 7 ? (
+                        <Normaltekst>
+                            'Den ansatte har nådd maks antall dager permittert
+                            uten lønn.'{' '}
+                        </Normaltekst>
+                    ) : (
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Ved nye permitteringer kan du maksimalt permittere
+                            en ansatt i 26 uker i løpet av 18 måneder.
+                            {oversiktOverPermitteringsdagerFra1Juli.dagerBrukt >=
+                            26 * 7
+                                ? 'Den ansatte har nådd maks antall dager permittert uten lønn. Du kan ikke permittere den ansatte på nytt før 31. desember 2022, da gjeldene 18-månedersperiode er over.'
+                                : 'Dersom du permitterer i ytterlige ' +
+                                  skrivDagerIHeleUkerPlussDager(
+                                      26 * 7 -
+                                          oversiktOverPermitteringsdagerFra1Juli.dagerBrukt
+                                  ) +
+                                  ' innen 30.12.2022, vil du måtte avslutte permitteringen. '}
+                        </Normaltekst>
+                    )}
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
                         kalkulatoren vil da regne ut når lønnsplikten inntreffer

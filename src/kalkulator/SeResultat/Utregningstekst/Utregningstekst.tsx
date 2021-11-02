@@ -14,6 +14,7 @@ import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import {
+    finnDato18MndFram,
     finnPotensiellLøpendePermittering,
     formaterDato,
 } from '../../utils/dato-utils';

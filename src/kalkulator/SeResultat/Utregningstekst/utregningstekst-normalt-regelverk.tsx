@@ -142,17 +142,21 @@ export const lagResultatTekstNormaltRegelverk = (
                         .
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du kan maksimalt permittere en ansatt i 26 uker i løpet
-                        av 18 måneder. Dersom du permitterer i ytterligere{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            26 * 7 -
-                                getPermitteringsoversiktFor18Måneder(
-                                    tidslinjeUtenPermitteringFor1Juli,
-                                    aktuell18mndsperiode!!.datoTil!!
-                                ).dagerBrukt
-                        )}{' '}
-                        innen {formaterDatoIntervall(aktuell18mndsperiode!!)},
-                        vil du måtte avslutte permitteringen.
+                        {getPermitteringsoversiktFor18Måneder(
+                            tidslinjeUtenPermitteringFor1Juli,
+                            aktuell18mndsperiode!!.datoTil!!
+                        ).dagerBrukt >=
+                        26 * 7
+                            ? 'Den ansatte har nådd maks antall dager permittert uten lønn. Du kan ikke permittere den ansatte på nytt før 31. desember 2022, da gjeldene 18-månedersperiode er over.'
+                            : 'Dersom du permitterer i ytterlige ' +
+                              skrivDagerIHeleUkerPlussDager(
+                                  26 * 7 -
+                                      getPermitteringsoversiktFor18Måneder(
+                                          tidslinjeUtenPermitteringFor1Juli,
+                                          aktuell18mndsperiode!!.datoTil!!
+                                      ).dagerBrukt
+                              ) +
+                              ' innen 30.12.2022, vil du måtte avslutte permitteringen. '}
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
@@ -197,16 +201,24 @@ export const lagResultatTekstNormaltRegelverk = (
                         )}
                         .
                     </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du kan maksimalt permittere en ansatt i 26 uker i løpet
-                        av 18 måneder. Dersom du permitterer i ytterlige{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            7 * 26 - oversiktOverPermittering.dagerBrukt
-                        )}{' '}
-                        innen {formaterDato(aktuell18mndsperiode.datoTil)}
-                        {', '}
-                        vil du måtte avslutte permitteringen.
-                    </Normaltekst>
+                    {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
+                        <Normaltekst>
+                            Du har nådd maks antall dager med permittering etter
+                            regelverket innført 1. juli.{' '}
+                        </Normaltekst>
+                    ) : (
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Du kan maksimalt permittere en ansatt i 26 uker i
+                            løpet av 18 måneder. Dersom du permitterer i
+                            ytterlige{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                7 * 26 - oversiktOverPermittering.dagerBrukt
+                            )}{' '}
+                            innen {formaterDato(aktuell18mndsperiode.datoTil)}
+                            {', '}
+                            vil du måtte avslutte permitteringen.
+                        </Normaltekst>
+                    )}
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
                         kalkulatoren vil da regne ut når lønnsplikten inntreffer
