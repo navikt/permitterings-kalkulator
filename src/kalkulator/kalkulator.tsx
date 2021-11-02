@@ -19,7 +19,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
-    const { dagensDato, regelEndringsDato1November } = useContext(
+    const { dagensDato, regelEndringsDato1Januar } = useContext(
         PermitteringContext
     );
 
@@ -37,7 +37,7 @@ const Kalkulator = () => {
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        regelEndringsDato1November
+        regelEndringsDato1Januar
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [

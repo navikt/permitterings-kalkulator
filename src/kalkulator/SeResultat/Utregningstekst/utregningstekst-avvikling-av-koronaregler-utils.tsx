@@ -17,10 +17,10 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import {
     finnDatoForMaksPermittering,
     finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    finnPermitteringssituasjon1November,
+    finnPermitteringssituasjon1Januar,
     getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon1November,
-} from '../../utils/beregningerForRegelverksendring1Nov';
+    Permitteringssituasjon1Januar,
+} from '../../utils/beregningerForRegelverksendring1Jan';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 import Lenke from 'nav-frontend-lenker';
 
@@ -33,27 +33,27 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     tidslinje: DatoMedKategori[],
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
-    datoRegelendring1Nov: Dayjs,
+    datoRegelendringJanuar: Dayjs,
     datoRegelEndring1Juli: Dayjs
 ): ResultatTekst => {
     const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
     );
-    const situasjon = finnPermitteringssituasjon1November(
+    const situasjon = finnPermitteringssituasjon1Januar(
         tidslinje,
-        datoRegelendring1Nov,
+        datoRegelendringJanuar,
         datoRegelEndring1Juli,
         49 * 7,
         finnesLøpendePermittering
     );
     const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
-        datoRegelendring1Nov
+        datoRegelendringJanuar
     );
-    if (situasjon === Permitteringssituasjon1November.MAKS_NÅDD_IKKE_LØPENDE) {
+    if (situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE) {
         const datoMaksNådd = finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
             tidslinje,
-            datoRegelendring1Nov,
+            datoRegelendringJanuar,
             datoRegelEndring1Juli
         );
         const oversiktOverPermitteringsdagerFra1Juli = getPermitteringsoversiktFor18Måneder(
@@ -113,8 +113,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         };
     }
     if (
-        situasjon ===
-        Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE
+        situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
     ) {
         loggPermitteringsSituasjon(
             'Maks permittering nådd 1. november. Maks permitteringstid er 49 uker'
@@ -124,15 +123,15 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 <>
                     <Element>
                         Du har lønnsplikt fra
-                        {' ' + formaterDato(datoRegelendring1Nov)}. Maks antall
-                        dager for permittering uten lønnsplikt er nådd.
+                        {' ' + formaterDato(datoRegelendringJanuar)}. Maks
+                        antall dager for permittering uten lønnsplikt er nådd.
                     </Element>
                 </>
             ),
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        1. november 2021 vil lønnsplikten gjeninntre for løpende
+                        1. januar 2022 vil lønnsplikten gjeninntre for løpende
                         permitteringer som startet før 1. juli der du til sammen
                         har permittert i 49 uker eller mer de siste 18 månedene.
                     </Normaltekst>
@@ -168,7 +167,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
 
     const datoMaksPermitteringNådd: Dayjs = finnDatoForMaksPermittering(
         tidslinje,
-        datoRegelendring1Nov,
+        datoRegelendringJanuar,
         49 * 7
     )!;
 
@@ -185,16 +184,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             <>
                 <Element>
                     Du har lønnsplikt fra
-                    {' ' +
-                        formaterDato(
-                            getFørsteHverdag(datoMaksPermitteringNådd)
-                        )}
+                    {' ' + formaterDato(datoMaksPermitteringNådd)}
                     {tilleggstekstLøpendePermittering}. Da er maks antall dager
                     for permittering uten lønnsplikt nådd.
                 </Element>
-                {alertOmForskyvingAvMaksgrenseNåddHvisHelg(
-                    datoMaksPermitteringNådd
-                )}
             </>
         ),
         beskrivelse: (

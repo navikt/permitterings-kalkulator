@@ -32,7 +32,7 @@ import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
     getPermitteringsoversiktFor18Måneder,
     harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../utils/beregningerForRegelverksendring1Nov';
+} from '../utils/beregningerForRegelverksendring1Jan';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 
 interface Props {
@@ -49,7 +49,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const {
         dagensDato,
-        regelEndringsDato1November,
+        regelEndringsDato1Januar,
         regelEndring1Juli,
     } = useContext(PermitteringContext);
     const [
@@ -99,7 +99,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? 49 * 7
             : 26 * 7;
         const datoRegelEndring = oppstartFørRegelendring
-            ? regelEndringsDato1November
+            ? regelEndringsDato1Januar
             : regelEndring1Juli;
         const finnesLøpende = !!finnPotensiellLøpendePermittering(
             props.allePermitteringerOgFraværesPerioder.permitteringer
@@ -109,7 +109,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 gjeldendeRegelverk,
                 props.tidslinje,
                 dagensDato,
-                regelEndringsDato1November,
+                regelEndringsDato1Januar,
                 regelEndring1Juli,
                 maksDagerUtenLønnsplikt,
                 finnesLøpende
