@@ -12,6 +12,14 @@ export const Fargeforklaringer = () => {
                 <Normaltekst>Annet fravær</Normaltekst>
                 <div className={'kalkulator__tidslinje-farge annet-fravær'} />
             </div>
+            <div className={'kalkulator__tidslinje-farge-forklaring-container'}>
+                <Normaltekst>Slettet permittering</Normaltekst>
+                <div
+                    className={
+                        'kalkulator__tidslinje-farge slettet-permittering'
+                    }
+                />
+            </div>
         </div>
     );
 };

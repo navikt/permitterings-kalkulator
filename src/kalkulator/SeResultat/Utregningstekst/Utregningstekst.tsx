@@ -19,17 +19,10 @@ import {
     formaterDato,
 } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
-import {
-    finnDatoForMaksPermittering,
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../../utils/beregningerForRegelverksendring1Jan';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
-    erPermittertVedDato,
     finnFørsteDatoMedPermitteringUtenFravær,
     finnSisteDatoMedPermitteringUtenFravær,
 } from '../../utils/tidslinje-utils';
@@ -37,6 +30,11 @@ import {
     loggKnappTrykketPå,
     loggPermitteringsSituasjon,
 } from '../../../utils/amplitudeEvents';
+import {
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
+    harLøpendePermitteringMedOppstartFørRegelendring,
+} from '../../utils/beregningerForRegelverksendring1Jan';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -142,16 +140,18 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const datoRegelEndring = harNåddMaksKoronaRegelverk
         ? regelEndringsDato1Januar
         : regelEndring1Juli;
-    /*const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
         gjeldendeTidslinje,
         dagensDato,
-        regelEndringsDato1November,
+        regelEndringsDato1Januar,
         regelEndring1Juli,
-        maksDagerUtenLønnsplikt
+        maksDagerUtenLønnsplikt,
+        harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        )
     );
-
-     */
 
     /*
     {aktuell18mndsperiode && (

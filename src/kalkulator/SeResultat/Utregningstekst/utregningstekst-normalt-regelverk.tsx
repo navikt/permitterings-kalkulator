@@ -147,7 +147,7 @@ export const lagResultatTekstNormaltRegelverk = (
                             aktuell18mndsperiode!!.datoTil!!
                         ).dagerBrukt >=
                         26 * 7
-                            ? 'Den ansatte har nådd maks antall dager permittert uten lønn. Du kan ikke permittere den ansatte på nytt før 31. desember 2022, da gjeldene 18-månedersperiode er over.'
+                            ? 'Maks antall dager permittert uten lønn er nådd. Du kan ikke permittere den ansatte på nytt før 31. desember 2022, da gjeldene 18-månedersperiode er over.'
                             : 'Dersom du permitterer i ytterlige ' +
                               skrivDagerIHeleUkerPlussDager(
                                   26 * 7 -
@@ -176,16 +176,23 @@ export const lagResultatTekstNormaltRegelverk = (
         return {
             konklusjon: (
                 <>
-                    <Element>
-                        Ved ytterligere permittering i tiden fram til{' '}
-                        {formaterDato(aktuell18mndsperiode.datoTil)} vil du
-                        måtte avbryte permitteringen etter{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            26 * 7 - oversiktOverPermittering.dagerBrukt
-                        )}
-                        . Merk at du ved ny permittering alltid skal betale lønn
-                        i arbeidsgiverperiode 1 fra starten av permitteringen.
-                    </Element>
+                    {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
+                        <Element>
+                            Maks antall dager permittert uten lønn er nådd.
+                        </Element>
+                    ) : (
+                        <Element>
+                            Ved ytterligere permittering i tiden fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} vil du
+                            måtte avbryte permitteringen etter{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                26 * 7 - oversiktOverPermittering.dagerBrukt
+                            )}
+                            . Merk at du ved ny permittering alltid skal betale
+                            lønn i arbeidsgiverperiode 1 fra starten av
+                            permitteringen.
+                        </Element>
+                    )}
                 </>
             ),
             beskrivelse: (
@@ -202,9 +209,12 @@ export const lagResultatTekstNormaltRegelverk = (
                         .
                     </Normaltekst>
                     {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
-                        <Normaltekst>
-                            Du har nådd maks antall dager med permittering etter
-                            regelverket innført 1. juli.{' '}
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Maks antall dager med permittering uten lønn er nådd
+                            etter regelverket innfør 1. juli 2021. Du kan ikke
+                            permittere på nytt før etter{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} da
+                            gjeldene 18-månedersperiode er over.
                         </Normaltekst>
                     ) : (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
