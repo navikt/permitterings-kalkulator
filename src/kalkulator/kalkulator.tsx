@@ -96,10 +96,9 @@ const Kalkulator = () => {
                         <Normaltekst>
                             LO og NHO avtalte nye permitteringsregler som gjaldt
                             i perioden fra 8. mai 2021 til og med 30. september
-                            2021. Hvis din virksomhet var omfattet av avtalen
-                            vil ikke denne kalkulatoren gi riktig beregning i de
-                            tilfellene der den ansatte jobbet i denne perioden
-                            under permitteringen.{' '}
+                            2021. Hvis din virksomhet var omfattet av avtalen,
+                            vil kalkulatoren gi feil beregning for ansatte som
+                            jobbet under permitteringen i denne perioden.{' '}
                             <a
                                 href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                                 className="lenke"
