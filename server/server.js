@@ -58,7 +58,7 @@ const startServer = () => {
     );
 
     server.get(BASE_PATH + '/*', (req, res) =>
-        res.redirect('https://www.nav.no/no/bedrift');
+        res.redirect('https://www.nav.no/no/bedrift')
     );
 
     server.use(BASE_PATH + '/', express.static(buildPath, { index: false }));
