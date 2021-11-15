@@ -14,6 +14,7 @@ import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import {
+    filtrerBortUdefinerteDatoIntervaller,
     finnDato18MndFram,
     finnPotensiellLøpendePermittering,
     formaterDato,
@@ -35,6 +36,7 @@ import {
     finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../../utils/beregningerForRegelverksendring1Jan';
+import { DetaljertUtregning } from '../DetaljertUtregning/DetaljertUtregning';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -153,8 +155,18 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         )
     );
 
-    /*
-    {aktuell18mndsperiode && (
+    console.log(aktuell18mndsperiode);
+
+    return (
+        <div className="utregningstekst">
+            <img
+                className="utregningstekst__lampeikon"
+                src={lampeikon}
+                alt=""
+            />
+            <Element>{resultatTekst.konklusjon}</Element>
+            {resultatTekst.beskrivelse}
+            {aktuell18mndsperiode && (
                 <DetaljertUtregning
                     permitteringsDagerFør1JuliSlettet={
                         !!nyListeHvisPermitteringsdagerErSlettet
@@ -167,17 +179,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     aktuell18mndsperiode={aktuell18mndsperiode}
                 />
             )}
-     */
-
-    return (
-        <div className="utregningstekst">
-            <img
-                className="utregningstekst__lampeikon"
-                src={lampeikon}
-                alt=""
-            />
-            <Element>{resultatTekst.konklusjon}</Element>
-            {resultatTekst.beskrivelse}
             <Normaltekst className="utregningstekst__informasjonslenker">
                 <Lenke
                     href="/arbeidsgiver-permittering"
