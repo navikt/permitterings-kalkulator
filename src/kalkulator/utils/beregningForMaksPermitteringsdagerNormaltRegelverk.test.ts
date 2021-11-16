@@ -1,5 +1,5 @@
 import { DatoIntervall } from '../typer';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
     finnInitialgrenserForTidslinjedatoer,
