@@ -7,6 +7,7 @@ import {
 import { Dayjs } from 'dayjs';
 
 import {
+    finnDato18MndFram,
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     finnTidligsteFraDato,
@@ -21,7 +22,10 @@ import {
     getPermitteringsoversiktFor18Måneder,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
-import { erPermittertVedDato } from '../../utils/tidslinje-utils';
+import {
+    erPermittertVedDato,
+    finnFørsteDatoMedPermitteringUtenFravær,
+} from '../../utils/tidslinje-utils';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -54,6 +58,10 @@ export const lagResultatTekstNormaltRegelverk = (
                 );
             }
         } else {
+            const forstePermitteringngsdagInnenfor18mndsPeriode = finnFørsteDatoMedPermitteringUtenFravær(
+                tidslinjeUtenPermitteringFor1Juli,
+                finnDato18MndTilbake(datoForMaksPermitteringOppbrukt)
+            )?.dato!!;
             return {
                 konklusjon: finnesLøpendePermittering ? (
                     <>
@@ -93,10 +101,10 @@ export const lagResultatTekstNormaltRegelverk = (
                             )}{' '}
                             i 18-månedersperioden{' '}
                             {formaterDatoIntervall({
-                                datoFra: finnDato18MndTilbake(
-                                    datoForMaksPermitteringOppbrukt
+                                datoFra: forstePermitteringngsdagInnenfor18mndsPeriode,
+                                datoTil: finnDato18MndFram(
+                                    forstePermitteringngsdagInnenfor18mndsPeriode
                                 ),
-                                datoTil: datoForMaksPermitteringOppbrukt,
                             })}
                             {finnTidligsteFraDato(
                                 allePermitteringerOgFraværesPerioder.permitteringer

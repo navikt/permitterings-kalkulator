@@ -166,7 +166,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         )}{' '}
                         i 18-månedersperioden fra 2. mai 2020 til 1. november
                         2021. Dette overskrider 49 uker, og du har dermed
-                        lønnsplikt fra 1. november 2021.
+                        lønnsplikt fra 1. januar 2022.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For nye permitteringer er maks antall uker du kan ha den
