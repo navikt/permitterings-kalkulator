@@ -59,6 +59,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             tidslinje,
             finnDato18MndFram(datoRegelEndring1Juli)
         );
+        loggPermitteringsSituasjon(
+            'Maks permittering nådd 1. januar 2021, ikke løpende. Maks permittering er 49 uker.'
+        );
+
         return {
             konklusjon: (
                 <>
@@ -140,7 +144,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
     ) {
         loggPermitteringsSituasjon(
-            'Maks permittering nådd 1. november. Maks permitteringstid er 49 uker'
+            'Maks permittering nådd 1. januar. Maks permitteringstid er 49 uker'
         );
         return {
             konklusjon: (
@@ -201,7 +205,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         ? ', dersom permitteringen holdes løpende'
         : '';
     loggPermitteringsSituasjon(
-        'maks permittering nådd etter 1. november. Maks permitteringstid er 49 uker.'
+        'maks permittering nådd etter 1. januar. Maks permitteringstid er 49 uker.'
     );
     return {
         konklusjon: (
