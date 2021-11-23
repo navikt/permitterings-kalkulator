@@ -19,7 +19,7 @@ import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
-    const { dagensDato, regelEndringsDato1November } = useContext(
+    const { dagensDato, regelEndringsDato1Januar } = useContext(
         PermitteringContext
     );
 
@@ -37,7 +37,7 @@ const Kalkulator = () => {
     ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        regelEndringsDato1November
+        regelEndringsDato1Januar
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [
@@ -81,24 +81,14 @@ const Kalkulator = () => {
             <div className={'kalkulator'}>
                 <AlertStripeAdvarsel className="kalkulator__advarsel">
                     <>
-                        <Element>
-                            Endringer i permitteringsordningen kan påvirke
-                            kalkulatoren
-                        </Element>
-                        <Normaltekst>
-                            Dagpenge- og permitteringsperioder som nærmer seg
-                            slutten forlenges frem til og med 31. desember 2021.
-                            Kalkulatoren tar foreløpig ikke denne endringen med
-                            i beregningen. Vi oppdaterer informasjonen her når
-                            kalkulatoren beregner etter de nye reglene.
-                        </Normaltekst>
                         <Element>Avtale mellom LO og NHO</Element>
                         <Normaltekst>
                             LO og NHO avtalte nye permitteringsregler som gjaldt
                             i perioden fra 8. mai 2021 til og med 30. september
-                            2021. Hvis din virksomhet var omfattet av avtalen,
-                            vil kalkulatoren gi feil beregning for ansatte som
-                            jobbet under permitteringen i denne perioden.{' '}
+                            2021. Hvis din virksomhet var omfattet av avtalen
+                            vil ikke denne kalkulatoren gi riktig beregning i de
+                            tilfellene der den ansatte jobbet i denne perioden
+                            under permitteringen.{' '}
                             <a
                                 href="https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#iPermitteringsperioden"
                                 className="lenke"

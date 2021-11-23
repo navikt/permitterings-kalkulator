@@ -7,6 +7,7 @@ import {
 import { Dayjs } from 'dayjs';
 
 import {
+    finnDato18MndFram,
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     finnTidligsteFraDato,
@@ -21,7 +22,10 @@ import {
     getPermitteringsoversiktFor18Måneder,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
-import { erPermittertVedDato } from '../../utils/tidslinje-utils';
+import {
+    erPermittertVedDato,
+    finnFørsteDatoMedPermitteringUtenFravær,
+} from '../../utils/tidslinje-utils';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -54,6 +58,10 @@ export const lagResultatTekstNormaltRegelverk = (
                 );
             }
         } else {
+            const forstePermitteringngsdagInnenfor18mndsPeriode = finnFørsteDatoMedPermitteringUtenFravær(
+                tidslinjeUtenPermitteringFor1Juli,
+                finnDato18MndTilbake(datoForMaksPermitteringOppbrukt)
+            )?.dato!!;
             return {
                 konklusjon: finnesLøpendePermittering ? (
                     <>
@@ -93,10 +101,10 @@ export const lagResultatTekstNormaltRegelverk = (
                             )}{' '}
                             i 18-månedersperioden{' '}
                             {formaterDatoIntervall({
-                                datoFra: finnDato18MndTilbake(
-                                    datoForMaksPermitteringOppbrukt
+                                datoFra: forstePermitteringngsdagInnenfor18mndsPeriode,
+                                datoTil: finnDato18MndFram(
+                                    forstePermitteringngsdagInnenfor18mndsPeriode
                                 ),
-                                datoTil: datoForMaksPermitteringOppbrukt,
                             })}
                             {finnTidligsteFraDato(
                                 allePermitteringerOgFraværesPerioder.permitteringer
@@ -142,17 +150,21 @@ export const lagResultatTekstNormaltRegelverk = (
                         .
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du kan maksimalt permittere en ansatt i 26 uker i løpet
-                        av 18 måneder. Dersom du permitterer i ytterligere{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            26 * 7 -
-                                getPermitteringsoversiktFor18Måneder(
-                                    tidslinjeUtenPermitteringFor1Juli,
-                                    aktuell18mndsperiode!!.datoTil!!
-                                ).dagerBrukt
-                        )}{' '}
-                        innen {formaterDatoIntervall(aktuell18mndsperiode!!)},
-                        vil du måtte avslutte permitteringen.
+                        {getPermitteringsoversiktFor18Måneder(
+                            tidslinjeUtenPermitteringFor1Juli,
+                            aktuell18mndsperiode!!.datoTil!!
+                        ).dagerBrukt >=
+                        26 * 7
+                            ? 'Maks antall dager permittert uten lønn er nådd. Du kan ikke permittere den ansatte på nytt før 31. desember 2022, da gjeldene 18-månedersperiode er over.'
+                            : 'Dersom du permitterer i ytterlige ' +
+                              skrivDagerIHeleUkerPlussDager(
+                                  26 * 7 -
+                                      getPermitteringsoversiktFor18Måneder(
+                                          tidslinjeUtenPermitteringFor1Juli,
+                                          aktuell18mndsperiode!!.datoTil!!
+                                      ).dagerBrukt
+                              ) +
+                              ' innen 30.12.2022, vil du måtte avslutte permitteringen. '}
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
@@ -172,16 +184,23 @@ export const lagResultatTekstNormaltRegelverk = (
         return {
             konklusjon: (
                 <>
-                    <Element>
-                        Ved ytterligere permittering i tiden fram til{' '}
-                        {formaterDato(aktuell18mndsperiode.datoTil)} vil du
-                        måtte avbryte permitteringen etter{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            26 * 7 - oversiktOverPermittering.dagerBrukt
-                        )}
-                        . Merk at du ved ny permittering alltid skal betale lønn
-                        i arbeidsgiverperiode 1 fra starten av permitteringen.
-                    </Element>
+                    {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
+                        <Element>
+                            Maks antall dager permittert uten lønn er nådd.
+                        </Element>
+                    ) : (
+                        <Element>
+                            Ved ytterligere permittering i tiden fram til{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} vil du
+                            måtte avbryte permitteringen etter{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                26 * 7 - oversiktOverPermittering.dagerBrukt
+                            )}
+                            . Merk at du ved ny permittering alltid skal betale
+                            lønn i arbeidsgiverperiode 1 fra starten av
+                            permitteringen.
+                        </Element>
+                    )}
                 </>
             ),
             beskrivelse: (
@@ -197,16 +216,27 @@ export const lagResultatTekstNormaltRegelverk = (
                         )}
                         .
                     </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Du kan maksimalt permittere en ansatt i 26 uker i løpet
-                        av 18 måneder. Dersom du permitterer i ytterlige{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            7 * 26 - oversiktOverPermittering.dagerBrukt
-                        )}{' '}
-                        innen {formaterDato(aktuell18mndsperiode.datoTil)}
-                        {', '}
-                        vil du måtte avslutte permitteringen.
-                    </Normaltekst>
+                    {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Maks antall dager med permittering uten lønn er nådd
+                            etter regelverket innfør 1. juli 2021. Du kan ikke
+                            permittere på nytt før etter{' '}
+                            {formaterDato(aktuell18mndsperiode.datoTil)} da
+                            gjeldene 18-månedersperiode er over.
+                        </Normaltekst>
+                    ) : (
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Du kan maksimalt permittere en ansatt i 26 uker i
+                            løpet av 18 måneder. Dersom du permitterer i
+                            ytterlige{' '}
+                            {skrivDagerIHeleUkerPlussDager(
+                                7 * 26 - oversiktOverPermittering.dagerBrukt
+                            )}{' '}
+                            innen {formaterDato(aktuell18mndsperiode.datoTil)}
+                            {', '}
+                            vil du måtte avslutte permitteringen.
+                        </Normaltekst>
+                    )}
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         Tips: Du kan fylle inn permitteringer framover i tid,
                         kalkulatoren vil da regne ut når lønnsplikten inntreffer

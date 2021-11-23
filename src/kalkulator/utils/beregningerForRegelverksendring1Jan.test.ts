@@ -12,10 +12,10 @@ import {
 } from './tidslinje-utils';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnPermitteringssituasjon1November,
+    finnPermitteringssituasjon1Januar,
     getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon1November,
-} from './beregningerForRegelverksendring1Nov';
+    Permitteringssituasjon1Januar,
+} from './beregningerForRegelverksendring1Jan';
 
 const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
@@ -35,29 +35,29 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
     describe('Tester for finnPermitteringssituasjon1November', () => {
         test('Skal returnere MAKS_NÅDD_1_NOVEMBER i riktig tilfelle', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring1November = dayjs('2021-11-01');
+            const innføringsdatoRegelendring1Januar = dayjs('2022-01-01');
             const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoRegelendring1November.subtract(
+                        datoFra: innføringsdatoRegelendring1Januar.subtract(
                             maksAntallPermitteringsdager,
                             'days'
                         ),
-                        datoTil: innføringsdatoRegelendring1November,
+                        datoTil: innføringsdatoRegelendring1Januar,
                     },
                 ],
                 andreFraværsperioder: [],
             });
-            const situasjon = finnPermitteringssituasjon1November(
+            const situasjon = finnPermitteringssituasjon1Januar(
                 tidslinje,
-                innføringsdatoRegelendring1November,
+                innføringsdatoRegelendring1Januar,
                 innføringsdatoRegelendring1Juli,
                 maksAntallPermitteringsdager,
                 true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE
+                Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
             );
         });
 
@@ -77,7 +77,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 ],
                 andreFraværsperioder: [],
             });
-            const situasjon = finnPermitteringssituasjon1November(
+            const situasjon = finnPermitteringssituasjon1Januar(
                 tidslinje,
                 innføringsdatoRegelendring1November,
                 innføringsdatoRegelendring1Juli,
@@ -85,7 +85,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE
+                Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE
             );
         });
     });

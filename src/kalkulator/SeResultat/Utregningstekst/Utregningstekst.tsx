@@ -14,21 +14,15 @@ import Lenke from 'nav-frontend-lenker';
 import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import {
+    finnDato18MndFram,
     finnPotensiellLøpendePermittering,
     formaterDato,
 } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
-import {
-    finnDatoForMaksPermittering,
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../../utils/beregningerForRegelverksendring1Nov';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
-    erPermittertVedDato,
     finnFørsteDatoMedPermitteringUtenFravær,
     finnSisteDatoMedPermitteringUtenFravær,
 } from '../../utils/tidslinje-utils';
@@ -36,6 +30,11 @@ import {
     loggKnappTrykketPå,
     loggPermitteringsSituasjon,
 } from '../../../utils/amplitudeEvents';
+import {
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
+    harLøpendePermitteringMedOppstartFørRegelendring,
+} from '../../utils/beregningerForRegelverksendring1Jan';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -51,7 +50,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const {
         dagensDato,
         regelEndring1Juli,
-        regelEndringsDato1November,
+        regelEndringsDato1Januar,
     } = useContext(PermitteringContext);
 
     const [
@@ -66,7 +65,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         );
         const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
             props.tidslinje,
-            regelEndringsDato1November,
+            regelEndringsDato1Januar,
             regelEndring1Juli
         );
         setHarNåddMaksKoronaRegelverk(
@@ -125,7 +124,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
               gjeldendeTidslinje,
               props.allePermitteringerOgFraværesPerioder,
               dagensDato,
-              regelEndringsDato1November,
+              regelEndringsDato1Januar,
               regelEndring1Juli
           )
         : lagResultatTekstNormaltRegelverk(
@@ -139,18 +138,20 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         ? 49 * 7
         : 26 * 7;
     const datoRegelEndring = harNåddMaksKoronaRegelverk
-        ? regelEndringsDato1November
+        ? regelEndringsDato1Januar
         : regelEndring1Juli;
-    /*const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
         gjeldendeTidslinje,
         dagensDato,
-        regelEndringsDato1November,
+        regelEndringsDato1Januar,
         regelEndring1Juli,
-        maksDagerUtenLønnsplikt
+        maksDagerUtenLønnsplikt,
+        harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        )
     );
-
-     */
 
     /*
     {aktuell18mndsperiode && (

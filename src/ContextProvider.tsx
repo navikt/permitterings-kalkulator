@@ -7,7 +7,7 @@ interface Props {
 
 export interface Context {
     dagensDato: Dayjs;
-    regelEndringsDato1November: Dayjs;
+    regelEndringsDato1Januar: Dayjs;
     regelEndring1Juli: Dayjs;
 }
 
@@ -18,7 +18,7 @@ const ContextProvider = (props: Props) => {
 
     const contextData: Context = {
         dagensDato: dagensDato,
-        regelEndringsDato1November: dayjs('2021-11-01'),
+        regelEndringsDato1Januar: dayjs('2022-01-01'),
         regelEndring1Juli: dayjs('2021-07-01'),
     };
 

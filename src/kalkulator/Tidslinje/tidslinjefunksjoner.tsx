@@ -74,7 +74,8 @@ export const lagHTMLObjektForPeriodeMedFarge = (
                 borderRadius = '4px';
                 const grenserTilFraværVenstre =
                     representasjonAvPerioderMedFarge[indeks - 1].kategori ===
-                    DatointervallKategori.PERMITTERT_MED_FRAVÆR;
+                        DatointervallKategori.PERMITTERT_MED_FRAVÆR ||
+                    DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI;
                 if (grenserTilFraværVenstre) {
                     borderRadius = '0 4px 4px 0';
                 }
@@ -82,7 +83,8 @@ export const lagHTMLObjektForPeriodeMedFarge = (
             if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
                 const grenserTilFraværHøyre =
                     representasjonAvPerioderMedFarge[indeks + 1].kategori ===
-                    DatointervallKategori.PERMITTERT_MED_FRAVÆR;
+                        DatointervallKategori.PERMITTERT_MED_FRAVÆR ||
+                    DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI;
                 if (grenserTilFraværHøyre) {
                     borderRadius = '4px 0 0 4px';
                 }
@@ -188,6 +190,9 @@ const finnFarge = (kategori: DatointervallKategori) => {
     }
     if (kategori === DatointervallKategori.PERMITTERT_MED_FRAVÆR) {
         return '#E3B0AB';
+    }
+    if (kategori === DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI) {
+        return '#6a6a6a';
     }
     return 'transParent';
 };

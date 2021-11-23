@@ -11,12 +11,10 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPotensiellLøpendePermittering,
-    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
 import {
-    erPermittertVedDato,
     finnFørsteDatoMedPermitteringUtenFravær,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
@@ -27,19 +25,19 @@ import {
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 
-export enum Permitteringssituasjon1November {
-    MAKS_NÅDD_1_NOVEMBER_LØPENDE = 'MAKS_NÅDD_1_NOVEMBER_LØPENDE',
-    MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE = 'MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE',
+export enum Permitteringssituasjon1Januar {
+    MAKS_NÅDD_1_JANUAR_LØPENDE = 'MAKS_NÅDD_1_JANUAR_LØPENDE',
+    MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE = 'MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE',
     MAKS_NÅDD_IKKE_LØPENDE = 'MAKS_NÅDD_IKKE_LØPENDE',
 }
 
-export const finnPermitteringssituasjon1November = (
+export const finnPermitteringssituasjon1Januar = (
     tidslinje: DatoMedKategori[],
     datoRegelEndring1Nov: Dayjs,
     datoRegelEndring1Juli: Dayjs,
     maksAntallDagerUtenLønnsplikt: number,
     erLøpendePermittering: boolean
-): Permitteringssituasjon1November => {
+): Permitteringssituasjon1Januar => {
     const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring1Juli,
@@ -54,14 +52,14 @@ export const finnPermitteringssituasjon1November = (
         ) &&
         !erLøpendePermittering
     ) {
-        return Permitteringssituasjon1November.MAKS_NÅDD_IKKE_LØPENDE;
+        return Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE;
     }
 
     //datoNåddMaksPermitteringsdager vil være definert siden denne casen forutsetter at det finnes en løpende permittering iverksatt før 1. juli
 
     return datoNåddMaksPermitteringsdager?.isSame(datoRegelEndring1Nov, 'date')
-        ? Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE
-        : Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE;
+        ? Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
+        : Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE;
 };
 
 //her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
@@ -264,7 +262,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
 ): DatoIntervall | undefined => {
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
-            ? finnPermitteringssituasjon1November(
+            ? finnPermitteringssituasjon1Januar(
                   tidslinje,
                   datoRegelendring1Nov,
                   datoRegelEndring1Juli,
@@ -278,9 +276,9 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
               );
 
     switch (situasjon) {
-        case Permitteringssituasjon1November.MAKS_NÅDD_1_NOVEMBER_LØPENDE:
+        case Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE:
             return til18mndsperiode(datoRegelendring1Nov);
-        case Permitteringssituasjon1November.MAKS_NÅDD_ETTER_1_NOVEMBER_LØPENDE:
+        case Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE:
             const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 datoRegelendring1Nov,

@@ -13,6 +13,7 @@ import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
 import { perioderOverlapper } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -68,22 +69,31 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 props.allePermitteringerOgFraværesPerioder
                             }
                         />
-                        <div id="tidslinje-wrapper">
+                        <div
+                            className={'se-resultat__tidslinje-wrapper'}
+                            id="tidslinje-wrapper"
+                        >
                             {skalViseTidslinje && (
-                                <Tidslinje
-                                    allePermitteringerOgFraværesPerioder={
-                                        props.allePermitteringerOgFraværesPerioder
-                                    }
-                                    set18mndsPeriode={props.set18mndsPeriode}
-                                    sisteDagIPeriode={props.sisteDagIPeriode}
-                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                        'tidslinje-wrapper',
-                                        props.tidslinje.length
-                                    )}
-                                    endringAv={props.endringAv}
-                                    setEndringAv={props.setEndringAv}
-                                    tidslinje={props.tidslinje}
-                                />
+                                <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
+                                    <Tidslinje
+                                        allePermitteringerOgFraværesPerioder={
+                                            props.allePermitteringerOgFraværesPerioder
+                                        }
+                                        set18mndsPeriode={
+                                            props.set18mndsPeriode
+                                        }
+                                        sisteDagIPeriode={
+                                            props.sisteDagIPeriode
+                                        }
+                                        breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                            'tidslinje-wrapper',
+                                            props.tidslinje.length
+                                        )}
+                                        endringAv={props.endringAv}
+                                        setEndringAv={props.setEndringAv}
+                                        tidslinje={props.tidslinje}
+                                    />
+                                </Ekspanderbartpanel>
                             )}
                         </div>
                     </>

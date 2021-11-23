@@ -7,6 +7,7 @@ import React, {
 import './Tidslinje.less';
 import {
     AllePermitteringerOgFraværesPerioder,
+    DatointervallKategori,
     DatoMedKategori,
 } from '../typer';
 import { Normaltekst, Element } from 'nav-frontend-typografi';
@@ -27,13 +28,18 @@ import {
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
     formaterDato,
+    formaterDatoIntervall,
 } from '../utils/dato-utils';
 import {
+    finnDatoForMaksPermittering,
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    getPermitteringsoversiktFor18Måneder,
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
+    finnPermitteringssituasjon1Januar,
     harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../utils/beregningerForRegelverksendring1Nov';
+    Permitteringssituasjon1Januar,
+} from '../utils/beregningerForRegelverksendring1Jan';
 import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
+import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -47,9 +53,12 @@ interface Props {
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
     const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
+    const [tidslinjeSomSkalVises, setTidslinjeSomSkalVises] = useState<
+        DatoMedKategori[]
+    >(props.tidslinje);
     const {
         dagensDato,
-        regelEndringsDato1November,
+        regelEndringsDato1Januar,
         regelEndring1Juli,
     } = useContext(PermitteringContext);
     const [
@@ -57,7 +66,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         setAbsoluttPosisjonFraVenstreDragElement,
     ] = useState(
         regnUtPosisjonFraVenstreGittSluttdato(
-            props.tidslinje,
+            tidslinjeSomSkalVises,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         )
@@ -82,6 +91,51 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
+        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+            props.allePermitteringerOgFraværesPerioder.permitteringer,
+            regelEndring1Juli
+        );
+        const finnesLøpende = !!finnPotensiellLøpendePermittering(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        const situasjon = finnPermitteringssituasjon1Januar(
+            props.tidslinje,
+            regelEndringsDato1Januar,
+            regelEndring1Juli,
+            49 * 7,
+            finnesLøpende
+        );
+        if (
+            situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE
+        ) {
+        }
+        if (!oppstartFørRegelendring) {
+            const nyTidslinje: DatoMedKategori[] = [];
+            props.tidslinje.forEach((datoMedKategori, index) => {
+                if (
+                    datoMedKategori.kategori !==
+                        DatointervallKategori.IKKE_PERMITTERT &&
+                    datoMedKategori.dato.isBefore(regelEndring1Juli)
+                ) {
+                    const nyDatoMedKategori: DatoMedKategori = {
+                        dato: datoMedKategori.dato,
+                        kategori:
+                            DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+                    };
+                    nyTidslinje.push(nyDatoMedKategori);
+                } else {
+                    nyTidslinje.push({ ...datoMedKategori });
+                }
+            });
+            setTidslinjeSomSkalVises(nyTidslinje);
+        }
+    }, [
+        props.tidslinje,
+        regelEndring1Juli,
+        props.allePermitteringerOgFraværesPerioder,
+    ]);
+
+    useEffect(() => {
         if (props.endringAv === 'datovelger') {
             setPosisjonsStylingDragElement('absolute');
         }
@@ -98,34 +152,59 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         const maksDagerUtenLønnsplikt = oppstartFørRegelendring
             ? 49 * 7
             : 26 * 7;
-        const datoRegelEndring = oppstartFørRegelendring
-            ? regelEndringsDato1November
-            : regelEndring1Juli;
         const finnesLøpende = !!finnPotensiellLøpendePermittering(
             props.allePermitteringerOgFraværesPerioder.permitteringer
         );
-        const sluttAv18mndsPeriode =
-            finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-                gjeldendeRegelverk,
+
+        const situasjon = finnPermitteringssituasjon1Januar(
+            props.tidslinje,
+            regelEndringsDato1Januar,
+            regelEndring1Juli,
+            49 * 7,
+            finnesLøpende
+        );
+        if (
+            situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE
+        ) {
+            const datoMaksNådd = finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
                 props.tidslinje,
-                dagensDato,
-                regelEndringsDato1November,
-                regelEndring1Juli,
-                maksDagerUtenLønnsplikt,
-                finnesLøpende
-            )?.datoTil || regelEndring1Juli;
-        props.set18mndsPeriode(sluttAv18mndsPeriode);
-    }, [props.tidslinje]);
+                regelEndringsDato1Januar,
+                regelEndring1Juli
+            );
+            props.set18mndsPeriode(datoMaksNådd!!);
+        } else {
+            const sluttAv18mndsPeriode = finnesLøpende
+                ? finnDatoForMaksPermittering(
+                      tidslinjeSomSkalVises,
+                      regelEndringsDato1Januar,
+                      maksDagerUtenLønnsplikt
+                  )!
+                : finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+                      gjeldendeRegelverk,
+                      tidslinjeSomSkalVises,
+                      dagensDato,
+                      regelEndringsDato1Januar,
+                      regelEndring1Juli,
+                      maksDagerUtenLønnsplikt,
+                      finnesLøpende
+                  )?.datoTil || regelEndring1Juli;
+            props.set18mndsPeriode(sluttAv18mndsPeriode);
+        }
+    }, [
+        tidslinjeSomSkalVises,
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+    ]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
-            props.tidslinje,
+            tidslinjeSomSkalVises,
             props.breddeAvDatoObjektIProsent,
             props.sisteDagIPeriode
         );
         if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
             const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
-                props.tidslinje,
+                tidslinjeSomSkalVises,
                 props.breddeAvDatoObjektIProsent,
                 datoOnDrag
             );
@@ -139,24 +218,18 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         datoOnDrag,
         props.sisteDagIPeriode,
         props.breddeAvDatoObjektIProsent,
-        props.tidslinje,
+        tidslinjeSomSkalVises,
     ]);
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
-        props.tidslinje,
+        tidslinjeSomSkalVises,
         props.breddeAvDatoObjektIProsent,
         dagensDato
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
-        lagObjektForRepresentasjonAvPerioderMedFarge(props.tidslinje),
+        lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
         props.breddeAvDatoObjektIProsent
     );
-
-    const OnTidslinjeDragRelease = () => {
-        if (datoOnDrag) {
-            props.set18mndsPeriode(datoOnDrag);
-        }
-    };
 
     const OnTidslinjeDrag = () => {
         props.setEndringAv('tidslinje');
@@ -173,7 +246,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 indeksStartDato = indeks;
             }
         });
-        setDatoOnDrag(props.tidslinje[indeksStartDato].dato);
+        setDatoOnDrag(tidslinjeSomSkalVises[indeksStartDato].dato);
     };
 
     const datoVisesPaDragElement =
@@ -199,18 +272,19 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             className={'kalkulator__draggable-periode'}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
-            <Element className={'kalkulator__draggable-tekst'}>
-                {' '}
-                18 måneder{' '}
-            </Element>
+            <div className={'kalkulator__draggable-tekst-container'}>
+                <Normaltekst>
+                    {formaterDatoIntervall({
+                        datoFra: finnDato18MndTilbake(datoVisesPaDragElement),
+                        datoTil: datoVisesPaDragElement,
+                    })}
+                </Normaltekst>
+                <Element className={'kalkulator__draggable-tekst'}>
+                    {' '}
+                    18 måneder{' '}
+                </Element>
+            </div>
             <div className={'kalkulator__draggable-kant høyre'} />
-            <Normaltekst className={'venstre-dato '}>
-                {formaterDato(finnDato18MndTilbake(datoVisesPaDragElement))}
-            </Normaltekst>
-
-            <Normaltekst className={'høyre-dato'}>
-                {formaterDato(datoVisesPaDragElement)}
-            </Normaltekst>
         </div>
     );
 
@@ -218,25 +292,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         <div className={'tidslinje'}>
             {
                 <>
-                    <Element
-                        className={
-                            'kalkulator__tidslinje-drag-element-forklaring'
-                        }
-                    >
-                        Dager permittert i den markerte 18-månedersperioden:{' '}
-                        {
-                            getPermitteringsoversiktFor18Måneder(
-                                props.tidslinje,
-                                datoVisesPaDragElement
-                            ).dagerBrukt
-                        }{' '}
-                        dager
-                    </Element>
-                    <Normaltekst>
-                        Du kan dra i det blå drag-elementet (markert med
-                        "18-måneder") for å se hvor mange brukte
-                        permitteringsdager som er innenfor 18-månedersperioden.
-                    </Normaltekst>
+                    <Tekstforklaring
+                        tidslinje={tidslinjeSomSkalVises}
+                        sisteDagIPeriode={props.sisteDagIPeriode}
+                        datoVisesPaDragElement={datoVisesPaDragElement}
+                    />
+
                     <div
                         role="img"
                         aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
@@ -249,7 +310,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                             <Draggable
                                 axis={'x'}
                                 bounds={'parent'}
-                                onStop={() => OnTidslinjeDragRelease()}
                                 onDrag={() => OnTidslinjeDrag()}
                             >
                                 {get18mndsperiode()}
