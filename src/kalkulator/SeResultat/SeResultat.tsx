@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
@@ -11,9 +16,13 @@ import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
-import { perioderOverlapper } from '../utils/dato-utils';
+import { formaterDato, perioderOverlapper } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
+import ContextProvider, { PermitteringContext } from '../../ContextProvider';
+import { AlertStripeInfo } from 'nav-frontend-alertstriper';
+import { Checkbox, RadioPanelGruppe } from 'nav-frontend-skjema';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -26,10 +35,16 @@ interface Props {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
+    const { regelEndring1Juli, regelEndringsDato1Januar } = useContext(
+        PermitteringContext
+    );
+    const [
+        visBeskjedLønnspliktPeriode,
+        setVisBeskjedLønnspliktPeriode,
+    ] = useState(false);
 
     useEffect(() => {
         setResultatVises(false);
-
         if (
             props.tidslinje.length > 0 &&
             !perioderOverlapper(
@@ -45,6 +60,26 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             process.env.NODE_ENV === 'development') &&
         props.tidslinje.length;
 
+    useEffect(() => {
+        console.log('useeffect');
+        if (
+            props.allePermitteringerOgFraværesPerioder.permitteringer.length >
+                0 &&
+            props.tidslinje.length > 0
+        ) {
+            console.log('in if');
+            const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
+                props.tidslinje,
+                regelEndringsDato1Januar
+            );
+            setVisBeskjedLønnspliktPeriode(!!harLønnspliktISpesialtilfelle);
+        }
+    }, [
+        props.tidslinje,
+        regelEndring1Juli,
+        props.allePermitteringerOgFraværesPerioder,
+    ]);
+
     return (
         <>
             <Undertittel className="se-resultat__tittel">
@@ -54,6 +89,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 <Hovedknapp
                     className="se-resultat__knapp"
                     onClick={() => {
+                        if (visBeskjedLønnspliktPeriode) {
+                            return;
+                        }
                         setResultatVises(true);
                         loggKnappTrykketPå('Se beregningen');
                     }}
@@ -61,6 +99,15 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                     <PekIkon className="se-resultat__knapp-ikon" />
                     Se beregningen
                 </Hovedknapp>
+                {visBeskjedLønnspliktPeriode && (
+                    <AlertStripeInfo>
+                        Permitteringen som løpte uten lønnsplikt fra{' '}
+                        <Checkbox
+                            label={'Begynte lønnspliktperioden før 1. juli?'}
+                            checked={true}
+                        />
+                    </AlertStripeInfo>
+                )}
                 {resultatVises && (
                     <>
                         <Utregningstekst

@@ -369,7 +369,7 @@ export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
     }
 };
 
-const finnStartDatoForPermitteringUtIfraSluttdato = (
+export const finnStartDatoForPermitteringUtIfraSluttdato = (
     sluttdato: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {

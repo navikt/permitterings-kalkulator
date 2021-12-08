@@ -219,7 +219,7 @@ export const lagResultatTekstNormaltRegelverk = (
                     {oversiktOverPermittering.dagerBrukt >= 26 * 7 ? (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Maks antall dager med permittering uten lønn er nådd
-                            etter regelverket innfør 1. juli 2021. Du kan ikke
+                            etter regelverket innført 1. juli 2021. Du kan ikke
                             permittere på nytt før etter{' '}
                             {formaterDato(aktuell18mndsperiode.datoTil)} da
                             gjeldene 18-månedersperiode er over.
