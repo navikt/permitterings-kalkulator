@@ -58,7 +58,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         setHarNåddMaksKoronaRegelverk,
     ] = useState(false);
 
-    useEffect(() => {
+    /*useEffect(() => {
         const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
             props.allePermitteringerOgFraværesPerioder.permitteringer,
             regelEndring1Juli
@@ -77,7 +77,9 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndring1Juli,
     ]);
 
-    useEffect(() => {
+     */
+
+    /*useEffect(() => {
         const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(
             props.tidslinje
         );
@@ -105,41 +107,18 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         }
     }, [props.tidslinje]);
 
-    const gjeldendeRegelverk = harNåddMaksKoronaRegelverk
-        ? Permitteringssregelverk.KORONA_ORDNING
-        : Permitteringssregelverk.NORMALT_REGELVERK;
-    const nyListeHvisPermitteringsdagerErSlettet = harNåddMaksKoronaRegelverk
-        ? undefined
-        : lagNyListeHvisPermitteringFør1Juli(
-              props.tidslinje,
-              regelEndring1Juli
-          );
 
-    const gjeldendeTidslinje = nyListeHvisPermitteringsdagerErSlettet
-        ? nyListeHvisPermitteringsdagerErSlettet
-        : props.tidslinje;
+     */
 
-    const resultatTekst = harNåddMaksKoronaRegelverk
-        ? lagResultatTekstForPermitteringsStartFør1Juli(
-              gjeldendeTidslinje,
-              props.allePermitteringerOgFraværesPerioder,
-              dagensDato,
-              regelEndringsDato1Januar,
-              regelEndring1Juli
-          )
-        : lagResultatTekstNormaltRegelverk(
-              gjeldendeTidslinje,
-              props.allePermitteringerOgFraværesPerioder,
-              dagensDato,
-              regelEndring1Juli
-          );
+    const resultatTekst = lagResultatTekstForPermitteringsStartFør1Juli(
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+        dagensDato,
+        regelEndringsDato1Januar,
+        regelEndring1Juli
+    );
 
-    const maksDagerUtenLønnsplikt = harNåddMaksKoronaRegelverk
-        ? 49 * 7
-        : 26 * 7;
-    const datoRegelEndring = harNåddMaksKoronaRegelverk
-        ? regelEndringsDato1Januar
-        : regelEndring1Juli;
+    /*
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         gjeldendeRegelverk,
         gjeldendeTidslinje,

@@ -18,7 +18,7 @@ const ContextProvider = (props: Props) => {
 
     const contextData: Context = {
         dagensDato: dagensDato,
-        regelEndringsDato1Januar: dayjs('2022-01-01'),
+        regelEndringsDato1Januar: dayjs('2022-02-01'),
         regelEndring1Juli: dayjs('2021-07-01'),
     };
 

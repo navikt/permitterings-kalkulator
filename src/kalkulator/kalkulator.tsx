@@ -23,9 +23,6 @@ const Kalkulator = () => {
         PermitteringContext
     );
 
-    window.location.href =
-        'https://arbeidsgiver.nav.no/permittering-og-omstilling/permittering';
-
     const [
         allePermitteringerOgFraværesPerioder,
         setAllePermitteringerOgFraværesPerioder,
