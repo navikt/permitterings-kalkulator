@@ -8,14 +8,12 @@ import { formaterDato } from '../../utils/dato-utils';
 
 export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
     tidslinje: DatoMedKategori[],
-    datoRegelEndring: Dayjs
+    datoRegelEndring: Dayjs,
+    forsteJuli: Dayjs
 ): Dayjs | undefined => {
     const indeksITidslinjeFor1Juli = tidslinje.findIndex((dato) =>
-        dato.dato.isSame(datoRegelEndring, 'day')
+        dato.dato.isSame(forsteJuli, 'day')
     );
-    const permittertUtenLønn30Juni =
-        tidslinje[indeksITidslinjeFor1Juli].kategori !==
-        DatointervallKategori.IKKE_PERMITTERT;
     const maksPermitteringNådd49Uker = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring,
@@ -27,7 +25,7 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
             tidslinje
         );
         if (startDatoForPermitteringDerMaksNås) {
-            let forstePermitteringsDatoEtter1Juli = datoRegelEndring;
+            let forstePermitteringsDatoEtter1Juli = forsteJuli;
             let iteratorIndeks = indeksITidslinjeFor1Juli;
             while (
                 forstePermitteringsDatoEtter1Juli.isSameOrBefore(
@@ -41,33 +39,33 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
                 ) {
                     forstePermitteringsDatoEtter1Juli =
                         tidslinje[iteratorIndeks].dato;
+                    break;
                 }
             }
+            console.log(
+                formaterDato(forstePermitteringsDatoEtter1Juli),
+                formaterDato(startDatoForPermitteringDerMaksNås),
+                formaterDato(datoRegelEndring)
+            );
             if (
-                (forstePermitteringsDatoEtter1Juli.isSame('date'),
-                startDatoForPermitteringDerMaksNås)
+                forstePermitteringsDatoEtter1Juli.isSame(
+                    startDatoForPermitteringDerMaksNås,
+                    'date'
+                )
             ) {
-                const indeksMaksPermitteringsDatoNådd = tidslinje.findIndex(
-                    (dato) => dato.dato.isSame(maksPermitteringNådd49Uker)
-                );
-                const datoForPermitteringsStart = finnStartDatoForPermitteringUtIfraSluttdato(
-                    tidslinje[indeksMaksPermitteringsDatoNådd].dato,
-                    tidslinje
-                );
                 const grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato = dayjs(
                     '09-01-2021'
                 );
                 if (
-                    datoForPermitteringsStart.isBefore(
+                    startDatoForPermitteringDerMaksNås.isBefore(
                         grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato,
                         'day'
                     )
                 ) {
-                    return datoForPermitteringsStart;
+                    return startDatoForPermitteringDerMaksNås;
                 }
             }
         }
     }
-
     return undefined;
 };

@@ -118,7 +118,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         ) {
             const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Januar
+                regelEndringsDato1Januar,
+                regelEndring1Juli
             );
             setVisBeskjedLønnspliktPeriode(!!harLønnspliktISpesialtilfelle);
         }
