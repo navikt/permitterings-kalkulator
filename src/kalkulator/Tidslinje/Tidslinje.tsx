@@ -38,8 +38,8 @@ import {
     harLøpendePermitteringMedOppstartFørRegelendring,
     Permitteringssituasjon1Januar,
 } from '../utils/beregningerForRegelverksendring1Jan';
-import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
+import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

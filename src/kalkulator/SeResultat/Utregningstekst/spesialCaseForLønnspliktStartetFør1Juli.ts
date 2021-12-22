@@ -20,9 +20,7 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
         datoRegelEndring,
         49 * 7
     );
-    console.log('funksjon kalles');
     if (permittertUtenLønn30Juni && maksPermitteringNådd49Uker) {
-        console.log('går i if');
         const indeksMaksPermitteringsDatoNådd = tidslinje.findIndex((dato) =>
             dato.dato.isSame(maksPermitteringNådd49Uker)
         );

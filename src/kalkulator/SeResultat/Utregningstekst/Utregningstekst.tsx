@@ -35,15 +35,11 @@ import {
     finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../../utils/beregningerForRegelverksendring1Jan';
+import { Permitteringssregelverk } from '../SeResultat';
 
 interface Props {
     tidslinje: DatoMedKategori[];
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-}
-
-export enum Permitteringssregelverk {
-    KORONA_ORDNING = 'KORONA_ORDNING',
-    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
@@ -57,25 +53,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         harNåddMaksKoronaRegelverk,
         setHarNåddMaksKoronaRegelverk,
     ] = useState(false);
-
-    useEffect(() => {
-        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-            props.allePermitteringerOgFraværesPerioder.permitteringer,
-            regelEndring1Juli
-        );
-        const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
-            props.tidslinje,
-            regelEndringsDato1Januar,
-            regelEndring1Juli
-        );
-        setHarNåddMaksKoronaRegelverk(
-            oppstartFørRegelendring ||
-                harNåddMaksPåKoronaRegelverkAvsluttetPermittering
-        );
-    }, [
-        props.allePermitteringerOgFraværesPerioder.permitteringer,
-        regelEndring1Juli,
-    ]);
 
     useEffect(() => {
         const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(

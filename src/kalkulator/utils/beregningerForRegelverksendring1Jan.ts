@@ -18,12 +18,12 @@ import {
     finnFørsteDatoMedPermitteringUtenFravær,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
-import { Permitteringssregelverk } from '../SeResultat/Utregningstekst/Utregningstekst';
 import {
     finnPermitteringssituasjonNormalRegelverk,
     PermitteringssituasjonStandarkRegelverk,
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
+import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 
 export enum Permitteringssituasjon1Januar {
     MAKS_NÅDD_1_JANUAR_LØPENDE = 'MAKS_NÅDD_1_JANUAR_LØPENDE',

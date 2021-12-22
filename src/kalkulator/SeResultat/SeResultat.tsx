@@ -23,6 +23,10 @@ import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningst
 import ContextProvider, { PermitteringContext } from '../../ContextProvider';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Checkbox, RadioPanelGruppe } from 'nav-frontend-skjema';
+import {
+    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
+    harLøpendePermitteringMedOppstartFørRegelendring,
+} from '../utils/beregningerForRegelverksendring1Jan';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -33,15 +37,58 @@ interface Props {
     tidslinje: DatoMedKategori[];
 }
 
+export enum Permitteringssregelverk {
+    KORONA_ORDNING = 'KORONA_ORDNING',
+    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
+}
+
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
     const { regelEndring1Juli, regelEndringsDato1Januar } = useContext(
         PermitteringContext
     );
+    const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState(
+        Permitteringssregelverk.NORMALT_REGELVERK
+    );
+    const [
+        harNåddMaksKoronaRegelverk,
+        setHarNåddMaksKoronaRegelverk,
+    ] = useState(false);
     const [
         visBeskjedLønnspliktPeriode,
         setVisBeskjedLønnspliktPeriode,
     ] = useState(false);
+
+    useEffect(() => {
+        if (!visBeskjedLønnspliktPeriode) {
+            const gjeldendeRegelverk = harNåddMaksKoronaRegelverk
+                ? Permitteringssregelverk.KORONA_ORDNING
+                : Permitteringssregelverk.NORMALT_REGELVERK;
+            setGjeldendeRegelverk(gjeldendeRegelverk);
+        }
+    }, [harNåddMaksKoronaRegelverk]);
+
+    useEffect(() => {
+        if (resultatVises) {
+            const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
+                props.allePermitteringerOgFraværesPerioder.permitteringer,
+                regelEndring1Juli
+            );
+            const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
+                props.tidslinje,
+                regelEndringsDato1Januar,
+                regelEndring1Juli
+            );
+            setHarNåddMaksKoronaRegelverk(
+                oppstartFørRegelendring ||
+                    harNåddMaksPåKoronaRegelverkAvsluttetPermittering
+            );
+        }
+    }, [
+        props.allePermitteringerOgFraværesPerioder.permitteringer,
+        regelEndring1Juli,
+        resultatVises,
+    ]);
 
     useEffect(() => {
         setResultatVises(false);
@@ -80,6 +127,16 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder,
     ]);
 
+    const endreRegelverk = () => {
+        if (gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING) {
+            setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+        } else {
+            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+        }
+    };
+
+    console.log(gjeldeneRegelverk);
+
     return (
         <>
             <Undertittel className="se-resultat__tittel">
@@ -104,7 +161,11 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                         Permitteringen som løpte uten lønnsplikt fra{' '}
                         <Checkbox
                             label={'Begynte lønnspliktperioden før 1. juli?'}
-                            checked={true}
+                            checked={
+                                gjeldeneRegelverk ===
+                                Permitteringssregelverk.KORONA_ORDNING
+                            }
+                            onChange={() => endreRegelverk()}
                         />
                     </AlertStripeInfo>
                 )}
