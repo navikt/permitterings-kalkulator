@@ -91,7 +91,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ]);
 
     useEffect(() => {
+        setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
         setResultatVises(false);
+        setVisBeskjedLønnspliktPeriode(false);
+
         if (
             props.tidslinje.length > 0 &&
             !perioderOverlapper(
@@ -108,7 +111,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         props.tidslinje.length;
 
     useEffect(() => {
-        console.log('useeffect');
         if (
             props.allePermitteringerOgFraværesPerioder.permitteringer.length >
                 0 &&
@@ -146,9 +148,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 <Hovedknapp
                     className="se-resultat__knapp"
                     onClick={() => {
-                        if (visBeskjedLønnspliktPeriode) {
-                            return;
-                        }
                         setResultatVises(true);
                         loggKnappTrykketPå('Se beregningen');
                     }}
@@ -165,7 +164,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 gjeldeneRegelverk ===
                                 Permitteringssregelverk.KORONA_ORDNING
                             }
-                            onChange={() => endreRegelverk()}
+                            onChange={() => {
+                                endreRegelverk();
+                                setResultatVises(true);
+                            }}
                         />
                     </AlertStripeInfo>
                 )}
@@ -176,6 +178,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             allePermitteringerOgFraværesPerioder={
                                 props.allePermitteringerOgFraværesPerioder
                             }
+                            harNåddMaksKoronaRegelverk={
+                                harNåddMaksKoronaRegelverk
+                            }
+                            gjeldendeRegelverk={gjeldeneRegelverk}
                         />
                         <div
                             className={'se-resultat__tidslinje-wrapper'}
