@@ -116,7 +116,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 0 &&
             props.tidslinje.length > 0
         ) {
-            console.log('in if');
             const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                 props.tidslinje,
                 regelEndringsDato1Januar
