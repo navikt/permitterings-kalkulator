@@ -10,7 +10,7 @@ import {
     DatointervallKategori,
     DatoMedKategori,
 } from '../typer';
-import { Normaltekst, Element } from 'nav-frontend-typografi';
+import { Element, Normaltekst } from 'nav-frontend-typografi';
 import Draggable from 'react-draggable';
 
 import { Fargeforklaringer } from './Fargeforklaringer';
@@ -27,7 +27,6 @@ import {
     antallDagerGått,
     finnDato18MndTilbake,
     finnPotensiellLøpendePermittering,
-    formaterDato,
     formaterDatoIntervall,
 } from '../utils/dato-utils';
 import {
@@ -49,6 +48,7 @@ interface Props {
     endringAv: 'datovelger' | 'tidslinje' | 'ingen';
     setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
     tidslinje: DatoMedKategori[];
+    gjeldendeRegelverk: Permitteringssregelverk;
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
@@ -91,25 +91,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
-        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-            props.allePermitteringerOgFraværesPerioder.permitteringer,
-            regelEndring1Juli
-        );
-        const finnesLøpende = !!finnPotensiellLøpendePermittering(
-            props.allePermitteringerOgFraværesPerioder.permitteringer
-        );
-        const situasjon = finnPermitteringssituasjon1Januar(
-            props.tidslinje,
-            regelEndringsDato1Januar,
-            regelEndring1Juli,
-            49 * 7,
-            finnesLøpende
-        );
         if (
-            situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE
+            props.gjeldendeRegelverk ===
+            Permitteringssregelverk.NORMALT_REGELVERK
         ) {
-        }
-        if (!oppstartFørRegelendring) {
             const nyTidslinje: DatoMedKategori[] = [];
             props.tidslinje.forEach((datoMedKategori, index) => {
                 if (
@@ -127,13 +112,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     nyTidslinje.push({ ...datoMedKategori });
                 }
             });
-            //setTidslinjeSomSkalVises(nyTidslinje);
+            setTidslinjeSomSkalVises(nyTidslinje);
         }
-    }, [
-        props.tidslinje,
-        regelEndring1Juli,
-        props.allePermitteringerOgFraværesPerioder,
-    ]);
+    }, [props.tidslinje, regelEndring1Juli, props.gjeldendeRegelverk]);
 
     useEffect(() => {
         if (props.endringAv === 'datovelger') {

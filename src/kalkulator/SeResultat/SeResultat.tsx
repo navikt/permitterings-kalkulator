@@ -188,6 +188,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             {skalViseTidslinje && (
                                 <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
                                     <Tidslinje
+                                        gjeldendeRegelverk={gjeldeneRegelverk}
                                         allePermitteringerOgFraværesPerioder={
                                             props.allePermitteringerOgFraværesPerioder
                                         }
