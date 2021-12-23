@@ -36,7 +36,8 @@ export const lagResultatTekstNormaltRegelverk = (
     tidslinjeUtenPermitteringFor1Juli: DatoMedKategori[],
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
-    innføringsdatoRegelEndring: Dayjs
+    innføringsdatoRegelEndring: Dayjs,
+    innføringsdatoRegelEndring2: Dayjs
 ): ResultatTekst => {
     const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
@@ -46,8 +47,46 @@ export const lagResultatTekstNormaltRegelverk = (
         innføringsdatoRegelEndring,
         26 * 7
     );
+    if (
+        datoForMaksPermitteringOppbrukt &&
+        datoForMaksPermitteringOppbrukt.isBefore(innføringsdatoRegelEndring2)
+    ) {
+        const oversiktOverbruktPermittering = getPermitteringsoversiktFor18Måneder(
+            tidslinjeUtenPermitteringFor1Juli,
+            innføringsdatoRegelEndring2
+        );
 
-    if (datoForMaksPermitteringOppbrukt) {
+        return {
+            konklusjon: (
+                <>
+                    <Element>
+                        Du kan maksimalt permittere den ansatte til og med{' '}
+                        {formaterDato(innføringsdatoRegelEndring2)}. Da vil
+                        lønnsplikten gjeninntre.
+                    </Element>
+                </>
+            ),
+            beskrivelse: (
+                <>
+                    <Normaltekst className={'utregningstekst__beskrivelse'}>
+                        Den ansatte har vært permittert i tilsammen{' '}
+                        {skrivDagerIHeleUkerPlussDager(
+                            oversiktOverbruktPermittering.dagerBrukt
+                        )}{' '}
+                        i 18-månedersperioden fra 1. juli 2021 til 30. desember
+                        2022.
+                    </Normaltekst>
+                </>
+            ),
+        };
+    }
+
+    if (
+        datoForMaksPermitteringOppbrukt &&
+        datoForMaksPermitteringOppbrukt.isSameOrAfter(
+            innføringsdatoRegelEndring2
+        )
+    ) {
         const harLøpendePermittering = finnPotensiellLøpendePermittering(
             allePermitteringerOgFraværesPerioder.permitteringer
         );

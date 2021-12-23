@@ -94,7 +94,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                   gjeldendeTidslinje,
                   props.allePermitteringerOgFraværesPerioder,
                   dagensDato,
-                  regelEndring1Juli
+                  regelEndring1Juli,
+                  regelEndringsDato1Januar
               );
 
     const maksDagerUtenLønnsplikt = props.harNåddMaksKoronaRegelverk

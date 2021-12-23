@@ -131,6 +131,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
 
     const endreRegelverk = () => {
         if (gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING) {
+            setResultatVises(false);
             setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
         } else {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
