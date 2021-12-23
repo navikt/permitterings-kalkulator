@@ -137,8 +137,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         }
     };
 
-    console.log(gjeldeneRegelverk);
-
     return (
         <>
             <Undertittel className="se-resultat__tittel">

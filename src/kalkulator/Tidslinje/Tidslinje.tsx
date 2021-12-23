@@ -127,7 +127,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     nyTidslinje.push({ ...datoMedKategori });
                 }
             });
-            setTidslinjeSomSkalVises(nyTidslinje);
+            //setTidslinjeSomSkalVises(nyTidslinje);
         }
     }, [
         props.tidslinje,

@@ -69,12 +69,13 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         }
     }, [props.tidslinje]);
 
-    const nyListeHvisPermitteringsdagerErSlettet = props.harNåddMaksKoronaRegelverk
-        ? undefined
-        : lagNyListeHvisPermitteringFør1Juli(
-              props.tidslinje,
-              regelEndring1Juli
-          );
+    const nyListeHvisPermitteringsdagerErSlettet =
+        props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
+            ? undefined
+            : lagNyListeHvisPermitteringFør1Juli(
+                  props.tidslinje,
+                  regelEndring1Juli
+              );
 
     const gjeldendeTidslinje = nyListeHvisPermitteringsdagerErSlettet
         ? nyListeHvisPermitteringsdagerErSlettet
