@@ -44,7 +44,7 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const { regelEndring1Juli, regelEndringsDato1Januar } = useContext(
+    const { regelEndring1Juli, regelEndringsDato1Mars } = useContext(
         PermitteringContext
     );
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState(
@@ -60,13 +60,24 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ] = useState(false);
 
     useEffect(() => {
-        if (!visBeskjedLønnspliktPeriode) {
-            const gjeldendeRegelverk = harNåddMaksKoronaRegelverk
-                ? Permitteringssregelverk.KORONA_ORDNING
-                : Permitteringssregelverk.NORMALT_REGELVERK;
-            setGjeldendeRegelverk(gjeldendeRegelverk);
-        }
-    }, [harNåddMaksKoronaRegelverk]);
+        const skalFølgeKoronaOrdning =
+            harNåddMaksKoronaRegelverk ||
+            harLøpendePermitteringMedOppstartFørRegelendring(
+                props.allePermitteringerOgFraværesPerioder.permitteringer,
+                regelEndring1Juli
+            );
+        const gjeldendeRegelverk = skalFølgeKoronaOrdning
+            ? Permitteringssregelverk.KORONA_ORDNING
+            : Permitteringssregelverk.NORMALT_REGELVERK;
+        setGjeldendeRegelverk(gjeldendeRegelverk);
+    }, [
+        harNåddMaksKoronaRegelverk,
+        props.allePermitteringerOgFraværesPerioder,
+        regelEndring1Juli,
+        props.tidslinje,
+    ]);
+
+    console.log(gjeldeneRegelverk);
 
     useEffect(() => {
         if (resultatVises) {
@@ -76,7 +87,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             );
             const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Januar,
+                regelEndringsDato1Mars,
                 regelEndring1Juli
             );
             setHarNåddMaksKoronaRegelverk(
@@ -91,10 +102,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ]);
 
     useEffect(() => {
-        setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
-
         if (
             props.tidslinje.length > 0 &&
             !perioderOverlapper(
@@ -118,7 +127,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         ) {
             const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Januar,
+                regelEndringsDato1Mars,
                 regelEndring1Juli
             );
             setVisBeskjedLønnspliktPeriode(!!harLønnspliktISpesialtilfelle);

@@ -58,7 +58,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >(props.tidslinje);
     const {
         dagensDato,
-        regelEndringsDato1Januar,
+        regelEndringsDato1Mars,
         regelEndring1Juli,
     } = useContext(PermitteringContext);
     const [
@@ -139,7 +139,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
         const situasjon = finnPermitteringssituasjon1Januar(
             props.tidslinje,
-            regelEndringsDato1Januar,
+            regelEndringsDato1Mars,
             regelEndring1Juli,
             49 * 7,
             finnesLøpende
@@ -149,7 +149,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         ) {
             const datoMaksNådd = finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Januar,
+                regelEndringsDato1Mars,
                 regelEndring1Juli
             );
             props.set18mndsPeriode(datoMaksNådd!!);
@@ -157,14 +157,14 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             const sluttAv18mndsPeriode = finnesLøpende
                 ? finnDatoForMaksPermittering(
                       tidslinjeSomSkalVises,
-                      regelEndringsDato1Januar,
+                      regelEndringsDato1Mars,
                       maksDagerUtenLønnsplikt
                   )!
                 : finnDenAktuelle18mndsperiodenSomSkalBeskrives(
                       gjeldendeRegelverk,
                       tidslinjeSomSkalVises,
                       dagensDato,
-                      regelEndringsDato1Januar,
+                      regelEndringsDato1Mars,
                       regelEndring1Juli,
                       maksDagerUtenLønnsplikt,
                       finnesLøpende

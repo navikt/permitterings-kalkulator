@@ -38,7 +38,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
     const {
         dagensDato,
         regelEndring1Juli,
-        regelEndringsDato1Januar,
+        regelEndringsDato1Mars,
     } = useContext(PermitteringContext);
 
     useEffect(() => {
@@ -87,7 +87,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                   gjeldendeTidslinje,
                   props.allePermitteringerOgFraværesPerioder,
                   dagensDato,
-                  regelEndringsDato1Januar,
+                  regelEndringsDato1Mars,
                   regelEndring1Juli
               )
             : lagResultatTekstNormaltRegelverk(
@@ -95,20 +95,20 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                   props.allePermitteringerOgFraværesPerioder,
                   dagensDato,
                   regelEndring1Juli,
-                  regelEndringsDato1Januar
+                  regelEndringsDato1Mars
               );
 
     const maksDagerUtenLønnsplikt = props.harNåddMaksKoronaRegelverk
         ? 49 * 7
         : 26 * 7;
     const datoRegelEndring = props.harNåddMaksKoronaRegelverk
-        ? regelEndringsDato1Januar
+        ? regelEndringsDato1Mars
         : regelEndring1Juli;
     const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
         props.gjeldendeRegelverk,
         gjeldendeTidslinje,
         dagensDato,
-        regelEndringsDato1Januar,
+        regelEndringsDato1Mars,
         regelEndring1Juli,
         maksDagerUtenLønnsplikt,
         harLøpendePermitteringMedOppstartFørRegelendring(
