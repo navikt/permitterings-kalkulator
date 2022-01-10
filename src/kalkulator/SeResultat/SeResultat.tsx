@@ -27,6 +27,7 @@ import {
     finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
     harLøpendePermitteringMedOppstartFørRegelendring,
 } from '../utils/beregningerForRegelverksendring1Jan';
+import lampeikon from './lampeikon.svg';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -163,24 +164,36 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                     <PekIkon className="se-resultat__knapp-ikon" />
                     Se beregningen
                 </Hovedknapp>
-                {visBeskjedLønnspliktPeriode && (
-                    <AlertStripeInfo>
-                        Permitteringen som løpte uten lønnsplikt fra{' '}
-                        <Checkbox
-                            label={'Begynte lønnspliktperioden før 1. juli?'}
-                            checked={
-                                gjeldeneRegelverk ===
-                                Permitteringssregelverk.KORONA_ORDNING
-                            }
-                            onChange={() => {
-                                endreRegelverk();
-                                setResultatVises(true);
-                            }}
-                        />
-                    </AlertStripeInfo>
-                )}
+
                 {resultatVises && (
-                    <>
+                    <div className="utregningstekst">
+                        <img
+                            className="utregningstekst__lampeikon"
+                            src={lampeikon}
+                            alt=""
+                        />
+                        {visBeskjedLønnspliktPeriode && (
+                            <AlertStripeInfo
+                                className={
+                                    'utregningstekst_alert-lonnsplit-for-1-juli'
+                                }
+                            >
+                                Begynte lønnspliktperioden før 1. juli?{' '}
+                                <Checkbox
+                                    label={
+                                        'Begynte lønnspliktperioden før 1. juli?'
+                                    }
+                                    checked={
+                                        gjeldeneRegelverk ===
+                                        Permitteringssregelverk.KORONA_ORDNING
+                                    }
+                                    onChange={() => {
+                                        endreRegelverk();
+                                        setResultatVises(true);
+                                    }}
+                                />
+                            </AlertStripeInfo>
+                        )}
                         <Utregningstekst
                             tidslinje={props.tidslinje}
                             allePermitteringerOgFraværesPerioder={
@@ -219,7 +232,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 </Ekspanderbartpanel>
                             )}
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         </>

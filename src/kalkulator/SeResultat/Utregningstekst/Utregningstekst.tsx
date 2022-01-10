@@ -6,7 +6,6 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
-import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
 import { finnPotensiellLøpendePermittering } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
@@ -134,12 +133,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
      */
 
     return (
-        <div className="utregningstekst">
-            <img
-                className="utregningstekst__lampeikon"
-                src={lampeikon}
-                alt=""
-            />
+        <>
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
             <Normaltekst className="utregningstekst__informasjonslenker">
@@ -154,7 +148,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Gå til veiviser for permittering
                 </Lenke>
             </Normaltekst>
-        </div>
+        </>
     );
 };
 
