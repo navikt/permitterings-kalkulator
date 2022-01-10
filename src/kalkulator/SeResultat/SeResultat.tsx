@@ -20,9 +20,9 @@ import { formaterDato, perioderOverlapper } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
-import ContextProvider, { PermitteringContext } from '../../ContextProvider';
+import { PermitteringContext } from '../../ContextProvider';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { Checkbox, RadioPanelGruppe } from 'nav-frontend-skjema';
+import { Checkbox } from 'nav-frontend-skjema';
 import {
     finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
     harLøpendePermitteringMedOppstartFørRegelendring,
@@ -77,8 +77,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         regelEndring1Juli,
         props.tidslinje,
     ]);
-
-    console.log(gjeldeneRegelverk);
 
     useEffect(() => {
         if (resultatVises) {
@@ -178,11 +176,18 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                     'utregningstekst_alert-lonnsplit-for-1-juli'
                                 }
                             >
-                                Begynte lønnspliktperioden før 1. juli?{' '}
+                                Begynte lønnspliktperioden for permitteringen
+                                med start for permittering uten lønn{' '}
+                                {formaterDato(
+                                    arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
+                                        props.tidslinje,
+                                        regelEndringsDato1Mars,
+                                        regelEndring1Juli
+                                    )!!
+                                )}{' '}
+                                for permittering uten lønn før 1. juli?{' '}
                                 <Checkbox
-                                    label={
-                                        'Begynte lønnspliktperioden før 1. juli?'
-                                    }
+                                    label={'Ja'}
                                     checked={
                                         gjeldeneRegelverk ===
                                         Permitteringssregelverk.KORONA_ORDNING

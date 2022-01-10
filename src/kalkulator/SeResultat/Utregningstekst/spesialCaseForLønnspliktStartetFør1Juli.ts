@@ -42,11 +42,6 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
                     break;
                 }
             }
-            console.log(
-                formaterDato(forstePermitteringsDatoEtter1Juli),
-                formaterDato(startDatoForPermitteringDerMaksNås),
-                formaterDato(datoRegelEndring)
-            );
             if (
                 forstePermitteringsDatoEtter1Juli.isSame(
                     startDatoForPermitteringDerMaksNås,
