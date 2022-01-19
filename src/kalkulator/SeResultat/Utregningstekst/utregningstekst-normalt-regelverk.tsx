@@ -18,7 +18,7 @@ import {
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForMaksPermittering,
+    finnDatoForMaksPermitteringNormaltRegelverk,
     getPermitteringsoversiktFor18Måneder,
 } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
@@ -42,7 +42,7 @@ export const lagResultatTekstNormaltRegelverk = (
     const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer
     );
-    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
+    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring,
         26 * 7

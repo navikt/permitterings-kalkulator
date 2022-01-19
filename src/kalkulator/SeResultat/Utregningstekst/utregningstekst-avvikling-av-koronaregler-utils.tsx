@@ -198,6 +198,19 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         datoRegelendringJanuar,
         49 * 7
     )!;
+    if (datoMaksPermitteringNådd === undefined) {
+        return {
+            konklusjon: (
+                <>
+                    <Element>
+                        Du har ikke nådd maks antall uker permittert. Ved nye
+                        permitteringer gjelder nye regler
+                    </Element>
+                </>
+            ),
+            beskrivelse: <>OBS spesialtilfelle</>,
+        };
+    }
 
     const tilleggstekstLøpendePermittering = finnPotensiellLøpendePermittering(
         allePermitteringerOgFraværesPerioder.permitteringer

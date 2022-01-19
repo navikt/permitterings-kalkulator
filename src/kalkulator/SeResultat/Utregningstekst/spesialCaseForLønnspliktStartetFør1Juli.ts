@@ -5,6 +5,7 @@ import {
     finnStartDatoForPermitteringUtIfraSluttdato,
 } from '../../utils/beregningerForRegelverksendring1Jan';
 import { formaterDato } from '../../utils/dato-utils';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
     tidslinje: DatoMedKategori[],
@@ -19,10 +20,28 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
         datoRegelEndring,
         49 * 7
     );
-    if (maksPermitteringNådd49Uker) {
-        const startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
-            maksPermitteringNådd49Uker,
-            tidslinje
+    const maksPermitteringNådd26Uker = finnDatoForMaksPermitteringNormaltRegelverk(
+        tidslinje,
+        datoRegelEndring,
+        26 * 7
+    );
+    if (maksPermitteringNådd49Uker || maksPermitteringNådd26Uker) {
+        let startDatoForPermitteringDerMaksNås;
+        if (maksPermitteringNådd49Uker) {
+            startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
+                maksPermitteringNådd49Uker,
+                tidslinje
+            );
+        } else {
+            console.log('dette skjer');
+            startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
+                maksPermitteringNådd26Uker!!,
+                tidslinje
+            );
+        }
+        console.log(
+            'startdato 1 permittering: ',
+            formaterDato(startDatoForPermitteringDerMaksNås)
         );
         if (startDatoForPermitteringDerMaksNås) {
             let forstePermitteringsDatoEtter1Juli = forsteJuli;

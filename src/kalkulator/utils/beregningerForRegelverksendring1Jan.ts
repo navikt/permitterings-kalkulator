@@ -11,6 +11,7 @@ import {
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPotensiellLøpendePermittering,
+    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
@@ -374,11 +375,13 @@ export const finnStartDatoForPermitteringUtIfraSluttdato = (
     tidslinje: DatoMedKategori[]
 ) => {
     const indeksSluttDato = finnIndeksForDato(sluttdato, tidslinje);
+    console.log(formaterDato(tidslinje[indeksSluttDato].dato));
     let indeks = indeksSluttDato;
     while (
         tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
     ) {
         if (tidslinje[indeks].dato.isBefore(finnDato18MndTilbake(sluttdato))) {
+            console.log('spesialtilfelle i retur');
             return finnDato18MndTilbake(sluttdato);
         }
         indeks--;

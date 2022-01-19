@@ -61,7 +61,7 @@ export const finnPermitteringssituasjonNormalRegelverk = (
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonStandarkRegelverk => {
-    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
+    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelendring,
         maksAntallDagerUtenLønnsplikt
@@ -72,7 +72,7 @@ export const finnPermitteringssituasjonNormalRegelverk = (
     return PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD;
 };
 
-export const finnDatoForMaksPermittering = (
+export const finnDatoForMaksPermitteringNormaltRegelverk = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
