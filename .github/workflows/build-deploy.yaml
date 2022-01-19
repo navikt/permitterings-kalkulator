@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-labs-gcp:
     name: Deploy to labs-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fikse-lonnspliktperiode-rundt-1-juli'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/spesial-tilfelle-lonnsplikt'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:

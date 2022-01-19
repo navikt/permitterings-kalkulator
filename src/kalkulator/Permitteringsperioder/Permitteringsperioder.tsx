@@ -65,23 +65,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Undertittel tag="h2" className="permitteringsperioder__tittel">
                 1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
-            <Infotekst imgSrc={kalenderSvg} imgAlt="Kalender">
-                <Normaltekst tag="ul" className="permitteringsperioder__liste">
-                    <li>
-                        Fyll inn permitteringsperiodene uavhengig av
-                        permitteringsprosent og stillingsprosent.
-                    </li>
-                    <li>
-                        Hvis den ansatte har fått lønnskompensasjon, skal dette
-                        være med i periodene.
-                    </li>
-                    <li>
-                        Ikke fyll inn dagene du har lønnsplikt eller
-                        permitteringer grunnet streik.
-                    </li>
-                    <li>Ikke fyll inn permitteringer eldre enn 18 måneder.</li>
-                </Normaltekst>
-            </Infotekst>
             {permitteringsobjekter}
             {feilmelding.length > 0 && (
                 <AlertStripe

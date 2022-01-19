@@ -7,10 +7,9 @@ const Topp: FunctionComponent = () => {
         <div className={'topp'}>
             <div className={'topp__generell-info'}>
                 <Element className="topp__introtekst">
-                    Det er begrenset hvor lenge du kan permittere ansatte uten
-                    lønn. Denne kalkulatoren er et verktøy som hjelper deg å
-                    beregne når lønnsplikten gjeninntrer. Merk at det er andre
-                    regler som styrer de{' '}
+                    Denne kalkulatoren er et verktøy som hjelper deg å beregne
+                    når lønnsplikten gjeninntrer. Merk at det er andre regler
+                    som styrer de{' '}
                     <a
                         href="https://www.nav.no/arbeid/permittert#hvor-lenge-kan-du-fa-dagpenger"
                         className="lenke"
@@ -27,6 +26,13 @@ const Topp: FunctionComponent = () => {
                         Eventuelle fravær under permitteringen
                     </Normaltekst>
                 </ul>
+                <Element>Du skal fylle inn</Element>
+                <Normaltekst tag="ul" className="topp__liste">
+                    <li>
+                        Uavhengig av permitteringsprosent og stillingsprosent
+                    </li>
+                    <li>Fra første permitteringsdag etter lønnsplikt</li>
+                </Normaltekst>
             </div>
         </div>
     );
