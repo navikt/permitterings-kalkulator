@@ -31,9 +31,9 @@ const Topp: FunctionComponent = () => {
                 <Element>Du skal fylle inn</Element>
                 <Normaltekst tag="ul" className="topp__liste">
                     <li>
-                        uavhengig av permitteringsprosent og stillingsprosent.
+                        uavhengig av permitteringsprosent og stillingsprosent
                     </li>
-                    <li>fra første permitteringsdag etter lønnsplikt.</li>
+                    <li>fra første permitteringsdag etter lønnsplikt</li>
                 </Normaltekst>
             </div>
         </div>
