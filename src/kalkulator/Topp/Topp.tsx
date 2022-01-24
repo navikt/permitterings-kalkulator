@@ -17,21 +17,23 @@ const Topp: FunctionComponent = () => {
                         ansattes rettigheter til dagpenger.
                     </a>
                 </Element>
-                <Element>Denne informasjonen trenger du</Element>
+                <Element>
+                    For å bruke kalkulatoren må du ha oversikt over
+                </Element>
                 <ul className="topp__liste">
                     <Normaltekst tag="li">
-                        Periodene den ansatte har vært permittert
+                        periodene den ansatte har vært permittert
                     </Normaltekst>
                     <Normaltekst tag="li">
-                        Eventuelle fravær under permitteringen
+                        eventuelle fravær under permitteringen
                     </Normaltekst>
                 </ul>
                 <Element>Du skal fylle inn</Element>
                 <Normaltekst tag="ul" className="topp__liste">
                     <li>
-                        Uavhengig av permitteringsprosent og stillingsprosent
+                        uavhengig av permitteringsprosent og stillingsprosent.
                     </li>
-                    <li>Fra første permitteringsdag etter lønnsplikt</li>
+                    <li>fra første permitteringsdag etter lønnsplikt.</li>
                 </Normaltekst>
             </div>
         </div>
