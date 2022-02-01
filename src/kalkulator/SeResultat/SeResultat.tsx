@@ -45,7 +45,7 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const { regelEndring1Juli, regelEndringsDato1Mars } = useContext(
+    const { regelEndring1Juli, regelEndringsDato1April } = useContext(
         PermitteringContext
     );
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState(
@@ -86,7 +86,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             );
             const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Mars,
+                regelEndringsDato1April,
                 regelEndring1Juli
             );
             setHarNåddMaksKoronaRegelverk(
@@ -126,7 +126,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         ) {
             const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                 props.tidslinje,
-                regelEndringsDato1Mars,
+                regelEndringsDato1April,
                 regelEndring1Juli
             );
             setVisBeskjedLønnspliktPeriode(!!harLønnspliktISpesialtilfelle);
@@ -181,7 +181,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 {formaterDato(
                                     arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                                         props.tidslinje,
-                                        regelEndringsDato1Mars,
+                                        regelEndringsDato1April,
                                         regelEndring1Juli
                                     )!!
                                 )}{' '}

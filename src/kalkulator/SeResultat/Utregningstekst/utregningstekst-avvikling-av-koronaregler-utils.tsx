@@ -159,7 +159,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        1. mars 2022 vil lønnsplikten gjeninntre for løpende
+                        1. april 2022 vil lønnsplikten gjeninntre for løpende
                         permitteringer som startet før 1. juli der du til sammen
                         har permittert i 49 uker eller mer de siste 18 månedene.
                     </Normaltekst>
@@ -168,9 +168,9 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         {skrivDagerIHeleUkerPlussDager(
                             oversiktOverPermitteringVedInnføringsdato.dagerBrukt
                         )}{' '}
-                        i 18-månedersperioden fra 2. september 2020 til 1. mars
-                        2021. Dette overskrider 49 uker, og du har dermed
-                        lønnsplikt fra 1. mars 2022.
+                        OBS hvaforslagstilfelle i 18-månedersperioden fra 2.
+                        oktober 2020 til 1. april 2022. Dette overskrider 49
+                        uker, og du har dermed lønnsplikt fra 1. april 2022.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
                         For nye permitteringer er maks antall uker du kan ha den
