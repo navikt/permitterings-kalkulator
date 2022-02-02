@@ -22,7 +22,7 @@ import {
 } from '../../../utils/amplitudeEvents';
 import {
     finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    harLøpendePermitteringMedOppstartFørRegelendring,
+    harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
 } from '../../utils/beregningerForRegelverksendring1Jan';
 import { Permitteringssregelverk } from '../SeResultat';
 
@@ -109,11 +109,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         dagensDato,
         regelEndringsDato1April,
         regelEndring1Juli,
-        maksDagerUtenLønnsplikt,
-        harLøpendePermitteringMedOppstartFørRegelendring(
-            props.allePermitteringerOgFraværesPerioder.permitteringer,
-            regelEndring1Juli
-        )
+        maksDagerUtenLønnsplikt
     );
 
     /*

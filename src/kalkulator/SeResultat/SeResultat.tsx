@@ -16,7 +16,7 @@ import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
-import { formaterDato, perioderOverlapper } from '../utils/dato-utils';
+import { formaterDato } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
@@ -24,8 +24,8 @@ import { PermitteringContext } from '../../ContextProvider';
 import { AlertStripeInfo } from 'nav-frontend-alertstriper';
 import { Checkbox } from 'nav-frontend-skjema';
 import {
-    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    harLøpendePermitteringMedOppstartFørRegelendring,
+    harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
+    nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
 } from '../utils/beregningerForRegelverksendring1Jan';
 import lampeikon from './lampeikon.svg';
 
@@ -61,79 +61,69 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ] = useState(false);
 
     useEffect(() => {
-        const skalFølgeKoronaOrdning =
-            harNåddMaksKoronaRegelverk ||
-            harLøpendePermitteringMedOppstartFørRegelendring(
-                props.allePermitteringerOgFraværesPerioder.permitteringer,
-                regelEndring1Juli
-            );
-        const gjeldendeRegelverk = skalFølgeKoronaOrdning
-            ? Permitteringssregelverk.KORONA_ORDNING
-            : Permitteringssregelverk.NORMALT_REGELVERK;
-        setGjeldendeRegelverk(gjeldendeRegelverk);
-    }, [
-        harNåddMaksKoronaRegelverk,
-        props.allePermitteringerOgFraværesPerioder,
-        regelEndring1Juli,
-        props.tidslinje,
-    ]);
+        setResultatVises(false);
+        setVisBeskjedLønnspliktPeriode(false);
+        setVisBeskjedLønnspliktPeriode(false);
+    }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         if (resultatVises) {
-            const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-                props.allePermitteringerOgFraværesPerioder.permitteringer,
-                regelEndring1Juli
-            );
-            const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
-                props.tidslinje,
-                regelEndringsDato1April,
-                regelEndring1Juli
-            );
-            setHarNåddMaksKoronaRegelverk(
-                oppstartFørRegelendring ||
-                    harNåddMaksPåKoronaRegelverkAvsluttetPermittering
-            );
+            if (
+                harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse(
+                    props.allePermitteringerOgFraværesPerioder.permitteringer,
+                    regelEndring1Juli
+                )
+            )
+                setHarNåddMaksKoronaRegelverk(true);
+            else {
+                setHarNåddMaksKoronaRegelverk(
+                    !!nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering(
+                        props.tidslinje,
+                        regelEndringsDato1April,
+                        regelEndring1Juli
+                    )
+                );
+            }
         }
     }, [
         props.allePermitteringerOgFraværesPerioder.permitteringer,
         regelEndring1Juli,
+        regelEndringsDato1April,
         resultatVises,
     ]);
 
     useEffect(() => {
-        setResultatVises(false);
-        setVisBeskjedLønnspliktPeriode(false);
-        if (
-            props.tidslinje.length > 0 &&
-            !perioderOverlapper(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            )
-        ) {
-            props.setEndringAv('datovelger');
+        if (harNåddMaksKoronaRegelverk) {
+            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
         }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+    }, [harNåddMaksKoronaRegelverk]);
 
-    const skalViseTidslinje =
-        (window.location.href.includes('labs') ||
-            process.env.NODE_ENV === 'development') &&
-        props.tidslinje.length;
+    //tidslinja er deaktivert i prod
+    const skalViseTidslinje = false;
+
+    //(window.location.href.includes('labs') ||
+    //      process.env.NODE_ENV === 'development') &&
+
+    //props.tidslinje.length;
 
     useEffect(() => {
         if (
-            props.allePermitteringerOgFraværesPerioder.permitteringer.length >
-                0 &&
-            props.tidslinje.length > 0
+            props.allePermitteringerOgFraværesPerioder.permitteringer.length &&
+            props.tidslinje.length
         ) {
-            const harLønnspliktISpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
+            const kanHaLønnspliktFør1JuliSpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                 props.tidslinje,
                 regelEndringsDato1April,
                 regelEndring1Juli
             );
-            setVisBeskjedLønnspliktPeriode(!!harLønnspliktISpesialtilfelle);
+            setVisBeskjedLønnspliktPeriode(
+                !!kanHaLønnspliktFør1JuliSpesialtilfelle
+            );
         }
     }, [
         props.tidslinje,
         regelEndring1Juli,
+        regelEndringsDato1April,
         props.allePermitteringerOgFraværesPerioder,
     ]);
 

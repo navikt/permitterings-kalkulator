@@ -14,7 +14,7 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnPermitteringssituasjon1Januar,
     getPermitteringsoversiktFor18Måneder,
-    Permitteringssituasjon1Januar,
+    PermitteringssituasjonVedSluttPaForlengelse,
 } from './beregningerForRegelverksendring1Jan';
 
 const getTidslinje = (
@@ -57,7 +57,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
+                PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE
             );
         });
 
@@ -85,7 +85,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 true
             );
             expect(situasjon).toEqual(
-                Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE
+                PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE
             );
         });
     });

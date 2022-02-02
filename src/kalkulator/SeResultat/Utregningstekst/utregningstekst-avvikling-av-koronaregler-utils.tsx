@@ -16,11 +16,10 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 import Lenke from 'nav-frontend-lenker';
 import {
-    Permitteringssituasjon1Januar,
+    PermitteringssituasjonVedSluttPaForlengelse,
     finnDatoForMaksPermittering,
-    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    finnPermitteringssituasjon1Januar,
     getPermitteringsoversiktFor18Måneder,
+    finnPermitteringssituasjonVedSluttPåForlengelse,
 } from '../../utils/beregningerForRegelverksendring1Jan';
 
 interface ResultatTekst {
@@ -32,29 +31,23 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     tidslinje: DatoMedKategori[],
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
-    datoRegelendringJanuar: Dayjs,
+    datoSluttPaDagepengeForlengelse: Dayjs,
     datoRegelEndring1Juli: Dayjs
 ): ResultatTekst => {
-    const finnesLøpendePermittering = !!finnPotensiellLøpendePermittering(
-        allePermitteringerOgFraværesPerioder.permitteringer
-    );
-    const situasjon = finnPermitteringssituasjon1Januar(
+    const situasjon = finnPermitteringssituasjonVedSluttPåForlengelse(
         tidslinje,
-        datoRegelendringJanuar,
+        datoSluttPaDagepengeForlengelse,
         datoRegelEndring1Juli,
-        49 * 7,
-        finnesLøpendePermittering
+        49 * 7
     );
     const oversiktOverPermitteringVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
         tidslinje,
-        datoRegelendringJanuar
+        datoSluttPaDagepengeForlengelse
     );
-    if (situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE) {
-        const datoMaksNådd = finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
-            tidslinje,
-            datoRegelendringJanuar,
-            datoRegelEndring1Juli
-        );
+    if (
+        situasjon ===
+        PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE
+    ) {
         const oversiktOverPermitteringsdagerFra1Juli = getPermitteringsoversiktFor18Måneder(
             tidslinje,
             finnDato18MndFram(datoRegelEndring1Juli)
@@ -68,15 +61,15 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 <>
                     <Element>
                         Du kan maksimalt permittere den ansatte til og med{' '}
-                        {formaterDato(datoMaksNådd!!)}. Da vil lønnsplikten
-                        gjeninntre.
+                        {formaterDato(datoSluttPaDagepengeForlengelse)}. Da vil
+                        lønnsplikten gjeninntre.
                     </Element>
                 </>
             ),
             beskrivelse: (
                 <>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Ved videre permittering kan du permittere på nytt med
+                        For framtidige permitteringer kan du permittere med
                         regler gjeldende fra 01.07.2021.
                     </Normaltekst>
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -91,9 +84,9 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                     26 * 7 ? (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Maks antall dager permittert uten lønn er nådd. Du
-                            kan ikke permittere den ansatte på nytt før 31.
-                            desember 2022, da gjeldene 18-månedersperiode er
-                            over.{' '}
+                            kan ikke permittere den ansatte uten lønn før
+                            tidligst 31. desember 2022, da gjeldene
+                            18-månedersperiode er over.{' '}
                         </Normaltekst>
                     ) : (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
@@ -104,7 +97,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                                 <Normaltekst
                                     className={'utregningstekst__beskrivelse'}
                                 >
-                                    'Den ansatte har nådd maks antall dager
+                                    Den ansatte har nådd maks antall dager
                                     permittert uten lønn. Du kan ikke permittere
                                     den ansatte på nytt før 31. desember 2022,
                                     da gjeldene 18-månedersperiode er over.
@@ -140,62 +133,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
             ),
         };
     }
-    if (
-        situasjon === Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
-    ) {
-        loggPermitteringsSituasjon(
-            'Maks permittering nådd 1. januar. Maks permitteringstid er 49 uker'
-        );
-        return {
-            konklusjon: (
-                <>
-                    <Element>
-                        Du har lønnsplikt fra
-                        {' ' + formaterDato(datoRegelendringJanuar)}. Maks
-                        antall dager for permittering uten lønnsplikt er nådd.
-                    </Element>
-                </>
-            ),
-            beskrivelse: (
-                <>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        1. april 2022 vil lønnsplikten gjeninntre for løpende
-                        permitteringer som startet før 1. juli der du til sammen
-                        har permittert i 49 uker eller mer de siste 18 månedene.
-                    </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Den ansatte har vært permittert i{' '}
-                        {skrivDagerIHeleUkerPlussDager(
-                            oversiktOverPermitteringVedInnføringsdato.dagerBrukt
-                        )}{' '}
-                        OBS hvaforslagstilfelle i 18-månedersperioden fra 2.
-                        oktober 2020 til 1. april 2022. Dette overskrider 49
-                        uker, og du har dermed lønnsplikt fra 1. april 2022.
-                    </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        For nye permitteringer er maks antall uker du kan ha den
-                        ansatte permittert 26 uker i løpet av 18 måneder.
-                    </Normaltekst>
-                    <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        Hvis du ønsker å permittere på nytt, gjelder nye regler.{' '}
-                        <Lenke
-                            href={
-                                'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'
-                            }
-                        >
-                            Les mer om permitteringsreglene i veiviser for
-                            permittering
-                        </Lenke>
-                        .
-                    </Normaltekst>
-                </>
-            ),
-        };
-    }
 
     const datoMaksPermitteringNådd: Dayjs = finnDatoForMaksPermittering(
         tidslinje,
-        datoRegelendringJanuar,
+        datoSluttPaDagepengeForlengelse,
         49 * 7
     )!;
     if (datoMaksPermitteringNådd === undefined) {
@@ -220,6 +161,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     loggPermitteringsSituasjon(
         'maks permittering nådd etter 1. januar. Maks permitteringstid er 49 uker.'
     );
+    // i dette caset er permitteringen
     return {
         konklusjon: (
             <>
@@ -244,8 +186,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                     {' ' + formaterDato(datoMaksPermitteringNådd)}.
                 </Normaltekst>
                 <Normaltekst className={'utregningstekst__beskrivelse'}>
-                    Hvis du avslutter permitteringen, men ønsker å permittere på
-                    nytt, gjelder nye regler for permitteringen.{' '}
+                    Hvis den løpende permitteringer avsluttes og du ønsker å
+                    permittere på nytt, vil nye regler gjelde.{' '}
                     <Lenke
                         href={
                             'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'

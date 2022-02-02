@@ -26,66 +26,72 @@ import {
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 
-export enum Permitteringssituasjon1Januar {
-    MAKS_NÅDD_1_JANUAR_LØPENDE = 'MAKS_NÅDD_1_JANUAR_LØPENDE',
-    MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE = 'MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE',
-    MAKS_NÅDD_IKKE_LØPENDE = 'MAKS_NÅDD_IKKE_LØPENDE',
+export enum PermitteringssituasjonVedSluttPaForlengelse {
+    MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
+    MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE',
+    //Spesialtilfelle dersom lønnsplikten for permittering begynte før 1. juli, mens permittering uten lønn begynte etter 1. juli. Samtidig er 26 uker nådd etter 1. juli.
+    MAKS_NÅDD_NORMALT_REGELVERK_SPESIALCASE = 'MAKS_NÅDD_NORMALT_REGELVERK_SPESIALCASE',
 }
 
-export const finnPermitteringssituasjon1Januar = (
+export const finnPermitteringssituasjonVedSluttPåForlengelse = (
     tidslinje: DatoMedKategori[],
-    datoRegelEndring1Nov: Dayjs,
+    datoSluttPaDagepengeForlengelse: Dayjs,
     datoRegelEndring1Juli: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number,
-    erLøpendePermittering: boolean
-): Permitteringssituasjon1Januar => {
+    maksAntallDagerUtenLønnsplikt: number
+): PermitteringssituasjonVedSluttPaForlengelse => {
     const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
         datoRegelEndring1Juli,
         maksAntallDagerUtenLønnsplikt
     );
-
     if (
-        finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
-            tidslinje,
-            datoRegelEndring1Nov,
-            datoRegelEndring1Juli
-        ) &&
-        !erLøpendePermittering
+        datoNåddMaksPermitteringsdager &&
+        datoNåddMaksPermitteringsdager.isSame(
+            datoSluttPaDagepengeForlengelse,
+            'day'
+        )
     ) {
-        return Permitteringssituasjon1Januar.MAKS_NÅDD_IKKE_LØPENDE;
+        return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
     }
-
-    //datoNåddMaksPermitteringsdager vil være definert siden denne casen forutsetter at det finnes en løpende permittering iverksatt før 1. juli
-
-    return datoNåddMaksPermitteringsdager?.isSame(datoRegelEndring1Nov, 'date')
-        ? Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE
-        : Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE;
+    if (
+        datoNåddMaksPermitteringsdager &&
+        datoNåddMaksPermitteringsdager.isSameOrAfter(
+            datoSluttPaDagepengeForlengelse
+        )
+    ) {
+        return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
+    }
+    return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_NORMALT_REGELVERK_SPESIALCASE;
 };
 
 //her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
 export const finnDatoForMaksPermittering = (
     tidslinje: DatoMedKategori[],
-    innføringsdatoRegelendring: Dayjs,
+    datoSluttPaDagepengeForlengelse: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): Dayjs | undefined => {
-    const oversiktVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
+    const oversiktVedSluttPaDagepengeForlengelse = getPermitteringsoversiktFor18Måneder(
         tidslinje,
-        innføringsdatoRegelendring
+        datoSluttPaDagepengeForlengelse
     );
 
-    if (oversiktVedInnføringsdato.dagerBrukt > maksAntallDagerUtenLønnsplikt) {
-        return innføringsdatoRegelendring;
+    if (
+        oversiktVedSluttPaDagepengeForlengelse.dagerBrukt >
+        maksAntallDagerUtenLønnsplikt
+    ) {
+        return datoSluttPaDagepengeForlengelse;
     }
-
-    let potensiellDatoForMaksPeriode: Dayjs = dayjs(innføringsdatoRegelendring);
+    let potensiellDatoForMaksPeriode: Dayjs = dayjs(
+        datoSluttPaDagepengeForlengelse
+    );
     let antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         potensiellDatoForMaksPeriode
     ).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
     const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
-
+    //while-løkke for å finne når maks permittering nås
+    //ser ikke ut som det tas hensyn til at gjenstående permitteringsdager er mer kunne brukes
     while (
         antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isSameOrBefore(
@@ -258,17 +264,15 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     dagensDato: Dayjs,
     datoRegelendring1Nov: Dayjs,
     datoRegelEndring1Juli: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number,
-    finnesLøpendePermittering: boolean
+    maksAntallDagerUtenLønnsplikt: number
 ): DatoIntervall | undefined => {
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
-            ? finnPermitteringssituasjon1Januar(
+            ? finnPermitteringssituasjonVedSluttPåForlengelse(
                   tidslinje,
                   datoRegelendring1Nov,
                   datoRegelEndring1Juli,
-                  maksAntallDagerUtenLønnsplikt,
-                  finnesLøpendePermittering
+                  maksAntallDagerUtenLønnsplikt
               )
             : finnPermitteringssituasjonNormalRegelverk(
                   tidslinje,
@@ -277,9 +281,9 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
               );
 
     switch (situasjon) {
-        case Permitteringssituasjon1Januar.MAKS_NÅDD_1_JANUAR_LØPENDE:
+        case PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE:
             return til18mndsperiode(datoRegelendring1Nov);
-        case Permitteringssituasjon1Januar.MAKS_NÅDD_ETTER_1_JANUAR_LØPENDE:
+        case PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE:
             const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 datoRegelendring1Nov,
@@ -308,7 +312,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
 };
 
 //sjekk om man får feil ved overlappende perioder dersom siste start overlapper med en tidligere permittering som ikker er løpende
-export const harLøpendePermitteringMedOppstartFørRegelendring = (
+export const harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse = (
     permitteringer: Partial<DatoIntervall>[],
     datoRegelEndring: Dayjs
 ) => {
@@ -331,17 +335,21 @@ export const harLøpendePermitteringMedOppstartFørRegelendring = (
     return false;
 };
 
-export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
+export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
     tidslinje: DatoMedKategori[],
-    datoRegelendring1nov: Dayjs,
+    datoSluttPaDagepengeForlengelse: Dayjs,
     datoRegelendring1Juli: Dayjs
 ) => {
-    const indeks1Nov = finnIndeksForDato(datoRegelendring1nov, tidslinje);
-    if (
-        tidslinje[indeks1Nov].kategori !== DatointervallKategori.IKKE_PERMITTERT
-    ) {
+    const indeksDatoSluttPaDagepengeForlengelse = finnIndeksForDato(
+        datoSluttPaDagepengeForlengelse,
+        tidslinje
+    );
+    const permittertVedDatoSluttPaDagepengeForlengelse =
+        tidslinje[indeksDatoSluttPaDagepengeForlengelse].kategori !==
+        DatointervallKategori.IKKE_PERMITTERT;
+    if (permittertVedDatoSluttPaDagepengeForlengelse) {
         const datoPermitteringsStart = finnStartDatoForPermitteringUtIfraSluttdato(
-            datoRegelendring1nov,
+            datoSluttPaDagepengeForlengelse,
             tidslinje
         );
         const permitteringStartetFør1Juli = datoPermitteringsStart.isBefore(
@@ -350,7 +358,7 @@ export const finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli = (
         if (permitteringStartetFør1Juli) {
             const potensiellDatoForMaksPermittering = finnDatoForMaksPermittering(
                 tidslinje,
-                datoRegelendring1nov,
+                datoSluttPaDagepengeForlengelse,
                 49 * 7
             );
             if (potensiellDatoForMaksPermittering) {
