@@ -243,7 +243,7 @@ export const finnOverskuddAvPermitteringsdagerFordeltPåKalenderdager = (
     );
 };
 
-const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
+export const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     dato: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {
@@ -253,11 +253,13 @@ const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     if (
         indeksITidslinje > 0 &&
         tidslinje[indeksITidslinje].kategori !==
-            DatointervallKategori.PERMITTERT_UTEN_FRAVÆR
+            DatointervallKategori.IKKE_PERMITTERT
     ) {
         return indeksITidslinje;
     }
+    return false;
 };
+
 export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     regelverk: Permitteringssregelverk,
     tidslinje: DatoMedKategori[],
@@ -383,13 +385,11 @@ export const finnStartDatoForPermitteringUtIfraSluttdato = (
     tidslinje: DatoMedKategori[]
 ) => {
     const indeksSluttDato = finnIndeksForDato(sluttdato, tidslinje);
-    console.log(formaterDato(tidslinje[indeksSluttDato].dato));
     let indeks = indeksSluttDato;
     while (
         tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
     ) {
         if (tidslinje[indeks].dato.isBefore(finnDato18MndTilbake(sluttdato))) {
-            console.log('spesialtilfelle i retur');
             return finnDato18MndTilbake(sluttdato);
         }
         indeks--;

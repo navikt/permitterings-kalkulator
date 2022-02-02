@@ -28,6 +28,7 @@ import {
     nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
 } from '../utils/beregningerForRegelverksendring1Jan';
 import lampeikon from './lampeikon.svg';
+import { erPermittertVedDato } from '../utils/tidslinje-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -63,48 +64,40 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     useEffect(() => {
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
-        setVisBeskjedLønnspliktPeriode(false);
-    }, [props.allePermitteringerOgFraværesPerioder]);
+        setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+    }, [props.tidslinje]);
 
     useEffect(() => {
-        if (resultatVises) {
+        const erPermittertPåSluttPåDagpengeForlengelse = erPermittertVedDato(
+            props.tidslinje,
+            regelEndringsDato1April
+        );
+        if (erPermittertPåSluttPåDagpengeForlengelse) {
             if (
                 harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse(
                     props.allePermitteringerOgFraværesPerioder.permitteringer,
                     regelEndring1Juli
                 )
-            )
+            ) {
                 setHarNåddMaksKoronaRegelverk(true);
-            else {
-                setHarNåddMaksKoronaRegelverk(
-                    !!nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering(
-                        props.tidslinje,
-                        regelEndringsDato1April,
-                        regelEndring1Juli
-                    )
+            } else {
+                const nåddMaksMedKoronaRegelverk = !!nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering(
+                    props.tidslinje,
+                    regelEndringsDato1April,
+                    regelEndring1Juli
                 );
+                if (nåddMaksMedKoronaRegelverk) {
+                    setGjeldendeRegelverk(
+                        Permitteringssregelverk.KORONA_ORDNING
+                    );
+                }
+                setHarNåddMaksKoronaRegelverk(nåddMaksMedKoronaRegelverk);
             }
         }
-    }, [
-        props.allePermitteringerOgFraværesPerioder.permitteringer,
-        regelEndring1Juli,
-        regelEndringsDato1April,
-        resultatVises,
-    ]);
-
-    useEffect(() => {
-        if (harNåddMaksKoronaRegelverk) {
-            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
-        }
-    }, [harNåddMaksKoronaRegelverk]);
+    }, [props.tidslinje]);
 
     //tidslinja er deaktivert i prod
     const skalViseTidslinje = false;
-
-    //(window.location.href.includes('labs') ||
-    //      process.env.NODE_ENV === 'development') &&
-
-    //props.tidslinje.length;
 
     useEffect(() => {
         if (

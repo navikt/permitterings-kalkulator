@@ -33,16 +33,11 @@ export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
                 tidslinje
             );
         } else {
-            console.log('dette skjer');
             startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
                 maksPermitteringNådd26Uker!!,
                 tidslinje
             );
         }
-        console.log(
-            'startdato 1 permittering: ',
-            formaterDato(startDatoForPermitteringDerMaksNås)
-        );
         if (startDatoForPermitteringDerMaksNås) {
             let forstePermitteringsDatoEtter1Juli = forsteJuli;
             let iteratorIndeks = indeksITidslinjeFor1Juli;
