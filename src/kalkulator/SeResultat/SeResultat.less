@@ -29,6 +29,10 @@
 }
 
 .utregningstekst {
+    animation: fadeInAnimation ease 2s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+
     position: relative;
     box-sizing: border-box;
     border-radius: 6px;
@@ -39,6 +43,15 @@
     flex-direction: column;
     align-self: center;
     margin-top: 1.5rem;
+
+    @keyframes fadeInAnimation {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+    }
 
     &__lampeikon {
         position: relative;

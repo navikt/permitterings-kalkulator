@@ -156,7 +156,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             <>
                                 <Element>
                                     Begynte lønnspliktperioden før 1. juli for
-                                    permitteringen fyllt inn fra
+                                    permitteringen fyllt inn fra {''}
                                     {formaterDato(
                                         arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                                             props.tidslinje,
