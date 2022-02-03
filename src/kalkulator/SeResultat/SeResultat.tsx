@@ -48,9 +48,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     const { regelEndring1Juli, regelEndringsDato1April } = useContext(
         PermitteringContext
     );
-    const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState(
-        Permitteringssregelverk.NORMALT_REGELVERK
-    );
+    const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
+        Permitteringssregelverk | undefined
+    >(Permitteringssregelverk.NORMALT_REGELVERK);
     const [
         harNåddMaksKoronaRegelverk,
         setHarNåddMaksKoronaRegelverk,
@@ -111,6 +111,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             setVisBeskjedLønnspliktPeriode(
                 !!kanHaLønnspliktFør1JuliSpesialtilfelle
             );
+            setGjeldendeRegelverk(undefined);
         }
     }, [
         props.tidslinje,
@@ -127,6 +128,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
         }
     };
+
+    const skalViseResultatTekst = gjeldeneRegelverk !== undefined;
 
     return (
         <>
@@ -156,7 +159,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             <>
                                 <Element>
                                     Begynte lønnspliktperioden før 1. juli for
-                                    permitteringen fyllt inn fra {''}
+                                    permitteringen fylt inn fra {''}
                                     {formaterDato(
                                         arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
                                             props.tidslinje,
@@ -202,16 +205,22 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 </div>
                             </>
                         )}
-                        <Utregningstekst
-                            tidslinje={props.tidslinje}
-                            allePermitteringerOgFraværesPerioder={
-                                props.allePermitteringerOgFraværesPerioder
-                            }
-                            harNåddMaksKoronaRegelverk={
-                                harNåddMaksKoronaRegelverk
-                            }
-                            gjeldendeRegelverk={gjeldeneRegelverk}
-                        />
+                        {skalViseResultatTekst && (
+                            <Utregningstekst
+                                tidslinje={props.tidslinje}
+                                allePermitteringerOgFraværesPerioder={
+                                    props.allePermitteringerOgFraværesPerioder
+                                }
+                                harNåddMaksKoronaRegelverk={
+                                    harNåddMaksKoronaRegelverk
+                                }
+                                gjeldendeRegelverk={
+                                    gjeldeneRegelverk
+                                        ? gjeldeneRegelverk
+                                        : Permitteringssregelverk.NORMALT_REGELVERK
+                                }
+                            />
+                        )}
                         <div
                             className={'se-resultat__tidslinje-wrapper'}
                             id="tidslinje-wrapper"
@@ -219,7 +228,11 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             {skalViseTidslinje && (
                                 <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
                                     <Tidslinje
-                                        gjeldendeRegelverk={gjeldeneRegelverk}
+                                        gjeldendeRegelverk={
+                                            gjeldeneRegelverk
+                                                ? gjeldeneRegelverk
+                                                : Permitteringssregelverk.NORMALT_REGELVERK
+                                        }
                                         allePermitteringerOgFraværesPerioder={
                                             props.allePermitteringerOgFraværesPerioder
                                         }

@@ -29,10 +29,6 @@
 }
 
 .utregningstekst {
-    animation: fadeInAnimation ease 2s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
-
     position: relative;
     box-sizing: border-box;
     border-radius: 6px;
@@ -43,6 +39,12 @@
     flex-direction: column;
     align-self: center;
     margin-top: 1.5rem;
+
+    &__tekst {
+        animation: fadeInAnimation ease 2s;
+        animation-iteration-count: 1;
+        animation-fill-mode: forwards;
+    }
 
     @keyframes fadeInAnimation {
         0% {

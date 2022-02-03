@@ -129,7 +129,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
      */
 
     return (
-        <>
+        <div className="utregningstekst__tekst">
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
             <Normaltekst className="utregningstekst__informasjonslenker">
@@ -144,7 +144,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                     Gå til veiviser for permittering
                 </Lenke>
             </Normaltekst>
-        </>
+        </div>
     );
 };
 
