@@ -13,7 +13,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { ReactComponent as PekIkon } from './cursor-touch-2.svg';
 import Tidslinje from '../Tidslinje/Tidslinje';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Undertittel, Element } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
 import { formaterDato } from '../utils/dato-utils';
@@ -21,14 +21,13 @@ import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
 import { PermitteringContext } from '../../ContextProvider';
-import { AlertStripeInfo } from 'nav-frontend-alertstriper';
-import { Checkbox } from 'nav-frontend-skjema';
 import {
     harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
     nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
 } from '../utils/beregningerForRegelverksendring1Jan';
 import lampeikon from './lampeikon.svg';
 import { erPermittertVedDato } from '../utils/tidslinje-utils';
+import { Checkbox } from '@navikt/ds-react';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -154,33 +153,54 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             alt=""
                         />
                         {visBeskjedLønnspliktPeriode && (
-                            <AlertStripeInfo
-                                className={
-                                    'utregningstekst_alert-lonnsplit-for-1-juli'
-                                }
-                            >
-                                Begynte lønnspliktperioden for permitteringen
-                                med start for permittering uten lønn{' '}
-                                {formaterDato(
-                                    arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
-                                        props.tidslinje,
-                                        regelEndringsDato1April,
-                                        regelEndring1Juli
-                                    )!!
-                                )}{' '}
-                                for permittering uten lønn før 1. juli?{' '}
-                                <Checkbox
-                                    label={'Ja'}
-                                    checked={
-                                        gjeldeneRegelverk ===
-                                        Permitteringssregelverk.KORONA_ORDNING
+                            <>
+                                <Element>
+                                    Begynte lønnspliktperioden før 1. juli for
+                                    permitteringen fyllt inn fra
+                                    {formaterDato(
+                                        arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
+                                            props.tidslinje,
+                                            regelEndringsDato1April,
+                                            regelEndring1Juli
+                                        )!!
+                                    )}
+                                    ?
+                                </Element>
+                                <div
+                                    className={
+                                        'utregningstekst__checkbokscontainer'
                                     }
-                                    onChange={() => {
-                                        endreRegelverk();
-                                        setResultatVises(true);
-                                    }}
-                                />
-                            </AlertStripeInfo>
+                                >
+                                    <Checkbox
+                                        className={'utregningstekst__checkboks'}
+                                        value="Ja"
+                                        checked={
+                                            gjeldeneRegelverk ===
+                                            Permitteringssregelverk.KORONA_ORDNING
+                                        }
+                                        onChange={() => {
+                                            endreRegelverk();
+                                            setResultatVises(true);
+                                        }}
+                                    >
+                                        Ja
+                                    </Checkbox>
+                                    <Checkbox
+                                        className={'utregningstekst__checkboks'}
+                                        value="Nei"
+                                        checked={
+                                            gjeldeneRegelverk ===
+                                            Permitteringssregelverk.NORMALT_REGELVERK
+                                        }
+                                        onChange={() => {
+                                            endreRegelverk();
+                                            setResultatVises(true);
+                                        }}
+                                    >
+                                        Nei
+                                    </Checkbox>
+                                </div>
+                            </>
                         )}
                         <Utregningstekst
                             tidslinje={props.tidslinje}
