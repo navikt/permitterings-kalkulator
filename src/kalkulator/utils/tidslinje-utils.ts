@@ -12,6 +12,7 @@ import {
     finnesIIntervaller,
     getSenesteDato,
 } from './dato-utils';
+import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
@@ -173,4 +174,18 @@ export const getSistePermitteringsdato = (
         }
     }
     return undefined;
+};
+
+export const finnFørstePermitteringsdatoFraDato = (
+    tidslinje: DatoMedKategori[],
+    dato: Dayjs
+) => {
+    const indeksDato = finnIndeksForDato(dato, tidslinje);
+    let iterator = indeksDato;
+    while (
+        tidslinje[iterator].kategori === DatointervallKategori.IKKE_PERMITTERT
+    ) {
+        iterator++;
+    }
+    return tidslinje[iterator].dato;
 };

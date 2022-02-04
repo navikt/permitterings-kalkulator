@@ -40,6 +40,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndringsDato1April,
     } = useContext(PermitteringContext);
 
+    //useEffect kun for å logge permitteringssituasjoner
     useEffect(() => {
         const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(
             props.tidslinje

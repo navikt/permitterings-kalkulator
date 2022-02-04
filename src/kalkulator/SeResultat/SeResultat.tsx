@@ -64,7 +64,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
         setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
-    }, [props.tidslinje]);
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
         const erPermittertPåSluttPåDagpengeForlengelse = erPermittertVedDato(
@@ -111,7 +111,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             setVisBeskjedLønnspliktPeriode(
                 !!kanHaLønnspliktFør1JuliSpesialtilfelle
             );
-            setGjeldendeRegelverk(undefined);
+            if (!!kanHaLønnspliktFør1JuliSpesialtilfelle) {
+                setGjeldendeRegelverk(undefined);
+            }
         }
     }, [
         props.tidslinje,
@@ -122,14 +124,11 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
 
     const endreRegelverk = () => {
         if (gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING) {
-            setResultatVises(false);
             setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
         } else {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
         }
     };
-
-    const skalViseResultatTekst = gjeldeneRegelverk !== undefined;
 
     return (
         <>
@@ -205,7 +204,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 </div>
                             </>
                         )}
-                        {skalViseResultatTekst && (
+                        {gjeldeneRegelverk && (
                             <Utregningstekst
                                 tidslinje={props.tidslinje}
                                 allePermitteringerOgFraværesPerioder={
