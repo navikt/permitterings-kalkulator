@@ -13,7 +13,7 @@ interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
     kategori: DatointervallKategori;
     grenserTilFraværHøyre?: boolean;
-    grenserTilFraværVenstre?: boolean;
+    grenserTilFraværEllerSlettetPermitteringVenstre?: boolean;
     key: number;
 }
 
@@ -69,25 +69,28 @@ export const lagHTMLObjektForPeriodeMedFarge = (
 ) => {
     return representasjonAvPerioderMedFarge.map((objekt, indeks) => {
         let borderRadius = '0';
-        if (objekt.kategori === DatointervallKategori.PERMITTERT_UTEN_FRAVÆR) {
-            if (indeks !== 0) {
-                borderRadius = '4px';
-                const grenserTilFraværVenstre =
-                    representasjonAvPerioderMedFarge[indeks - 1].kategori ===
-                        DatointervallKategori.PERMITTERT_MED_FRAVÆR ||
-                    DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI;
-                if (grenserTilFraværVenstre) {
-                    borderRadius = '0 4px 4px 0';
-                }
+        // dersom indeks er null kan ikke objektet grense til objekt til venstre, siden det er det første objektet i representasjonen
+        if (indeks !== 0) {
+            borderRadius = '4px';
+            const forrigePeriodesKategori =
+                representasjonAvPerioderMedFarge[indeks - 1].kategori;
+            const grenserTilAnnenKategoriFraVenstre =
+                forrigePeriodesKategori !== objekt.kategori &&
+                forrigePeriodesKategori !==
+                    DatointervallKategori.IKKE_PERMITTERT;
+            if (grenserTilAnnenKategoriFraVenstre) {
+                borderRadius = '0 4px 4px 0';
             }
-            if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
-                const grenserTilFraværHøyre =
-                    representasjonAvPerioderMedFarge[indeks + 1].kategori ===
-                        DatointervallKategori.PERMITTERT_MED_FRAVÆR ||
-                    DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI;
-                if (grenserTilFraværHøyre) {
-                    borderRadius = '4px 0 0 4px';
-                }
+        }
+        // dersom length-1 kan ikke objektet grense til objekt til høyre, siden det er det siste objektet representasjonen
+        if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
+            const nestePeriodesKategori =
+                representasjonAvPerioderMedFarge[indeks + 1].kategori;
+            const grenserTilAnnenKategoriFraHøyre =
+                nestePeriodesKategori !== objekt.kategori &&
+                nestePeriodesKategori !== DatointervallKategori.IKKE_PERMITTERT;
+            if (grenserTilAnnenKategoriFraHøyre) {
+                borderRadius = '4px 0 0 4px';
             }
         }
 
