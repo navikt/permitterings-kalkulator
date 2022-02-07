@@ -265,21 +265,23 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     tidslinje: DatoMedKategori[],
     dagensDato: Dayjs,
     datoRegelendring1Nov: Dayjs,
-    datoRegelEndring1Juli: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number
+    datoRegelEndring1Juli: Dayjs
 ): DatoIntervall | undefined => {
+    const maksAntallDagerUtenLønnsplikt =
+        regelverk === Permitteringssregelverk.KORONA_ORDNING ? 49 * 7 : 26 * 7;
+
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
             ? finnPermitteringssituasjonVedSluttPåForlengelse(
                   tidslinje,
                   datoRegelendring1Nov,
                   datoRegelEndring1Juli,
-                  maksAntallDagerUtenLønnsplikt
+                  49 * 7
               )
             : finnPermitteringssituasjonNormalRegelverk(
                   tidslinje,
                   datoRegelendring1Nov,
-                  maksAntallDagerUtenLønnsplikt
+                  26 * 7
               );
 
     switch (situasjon) {

@@ -96,7 +96,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     }, [props.tidslinje]);
 
     //tidslinja er deaktivert i prod
-    const skalViseTidslinje = false;
+    const skalViseTidslinje = true;
 
     useEffect(() => {
         if (

@@ -109,8 +109,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         gjeldendeTidslinje,
         dagensDato,
         regelEndringsDato1April,
-        regelEndring1Juli,
-        maksDagerUtenLønnsplikt
+        regelEndring1Juli
     );
 
     /*

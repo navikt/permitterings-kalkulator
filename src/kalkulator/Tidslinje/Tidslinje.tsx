@@ -26,17 +26,12 @@ import { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
     finnDato18MndTilbake,
-    finnPotensiellLøpendePermittering,
     formaterDatoIntervall,
 } from '../utils/dato-utils';
-import {
-    finnDatoForMaksPermittering,
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
-    PermitteringssituasjonVedSluttPaForlengelse,
-} from '../utils/beregningerForRegelverksendring1Jan';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForRegelverksendring1Jan';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -119,6 +114,19 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             setPosisjonsStylingDragElement('absolute');
         }
     }, [props.endringAv]);
+
+    useEffect(() => {
+        const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
+            props.gjeldendeRegelverk,
+            tidslinjeSomSkalVises,
+            dagensDato,
+            regelEndringsDato1April,
+            regelEndring1Juli
+        );
+        if (aktuell18mndsperiode) {
+            props.set18mndsPeriode(aktuell18mndsperiode?.datoTil!!);
+        }
+    }, [tidslinjeSomSkalVises, props.gjeldendeRegelverk]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
