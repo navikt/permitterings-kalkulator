@@ -64,6 +64,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
         setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+        setHarNåddMaksKoronaRegelverk(false);
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
@@ -86,14 +87,17 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                     regelEndring1Juli
                 );
                 if (nåddMaksMedKoronaRegelverk) {
-                    setGjeldendeRegelverk(
-                        Permitteringssregelverk.KORONA_ORDNING
-                    );
+                    setHarNåddMaksKoronaRegelverk(nåddMaksMedKoronaRegelverk);
                 }
-                setHarNåddMaksKoronaRegelverk(nåddMaksMedKoronaRegelverk);
             }
         }
     }, [props.tidslinje]);
+
+    useEffect(() => {
+        if (harNåddMaksKoronaRegelverk) {
+            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+        }
+    }, [harNåddMaksKoronaRegelverk]);
 
     //tidslinja er deaktivert i prod
     const skalViseTidslinje = true;
@@ -122,12 +126,15 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         props.allePermitteringerOgFraværesPerioder,
     ]);
 
-    const endreRegelverk = () => {
-        if (gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING) {
-            setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+    console.log(harNåddMaksKoronaRegelverk, gjeldeneRegelverk);
+
+    const endreRegelverk = (regelverk: Permitteringssregelverk) => {
+        if (gjeldeneRegelverk === regelverk) {
+            setGjeldendeRegelverk(undefined);
         } else {
-            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+            setGjeldendeRegelverk(regelverk);
         }
+        setResultatVises(true);
     };
 
     return (
@@ -181,8 +188,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                             Permitteringssregelverk.KORONA_ORDNING
                                         }
                                         onChange={() => {
-                                            endreRegelverk();
-                                            setResultatVises(true);
+                                            endreRegelverk(
+                                                Permitteringssregelverk.KORONA_ORDNING
+                                            );
                                         }}
                                     >
                                         Ja
@@ -195,8 +203,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                             Permitteringssregelverk.NORMALT_REGELVERK
                                         }
                                         onChange={() => {
-                                            endreRegelverk();
-                                            setResultatVises(true);
+                                            endreRegelverk(
+                                                Permitteringssregelverk.NORMALT_REGELVERK
+                                            );
                                         }}
                                     >
                                         Nei
