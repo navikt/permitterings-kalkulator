@@ -8,7 +8,7 @@ import {
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
-import { finnDatoForMaksPermittering } from './beregningerForRegelverksendring1Jan';
+import { finnDatoForMaksPermittering } from './beregningerForSluttPåDagpengeforlengelse';
 import { getPermitteringsoversiktFor18Måneder } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 const getTidslinje = (
