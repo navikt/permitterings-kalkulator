@@ -70,11 +70,13 @@ export const lagHTMLObjektForPeriodeMedFarge = (
     return representasjonAvPerioderMedFarge.map((objekt, indeks) => {
         let borderRadius = '0';
         // dersom indeks er null kan ikke objektet grense til objekt til venstre, siden det er det første objektet i representasjonen
+        let grenserTilAnnenKategoriFraVenstre = false;
+        let grenserTilAnnenKategoriFraHøyre = false;
         if (indeks !== 0) {
             borderRadius = '4px';
             const forrigePeriodesKategori =
                 representasjonAvPerioderMedFarge[indeks - 1].kategori;
-            const grenserTilAnnenKategoriFraVenstre =
+            grenserTilAnnenKategoriFraVenstre =
                 forrigePeriodesKategori !== objekt.kategori &&
                 forrigePeriodesKategori !==
                     DatointervallKategori.IKKE_PERMITTERT;
@@ -86,12 +88,18 @@ export const lagHTMLObjektForPeriodeMedFarge = (
         if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
             const nestePeriodesKategori =
                 representasjonAvPerioderMedFarge[indeks + 1].kategori;
-            const grenserTilAnnenKategoriFraHøyre =
+            grenserTilAnnenKategoriFraHøyre =
                 nestePeriodesKategori !== objekt.kategori &&
                 nestePeriodesKategori !== DatointervallKategori.IKKE_PERMITTERT;
             if (grenserTilAnnenKategoriFraHøyre) {
                 borderRadius = '4px 0 0 4px';
             }
+        }
+        if (
+            grenserTilAnnenKategoriFraHøyre &&
+            grenserTilAnnenKategoriFraVenstre
+        ) {
+            borderRadius = '0 0 0 0';
         }
 
         const style: React.CSSProperties = {
