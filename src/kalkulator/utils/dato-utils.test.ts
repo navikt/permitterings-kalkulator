@@ -17,7 +17,7 @@ import {
     tilGyldigDatoIntervall,
 } from './dato-utils';
 import { DatoIntervall } from '../typer';
-import { harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse } from './beregningerForRegelverksendring1Jan';
+import { harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse } from './beregningerForSluttPåDagpengeforlengelse';
 
 describe('Tester for dato-utils.ts', () => {
     test('antall dager mellom to datoer teller riktig for et tilfeldig utvalg av 1000 datoer i tidslinja', () => {
