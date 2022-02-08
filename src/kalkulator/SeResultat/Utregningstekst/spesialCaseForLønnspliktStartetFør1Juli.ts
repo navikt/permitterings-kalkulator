@@ -1,11 +1,11 @@
 import { DatointervallKategori, DatoMedKategori } from '../../typer';
 import dayjs, { Dayjs } from 'dayjs';
+import { formaterDato } from '../../utils/dato-utils';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
     finnDatoForMaksPermittering,
     finnStartDatoForPermitteringUtIfraSluttdato,
-} from '../../utils/beregningerForRegelverksendring1Jan';
-import { formaterDato } from '../../utils/dato-utils';
-import { finnDatoForMaksPermitteringNormaltRegelverk } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+} from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 
 export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
     tidslinje: DatoMedKategori[],

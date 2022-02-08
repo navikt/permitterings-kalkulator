@@ -12,10 +12,13 @@ import {
 } from './tidslinje-utils';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnPermitteringssituasjon1Januar,
+    finnPermitteringssituasjonVedSluttPåForlengelse,
     getPermitteringsoversiktFor18Måneder,
     PermitteringssituasjonVedSluttPaForlengelse,
-} from './beregningerForRegelverksendring1Jan';
+} from './beregningerForSluttPåDagpengeforlengelse';
+
+const datoSluttPåDagpengeforlengelse = dayjs('2022-04-01');
+const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
 
 const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
@@ -35,26 +38,24 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
     describe('Tester for finnPermitteringssituasjon1November', () => {
         test('Skal returnere MAKS_NÅDD_1_NOVEMBER i riktig tilfelle', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring1Januar = dayjs('2022-01-01');
-            const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
+
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoRegelendring1Januar.subtract(
+                        datoFra: datoSluttPåDagpengeforlengelse.subtract(
                             maksAntallPermitteringsdager,
                             'days'
                         ),
-                        datoTil: innføringsdatoRegelendring1Januar,
+                        datoTil: datoSluttPåDagpengeforlengelse,
                     },
                 ],
                 andreFraværsperioder: [],
             });
-            const situasjon = finnPermitteringssituasjon1Januar(
+            const situasjon = finnPermitteringssituasjonVedSluttPåForlengelse(
                 tidslinje,
-                innføringsdatoRegelendring1Januar,
+                datoSluttPåDagpengeforlengelse,
                 innføringsdatoRegelendring1Juli,
-                maksAntallPermitteringsdager,
-                true
+                maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
                 PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE
@@ -63,12 +64,10 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
 
         test('Skal returnere at maks antall dager er nådd etter 10. november ved løpende permittering iverksatt før 1. juli', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring1November = dayjs('2021-11-01');
-            const innføringsdatoRegelendring1Juli = dayjs('2021-07-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
-                        datoFra: innføringsdatoRegelendring1November.subtract(
+                        datoFra: datoSluttPåDagpengeforlengelse.subtract(
                             maksAntallPermitteringsdager - 1,
                             'days'
                         ),
@@ -77,12 +76,11 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 ],
                 andreFraværsperioder: [],
             });
-            const situasjon = finnPermitteringssituasjon1Januar(
+            const situasjon = finnPermitteringssituasjonVedSluttPåForlengelse(
                 tidslinje,
-                innføringsdatoRegelendring1November,
+                datoSluttPåDagpengeforlengelse,
                 innføringsdatoRegelendring1Juli,
-                maksAntallPermitteringsdager,
-                true
+                maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
                 PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE
@@ -93,16 +91,15 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
     describe('Tester for finn18mndsperiodeForMaksimeringAvPermitteringsdager', () => {
         test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
             const maksAntallPermitteringsdager = 49 * 7;
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
             const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
                 permitteringer: [
                     {
-                        datoFra: dayjs('2019-11-20'),
-                        datoTil: dayjs('2020-01-30'),
+                        datoFra: dayjs('2020-02-20'),
+                        datoTil: dayjs('2020-04-30'),
                     },
                     {
-                        datoFra: dayjs('2020-07-21'),
-                        datoTil: dayjs('2020-09-01'),
+                        datoFra: dayjs('2020-10-21'),
+                        datoTil: dayjs('2020-12-01'),
                     },
                 ],
                 andreFraværsperioder: [],
@@ -115,17 +112,16 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             );
             const aktuellPeriode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
-                innføringsdatoRegelendring,
+                datoSluttPåDagpengeforlengelse,
                 dagensDato,
                 maksAntallPermitteringsdager
             );
-            expect(aktuellPeriode?.datoFra).toEqual(dayjs('2020-07-21'));
+            expect(aktuellPeriode?.datoFra).toEqual(dayjs('2020-10-21'));
         });
     });
 
     describe('Tester for getPermitteringsoversikt', () => {
         test('Antall dager brukt skal være antall permitteringsdager, hvis ingen fravær', () => {
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
             const permitteringsstart = dayjs('2021-03-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
@@ -138,13 +134,12 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             });
             const { dagerBrukt } = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
-                innføringsdatoRegelendring
+                datoSluttPåDagpengeforlengelse
             );
             expect(dagerBrukt).toEqual(51);
         });
 
         test('skal trekke fra fraværsdager under permittering', () => {
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
             const permitteringsstart = dayjs('2021-03-01');
             const tidslinje = getTidslinje({
                 permitteringer: [
@@ -162,7 +157,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             });
             const oversikt = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
-                innføringsdatoRegelendring
+                datoSluttPåDagpengeforlengelse
             );
             expect(oversikt).toEqual({
                 dagerBrukt: 30,
@@ -201,9 +196,8 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
 
         //vet ikke om er relevant
         test('skal bare telle permitteringsdager i 18mndsperioden før innføringsdato', () => {
-            const innføringsdatoRegelendring = dayjs('2021-11-01');
             const start18mndsperiode = finnDato18MndTilbake(
-                innføringsdatoRegelendring
+                datoSluttPåDagpengeforlengelse
             );
             const tidslinje = getTidslinje({
                 permitteringer: [
@@ -216,7 +210,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             });
             const { dagerBrukt } = getPermitteringsoversiktFor18Måneder(
                 tidslinje,
-                innføringsdatoRegelendring
+                datoSluttPåDagpengeforlengelse
             );
             expect(dagerBrukt).toEqual(21);
         });

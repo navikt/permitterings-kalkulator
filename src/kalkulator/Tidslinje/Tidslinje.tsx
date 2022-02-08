@@ -31,7 +31,7 @@ import {
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForRegelverksendring1Jan';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

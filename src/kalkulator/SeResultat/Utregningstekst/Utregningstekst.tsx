@@ -20,11 +20,8 @@ import {
     loggKnappTrykketPå,
     loggPermitteringsSituasjon,
 } from '../../../utils/amplitudeEvents';
-import {
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
-} from '../../utils/beregningerForRegelverksendring1Jan';
 import { Permitteringssregelverk } from '../SeResultat';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 
 interface Props {
     tidslinje: DatoMedKategori[];

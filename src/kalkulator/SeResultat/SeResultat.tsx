@@ -24,7 +24,7 @@ import { PermitteringContext } from '../../ContextProvider';
 import {
     harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
     nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
-} from '../utils/beregningerForRegelverksendring1Jan';
+} from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { erPermittertVedDato } from '../utils/tidslinje-utils';
 import { Checkbox } from '@navikt/ds-react';
@@ -125,8 +125,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         regelEndringsDato1April,
         props.allePermitteringerOgFraværesPerioder,
     ]);
-
-    console.log(harNåddMaksKoronaRegelverk, gjeldeneRegelverk);
 
     const endreRegelverk = (regelverk: Permitteringssregelverk) => {
         if (gjeldeneRegelverk === regelverk) {

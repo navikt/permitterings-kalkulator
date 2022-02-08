@@ -3,12 +3,12 @@ import { DatoMedKategori } from '../../../typer';
 import { Dayjs } from 'dayjs';
 import './Tekstforklaring.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { getPermitteringsoversiktFor18Måneder } from '../../../utils/beregningerForRegelverksendring1Jan';
 import {
     finnDato18MndTilbake,
     formaterDatoIntervall,
 } from '../../../utils/dato-utils';
 import { skrivDagerIHeleUkerPlussDager } from '../../../SeResultat/Utregningstekst/utregningstekst-avvikling-av-koronaregler-utils';
+import { getPermitteringsoversiktFor18Måneder } from '../../../utils/beregningerForSluttPåDagpengeforlengelse';
 
 interface Props {
     sisteDagIPeriode: Dayjs;

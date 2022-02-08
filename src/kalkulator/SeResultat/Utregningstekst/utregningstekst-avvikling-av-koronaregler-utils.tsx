@@ -21,7 +21,7 @@ import {
     finnDatoForMaksPermittering,
     getPermitteringsoversiktFor18Måneder,
     finnPermitteringssituasjonVedSluttPåForlengelse,
-} from '../../utils/beregningerForRegelverksendring1Jan';
+} from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 import { finnFørstePermitteringsdatoFraDato } from '../../utils/tidslinje-utils';
 
 interface ResultatTekst {
