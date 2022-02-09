@@ -17,6 +17,7 @@ import {
 } from './dato-utils';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
+    finnFørstePermitteringsdatoFraDato,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
 import {
@@ -36,12 +37,11 @@ export enum PermitteringssituasjonVedSluttPaForlengelse {
 export const finnPermitteringssituasjonVedSluttPåForlengelse = (
     tidslinje: DatoMedKategori[],
     datoSluttPaDagepengeForlengelse: Dayjs,
-    datoRegelEndring1Juli: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonVedSluttPaForlengelse => {
     const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
         tidslinje,
-        datoRegelEndring1Juli,
+        datoSluttPaDagepengeForlengelse,
         maksAntallDagerUtenLønnsplikt
     );
     if (
@@ -275,7 +275,6 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
             ? finnPermitteringssituasjonVedSluttPåForlengelse(
                   tidslinje,
                   datoRegelendring1Nov,
-                  datoRegelEndring1Juli,
                   49 * 7
               )
             : finnPermitteringssituasjonNormalRegelverk(
@@ -295,14 +294,14 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 maksAntallDagerUtenLønnsplikt
             )!;
             return periode18mndsPeriodeNås;
-        case PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD:
+        case PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD:
             return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,
                 datoRegelendring1Nov,
                 dagensDato,
                 maksAntallDagerUtenLønnsplikt
             );
-        case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_UTREGNET:
+        case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE:
             const maksDatoNådd = finnDatoForMaksPermittering(
                 tidslinje,
                 datoRegelendring1Nov,
