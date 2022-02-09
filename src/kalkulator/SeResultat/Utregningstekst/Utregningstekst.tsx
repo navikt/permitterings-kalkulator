@@ -105,8 +105,7 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         props.gjeldendeRegelverk,
         gjeldendeTidslinje,
         dagensDato,
-        regelEndringsDato1April,
-        regelEndring1Juli
+        regelEndringsDato1April
     );
 
     /*

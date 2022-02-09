@@ -25,13 +25,18 @@ import { PermitteringContext } from '../../ContextProvider';
 import { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
+    finnDato18MndFram,
     finnDato18MndTilbake,
     formaterDatoIntervall,
 } from '../utils/dato-utils';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
-import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import {
+    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
+    finnDatoForMaksPermittering,
+    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
+} from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -116,15 +121,32 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.endringAv]);
 
     useEffect(() => {
-        const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-            props.gjeldendeRegelverk,
+        const antallDagerFørLønnsplikt =
+            props.gjeldendeRegelverk ===
+            Permitteringssregelverk.NORMALT_REGELVERK
+                ? 26 * 7
+                : 49 * 7;
+        const maksAntallPermitteringsdagerNådd = finnDatoForMaksPermittering(
             tidslinjeSomSkalVises,
-            dagensDato,
             regelEndringsDato1April,
-            regelEndring1Juli
+            antallDagerFørLønnsplikt
         );
-        if (aktuell18mndsperiode) {
-            props.set18mndsPeriode(aktuell18mndsperiode?.datoTil!!);
+        if (maksAntallPermitteringsdagerNådd) {
+            const forstePermitteringI18mndsIntervall = finnFørsteDatoMedPermitteringUtenFravær(
+                tidslinjeSomSkalVises,
+                finnDato18MndTilbake(maksAntallPermitteringsdagerNådd)
+            );
+            props.set18mndsPeriode(
+                finnDato18MndFram(forstePermitteringI18mndsIntervall!!.dato)
+            );
+        } else {
+            const intervallDerMaksKanNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+                tidslinjeSomSkalVises,
+                regelEndringsDato1April,
+                dagensDato,
+                antallDagerFørLønnsplikt
+            );
+            props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
         }
     }, [tidslinjeSomSkalVises, props.gjeldendeRegelverk]);
 
