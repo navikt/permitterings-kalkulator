@@ -2,6 +2,9 @@
 
 .kalkulator {
     &__draggable-periode {
+        animation: linear infinite;
+        animation-name: run;
+        -webkit-animation-duration: 1s;
         position: relative;
         height: 1.5rem;
         background-color: @navBla;
@@ -15,6 +18,17 @@
 
         &:hover {
             background-color: @navDypBla;
+        }
+        @keyframes run {
+            10% {
+                left: 80%;
+            }
+            10% {
+                left: calc(100% - 30px);
+            }
+            10% {
+                left: 50%;
+            }
         }
 
         .høyre {
