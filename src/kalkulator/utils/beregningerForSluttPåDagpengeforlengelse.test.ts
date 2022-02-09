@@ -54,7 +54,6 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             const situasjon = finnPermitteringssituasjonVedSluttPåForlengelse(
                 tidslinje,
                 datoSluttPåDagpengeforlengelse,
-                innføringsdatoRegelendring1Juli,
                 maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
@@ -79,7 +78,6 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             const situasjon = finnPermitteringssituasjonVedSluttPåForlengelse(
                 tidslinje,
                 datoSluttPåDagpengeforlengelse,
-                innføringsdatoRegelendring1Juli,
                 maksAntallPermitteringsdager
             );
             expect(situasjon).toEqual(
