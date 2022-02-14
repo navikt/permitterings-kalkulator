@@ -132,7 +132,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Du har permittert i 49 uker eller mer i
-                            18-MÅNEDERSINTERVALLET{' '}
+                            18-månedersperioden{' '}
                             {formaterDatoIntervall({
                                 datoFra: førstePermitteringI18mndsIntervall,
                                 datoTil: finnDato18MndFram(
@@ -176,8 +176,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             For permitteringer iverksatt før 1. juli 2021 kan du
                             permittere 49 uker i løpet av 18 måneder. Du har
-                            permittert i 49 uker eller mer i
-                            18-MÅNEDERSINTERVALLET{' '}
+                            permittert i 49 uker eller mer i 18-månedersperioden{' '}
                             {formaterDatoIntervall({
                                 datoFra: førstePermitteringI18mndsIntervall,
                                 datoTil: finnDato18MndFram(

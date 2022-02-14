@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-labs-gcp:
     name: Deploy to labs-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/endre-forlengelsesdato-1-april'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/animasjon-pa-tidslinja'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:

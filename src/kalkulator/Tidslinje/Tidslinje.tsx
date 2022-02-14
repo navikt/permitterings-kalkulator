@@ -208,6 +208,10 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? datoOnDrag
             : props.sisteDagIPeriode;
 
+    const skalVæreAnimasjonPåTidslinje = datoOnDrag
+        ? 'ingen-animasjon'
+        : 'animasjon';
+
     const get18mndsperiode = () => (
         <div
             style={{
@@ -223,7 +227,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     ).toString() + '%',
             }}
             id={'draggable-periode'}
-            className={'kalkulator__draggable-periode'}
+            className={
+                'kalkulator__draggable-periode ' + skalVæreAnimasjonPåTidslinje
+            }
         >
             <div className={'kalkulator__draggable-kant venstre'} />
             <div className={'kalkulator__draggable-tekst-container'}>
