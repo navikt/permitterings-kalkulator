@@ -2,9 +2,9 @@
 
 .kalkulator {
     &__draggable-periode {
-        animation: linear infinite;
+        animation: move 6s infinite ease-in-out;
         animation-name: run;
-        -webkit-animation-duration: 1s;
+        animation-delay: 3s;
         position: relative;
         height: 1.5rem;
         background-color: @navBla;
@@ -20,8 +20,17 @@
             background-color: @navDypBla;
         }
         @keyframes run {
-            10% {
-                left: 20.1rem;
+            0% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(0, 0);
+            }
+            70% {
+                transform: translate(0.5rem);
+            }
+            90% {
+                transform: translate(0.5rem);
             }
         }
 
