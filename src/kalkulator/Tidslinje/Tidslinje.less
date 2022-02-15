@@ -7,7 +7,7 @@
         background-color: @navBla;
         border-radius: 8px 8px 0 0;
         left: 0;
-        margin-top: -1.5rem;
+        margin-top: -3.5rem;
         display: flex;
         justify-content: center;
         z-index: 11;
@@ -53,9 +53,9 @@
     }
 
     &__draggable-kant {
-        height: 3.5rem;
+        height: 4.5rem;
         width: 3px;
-        border-radius: 20px;
+        border-radius: 20px 20px 0 0;
         background-color: @navBla;
     }
 
@@ -135,6 +135,44 @@
             position: absolute;
             top: 3rem;
             left: -2rem;
+        }
+
+        .dato-maks-nås {
+            position: relative;
+            left: 4px;
+        }
+
+        .dato-maks-nås-markør {
+            position: absolute;
+            width: 0.5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+            text-align: center;
+
+            .dato-maks-nås-sirkel {
+                border-radius: 27px;
+                border-color: transparent;
+                width: 0.75rem;
+                height: 0.75rem;
+                background-color: @navRodDarken80;
+                position: absolute;
+            }
+
+            .dato-maks-nås-strek {
+                border-radius: 8px 8px 0 0;
+                width: 2px;
+                height: 0.5rem;
+                background-color: @navRodDarken80;
+                position: relative;
+                bottom: 0.5rem;
+            }
+
+            .dato-maks-nås-tekst {
+                position: absolute;
+                bottom: 0.1rem;
+            }
         }
 
         .tidslinje-farge-forklaring {

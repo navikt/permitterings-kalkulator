@@ -34,9 +34,9 @@ import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermittering,
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -69,6 +69,19 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.sisteDagIPeriode
         )
     );
+
+    const datoMaksPermitteringNås =
+        props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
+            ? finnDatoForMaksPermitteringNormaltRegelverk(
+                  tidslinjeSomSkalVises,
+                  regelEndringsDato1April,
+                  26 * 7
+              )
+            : finnDatoForMaksPermitteringNormaltRegelverk(
+                  tidslinjeSomSkalVises,
+                  regelEndringsDato1April,
+                  49 * 7
+              );
 
     const [
         posisjonsStylingDragElement,
@@ -178,7 +191,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeSomSkalVises,
         props.breddeAvDatoObjektIProsent,
-        dagensDato
+        dagensDato,
+        datoMaksPermitteringNås
     );
     const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
         lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
@@ -248,6 +262,15 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         </div>
     );
 
+    const finnesSlettetPermittering =
+        props.gjeldendeRegelverk ===
+            Permitteringssregelverk.NORMALT_REGELVERK &&
+        !!tidslinjeSomSkalVises.find(
+            (objekt) =>
+                objekt.kategori ===
+                DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI
+        );
+
     return (
         <div className={'tidslinje'}>
             {
@@ -288,7 +311,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                                 {htmlElementerForHverDato}
                             </div>
                         </div>
-                        <Fargeforklaringer />
+                        {Fargeforklaringer(finnesSlettetPermittering)}
                     </div>
                 </>
             }

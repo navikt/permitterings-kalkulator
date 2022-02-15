@@ -38,19 +38,19 @@ const Tekstforklaring: FunctionComponent<Props> = (props) => {
                     datoTil: props.sisteDagIPeriode,
                 })}
             </Element>
-            <Normaltekst>
-                Du kan dra det blå drag-elementet for å se hvor mange
-                permitteringsdager som er innenfor en bestemt 18-månedsperiode.
-            </Normaltekst>
             <Element
                 className={'kalkulator__tidslinje-drag-element-forklaring'}
             >
-                Permittering i den markerte 18-månedsperioder:{' '}
+                Permittering i den markerte 18-månedersperioden:{' '}
                 {skrivDagerIHeleUkerPlussDager(
                     oversiktOverPermitteringi18mndsperiode
                 )}{' '}
                 ({oversiktOverPermitteringi18mndsperiode} dager).
             </Element>
+            <Normaltekst className={'tidslinje__drag-element-instruks'}>
+                Du kan dra det blå drag-elementet for å se hvor mange
+                permitteringsdager som er innenfor en bestemt 18-månedsperiode.
+            </Normaltekst>
         </div>
     );
 };

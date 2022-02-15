@@ -22,12 +22,14 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
 import { PermitteringContext } from '../../ContextProvider';
 import {
+    finnDatoForMaksPermittering,
     harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
     nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { erPermittertVedDato } from '../utils/tidslinje-utils';
 import { Checkbox } from '@navikt/ds-react';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -141,16 +143,19 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 3. Se resultatet av beregningen
             </Undertittel>
             <div className="se-resultat__innhold">
-                <Hovedknapp
-                    className="se-resultat__knapp"
-                    onClick={() => {
-                        setResultatVises(true);
-                        loggKnappTrykketPå('Se beregningen');
-                    }}
-                >
-                    <PekIkon className="se-resultat__knapp-ikon" />
-                    Se beregningen
-                </Hovedknapp>
+                {!!props.allePermitteringerOgFraværesPerioder.permitteringer[0]
+                    .datoFra && (
+                    <Hovedknapp
+                        className="se-resultat__knapp"
+                        onClick={() => {
+                            setResultatVises(true);
+                            loggKnappTrykketPå('Se beregningen');
+                        }}
+                    >
+                        <PekIkon className="se-resultat__knapp-ikon" />
+                        Se beregningen
+                    </Hovedknapp>
+                )}
 
                 {resultatVises && (
                     <div className="utregningstekst">

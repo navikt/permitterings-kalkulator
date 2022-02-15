@@ -1,6 +1,5 @@
 import { DatointervallKategori, DatoMedKategori } from '../typer';
 import React from 'react';
-import { Undertekst } from 'nav-frontend-typografi';
 import Årsmarkør from './Årsmarkør/Årsmarkør';
 import { Dayjs } from 'dayjs';
 import {
@@ -8,6 +7,7 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
+import Detail from '@navikt/ds-react/esm/typography/Detail';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
@@ -20,7 +20,8 @@ interface RepresentasjonAvPeriodeMedFarge {
 export const lagHTMLObjektForAlleDatoer = (
     tidslinjeObjekter: DatoMedKategori[],
     breddePerElement: number,
-    dagensDato: Dayjs
+    dagensDato: Dayjs,
+    datoMaksPermitteringNås?: Dayjs
 ) => {
     return tidslinjeObjekter.map((objekt: DatoMedKategori, indeks: number) => {
         const style: React.CSSProperties = {
@@ -29,7 +30,13 @@ export const lagHTMLObjektForAlleDatoer = (
         const erIdagBoolean = objekt.dato.isSame(dagensDato, 'day');
         const erIdag = erIdagBoolean ? ' dagens-dato' : '';
         const erÅrsmarkering = erFørsteJanuar(objekt.dato)
-            ? ' årsmarkering'
+            ? ' tidslinje-årsmarkering'
+            : '';
+        const erMaksDatoForPermittering =
+            datoMaksPermitteringNås &&
+            datoMaksPermitteringNås.isSame(objekt.dato, 'day');
+        const klassenavnHvisErMaksDato = erMaksDatoForPermittering
+            ? ' dato-maks-nås'
             : '';
         return (
             <div
@@ -41,20 +48,31 @@ export const lagHTMLObjektForAlleDatoer = (
                     erIdag +
                     ' ' +
                     formaterDato(objekt.dato) +
-                    erÅrsmarkering
+                    erÅrsmarkering +
+                    klassenavnHvisErMaksDato
                 }
             >
                 {erIdag && (
                     <div className={'tidslinje-dagens-dato-markør'}>
-                        <Undertekst
+                        <Detail
+                            size="small"
                             className={'tidslinje-dagens-dato-markør-tekst'}
                         >
                             I dag
                             <br />
                             {formaterDato(dagensDato)}
-                        </Undertekst>
+                        </Detail>
                         <div className={'tidslinje-dagens-dato-strek'} />
                         <div className={'tidslinje-dagens-dato-sirkel'} />
+                    </div>
+                )}
+                {erMaksDatoForPermittering && !erIdagBoolean && (
+                    <div className={'dato-maks-nås-markør'}>
+                        <Detail size="small" className={'dato-maks-nås-tekst'}>
+                            maks nådd
+                        </Detail>
+                        <div className={'dato-maks-nås-sirkel'} />
+                        <div className={'dato-maks-nås-strek'} />
                     </div>
                 )}
                 {erÅrsmarkering && <Årsmarkør dato={objekt.dato} />}
