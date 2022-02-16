@@ -34,7 +34,7 @@ export const lagHTMLObjektForAlleDatoer = (
             : '';
         const erMaksDatoForPermittering =
             datoMaksPermitteringNås &&
-            datoMaksPermitteringNås.isSame(objekt.dato, 'day');
+            datoMaksPermitteringNås.isSame(objekt.dato.add(1, 'day'), 'day');
         const klassenavnHvisErMaksDato = erMaksDatoForPermittering
             ? ' dato-maks-nås'
             : '';
@@ -58,9 +58,7 @@ export const lagHTMLObjektForAlleDatoer = (
                             size="small"
                             className={'tidslinje-dagens-dato-markør-tekst'}
                         >
-                            I dag
-                            <br />
-                            {formaterDato(dagensDato)}
+                            i dag
                         </Detail>
                         <div className={'tidslinje-dagens-dato-strek'} />
                         <div className={'tidslinje-dagens-dato-sirkel'} />
@@ -221,7 +219,7 @@ const finnFarge = (kategori: DatointervallKategori) => {
         return '#E3B0AB';
     }
     if (kategori === DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI) {
-        return '#6a6a6a';
+        return '#c2eaf7';
     }
     return 'transParent';
 };

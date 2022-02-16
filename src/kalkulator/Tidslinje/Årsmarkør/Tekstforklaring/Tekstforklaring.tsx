@@ -49,7 +49,8 @@ const Tekstforklaring: FunctionComponent<Props> = (props) => {
             </Element>
             <Normaltekst className={'tidslinje__drag-element-instruks'}>
                 Du kan dra det blå drag-elementet for å se hvor mange
-                permitteringsdager som er innenfor en bestemt 18-månedsperiode.
+                permitteringsdager som er innenfor en bestemt
+                18-månedersperiode.
             </Normaltekst>
         </div>
     );

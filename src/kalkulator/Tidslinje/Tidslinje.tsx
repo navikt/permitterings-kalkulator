@@ -27,6 +27,7 @@ import {
     antallDagerGått,
     finnDato18MndFram,
     finnDato18MndTilbake,
+    formaterDato,
     formaterDatoIntervall,
 } from '../utils/dato-utils';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
@@ -102,13 +103,28 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >('absolute');
 
     useEffect(() => {
-        if (
-            props.gjeldendeRegelverk ===
-            Permitteringssregelverk.NORMALT_REGELVERK
-        ) {
+        console.log(formaterDato(props.sisteDagIPeriode));
+        if (datoOnDrag === undefined) {
             const nyTidslinje: DatoMedKategori[] = [];
             props.tidslinje.forEach((datoMedKategori, index) => {
                 if (
+                    datoMaksPermitteringNås &&
+                    datoMedKategori.kategori !==
+                        DatointervallKategori.IKKE_PERMITTERT &&
+                    datoMedKategori.dato.isAfter(datoMaksPermitteringNås) &&
+                    datoMedKategori.dato.isBefore(
+                        props.sisteDagIPeriode.add(1, 'day')
+                    )
+                ) {
+                    const nyDatoMedKategori: DatoMedKategori = {
+                        dato: datoMedKategori.dato,
+                        kategori:
+                            DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+                    };
+                    nyTidslinje.push(nyDatoMedKategori);
+                } else if (
+                    props.gjeldendeRegelverk ===
+                        Permitteringssregelverk.NORMALT_REGELVERK &&
                     datoMedKategori.kategori !==
                         DatointervallKategori.IKKE_PERMITTERT &&
                     datoMedKategori.dato.isBefore(regelEndring1Juli)
@@ -125,7 +141,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             });
             setTidslinjeSomSkalVises(nyTidslinje);
         }
-    }, [props.tidslinje, regelEndring1Juli, props.gjeldendeRegelverk]);
+    }, [props.sisteDagIPeriode]);
 
     useEffect(() => {
         if (props.endringAv === 'datovelger') {
@@ -161,7 +177,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             );
             props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
         }
-    }, [tidslinjeSomSkalVises, props.gjeldendeRegelverk]);
+    }, [props.gjeldendeRegelverk]);
 
     useEffect(() => {
         const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
@@ -225,6 +241,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const skalVæreAnimasjonPåTidslinje = datoOnDrag
         ? 'ingen-animasjon'
         : 'animasjon';
+
+    console.log(formaterDato(props.sisteDagIPeriode));
 
     const get18mndsperiode = () => (
         <div
