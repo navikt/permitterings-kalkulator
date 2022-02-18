@@ -53,10 +53,11 @@
     }
 
     &__draggable-kant {
-        height: 4.5rem;
+        height: 5.5rem;
         width: 3px;
         border-radius: 20px 20px 0 0;
         background-color: @navBla;
+        z-index: -10;
     }
 
     &__draggable-tekst {
@@ -224,10 +225,10 @@
             transform: translate(0, 0);
         }
         70% {
-            transform: translate(0.5rem);
+            transform: translate(0, -0.5rem);
         }
         90% {
-            transform: translate(0.5rem);
+            transform: translate(0, -0.5rem);
         }
     }
 }
