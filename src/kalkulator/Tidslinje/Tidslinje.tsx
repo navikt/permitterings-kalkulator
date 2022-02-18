@@ -51,7 +51,6 @@ interface Props {
 }
 
 const Tidslinje: FunctionComponent<Props> = (props) => {
-    const [datoOnDrag, setDatoOnDrag] = useState<Dayjs | undefined>(undefined);
     const [tidslinjeSomSkalVises, setTidslinjeSomSkalVises] = useState<
         DatoMedKategori[]
     >(props.tidslinje);
@@ -60,16 +59,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         regelEndringsDato1April,
         regelEndring1Juli,
     } = useContext(PermitteringContext);
-    const [
-        absoluttPosisjonFraVenstreDragElement,
-        setAbsoluttPosisjonFraVenstreDragElement,
-    ] = useState(
-        regnUtPosisjonFraVenstreGittSluttdato(
-            tidslinjeSomSkalVises,
-            props.breddeAvDatoObjektIProsent,
-            props.sisteDagIPeriode
-        )
-    );
+    const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
+    const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
 
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
@@ -84,70 +75,43 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                   49 * 7
               );
 
-    const [
-        posisjonsStylingDragElement,
-        setPosisjonsStylingDragElement,
-    ] = useState<
-        | '-moz-initial'
-        | 'inherit'
-        | 'initial'
-        | 'revert'
-        | 'unset'
-        | '-webkit-sticky'
-        | 'absolute'
-        | 'fixed'
-        | 'relative'
-        | 'static'
-        | 'sticky'
-        | undefined
-    >('absolute');
-
     useEffect(() => {
-        console.log(formaterDato(props.sisteDagIPeriode));
-        if (datoOnDrag === undefined) {
-            const nyTidslinje: DatoMedKategori[] = [];
-            props.tidslinje.forEach((datoMedKategori, index) => {
-                if (
-                    datoMaksPermitteringNås &&
-                    datoMedKategori.kategori !==
-                        DatointervallKategori.IKKE_PERMITTERT &&
-                    datoMedKategori.dato.isAfter(datoMaksPermitteringNås) &&
-                    datoMedKategori.dato.isBefore(
-                        props.sisteDagIPeriode.add(1, 'day')
-                    )
-                ) {
-                    const nyDatoMedKategori: DatoMedKategori = {
-                        dato: datoMedKategori.dato,
-                        kategori:
-                            DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
-                    };
-                    nyTidslinje.push(nyDatoMedKategori);
-                } else if (
-                    props.gjeldendeRegelverk ===
-                        Permitteringssregelverk.NORMALT_REGELVERK &&
-                    datoMedKategori.kategori !==
-                        DatointervallKategori.IKKE_PERMITTERT &&
-                    datoMedKategori.dato.isBefore(regelEndring1Juli)
-                ) {
-                    const nyDatoMedKategori: DatoMedKategori = {
-                        dato: datoMedKategori.dato,
-                        kategori:
-                            DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
-                    };
-                    nyTidslinje.push(nyDatoMedKategori);
-                } else {
-                    nyTidslinje.push({ ...datoMedKategori });
-                }
-            });
-            setTidslinjeSomSkalVises(nyTidslinje);
-        }
-    }, [props.sisteDagIPeriode]);
-
-    useEffect(() => {
-        if (props.endringAv === 'datovelger') {
-            setPosisjonsStylingDragElement('absolute');
-        }
-    }, [props.endringAv]);
+        const nyTidslinje: DatoMedKategori[] = [];
+        props.tidslinje.forEach((datoMedKategori, index) => {
+            if (
+                datoMaksPermitteringNås &&
+                datoMedKategori.kategori !==
+                    DatointervallKategori.IKKE_PERMITTERT &&
+                datoMedKategori.dato.isAfter(datoMaksPermitteringNås) &&
+                datoMedKategori.dato.isBefore(
+                    props.sisteDagIPeriode.add(1, 'day')
+                )
+            ) {
+                const nyDatoMedKategori: DatoMedKategori = {
+                    dato: datoMedKategori.dato,
+                    kategori:
+                        DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+                };
+                nyTidslinje.push(nyDatoMedKategori);
+            } else if (
+                props.gjeldendeRegelverk ===
+                    Permitteringssregelverk.NORMALT_REGELVERK &&
+                datoMedKategori.kategori !==
+                    DatointervallKategori.IKKE_PERMITTERT &&
+                datoMedKategori.dato.isBefore(regelEndring1Juli)
+            ) {
+                const nyDatoMedKategori: DatoMedKategori = {
+                    dato: datoMedKategori.dato,
+                    kategori:
+                        DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+                };
+                nyTidslinje.push(nyDatoMedKategori);
+            } else {
+                nyTidslinje.push({ ...datoMedKategori });
+            }
+        });
+        setTidslinjeSomSkalVises(nyTidslinje);
+    }, [datoOnDrag]);
 
     useEffect(() => {
         const antallDagerFørLønnsplikt =
@@ -179,31 +143,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         }
     }, [props.gjeldendeRegelverk]);
 
-    useEffect(() => {
-        const nyPosisjonFraVenstre = regnUtPosisjonFraVenstreGittSluttdato(
-            tidslinjeSomSkalVises,
-            props.breddeAvDatoObjektIProsent,
-            props.sisteDagIPeriode
-        );
-        if (datoOnDrag && !datoOnDrag.isSame(props.sisteDagIPeriode, 'day')) {
-            const posisjonDragElement = regnUtPosisjonFraVenstreGittSluttdato(
-                tidslinjeSomSkalVises,
-                props.breddeAvDatoObjektIProsent,
-                datoOnDrag
-            );
-            setAbsoluttPosisjonFraVenstreDragElement(
-                nyPosisjonFraVenstre - posisjonDragElement
-            );
-        } else {
-            setAbsoluttPosisjonFraVenstreDragElement(nyPosisjonFraVenstre);
-        }
-    }, [
-        datoOnDrag,
-        props.sisteDagIPeriode,
-        props.breddeAvDatoObjektIProsent,
-        tidslinjeSomSkalVises,
-    ]);
-
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeSomSkalVises,
         props.breddeAvDatoObjektIProsent,
@@ -216,8 +155,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     const OnTidslinjeDrag = () => {
-        props.setEndringAv('tidslinje');
-        setPosisjonsStylingDragElement('static');
+        setAnimasjonSkalVises(false);
         let indeksStartDato = 0;
         let minimumAvstand = 1000;
         htmlElementerForHverDato.forEach((objekt, indeks) => {
@@ -233,28 +171,20 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         setDatoOnDrag(tidslinjeSomSkalVises[indeksStartDato].dato);
     };
 
-    const datoVisesPaDragElement =
-        props.endringAv === 'tidslinje' && datoOnDrag
-            ? datoOnDrag
-            : props.sisteDagIPeriode;
+    const skalVæreAnimasjonPåTidslinje = animasjonSkalVises
+        ? 'animasjon'
+        : 'ingen-animasjon';
 
-    const skalVæreAnimasjonPåTidslinje = datoOnDrag
-        ? 'ingen-animasjon'
-        : 'animasjon';
-
-    console.log(formaterDato(props.sisteDagIPeriode));
-
+    console.log(formaterDato(tidslinjeSomSkalVises[0].dato));
     const get18mndsperiode = () => (
         <div
             style={{
-                position: posisjonsStylingDragElement,
-                left: absoluttPosisjonFraVenstreDragElement.toString() + '%',
                 width:
                     (
                         props.breddeAvDatoObjektIProsent *
                         antallDagerGått(
-                            finnDato18MndTilbake(datoVisesPaDragElement),
-                            datoVisesPaDragElement
+                            finnDato18MndTilbake(dagensDato),
+                            dagensDato
                         )
                     ).toString() + '%',
             }}
@@ -267,8 +197,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             <div className={'kalkulator__draggable-tekst-container'}>
                 <Normaltekst>
                     {formaterDatoIntervall({
-                        datoFra: finnDato18MndTilbake(datoVisesPaDragElement),
-                        datoTil: datoVisesPaDragElement,
+                        datoFra: finnDato18MndTilbake(datoOnDrag),
+                        datoTil: datoOnDrag,
                     })}
                 </Normaltekst>
                 <Element className={'kalkulator__draggable-tekst'}>
@@ -296,7 +226,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     <Tekstforklaring
                         tidslinje={tidslinjeSomSkalVises}
                         sisteDagIPeriode={props.sisteDagIPeriode}
-                        datoVisesPaDragElement={datoVisesPaDragElement}
+                        datoVisesPaDragElement={datoOnDrag}
                     />
 
                     <div

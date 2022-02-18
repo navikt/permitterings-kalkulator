@@ -136,7 +136,7 @@ export const regnUtHorisontalAvstandMellomToElement = (
     const element2 = document.getElementById(id2);
     const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
     const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
-    const avstand = posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.right!;
+    const avstand = posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.left!;
     return Math.abs(avstand);
 };
 
@@ -184,12 +184,15 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
     let rekkefølgeTeller = 1;
     tidslinjeObjekter.forEach((objekt, indeks) => {
         if (indeks !== 0) {
+            //sjekker om sekvensen er et element lengre av at de har samme kategori
             if (
                 tidslinjeObjekter[indeks - 1].kategori ===
                 tidslinjeObjekter[indeks].kategori
             ) {
                 rekkefølgeTeller++;
-            } else {
+            }
+            //dersom de ikke har samme kategori legges den forrige sekvensen til med lengde=rekkefølgeteller
+            else {
                 const fargeElement: RepresentasjonAvPeriodeMedFarge = {
                     antallDagerISekvens: rekkefølgeTeller,
                     kategori: tidslinjeObjekter[indeks - 1].kategori,
@@ -198,6 +201,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
                 fargePerioder.push(fargeElement);
                 rekkefølgeTeller = 1;
             }
+            //hvis det er siste element i tidslinja legges nåværende sekvensen til direkte fordi iterasjonene er over
             if (indeks === tidslinjeObjekter.length - 1) {
                 const fargeElement: RepresentasjonAvPeriodeMedFarge = {
                     antallDagerISekvens: rekkefølgeTeller,

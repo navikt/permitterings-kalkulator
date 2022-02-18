@@ -15,7 +15,6 @@ import {
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
-import { AlertStripeAdvarsel } from 'nav-frontend-alertstriper';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
@@ -40,12 +39,6 @@ const Kalkulator = () => {
         regelEndringsDato1April
     );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
-    const [
-        sisteDatoVistPåTidslinje,
-        setSisteDatoVistPåTidslinje,
-    ] = useState<Dayjs>(
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
-    );
 
     useEffect(() => {
         loggSidevinsing();
@@ -53,22 +46,8 @@ const Kalkulator = () => {
 
     useEffect(() => {
         setTidslinje(
-            konstruerTidslinje(
-                allePermitteringerOgFraværesPerioder,
-                dagensDato,
-                sisteDatoVistPåTidslinje
-            )
+            konstruerTidslinje(allePermitteringerOgFraværesPerioder, dagensDato)
         );
-    }, [allePermitteringerOgFraværesPerioder, sisteDatoVistPåTidslinje]);
-
-    useEffect(() => {
-        const nySisteDatoPåTidslinjen = regnUtHvaSisteDatoPåTidslinjenSkalVære(
-            allePermitteringerOgFraværesPerioder,
-            dagensDato
-        );
-        if (nySisteDatoPåTidslinjen.isAfter(sisteDatoVistPåTidslinje)) {
-            setSisteDatoVistPåTidslinje(nySisteDatoPåTidslinjen);
-        }
     }, [allePermitteringerOgFraværesPerioder]);
 
     return (

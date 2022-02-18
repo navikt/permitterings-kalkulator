@@ -17,8 +17,7 @@ import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
 ): DatoIntervall & { erLøpende: false } => {
-    const bakover18mnd = finnDato18MndTilbake(dagensDato);
-    const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
+    const maksGrenseIBakoverITid = finnDato18MndTilbake(dagensDato);
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
 
     return {
@@ -95,18 +94,18 @@ export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
 
 export const konstruerTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs,
-    sisteDatoVistPåTidslinjen: Dayjs
+    dagensDato: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-
     const antallObjektITidslinje = antallDagerGått(
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra,
-        sisteDatoVistPåTidslinjen
+        finnDato18MndTilbake(dagensDato),
+        finnDato18MndFram(dagensDato)
     );
-    const startDato = finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
-        finneKategori(startDato, allePermitteringerOgFravær)
+        finneKategori(
+            finnDato18MndTilbake(dagensDato),
+            allePermitteringerOgFravær
+        )
     );
     for (let dag = 1; dag < antallObjektITidslinje; dag++) {
         const nesteDag = listeMedTidslinjeObjekter[dag - 1].dato.add(1, 'day');
