@@ -114,6 +114,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [datoOnDrag]);
 
     useEffect(() => {
+        console.log(props.tidslinje.length, tidslinjeSomSkalVises.length);
         const antallDagerFørLønnsplikt =
             props.gjeldendeRegelverk ===
             Permitteringssregelverk.NORMALT_REGELVERK
@@ -175,17 +176,17 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
         ? 'animasjon'
         : 'ingen-animasjon';
 
-    console.log(formaterDato(tidslinjeSomSkalVises[0].dato));
     const get18mndsperiode = () => (
         <div
             style={{
                 width:
                     (
                         props.breddeAvDatoObjektIProsent *
-                        antallDagerGått(
-                            finnDato18MndTilbake(dagensDato),
-                            dagensDato
-                        )
+                        (antallDagerGått(
+                            finnDato18MndTilbake(datoOnDrag),
+                            datoOnDrag
+                        ) -
+                            1)
                     ).toString() + '%',
             }}
             id={'draggable-periode'}

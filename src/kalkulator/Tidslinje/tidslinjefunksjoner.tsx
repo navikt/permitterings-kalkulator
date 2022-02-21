@@ -100,7 +100,7 @@ export const lagHTMLObjektForPeriodeMedFarge = (
                 borderRadius = '0 4px 4px 0';
             }
         }
-        // dersom length-1 kan ikke objektet grense til objekt til høyre, siden det er det siste objektet representasjonen
+        // dersom = length-1 kan ikke objektet grense til objekt til høyre, siden det er det siste objektet representasjonen
         if (indeks !== representasjonAvPerioderMedFarge.length - 1) {
             const nestePeriodesKategori =
                 representasjonAvPerioderMedFarge[indeks + 1].kategori;
@@ -136,8 +136,13 @@ export const regnUtHorisontalAvstandMellomToElement = (
     const element2 = document.getElementById(id2);
     const posisjonBeskrivelse1 = element1?.getBoundingClientRect();
     const posisjonBeskrivelse2 = element2?.getBoundingClientRect();
-    const avstand = posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.left!;
-    return Math.abs(avstand);
+    const avstand1 = Math.abs(
+        posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.left!
+    );
+    const avstand2 = Math.abs(
+        posisjonBeskrivelse1?.right! - posisjonBeskrivelse2?.right!
+    );
+    return Math.abs(avstand1 + avstand2);
 };
 
 export const finnBreddeAvObjekt = (id: string) => {
@@ -182,6 +187,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
 ) => {
     const fargePerioder: RepresentasjonAvPeriodeMedFarge[] = [];
     let rekkefølgeTeller = 1;
+    let sumAvAlleSekvenser = 1;
     tidslinjeObjekter.forEach((objekt, indeks) => {
         if (indeks !== 0) {
             //sjekker om sekvensen er et element lengre av at de har samme kategori
@@ -199,6 +205,7 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
                     key: indeks,
                 };
                 fargePerioder.push(fargeElement);
+                sumAvAlleSekvenser += rekkefølgeTeller;
                 rekkefølgeTeller = 1;
             }
             //hvis det er siste element i tidslinja legges nåværende sekvensen til direkte fordi iterasjonene er over
@@ -208,10 +215,19 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
                     kategori: tidslinjeObjekter[indeks].kategori,
                     key: indeks,
                 };
+                sumAvAlleSekvenser += rekkefølgeTeller;
                 fargePerioder.push(fargeElement);
             }
         }
     });
+    console.log(
+        sumAvAlleSekvenser,
+        antallDagerGått(
+            tidslinjeObjekter[0].dato,
+            tidslinjeObjekter[tidslinjeObjekter.length - 1].dato
+        ),
+        tidslinjeObjekter.length
+    );
     return fargePerioder;
 };
 
