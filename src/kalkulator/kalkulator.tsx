@@ -7,13 +7,9 @@ import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
-import {
-    finnInitialgrenserForTidslinjedatoer,
-    konstruerTidslinje,
-    regnUtHvaSisteDatoPåTidslinjenSkalVære,
-} from './utils/tidslinje-utils';
+import { konstruerTidslinje } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
@@ -29,11 +25,6 @@ const Kalkulator = () => {
         permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
-
-    const [
-        sisteDagI18mndsPeriodeEndretAv,
-        setsteDagI18mndsPeriodeEndretAv,
-    ] = useState<'datovelger' | 'tidslinje' | 'ingen'>('ingen');
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         regelEndringsDato1April
@@ -79,9 +70,7 @@ const Kalkulator = () => {
                     }
                 />
                 <SeResultat
-                    setEndringAv={setsteDagI18mndsPeriodeEndretAv}
                     tidslinje={tidslinje}
-                    endringAv={sisteDagI18mndsPeriodeEndretAv}
                     sisteDagIPeriode={sisteDagI18mndsPeriode}
                     set18mndsPeriode={setSisteDagI18mndsPeriode}
                     allePermitteringerOgFraværesPerioder={

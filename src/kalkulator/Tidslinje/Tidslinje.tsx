@@ -40,12 +40,9 @@ import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-ut
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Dayjs) => void;
     sisteDagIPeriode: Dayjs;
     breddeAvDatoObjektIProsent: number;
-    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
-    setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
     tidslinje: DatoMedKategori[];
     gjeldendeRegelverk: Permitteringssregelverk;
 }
@@ -61,6 +58,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
+    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
+        regelEndringsDato1April
+    );
 
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK

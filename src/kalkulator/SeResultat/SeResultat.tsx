@@ -35,8 +35,6 @@ interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Dayjs) => void;
     sisteDagIPeriode: Dayjs;
-    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
-    setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
     tidslinje: DatoMedKategori[];
 }
 
@@ -244,9 +242,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                                 ? gjeldeneRegelverk
                                                 : Permitteringssregelverk.NORMALT_REGELVERK
                                         }
-                                        allePermitteringerOgFraværesPerioder={
-                                            props.allePermitteringerOgFraværesPerioder
-                                        }
                                         set18mndsPeriode={
                                             props.set18mndsPeriode
                                         }
@@ -257,8 +252,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                             'tidslinje-wrapper',
                                             props.tidslinje.length
                                         )}
-                                        endringAv={props.endringAv}
-                                        setEndringAv={props.setEndringAv}
                                         tidslinje={props.tidslinje}
                                     />
                                 </Ekspanderbartpanel>
