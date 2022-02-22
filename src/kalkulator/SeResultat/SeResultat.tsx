@@ -50,11 +50,7 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const {
-        regelEndring1Juli,
-        regelEndringsDato1April,
-        dagensDato,
-    } = useContext(PermitteringContext);
+    const { regelEndring1Juli, dagensDato } = useContext(PermitteringContext);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
     >(Permitteringssregelverk.NORMALT_REGELVERK);
@@ -78,11 +74,14 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             )
         ) {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+            console.log('dette skjer 1');
         }
-    }, [props.tidslinje]);
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     //tidslinja er deaktivert i prod
     const skalViseTidslinje = true;
+
+    console.log(gjeldeneRegelverk);
 
     useEffect(() => {
         const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
@@ -92,17 +91,14 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 dagensDato,
                 grenseDatoForPotensiellLønnspliktFør1Juli
             ) &&
-            gjeldeneRegelverk !== Permitteringssregelverk.KORONA_ORDNING
+            gjeldeneRegelverk === Permitteringssregelverk.NORMALT_REGELVERK &&
+            !visBeskjedLønnspliktPeriode
         ) {
             setVisBeskjedLønnspliktPeriode(true);
             setGjeldendeRegelverk(undefined);
+            console.log('dette skjer 2');
         }
-    }, [
-        props.tidslinje,
-        regelEndring1Juli,
-        regelEndringsDato1April,
-        props.allePermitteringerOgFraværesPerioder,
-    ]);
+    }, [gjeldeneRegelverk, props.tidslinje]);
 
     const endreRegelverk = (regelverk: Permitteringssregelverk) => {
         if (gjeldeneRegelverk === regelverk) {

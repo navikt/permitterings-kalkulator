@@ -381,6 +381,10 @@ export const finnUtOmKoronaregelverkSkalBrukes = (
         sistePermittering,
         tidslinje
     );
+    console.log(
+        sistePermittering.isSameOrAfter(dagensDato),
+        permitteringsStart.isBefore(regelEndring1Juli)
+    );
     return (
         sistePermittering.isSameOrAfter(dagensDato) &&
         permitteringsStart.isBefore(regelEndring1Juli)
