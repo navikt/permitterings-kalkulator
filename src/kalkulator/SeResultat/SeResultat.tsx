@@ -16,25 +16,12 @@ import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel, Element } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
-import { formaterDato } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
 import { PermitteringContext } from '../../ContextProvider';
-import {
-    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
-    finnStartDatoForPermitteringUtIfraSluttdato,
-    finnUtOmKoronaregelverkSkalBrukes,
-    harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
-    nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
-} from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
-import {
-    erPermittertVedDato,
-    finnSisteDatoMedPermitteringUtenFravær,
-} from '../utils/tidslinje-utils';
 import { Checkbox } from '@navikt/ds-react';
-import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -60,30 +47,22 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ] = useState(false);
 
     useEffect(() => {
+        console.log('useeffect 1');
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
         setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+    }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
-        if (
-            finnUtOmKoronaregelverkSkalBrukes(
-                props.tidslinje,
-                dagensDato,
-                regelEndring1Juli
-            )
-        ) {
+        console.log('useeffect 2');
+        const skalVærePåKoronaRegelverk = finnUtOmKoronaregelverkSkalBrukes(
+            props.tidslinje,
+            dagensDato,
+            regelEndring1Juli
+        );
+        if (skalVærePåKoronaRegelverk) {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
-            console.log('dette skjer 1');
         }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
-
-    //tidslinja er deaktivert i prod
-    const skalViseTidslinje = true;
-
-    console.log(gjeldeneRegelverk);
-
-    useEffect(() => {
         const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
         if (
             finnUtOmKoronaregelverkSkalBrukes(
@@ -91,14 +70,16 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 dagensDato,
                 grenseDatoForPotensiellLønnspliktFør1Juli
             ) &&
-            gjeldeneRegelverk === Permitteringssregelverk.NORMALT_REGELVERK &&
-            !visBeskjedLønnspliktPeriode
+            !visBeskjedLønnspliktPeriode &&
+            !skalVærePåKoronaRegelverk
         ) {
             setVisBeskjedLønnspliktPeriode(true);
             setGjeldendeRegelverk(undefined);
-            console.log('dette skjer 2');
         }
-    }, [gjeldeneRegelverk, props.tidslinje]);
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+
+    //tidslinja er deaktivert i prod
+    const skalViseTidslinje = true;
 
     const endreRegelverk = (regelverk: Permitteringssregelverk) => {
         if (gjeldeneRegelverk === regelverk) {

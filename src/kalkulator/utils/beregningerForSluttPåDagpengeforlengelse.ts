@@ -18,7 +18,6 @@ import {
 } from './dato-utils';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
-    finnFørstePermitteringsdatoFraDato,
     finnSisteDatoMedPermitteringUtenFravær,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
@@ -98,9 +97,19 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
-        return potensiellDatoForMaksPeriode.add(
-            maksAntallDagerUtenLønnsplikt - antallDagerPermittert + 1
+    console.log(
+        maksAntallDagerUtenLønnsplikt - antallDagerPermittert,
+        formaterDato(potensiellDatoForMaksPeriode),
+        'skal være mindre'
+    );
+    if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
+        const datoMaksNåsVedUtvidetPermittering = dayjs(
+            potensiellDatoForMaksPeriode
+        );
+
+        return datoMaksNåsVedUtvidetPermittering.add(
+            maksAntallDagerUtenLønnsplikt - antallDagerPermittert,
+            'days'
         );
     }
     return potensiellDatoForMaksPeriode;
@@ -382,8 +391,11 @@ export const finnUtOmKoronaregelverkSkalBrukes = (
         tidslinje
     );
     console.log(
-        sistePermittering.isSameOrAfter(dagensDato),
-        permitteringsStart.isBefore(regelEndring1Juli)
+        'verdier:',
+        formaterDato(dagensDato),
+        formaterDato(regelEndring1Juli),
+        formaterDato(sistePermittering),
+        formaterDato(permitteringsStart)
     );
     return (
         sistePermittering.isSameOrAfter(dagensDato) &&
@@ -395,14 +407,15 @@ export const finnStartDatoForPermitteringUtIfraSluttdato = (
     sluttdato: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {
+    console.log(
+        'prøver å finne startdato fra sluttdato:',
+        formaterDato(sluttdato)
+    );
     const indeksSluttDato = finnIndeksForDato(sluttdato, tidslinje);
     let indeks = indeksSluttDato;
     while (
         tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
     ) {
-        if (tidslinje[indeks].dato.isBefore(finnDato18MndTilbake(sluttdato))) {
-            return finnDato18MndTilbake(sluttdato);
-        }
         indeks--;
     }
     return tidslinje[indeks + 1].dato;
