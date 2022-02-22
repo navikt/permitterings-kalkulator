@@ -3,78 +3,29 @@ import dayjs, { Dayjs } from 'dayjs';
 import { formaterDato } from '../../utils/dato-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
-    finnDatoForMaksPermittering,
+    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
     finnStartDatoForPermitteringUtIfraSluttdato,
 } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
+import { finnSisteDatoMedPermitteringUtenFravær } from '../../utils/tidslinje-utils';
 
 export const arbeidsgiverPotensieltStartetLønnspliktFør1Juli = (
     tidslinje: DatoMedKategori[],
     datoRegelEndring: Dayjs,
     forsteJuli: Dayjs
-): Dayjs | undefined => {
-    const indeksITidslinjeFor1Juli = tidslinje.findIndex((dato) =>
-        dato.dato.isSame(forsteJuli, 'day')
+): boolean => {
+    const grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato = dayjs(
+        '09-01-2021'
     );
-    const maksPermitteringNådd49Uker = finnDatoForMaksPermittering(
-        tidslinje,
-        datoRegelEndring,
-        49 * 7
+    const sistePermittering = finnSisteDatoMedPermitteringUtenFravær(tidslinje);
+    const permitteringsStart = finnStartDatoForPermitteringUtIfraSluttdato(
+        sistePermittering,
+        tidslinje
     );
-    const maksPermitteringNådd26Uker = finnDatoForMaksPermitteringNormaltRegelverk(
-        tidslinje,
-        datoRegelEndring,
-        26 * 7
+
+    return (
+        permitteringsStart.isSameOrBefore(
+            grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato,
+            'day'
+        ) && permitteringsStart.isSameOrAfter(forsteJuli, 'day')
     );
-    if (maksPermitteringNådd49Uker || maksPermitteringNådd26Uker) {
-        let startDatoForPermitteringDerMaksNås;
-        if (maksPermitteringNådd49Uker) {
-            startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
-                maksPermitteringNådd49Uker,
-                tidslinje
-            );
-        } else {
-            startDatoForPermitteringDerMaksNås = finnStartDatoForPermitteringUtIfraSluttdato(
-                maksPermitteringNådd26Uker!!,
-                tidslinje
-            );
-        }
-        if (startDatoForPermitteringDerMaksNås) {
-            let forstePermitteringsDatoEtter1Juli = forsteJuli;
-            let iteratorIndeks = indeksITidslinjeFor1Juli;
-            while (
-                forstePermitteringsDatoEtter1Juli.isSameOrBefore(
-                    startDatoForPermitteringDerMaksNås
-                )
-            ) {
-                iteratorIndeks++;
-                if (
-                    tidslinje[iteratorIndeks].kategori !==
-                    DatointervallKategori.IKKE_PERMITTERT
-                ) {
-                    forstePermitteringsDatoEtter1Juli =
-                        tidslinje[iteratorIndeks].dato;
-                    break;
-                }
-            }
-            if (
-                forstePermitteringsDatoEtter1Juli.isSame(
-                    startDatoForPermitteringDerMaksNås,
-                    'date'
-                )
-            ) {
-                const grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato = dayjs(
-                    '09-01-2021'
-                );
-                if (
-                    startDatoForPermitteringDerMaksNås.isBefore(
-                        grenseDatoForLønnspliktPotensieltStartetFørNullstillingsDato,
-                        'day'
-                    )
-                ) {
-                    return startDatoForPermitteringDerMaksNås;
-                }
-            }
-        }
-    }
-    return undefined;
 };

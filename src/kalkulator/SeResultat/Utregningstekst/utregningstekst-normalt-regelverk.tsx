@@ -115,22 +115,20 @@ export const lagResultatTekstNormaltRegelverk = (
                     <>
                         <Element>
                             Du kan permittere den ansatte til og med{' '}
-                            {formaterDato(datoMaksPermitteringNås)}. Etter dette
-                            vil lønnsplikten gjeninntre, og du kan ikke
-                            permittere igjen før tidlist{' '}
-                            {formaterDato(
-                                finnDato18MndFram(
-                                    førstePermitteringI18mndsIntervall
-                                )
-                            )}
+                            {formaterDato(datoMaksPermitteringNås)}.
                         </Element>
                     </>
                 ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Du er nødt til å avslutte permitteringen{' '}
-                            {formaterDato(datoMaksPermitteringNås)}
+                            Etter dette vil lønnsplikten gjeninntre, og du kan
+                            ikke permittere igjen før tidligst{' '}
+                            {formaterDato(
+                                finnDato18MndFram(
+                                    førstePermitteringI18mndsIntervall
+                                )
+                            )}
                         </Normaltekst>
                     </>
                 ),

@@ -34,7 +34,7 @@ export const lagHTMLObjektForAlleDatoer = (
             : '';
         const erMaksDatoForPermittering =
             datoMaksPermitteringNås &&
-            datoMaksPermitteringNås.isSame(objekt.dato.add(1, 'day'), 'day');
+            datoMaksPermitteringNås.isSame(objekt.dato);
         const klassenavnHvisErMaksDato = erMaksDatoForPermittering
             ? ' dato-maks-nås'
             : '';
@@ -220,14 +220,6 @@ export const lagObjektForRepresentasjonAvPerioderMedFarge = (
             }
         }
     });
-    console.log(
-        sumAvAlleSekvenser,
-        antallDagerGått(
-            tidslinjeObjekter[0].dato,
-            tidslinjeObjekter[tidslinjeObjekter.length - 1].dato
-        ),
-        tidslinjeObjekter.length
-    );
     return fargePerioder;
 };
 

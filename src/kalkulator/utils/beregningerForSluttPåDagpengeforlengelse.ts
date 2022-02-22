@@ -1,4 +1,5 @@
 import {
+    AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
     DatointervallKategori,
     DatoMedKategori,
@@ -18,6 +19,7 @@ import {
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
     finnFørstePermitteringsdatoFraDato,
+    finnSisteDatoMedPermitteringUtenFravær,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
 import {
@@ -39,33 +41,21 @@ export const finnPermitteringssituasjonVedSluttPåForlengelse = (
     datoSluttPaDagepengeForlengelse: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonVedSluttPaForlengelse => {
-    const datoNåddMaksPermitteringsdager = finnDatoForMaksPermittering(
+    const dagerBruktVedSluttPåDagpengeforlengelse = getPermitteringsoversiktFor18Måneder(
         tidslinje,
-        datoSluttPaDagepengeForlengelse,
-        maksAntallDagerUtenLønnsplikt
-    );
+        finnDato18MndFram(datoSluttPaDagepengeForlengelse)
+    ).dagerBrukt;
     if (
-        datoNåddMaksPermitteringsdager &&
-        datoNåddMaksPermitteringsdager.isSame(
-            datoSluttPaDagepengeForlengelse,
-            'day'
-        )
+        dagerBruktVedSluttPåDagpengeforlengelse >= maksAntallDagerUtenLønnsplikt
     ) {
         return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
     }
-    if (
-        datoNåddMaksPermitteringsdager &&
-        datoNåddMaksPermitteringsdager.isSameOrAfter(
-            datoSluttPaDagepengeForlengelse
-        )
-    ) {
-        return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
-    }
-    return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_NORMALT_REGELVERK_SPESIALCASE;
+
+    return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
 };
 
 //her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
-export const finnDatoForMaksPermittering = (
+export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
     tidslinje: DatoMedKategori[],
     datoSluttPaDagepengeForlengelse: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
@@ -90,8 +80,7 @@ export const finnDatoForMaksPermittering = (
     ).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
     const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
-    //while-løkke for å finne når maks permittering nås
-    //ser ikke ut som det tas hensyn til at gjenstående permitteringsdager er mer kunne brukes
+
     while (
         antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isSameOrBefore(
@@ -110,7 +99,9 @@ export const finnDatoForMaksPermittering = (
         ).dagerBrukt;
     }
     if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
-        return undefined;
+        return potensiellDatoForMaksPeriode.add(
+            maksAntallDagerUtenLønnsplikt - antallDagerPermittert + 1
+        );
     }
     return potensiellDatoForMaksPeriode;
 };
@@ -301,7 +292,7 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
                 maksAntallDagerUtenLønnsplikt
             );
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE:
-            const maksDatoNådd = finnDatoForMaksPermittering(
+            const maksDatoNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoRegelendring1Nov,
                 maksAntallDagerUtenLønnsplikt
@@ -358,7 +349,7 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
             datoRegelendring1Juli
         );
         if (permitteringStartetFør1Juli) {
-            const potensiellDatoForMaksPermittering = finnDatoForMaksPermittering(
+            const potensiellDatoForMaksPermittering = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoSluttPaDagepengeForlengelse,
                 49 * 7
@@ -378,6 +369,22 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
             }
         }
     }
+};
+
+export const finnUtOmKoronaregelverkSkalBrukes = (
+    tidslinje: DatoMedKategori[],
+    dagensDato: Dayjs,
+    regelEndring1Juli: Dayjs
+) => {
+    const sistePermittering = finnSisteDatoMedPermitteringUtenFravær(tidslinje);
+    const permitteringsStart = finnStartDatoForPermitteringUtIfraSluttdato(
+        sistePermittering,
+        tidslinje
+    );
+    return (
+        sistePermittering.isSameOrAfter(dagensDato) &&
+        permitteringsStart.isBefore(regelEndring1Juli)
+    );
 };
 
 export const finnStartDatoForPermitteringUtIfraSluttdato = (

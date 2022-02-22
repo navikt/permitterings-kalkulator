@@ -9,7 +9,10 @@ import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
 import { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
-import { konstruerTidslinje } from './utils/tidslinje-utils';
+import {
+    finnFørsteDatoMedPermitteringUtenFravær,
+    konstruerTidslinje,
+} from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
 import { loggSidevinsing } from '../utils/amplitudeEvents';
 
@@ -69,14 +72,16 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
-                <SeResultat
-                    tidslinje={tidslinje}
-                    sisteDagIPeriode={sisteDagI18mndsPeriode}
-                    set18mndsPeriode={setSisteDagI18mndsPeriode}
-                    allePermitteringerOgFraværesPerioder={
-                        allePermitteringerOgFraværesPerioder
-                    }
-                />
+                {!!finnFørsteDatoMedPermitteringUtenFravær(tidslinje) && (
+                    <SeResultat
+                        tidslinje={tidslinje}
+                        sisteDagIPeriode={sisteDagI18mndsPeriode}
+                        set18mndsPeriode={setSisteDagI18mndsPeriode}
+                        allePermitteringerOgFraværesPerioder={
+                            allePermitteringerOgFraværesPerioder
+                        }
+                    />
+                )}
             </div>
         </div>
     );

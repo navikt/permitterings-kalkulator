@@ -26,7 +26,6 @@ import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/bereg
 interface Props {
     tidslinje: DatoMedKategori[];
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    harNåddMaksKoronaRegelverk: Boolean;
     gjeldendeRegelverk: Permitteringssregelverk;
 }
 
@@ -48,21 +47,19 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 'Har permittering iverksatt før 1. april 2020'
             );
         }
-        if (!props.harNåddMaksKoronaRegelverk) {
-            const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
-                props.tidslinje
+        const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
+            props.tidslinje
+        );
+        const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        if (
+            !løpendePermitteringEtter1Juli &&
+            sistePermitteringsDato.isAfter(dagensDato)
+        ) {
+            loggPermitteringsSituasjon(
+                'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
             );
-            const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            );
-            if (
-                !løpendePermitteringEtter1Juli &&
-                sistePermitteringsDato.isAfter(dagensDato)
-            ) {
-                loggPermitteringsSituasjon(
-                    'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
-                );
-            }
         }
     }, [props.tidslinje]);
 
@@ -94,35 +91,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                   regelEndring1Juli,
                   regelEndringsDato1April
               );
-
-    const maksDagerUtenLønnsplikt = props.harNåddMaksKoronaRegelverk
-        ? 49 * 7
-        : 26 * 7;
-    const datoRegelEndring = props.harNåddMaksKoronaRegelverk
-        ? regelEndringsDato1April
-        : regelEndring1Juli;
-    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-        props.gjeldendeRegelverk,
-        gjeldendeTidslinje,
-        dagensDato,
-        regelEndringsDato1April
-    );
-
-    /*
-    {aktuell18mndsperiode && (
-                <DetaljertUtregning
-                    permitteringsDagerFør1JuliSlettet={
-                        !!nyListeHvisPermitteringsdagerErSlettet
-                    }
-                    tidslinje={gjeldendeTidslinje}
-                    permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
-                        props.allePermitteringerOgFraværesPerioder
-                            .permitteringer
-                    )}
-                    aktuell18mndsperiode={aktuell18mndsperiode}
-                />
-            )}
-     */
 
     return (
         <div className="utregningstekst__tekst">

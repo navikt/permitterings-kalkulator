@@ -34,7 +34,7 @@ import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForMaksPermittering,
+    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
@@ -58,9 +58,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
-    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        regelEndringsDato1April
-    );
 
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
@@ -82,10 +79,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 datoMaksPermitteringNås &&
                 datoMedKategori.kategori !==
                     DatointervallKategori.IKKE_PERMITTERT &&
-                datoMedKategori.dato.isAfter(datoMaksPermitteringNås) &&
-                datoMedKategori.dato.isBefore(
-                    props.sisteDagIPeriode.add(1, 'day')
-                )
+                datoMedKategori.dato.isAfter(datoMaksPermitteringNås)
             ) {
                 const nyDatoMedKategori: DatoMedKategori = {
                     dato: datoMedKategori.dato,
@@ -111,20 +105,22 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             }
         });
         setTidslinjeSomSkalVises(nyTidslinje);
-    }, [datoOnDrag]);
+    }, [props.tidslinje, props.gjeldendeRegelverk]);
 
     useEffect(() => {
-        console.log(props.tidslinje.length, tidslinjeSomSkalVises.length);
-        const antallDagerFørLønnsplikt =
+        const maksAntallPermitteringsdagerNådd =
             props.gjeldendeRegelverk ===
             Permitteringssregelverk.NORMALT_REGELVERK
-                ? 26 * 7
-                : 49 * 7;
-        const maksAntallPermitteringsdagerNådd = finnDatoForMaksPermittering(
-            tidslinjeSomSkalVises,
-            regelEndringsDato1April,
-            antallDagerFørLønnsplikt
-        );
+                ? finnDatoForMaksPermitteringNormaltRegelverk(
+                      tidslinjeSomSkalVises,
+                      regelEndringsDato1April,
+                      26 * 7
+                  )
+                : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
+                      tidslinjeSomSkalVises,
+                      regelEndringsDato1April,
+                      49 * 7
+                  );
         if (maksAntallPermitteringsdagerNådd) {
             const forstePermitteringI18mndsIntervall = finnFørsteDatoMedPermitteringUtenFravær(
                 tidslinjeSomSkalVises,
@@ -138,11 +134,11 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 tidslinjeSomSkalVises,
                 regelEndringsDato1April,
                 dagensDato,
-                antallDagerFørLønnsplikt
+                26 * 7
             );
             props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
         }
-    }, [props.gjeldendeRegelverk]);
+    }, []);
 
     const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
         tidslinjeSomSkalVises,

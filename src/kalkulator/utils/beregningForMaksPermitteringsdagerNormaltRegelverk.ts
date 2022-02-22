@@ -109,7 +109,7 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
     const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
 
     while (
-        antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
+        antallDagerPermittert < maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isSameOrBefore(
             sistePermitteringsdato || sisteDagITidslinjen
         )
@@ -125,10 +125,10 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
+    if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    return potensiellDatoForMaksPeriode;
+    return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
 export const getPermitteringsoversiktFor18Måneder = (

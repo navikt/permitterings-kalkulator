@@ -17,7 +17,7 @@ import AlertStripe from 'nav-frontend-alertstriper';
 import Lenke from 'nav-frontend-lenker';
 import {
     PermitteringssituasjonVedSluttPaForlengelse,
-    finnDatoForMaksPermittering,
+    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
     getPermitteringsoversiktFor18Måneder,
     finnPermitteringssituasjonVedSluttPåForlengelse,
 } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
@@ -40,7 +40,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         datoSluttPaDagepengeForlengelse,
         49 * 7
     );
-    const maksPermitteringNås = finnDatoForMaksPermittering(
+    const maksPermitteringNås = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         datoSluttPaDagepengeForlengelse,
         49 * 7

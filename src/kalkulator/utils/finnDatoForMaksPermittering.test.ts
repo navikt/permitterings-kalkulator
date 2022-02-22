@@ -8,7 +8,7 @@ import {
     konstruerTidslinje,
     regnUtHvaSisteDatoPåTidslinjenSkalVære,
 } from './tidslinje-utils';
-import { finnDatoForMaksPermittering } from './beregningerForSluttPåDagpengeforlengelse';
+import { finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli } from './beregningerForSluttPåDagpengeforlengelse';
 import { getPermitteringsoversiktFor18Måneder } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 const getTidslinje = (
@@ -42,7 +42,7 @@ describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt f�
             ],
             andreFraværsperioder: [],
         });
-        const datoOverskriderMaksgrense = finnDatoForMaksPermittering(
+        const datoOverskriderMaksgrense = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
             tidslinje,
             innføringsdatoRegelendring,
             maksAntallPermitteringsdager
@@ -63,7 +63,7 @@ test('Maks antall dager permittering skal komme på regelverksending 1. november
         ],
         andreFraværsperioder: [],
     });
-    const datoOverskriderMaksgrense = finnDatoForMaksPermittering(
+    const datoOverskriderMaksgrense = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -121,7 +121,7 @@ test('Skal ikke gi dato for maks permittering nådd når det er permittert mindr
         ],
         andreFraværsperioder: [],
     });
-    const datoForMaksPermitteringNådd = finnDatoForMaksPermittering(
+    const datoForMaksPermitteringNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -146,7 +146,7 @@ test('Skal finne dato for maks antall dager ved løpende permittering med oppsta
         ],
         andreFraværsperioder: [],
     });
-    const datoMaksAntallDagerNådd = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsuker * 7
@@ -169,7 +169,7 @@ test('Skal håndtere løpende permittering etter regelsendring 1. juli', () => {
         ],
         andreFraværsperioder: [],
     });
-    const datoForMaksAntallDagerNådd = finnDatoForMaksPermittering(
+    const datoForMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -195,7 +195,7 @@ test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
         ],
         andreFraværsperioder: [],
     });
-    const datoMaksAntallDagerNådd = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -217,7 +217,7 @@ test('Skal håndtere lang permitteringsperiode etter innføringsdato for regelen
         ],
         andreFraværsperioder: [],
     });
-    const datoMaksAntallDagerNådd = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager
@@ -249,7 +249,7 @@ test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendrin
             },
         ],
     });
-    const datoMaksAntallDagerNådd = finnDatoForMaksPermittering(
+    const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
         maksAntallPermitteringsdager

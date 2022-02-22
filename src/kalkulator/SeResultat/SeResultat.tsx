@@ -8,7 +8,7 @@ import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
 } from '../typer';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { ReactComponent as PekIkon } from './cursor-touch-2.svg';
 import Tidslinje from '../Tidslinje/Tidslinje';
@@ -22,12 +22,17 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { arbeidsgiverPotensieltStartetLønnspliktFør1Juli } from './Utregningstekst/spesialCaseForLønnspliktStartetFør1Juli';
 import { PermitteringContext } from '../../ContextProvider';
 import {
-    finnDatoForMaksPermittering,
+    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
+    finnStartDatoForPermitteringUtIfraSluttdato,
+    finnUtOmKoronaregelverkSkalBrukes,
     harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse,
     nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
-import { erPermittertVedDato } from '../utils/tidslinje-utils';
+import {
+    erPermittertVedDato,
+    finnSisteDatoMedPermitteringUtenFravær,
+} from '../utils/tidslinje-utils';
 import { Checkbox } from '@navikt/ds-react';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
@@ -45,16 +50,14 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const { regelEndring1Juli, regelEndringsDato1April } = useContext(
-        PermitteringContext
-    );
+    const {
+        regelEndring1Juli,
+        regelEndringsDato1April,
+        dagensDato,
+    } = useContext(PermitteringContext);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
     >(Permitteringssregelverk.NORMALT_REGELVERK);
-    const [
-        harNåddMaksKoronaRegelverk,
-        setHarNåddMaksKoronaRegelverk,
-    ] = useState(false);
     const [
         visBeskjedLønnspliktPeriode,
         setVisBeskjedLønnspliktPeriode,
@@ -64,60 +67,35 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
         setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
-        setHarNåddMaksKoronaRegelverk(false);
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
-        const erPermittertPåSluttPåDagpengeForlengelse = erPermittertVedDato(
-            props.tidslinje,
-            regelEndringsDato1April
-        );
-        if (erPermittertPåSluttPåDagpengeForlengelse) {
-            if (
-                harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse(
-                    props.allePermitteringerOgFraværesPerioder.permitteringer,
-                    regelEndring1Juli
-                )
-            ) {
-                setHarNåddMaksKoronaRegelverk(true);
-            } else {
-                const nåddMaksMedKoronaRegelverk = !!nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering(
-                    props.tidslinje,
-                    regelEndringsDato1April,
-                    regelEndring1Juli
-                );
-                if (nåddMaksMedKoronaRegelverk) {
-                    setHarNåddMaksKoronaRegelverk(nåddMaksMedKoronaRegelverk);
-                }
-            }
-        }
-    }, [props.tidslinje]);
-
-    useEffect(() => {
-        if (harNåddMaksKoronaRegelverk) {
+        if (
+            finnUtOmKoronaregelverkSkalBrukes(
+                props.tidslinje,
+                dagensDato,
+                regelEndring1Juli
+            )
+        ) {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
         }
-    }, [harNåddMaksKoronaRegelverk]);
+    }, [props.tidslinje]);
 
     //tidslinja er deaktivert i prod
     const skalViseTidslinje = true;
 
     useEffect(() => {
+        const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
         if (
-            props.allePermitteringerOgFraværesPerioder.permitteringer.length &&
-            props.tidslinje.length
-        ) {
-            const kanHaLønnspliktFør1JuliSpesialtilfelle = arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
+            finnUtOmKoronaregelverkSkalBrukes(
                 props.tidslinje,
-                regelEndringsDato1April,
-                regelEndring1Juli
-            );
-            setVisBeskjedLønnspliktPeriode(
-                !!kanHaLønnspliktFør1JuliSpesialtilfelle
-            );
-            if (!!kanHaLønnspliktFør1JuliSpesialtilfelle) {
-                setGjeldendeRegelverk(undefined);
-            }
+                dagensDato,
+                grenseDatoForPotensiellLønnspliktFør1Juli
+            ) &&
+            gjeldeneRegelverk !== Permitteringssregelverk.KORONA_ORDNING
+        ) {
+            setVisBeskjedLønnspliktPeriode(true);
+            setGjeldendeRegelverk(undefined);
         }
     }, [
         props.tidslinje,
@@ -166,15 +144,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             <>
                                 <Element>
                                     Begynte lønnspliktperioden før 1. juli for
-                                    permitteringen fylt inn fra {''}
-                                    {formaterDato(
-                                        arbeidsgiverPotensieltStartetLønnspliktFør1Juli(
-                                            props.tidslinje,
-                                            regelEndringsDato1April,
-                                            regelEndring1Juli
-                                        )!!
-                                    )}
-                                    ?
+                                    den aktive permitteringen?
                                 </Element>
                                 <div
                                     className={
@@ -219,9 +189,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                 tidslinje={props.tidslinje}
                                 allePermitteringerOgFraværesPerioder={
                                     props.allePermitteringerOgFraværesPerioder
-                                }
-                                harNåddMaksKoronaRegelverk={
-                                    harNåddMaksKoronaRegelverk
                                 }
                                 gjeldendeRegelverk={
                                     gjeldeneRegelverk
