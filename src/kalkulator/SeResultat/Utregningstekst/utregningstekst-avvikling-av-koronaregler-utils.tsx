@@ -43,7 +43,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
     const maksPermitteringNås = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         datoSluttPaDagepengeForlengelse,
-        49 * 7
+        49 * 7,
+        dagensDato
     )!!;
     const førstePermitteringI18mndsIntervall = finnFørstePermitteringsdatoFraDato(
         tidslinje,

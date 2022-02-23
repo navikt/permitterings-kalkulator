@@ -47,7 +47,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     ] = useState(false);
 
     useEffect(() => {
-        console.log('useeffect 1');
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
         setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);

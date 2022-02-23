@@ -1,5 +1,4 @@
 import {
-    AllePermitteringerOgFraværesPerioder,
     DatoIntervall,
     DatointervallKategori,
     DatoMedKategori,
@@ -57,7 +56,8 @@ export const finnPermitteringssituasjonVedSluttPåForlengelse = (
 export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
     tidslinje: DatoMedKategori[],
     datoSluttPaDagepengeForlengelse: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number
+    maksAntallDagerUtenLønnsplikt: number,
+    dagensDato: Dayjs
 ): Dayjs | undefined => {
     const oversiktVedSluttPaDagepengeForlengelse = getPermitteringsoversiktFor18Måneder(
         tidslinje,
@@ -70,21 +70,17 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
     ) {
         return datoSluttPaDagepengeForlengelse;
     }
-    let potensiellDatoForMaksPeriode: Dayjs = dayjs(
-        datoSluttPaDagepengeForlengelse
-    );
+    let potensiellDatoForMaksPeriode: Dayjs = dayjs(dagensDato);
     let antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         potensiellDatoForMaksPeriode
     ).dagerBrukt;
-    const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
-    const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
-
+    const sistePermitteringsdato = finnSisteDatoMedPermitteringUtenFravær(
+        tidslinje
+    );
     while (
         antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
-        potensiellDatoForMaksPeriode.isSameOrBefore(
-            sistePermitteringsdato || sisteDagITidslinjen
-        )
+        potensiellDatoForMaksPeriode.isBefore(sistePermitteringsdato)
     ) {
         const antallDagerTilNesteGjett =
             maksAntallDagerUtenLønnsplikt - antallDagerPermittert + 1;
@@ -92,25 +88,13 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
             antallDagerTilNesteGjett,
             'days'
         );
-        antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
-            tidslinje,
-            potensiellDatoForMaksPeriode
-        ).dagerBrukt;
     }
-    console.log(
-        maksAntallDagerUtenLønnsplikt - antallDagerPermittert,
-        formaterDato(potensiellDatoForMaksPeriode),
-        'skal være mindre'
-    );
     if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
-        const datoMaksNåsVedUtvidetPermittering = dayjs(
-            potensiellDatoForMaksPeriode
-        );
-
-        return datoMaksNåsVedUtvidetPermittering.add(
-            maksAntallDagerUtenLønnsplikt - antallDagerPermittert,
-            'days'
-        );
+    }
+    if (
+        potensiellDatoForMaksPeriode.isBefore(datoSluttPaDagepengeForlengelse)
+    ) {
+        return datoSluttPaDagepengeForlengelse;
     }
     return potensiellDatoForMaksPeriode;
 };
@@ -304,7 +288,8 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
             const maksDatoNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoRegelendring1Nov,
-                maksAntallDagerUtenLønnsplikt
+                maksAntallDagerUtenLønnsplikt,
+                dagensDato
             );
             if (maksDatoNådd) {
                 return til18mndsperiode(maksDatoNådd?.subtract(1, 'day'));
@@ -340,7 +325,8 @@ export const harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse = (
 export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
     tidslinje: DatoMedKategori[],
     datoSluttPaDagepengeForlengelse: Dayjs,
-    datoRegelendring1Juli: Dayjs
+    datoRegelendring1Juli: Dayjs,
+    dagensDato: Dayjs
 ) => {
     const indeksDatoSluttPaDagepengeForlengelse = finnIndeksForDato(
         datoSluttPaDagepengeForlengelse,
@@ -361,7 +347,8 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
             const potensiellDatoForMaksPermittering = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoSluttPaDagepengeForlengelse,
-                49 * 7
+                49 * 7,
+                dagensDato
             );
             if (potensiellDatoForMaksPermittering) {
                 const permitteringsStartAvPermittering = finnStartDatoForPermitteringUtIfraSluttdato(
@@ -390,13 +377,6 @@ export const finnUtOmKoronaregelverkSkalBrukes = (
         sistePermittering,
         tidslinje
     );
-    console.log(
-        'verdier:',
-        formaterDato(dagensDato),
-        formaterDato(regelEndring1Juli),
-        formaterDato(sistePermittering),
-        formaterDato(permitteringsStart)
-    );
     return (
         sistePermittering.isSameOrAfter(dagensDato) &&
         permitteringsStart.isBefore(regelEndring1Juli)
@@ -407,14 +387,11 @@ export const finnStartDatoForPermitteringUtIfraSluttdato = (
     sluttdato: Dayjs,
     tidslinje: DatoMedKategori[]
 ) => {
-    console.log(
-        'prøver å finne startdato fra sluttdato:',
-        formaterDato(sluttdato)
-    );
     const indeksSluttDato = finnIndeksForDato(sluttdato, tidslinje);
     let indeks = indeksSluttDato;
     while (
-        tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT
+        tidslinje[indeks].kategori !== DatointervallKategori.IKKE_PERMITTERT &&
+        indeks > 0
     ) {
         indeks--;
     }

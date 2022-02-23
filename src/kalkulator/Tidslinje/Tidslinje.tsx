@@ -69,7 +69,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                   tidslinjeSomSkalVises,
                   regelEndringsDato1April,
-                  49 * 7
+                  49 * 7,
+                  dagensDato
               );
 
     useEffect(() => {
@@ -119,7 +120,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                       tidslinjeSomSkalVises,
                       regelEndringsDato1April,
-                      49 * 7
+                      49 * 7,
+                      dagensDato
                   );
         if (maksAntallPermitteringsdagerNådd) {
             const forstePermitteringI18mndsIntervall = finnFørsteDatoMedPermitteringUtenFravær(
