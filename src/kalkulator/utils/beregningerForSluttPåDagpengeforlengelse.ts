@@ -63,7 +63,6 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
         tidslinje,
         datoSluttPaDagepengeForlengelse
     );
-
     if (
         oversiktVedSluttPaDagepengeForlengelse.dagerBrukt >
         maksAntallDagerUtenLønnsplikt
@@ -88,8 +87,10 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
             antallDagerTilNesteGjett,
             'days'
         );
-    }
-    if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
+        antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
+            tidslinje,
+            potensiellDatoForMaksPeriode
+        ).dagerBrukt;
     }
     if (
         potensiellDatoForMaksPeriode.isBefore(datoSluttPaDagepengeForlengelse)
