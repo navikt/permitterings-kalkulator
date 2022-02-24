@@ -7,7 +7,7 @@ import {
     finnDato18MndTilbake,
     formaterDato,
 } from '../utils/dato-utils';
-import Detail from '@navikt/ds-react/esm/typography/Detail';
+import { Detail } from '@navikt/ds-react';
 
 interface RepresentasjonAvPeriodeMedFarge {
     antallDagerISekvens: number;
