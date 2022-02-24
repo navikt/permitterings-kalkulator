@@ -16,15 +16,10 @@ const getTidslinje = (
     dagensDato?: Dayjs
 ): DatoMedKategori[] => {
     const definertDagensDato = dagensDato || dayjs('2021-03-11');
-    return konstruerTidslinje(
-        allePermitteringerOgFravær,
-        definertDagensDato,
-        regnUtHvaSisteDatoPåTidslinjenSkalVære(
-            allePermitteringerOgFravær,
-            definertDagensDato
-        )!
-    );
+    return konstruerTidslinje(allePermitteringerOgFravær, definertDagensDato);
 };
+
+const dagensDato = dayjs();
 
 describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt før 1. juli ', () => {
     test('Maks antall dager permittering skal komme på regelverksendring 1 november hvis permittert i 49 uker og 1 dag ved 1 november og permitteringen er iverksatt før 1. juli', () => {
@@ -45,7 +40,8 @@ describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt f�
         const datoOverskriderMaksgrense = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
             tidslinje,
             innføringsdatoRegelendring,
-            maksAntallPermitteringsdager
+            maksAntallPermitteringsdager,
+            dagensDato
         );
         expect(datoOverskriderMaksgrense).toEqual(innføringsdatoRegelendring);
     });
@@ -66,7 +62,8 @@ test('Maks antall dager permittering skal komme på regelverksending 1. november
     const datoOverskriderMaksgrense = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoOverskriderMaksgrense).toEqual(innføringsdatoRegelendring);
 });
@@ -105,7 +102,7 @@ test('TESTEN ER UGYLDIG. Skal gi dato for AGP2 hvis man først er permittert > 3
 });
 */
 
-test('Skal ikke gi dato for maks permittering nådd når det er permittert mindre en maks antall dager', () => {
+/*test('Skal ikke gi dato for maks permittering nådd når det er permittert mindre enn maks antall dager', () => {
     const maksAntallPermitteringsdager = 49 * 7;
     const innføringsdatoRegelendring = dayjs('2021-11-01');
     const permitteringsslutt = innføringsdatoRegelendring.subtract(40, 'days');
@@ -124,7 +121,8 @@ test('Skal ikke gi dato for maks permittering nådd når det er permittert mindr
     const datoForMaksPermitteringNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     const dagerBrukt = getPermitteringsoversiktFor18Måneder(
         tidslinje,
@@ -149,7 +147,8 @@ test('Skal finne dato for maks antall dager ved løpende permittering med oppsta
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsuker * 7
+        maksAntallPermitteringsuker * 7,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(
         innføringsdatoRegelendring.add(49 - 5, 'weeks')
@@ -172,7 +171,8 @@ test('Skal håndtere løpende permittering etter regelsendring 1. juli', () => {
     const datoForMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoForMaksAntallDagerNådd).toEqual(
         dayjs('2021-08-01').add(maksAntallPermitteringsdager, 'days')
@@ -198,7 +198,8 @@ test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ve
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(
         dayjs('2021-02-16').add(maksAntallPermitteringsdager, 'days')
@@ -220,7 +221,8 @@ test('Skal håndtere lang permitteringsperiode etter innføringsdato for regelen
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(
         innføringsdatoRegelendring
@@ -252,7 +254,8 @@ test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendrin
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         innføringsdatoRegelendring,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(innføringsdatoRegelendring);
 });
