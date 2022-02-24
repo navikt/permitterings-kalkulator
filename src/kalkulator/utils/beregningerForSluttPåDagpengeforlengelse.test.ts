@@ -5,11 +5,7 @@ import {
 import dayjs from 'dayjs';
 
 import { finnDato18MndTilbake } from './dato-utils';
-import {
-    finnInitialgrenserForTidslinjedatoer,
-    konstruerTidslinje,
-    regnUtHvaSisteDatoPåTidslinjenSkalVære,
-} from './tidslinje-utils';
+import { konstruerTidslinje } from './tidslinje-utils';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnPermitteringssituasjonVedSluttPåForlengelse,
@@ -24,14 +20,7 @@ const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
 ): DatoMedKategori[] => {
     const dagensDato = dayjs('2021-03-11');
-    return konstruerTidslinje(
-        allePermitteringerOgFravær,
-        dagensDato,
-        regnUtHvaSisteDatoPåTidslinjenSkalVære(
-            allePermitteringerOgFravær,
-            dagensDato
-        )!
-    );
+    return konstruerTidslinje(allePermitteringerOgFravær, dagensDato);
 };
 
 describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1. november 2021', () => {
@@ -80,8 +69,13 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
                 datoSluttPåDagpengeforlengelse,
                 maksAntallPermitteringsdager
             );
+            const dagerBruktI18mndsperiode = getPermitteringsoversiktFor18Måneder(
+                tidslinje,
+                datoSluttPåDagpengeforlengelse
+            ).dagerBrukt;
+            expect(dagerBruktI18mndsperiode).toEqual(49 * 7);
             expect(situasjon).toEqual(
-                PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE
+                PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE
             );
         });
     });
@@ -105,8 +99,7 @@ describe('Tester for beregning av permitteringssituasjon ved regelverksendring 1
             const dagensDato = dayjs('2021-03-11');
             const tidslinje = konstruerTidslinje(
                 allePermitteringerOgFravær,
-                dagensDato,
-                finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil!
+                dagensDato
             );
             const aktuellPeriode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinje,

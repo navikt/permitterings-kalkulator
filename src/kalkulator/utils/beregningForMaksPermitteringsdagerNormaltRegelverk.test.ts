@@ -26,8 +26,7 @@ describe('Tester for beregning av permitteringssituasjon ved avsluttede permitte
                 ],
                 andreFraværsperioder: [],
             },
-            dagensDato,
-            finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
+            dagensDato
         );
         const førstePermitteringsdag = finnFørsteDatoMedPermitteringUtenFravær(
             tidslinje,
@@ -55,8 +54,7 @@ describe('Tester for beregning av permitteringssituasjon ved avsluttede permitte
                 ],
                 andreFraværsperioder: [],
             },
-            dagensDato,
-            finnInitialgrenserForTidslinjedatoer(dagensDato).datoTil
+            dagensDato
         );
         const førstePermitteringsdag = finnFørsteDatoMedPermitteringUtenFravær(
             tidslinje,

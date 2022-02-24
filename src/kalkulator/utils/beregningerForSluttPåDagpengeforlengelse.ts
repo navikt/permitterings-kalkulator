@@ -41,7 +41,7 @@ export const finnPermitteringssituasjonVedSluttPåForlengelse = (
 ): PermitteringssituasjonVedSluttPaForlengelse => {
     const dagerBruktVedSluttPåDagpengeforlengelse = getPermitteringsoversiktFor18Måneder(
         tidslinje,
-        finnDato18MndFram(datoSluttPaDagepengeForlengelse)
+        datoSluttPaDagepengeForlengelse
     ).dagerBrukt;
     if (
         dagerBruktVedSluttPåDagpengeforlengelse >= maksAntallDagerUtenLønnsplikt

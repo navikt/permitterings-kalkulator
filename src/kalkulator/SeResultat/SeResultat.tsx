@@ -46,6 +46,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         setVisBeskjedLønnspliktPeriode,
     ] = useState(false);
 
+    //clean-up useEffect for å nullstille parametere når input endres
     useEffect(() => {
         setResultatVises(false);
         setVisBeskjedLønnspliktPeriode(false);
@@ -53,7 +54,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
-        console.log('useeffect 2');
         const skalVærePåKoronaRegelverk = finnUtOmKoronaregelverkSkalBrukes(
             props.tidslinje,
             dagensDato,
