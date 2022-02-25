@@ -119,8 +119,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             {' ' +
                                 formaterDato(datoSluttPaDagepengeForlengelse)}
                             , dersom permitteringen holdes aktiv til denne
-                            datoen. Da er maks antall dager dager for
-                            permittering uten lønnsplikt nådd.
+                            datoen. Da er maks antall dager for permittering
+                            uten lønnsplikt nådd.
                         </Element>
                     </>
                 ),
@@ -167,8 +167,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             Du har lønnsplikt fra
                             {' ' + formaterDato(maksPermitteringNås)}, dersom
                             permitteringen holdes aktiv til denne datoen. Da er
-                            maks antall dager dager for permittering uten
-                            lønnsplikt nådd.
+                            maks antall dager for permittering uten lønnsplikt
+                            nådd.
                         </Element>
                     </>
                 ),

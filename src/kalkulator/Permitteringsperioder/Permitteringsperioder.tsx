@@ -68,7 +68,9 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Element>Du skal fylle inn</Element>
             <Normaltekst tag="ul" className="topp__liste">
                 <li>uavhengig av permitteringsprosent og stillingsprosent</li>
-                <li>fra første permitteringsdag etter lønnsplikt</li>
+                <li>
+                    fra første permitteringsdag <b>etter lønnsplikt</b>
+                </li>
             </Normaltekst>
             {permitteringsobjekter}
             {feilmelding.length > 0 && (
