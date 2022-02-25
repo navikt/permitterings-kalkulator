@@ -58,7 +58,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
-
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
             ? finnDatoForMaksPermitteringNormaltRegelverk(
@@ -72,6 +71,23 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                   49 * 7,
                   dagensDato
               );
+    const [htmlElementerForHverDato, setHtmlElementerForHverDato] = useState<
+        any[]
+    >(
+        lagHTMLObjektForAlleDatoer(
+            tidslinjeSomSkalVises,
+            props.breddeAvDatoObjektIProsent,
+            dagensDato,
+            datoMaksPermitteringNås
+        )
+    );
+
+    const [htmlFargeObjekt, setHtmlFargeobjekt] = useState<any[]>(
+        lagHTMLObjektForPeriodeMedFarge(
+            lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
+            props.breddeAvDatoObjektIProsent
+        )
+    );
 
     useEffect(() => {
         const nyTidslinje: DatoMedKategori[] = [];
@@ -109,6 +125,22 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     }, [props.tidslinje, props.gjeldendeRegelverk]);
 
     useEffect(() => {
+        const element = lagHTMLObjektForAlleDatoer(
+            tidslinjeSomSkalVises,
+            props.breddeAvDatoObjektIProsent,
+            dagensDato,
+            datoMaksPermitteringNås
+        );
+
+        setHtmlElementerForHverDato(element);
+        const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
+            lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
+            props.breddeAvDatoObjektIProsent
+        );
+        setHtmlFargeobjekt(htmlFargeObjekt);
+    }, [tidslinjeSomSkalVises]);
+
+    useEffect(() => {
         const maksAntallPermitteringsdagerNådd =
             props.gjeldendeRegelverk ===
             Permitteringssregelverk.NORMALT_REGELVERK
@@ -141,17 +173,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
         }
     }, []);
-
-    const htmlElementerForHverDato = lagHTMLObjektForAlleDatoer(
-        tidslinjeSomSkalVises,
-        props.breddeAvDatoObjektIProsent,
-        dagensDato,
-        datoMaksPermitteringNås
-    );
-    const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
-        lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
-        props.breddeAvDatoObjektIProsent
-    );
 
     const OnTidslinjeDrag = () => {
         setAnimasjonSkalVises(false);
