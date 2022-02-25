@@ -22,19 +22,15 @@ const Topp: FunctionComponent = () => {
                 </Element>
                 <ul className="topp__liste">
                     <Normaltekst tag="li">
+                        hvilke dager du hadde lønnsplikt under permitteringen
+                    </Normaltekst>
+                    <Normaltekst tag="li">
                         periodene den ansatte har vært permittert
                     </Normaltekst>
                     <Normaltekst tag="li">
                         eventuelle fravær under permitteringen
                     </Normaltekst>
                 </ul>
-                <Element>Du skal fylle inn</Element>
-                <Normaltekst tag="ul" className="topp__liste">
-                    <li>
-                        uavhengig av permitteringsprosent og stillingsprosent
-                    </li>
-                    <li>fra første permitteringsdag etter lønnsplikt</li>
-                </Normaltekst>
             </div>
         </div>
     );

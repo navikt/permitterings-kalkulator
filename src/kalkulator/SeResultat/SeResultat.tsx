@@ -22,6 +22,7 @@ import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { Checkbox } from '@navikt/ds-react';
+import Alert from '@navikt/ds-react/esm/alert/Alert';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -62,6 +63,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         if (skalVærePåKoronaRegelverk) {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
         }
+        //potensiale for at arbeidsgiver hadde lønsplikt før 1. juli og dermed permitterer på koronaordning
         const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
         if (
             finnUtOmKoronaregelverkSkalBrukes(
@@ -122,6 +124,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                     Begynte lønnspliktperioden før 1. juli for
                                     den aktive permitteringen?
                                 </Element>
+                                <Alert variant="info" size="small">
+                                    Husk at du skal fylle inn
+                                    permitteringsperiodene etter lønnsplikt.
+                                </Alert>
                                 <div
                                     className={
                                         'utregningstekst__checkbokscontainer'

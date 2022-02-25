@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
@@ -65,6 +65,11 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Undertittel tag="h2" className="permitteringsperioder__tittel">
                 1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
+            <Element>Du skal fylle inn</Element>
+            <Normaltekst tag="ul" className="topp__liste">
+                <li>uavhengig av permitteringsprosent og stillingsprosent</li>
+                <li>fra første permitteringsdag etter lønnsplikt</li>
+            </Normaltekst>
             {permitteringsobjekter}
             {feilmelding.length > 0 && (
                 <AlertStripe
