@@ -21,8 +21,7 @@ import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
-import { Checkbox } from '@navikt/ds-react';
-import Alert from '@navikt/ds-react/esm/alert/Alert';
+import { Checkbox, Alert } from '@navikt/ds-react';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;

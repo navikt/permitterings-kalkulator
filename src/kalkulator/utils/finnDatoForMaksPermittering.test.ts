@@ -427,4 +427,4 @@ describe('Tester skrevet i samarbeid med fagjurist', () => {
 });
 });
 
-*/
+ */
