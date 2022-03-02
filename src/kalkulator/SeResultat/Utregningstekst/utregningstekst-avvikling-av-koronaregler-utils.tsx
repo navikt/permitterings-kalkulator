@@ -162,10 +162,11 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                     <>
                         <Element>
                             Du har lønnsplikt fra
-                            {' ' + formaterDato(maksPermitteringNås)}, dersom
-                            permitteringen holdes aktiv til denne datoen. Da er
-                            maks antall dager for permittering uten lønnsplikt
-                            nådd.
+                            {' ' +
+                                formaterDato(maksPermitteringNås.add(1, 'day'))}
+                            , dersom permitteringen holdes aktiv til denne
+                            datoen. Da er maks antall dager for permittering
+                            uten lønnsplikt nådd.
                         </Element>
                     </>
                 ),

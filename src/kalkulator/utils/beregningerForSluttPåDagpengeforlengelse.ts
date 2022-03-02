@@ -44,7 +44,7 @@ export const finnPermitteringssituasjonVedSluttPåForlengelse = (
         datoSluttPaDagepengeForlengelse
     ).dagerBrukt;
     if (
-        dagerBruktVedSluttPåDagpengeforlengelse >= maksAntallDagerUtenLønnsplikt
+        dagerBruktVedSluttPåDagpengeforlengelse > maksAntallDagerUtenLønnsplikt
     ) {
         return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
     }
