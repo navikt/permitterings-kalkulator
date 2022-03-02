@@ -64,7 +64,7 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
         datoSluttPaDagepengeForlengelse
     );
     if (
-        oversiktVedSluttPaDagepengeForlengelse.dagerBrukt >
+        oversiktVedSluttPaDagepengeForlengelse.dagerBrukt >=
         maksAntallDagerUtenLønnsplikt
     ) {
         return datoSluttPaDagepengeForlengelse;
@@ -78,7 +78,7 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
         tidslinje
     );
     while (
-        antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
+        antallDagerPermittert < maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isBefore(sistePermitteringsdato)
     ) {
         const antallDagerTilNesteGjett =
@@ -92,12 +92,19 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    if (
+    /*if (
         potensiellDatoForMaksPeriode.isBefore(datoSluttPaDagepengeForlengelse)
     ) {
+        console.log('maks nås ', formaterDato(datoSluttPaDagepengeForlengelse));
         return datoSluttPaDagepengeForlengelse;
     }
-    return potensiellDatoForMaksPeriode;
+
+     */
+    console.log(
+        'maks nås ',
+        formaterDato(potensiellDatoForMaksPeriode.subtract(1, 'day'))
+    );
+    return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
 export const getPermitteringsoversiktFor18Måneder = (
