@@ -94,9 +94,6 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                             {finnDato18MndFram(forstePermitteringsdagFra1Juli)}
                         </Normaltekst>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Tips: Du kan fylle inn permitteringer framover i
-                            tid, kalkulatoren vil da regne ut når lønnsplikten
-                            inntreffer igjen.{' '}
                             <Lenke
                                 href={
                                     'https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale'

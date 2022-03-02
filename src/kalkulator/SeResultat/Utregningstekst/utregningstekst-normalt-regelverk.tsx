@@ -76,13 +76,7 @@ export const lagResultatTekstNormaltRegelverk = (
                         <Element>
                             Du kan permittere den ansatte til og med{' '}
                             {formaterDato(innføringsdatoRegelEndring2)}. Etter
-                            dette vil lønnsplikten gjeninntre, og du kan ikke
-                            permittere igjen før tidligst{' '}
-                            {formaterDato(
-                                finnDato18MndFram(
-                                    tidligstePermitteringEtter1Juli!!.dato
-                                )
-                            )}
+                            dette vil lønnsplikten gjeninntre.
                         </Element>
                     </>
                 ),
@@ -115,20 +109,16 @@ export const lagResultatTekstNormaltRegelverk = (
                     <>
                         <Element>
                             Du kan permittere den ansatte til og med{' '}
-                            {formaterDato(datoMaksPermitteringNås)}.
+                            {formaterDato(datoMaksPermitteringNås)}. Etter dette
+                            vil lønnsplikten gjeninntre.
                         </Element>
                     </>
                 ),
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Etter dette vil lønnsplikten gjeninntre, og du kan
-                            ikke permittere igjen før tidligst{' '}
-                            {formaterDato(
-                                finnDato18MndFram(
-                                    førstePermitteringI18mndsIntervall
-                                )
-                            )}
+                            Du kan permittere en ansatt mer enn 26 uker i løpet
+                            a 18 måneder.
                         </Normaltekst>
                     </>
                 ),
@@ -171,11 +161,6 @@ export const lagResultatTekstNormaltRegelverk = (
                                 aktuell18mndsperiode!!.datoTil
                             )}{' '}
                             vil du måtte avslutte permitteringen.
-                        </Normaltekst>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Tips: Du kan fylle inn permitteringer framover i
-                            tid, kalkulatoren vil da regne ut når lønnsplikten
-                            inntreffer igjen.
                         </Normaltekst>
                     </>
                 ),

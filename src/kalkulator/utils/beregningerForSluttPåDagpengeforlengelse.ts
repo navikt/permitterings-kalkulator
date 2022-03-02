@@ -379,7 +379,7 @@ export const finnUtOmKoronaregelverkSkalBrukes = (
         tidslinje
     );
     return (
-        sistePermittering.isSameOrAfter(dagensDato) &&
+        sistePermittering.isSameOrAfter(dagensDato, 'day') &&
         permitteringsStart.isBefore(regelEndring1Juli)
     );
 };
