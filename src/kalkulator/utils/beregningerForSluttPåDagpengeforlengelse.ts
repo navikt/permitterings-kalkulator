@@ -52,7 +52,7 @@ export const finnPermitteringssituasjonVedSluttPåForlengelse = (
     return PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
 };
 
-//her er maksAntallDagerUtenLønnsplikt=26*7 for permitteringer startet fom 1. juli. 49*7 uker før 1. juli
+//denne finner datoen der maks er nådd. Ikke dagen etter (dagen etter er da lønnsplikten inntrer)
 export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
     tidslinje: DatoMedKategori[],
     datoSluttPaDagepengeForlengelse: Dayjs,
@@ -100,10 +100,6 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
     }
 
      */
-    console.log(
-        'maks nås ',
-        formaterDato(potensiellDatoForMaksPeriode.subtract(1, 'day'))
-    );
     return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
