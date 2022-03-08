@@ -36,7 +36,10 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
+import {
+    finnFørsteDatoMedPermitteringUtenFravær,
+    konstruerTidslinjeSomSletterPermitteringFørDato,
+} from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 interface Props {
@@ -90,37 +93,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     useEffect(() => {
-        const nyTidslinje: DatoMedKategori[] = [];
-        props.tidslinje.forEach((datoMedKategori, index) => {
-            if (
-                datoMaksPermitteringNås &&
-                datoMedKategori.kategori !==
-                    DatointervallKategori.IKKE_PERMITTERT &&
-                datoMedKategori.dato.isAfter(datoMaksPermitteringNås)
-            ) {
-                const nyDatoMedKategori: DatoMedKategori = {
-                    dato: datoMedKategori.dato,
-                    kategori:
-                        DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
-                };
-                nyTidslinje.push(nyDatoMedKategori);
-            } else if (
-                props.gjeldendeRegelverk ===
-                    Permitteringssregelverk.NORMALT_REGELVERK &&
-                datoMedKategori.kategori !==
-                    DatointervallKategori.IKKE_PERMITTERT &&
-                datoMedKategori.dato.isBefore(regelEndring1Juli)
-            ) {
-                const nyDatoMedKategori: DatoMedKategori = {
-                    dato: datoMedKategori.dato,
-                    kategori:
-                        DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
-                };
-                nyTidslinje.push(nyDatoMedKategori);
-            } else {
-                nyTidslinje.push({ ...datoMedKategori });
-            }
-        });
+        const nyTidslinje: DatoMedKategori[] = konstruerTidslinjeSomSletterPermitteringFørDato(
+            props.tidslinje,
+            regelEndring1Juli,
+            props.gjeldendeRegelverk,
+            datoMaksPermitteringNås
+        );
         setTidslinjeSomSkalVises(nyTidslinje);
     }, [props.tidslinje, props.gjeldendeRegelverk]);
 
@@ -131,7 +109,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             dagensDato,
             datoMaksPermitteringNås
         );
-
         setHtmlElementerForHverDato(element);
         const htmlFargeObjekt = lagHTMLObjektForPeriodeMedFarge(
             lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),

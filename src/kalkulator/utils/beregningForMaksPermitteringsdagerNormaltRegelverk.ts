@@ -125,13 +125,6 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    console.log(
-        'potensiell dato_ ' + formaterDato(potensiellDatoForMaksPeriode),
-        'siste permittering: ' + formaterDato(sistePermitteringsdato!!),
-        'siste dag i tidslinja' + formaterDato(sisteDagITidslinjen),
-        antallDagerPermittert,
-        26 * 7
-    );
     if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }

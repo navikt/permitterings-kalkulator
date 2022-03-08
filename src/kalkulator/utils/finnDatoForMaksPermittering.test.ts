@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 
 import {
     AllePermitteringerOgFraværesPerioder,
@@ -16,13 +16,13 @@ import {
 import { finnDato18MndFram, formaterDato } from './dato-utils';
 
 const dagensDato = dayjs().startOf('date');
+const datoSluttPåDagepengeforlengelse = dayjs('2022-04-01');
+
 const getTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder
 ): DatoMedKategori[] => {
     return konstruerTidslinje(allePermitteringerOgFravær, dagensDato);
 };
-
-const datoSluttPåDagepengeforlengelse = dayjs('2022-04-01');
 
 describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt før 1. juli ', () => {
     test('Maks antall dager permittering skal komme på slutt på forlengelse av dagpengeordning innfør i forbindelse med korona hvis permittert i 49 uker og 1 dag ved 1 november og permitteringen er iverksatt før 1. juli', () => {
@@ -193,84 +193,6 @@ test('Skal håndtere løpende permittering etter slutt på dagpengeforlengelse, 
     expect(dagerPermittertIPeriode).toEqual(maksAntallPermitteringsdager);
     expect(datoForMaksAntallDagerNådd).toEqual(
         dayjs(forstePermitteringsdato).add(
-            maksAntallPermitteringsdager - 1,
-            'days'
-        )
-    );
-});
-
-test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir ut ved telling av løpende permittering', () => {
-    const maksAntallPermitteringsdager = 49 * 7;
-    const datoFørstePermitteringsDato = dagensDato.subtract(200, 'days');
-    const lengdePåFørstePermittering = (maksAntallPermitteringsdager - 1) / 2;
-    const slutt18mndsPeriodeMedStartFørstePermitteringsPeriode = finnDato18MndFram(
-        datoFørstePermitteringsDato
-    );
-    const startDatoLøpendePermittering = slutt18mndsPeriodeMedStartFørstePermitteringsPeriode.subtract(
-        lengdePåFørstePermittering - 1,
-        'days'
-    );
-
-    const tidslinje = getTidslinje({
-        permitteringer: [
-            {
-                datoFra: datoFørstePermitteringsDato,
-                datoTil: datoFørstePermitteringsDato.add(
-                    lengdePåFørstePermittering - 1,
-                    'days'
-                ),
-            },
-            {
-                datoFra: startDatoLøpendePermittering,
-                erLøpende: true,
-            },
-        ],
-        andreFraværsperioder: [],
-    });
-    //datoene er lagt opp slik at den første permittering glir ut i halen av 18-mndsperioden, da permitteringsperiodene kun når maks antall -1 i dette 18-mndsintervallet-
-    const datoDerMaksMinusEnDagNås = slutt18mndsPeriodeMedStartFørstePermitteringsPeriode;
-    const antallPermitteringsDagerI18mndsIntervallSomInkludere1Permittering = getPermitteringsoversiktFor18Måneder(
-        tidslinje,
-        datoDerMaksMinusEnDagNås
-    ).dagerBrukt;
-    console.log(
-        'dager i det intervallet jeg tenkte på: ',
-        antallPermitteringsDagerI18mndsIntervallSomInkludere1Permittering
-    );
-    expect(
-        antallPermitteringsDagerI18mndsIntervallSomInkludere1Permittering
-    ).toEqual(maksAntallPermitteringsdager - 1);
-    const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
-        tidslinje,
-        datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsdager,
-        dagensDato
-    );
-    console.log(
-        'dato maks nådd i algoritmen' + formaterDato(datoMaksAntallDagerNådd!!),
-        getPermitteringsoversiktFor18Måneder(
-            tidslinje,
-            datoMaksAntallDagerNådd!!
-        ).dagerBrukt
-    );
-    console.log(
-        'dato maks i jukseregning',
-        formaterDato(
-            startDatoLøpendePermittering.add(
-                maksAntallPermitteringsdager - 1,
-                'days'
-            )
-        ),
-        getPermitteringsoversiktFor18Måneder(
-            tidslinje,
-            startDatoLøpendePermittering.add(
-                maksAntallPermitteringsdager - 1,
-                'days'
-            )
-        ).dagerBrukt
-    );
-    expect(datoMaksAntallDagerNådd).toEqual(
-        startDatoLøpendePermittering.add(
             maksAntallPermitteringsdager - 1,
             'days'
         )

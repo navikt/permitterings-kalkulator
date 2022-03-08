@@ -118,7 +118,7 @@ export const lagResultatTekstNormaltRegelverk = (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Du kan permittere en ansatt mer enn 26 uker i løpet
-                            a 18 måneder.
+                            av 18 måneder.
                         </Normaltekst>
                     </>
                 ),

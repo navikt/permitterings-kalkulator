@@ -13,6 +13,7 @@ import {
     getSenesteDato,
 } from './dato-utils';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
+import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
@@ -187,4 +188,41 @@ export const finnFørstePermitteringsdatoFraDato = (
         iterator++;
     }
     return tidslinje[iterator].dato;
+};
+
+export const konstruerTidslinjeSomSletterPermitteringFørDato = (
+    tidslinje: DatoMedKategori[],
+    datoSlettesEtter: Dayjs,
+    gjeldendeRegelverk: Permitteringssregelverk,
+    datoMaksPermitteringNås?: Dayjs
+) => {
+    const nyTidslinje: DatoMedKategori[] = [];
+    tidslinje.forEach((datoMedKategori, index) => {
+        if (
+            datoMaksPermitteringNås &&
+            datoMedKategori.kategori !==
+                DatointervallKategori.IKKE_PERMITTERT &&
+            datoMedKategori.dato.isAfter(datoMaksPermitteringNås)
+        ) {
+            const nyDatoMedKategori: DatoMedKategori = {
+                dato: datoMedKategori.dato,
+                kategori: DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+            };
+            nyTidslinje.push(nyDatoMedKategori);
+        } else if (
+            gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK &&
+            datoMedKategori.kategori !==
+                DatointervallKategori.IKKE_PERMITTERT &&
+            datoMedKategori.dato.isBefore(datoSlettesEtter)
+        ) {
+            const nyDatoMedKategori: DatoMedKategori = {
+                dato: datoMedKategori.dato,
+                kategori: DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+            };
+            nyTidslinje.push(nyDatoMedKategori);
+        } else {
+            nyTidslinje.push({ ...datoMedKategori });
+        }
+    });
+    return nyTidslinje;
 };
