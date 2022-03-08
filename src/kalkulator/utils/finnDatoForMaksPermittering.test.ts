@@ -134,41 +134,6 @@ test('Skal finne dato for maks antall dager ved løpende permittering med oppsta
     );
 });
 
-test('Skal gi samme dato for maks permittering nådd når en permittering er løpende og når en permittering er aktiv etter dagens dato', () => {
-    const maksAntallPermitteringsuker = 49;
-    const tidslinje1 = getTidslinje({
-        permitteringer: [
-            {
-                datoFra: datoSluttPåDagepengeforlengelse.subtract(5, 'weeks'),
-                erLøpende: true,
-            },
-        ],
-        andreFraværsperioder: [],
-    });
-    const tidslinje2 = getTidslinje({
-        permitteringer: [
-            {
-                datoFra: datoSluttPåDagepengeforlengelse.subtract(5, 'weeks'),
-                datoTil: dagensDato.add(10, 'days'),
-            },
-        ],
-        andreFraværsperioder: [],
-    });
-    const datoMaksAntallDagerNådd1 = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
-        tidslinje1,
-        datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsuker * 7,
-        dagensDato
-    );
-    const datoMaksAntallDagerNådd2 = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
-        tidslinje2,
-        datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsuker * 7,
-        dagensDato
-    );
-    expect(datoMaksAntallDagerNådd1).toEqual(datoMaksAntallDagerNådd2);
-});
-
 test('Skal håndtere løpende permittering etter slutt på dagpengeforlengelse, normalt regelverk', () => {
     const maksAntallPermitteringsdager = 26 * 7;
     const forstePermitteringsdato = dayjs('2022-05-01');

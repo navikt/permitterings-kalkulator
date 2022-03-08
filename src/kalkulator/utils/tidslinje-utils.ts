@@ -58,41 +58,6 @@ const finneKategori = (
     };
 };
 
-export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs
-): Dayjs => {
-    let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
-        dagensDato
-    ).datoTil;
-    const sistePermitteringsstart = getSenesteDato(
-        allePermitteringerOgFravær.permitteringer.map(
-            (permittering) => permittering.datoFra
-        )
-    );
-    const sisteEndtFraværsperiode = getSenesteDato(
-        allePermitteringerOgFravær.andreFraværsperioder.map(
-            (fravær) => fravær.datoTil
-        )
-    );
-    const forstePermitteringsDagEtterFravær = sisteEndtFraværsperiode?.add(
-        1,
-        'day'
-    );
-    const forstePermitteringsDagEtterFraværDato18mndFram = forstePermitteringsDagEtterFravær
-        ? finnDato18MndFram(forstePermitteringsDagEtterFravær)
-        : undefined;
-    const sisteDatoIsisteMulige18mndsPeriode = sistePermitteringsstart
-        ? finnDato18MndFram(sistePermitteringsstart)
-        : undefined;
-
-    return getSenesteDato([
-        senesteDatoPåTidslinje,
-        sisteDatoIsisteMulige18mndsPeriode,
-        forstePermitteringsDagEtterFraværDato18mndFram,
-    ])?.add(3, 'months')!;
-};
-
 export const konstruerTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs
