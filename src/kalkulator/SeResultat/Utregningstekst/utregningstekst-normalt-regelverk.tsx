@@ -54,7 +54,6 @@ export const lagResultatTekstNormaltRegelverk = (
     const tidligstePermitteringEtter1Juli = finnFørsteDatoMedPermitteringUtenFravær(
         tidslinjeUtenPermitteringFor1Juli
     );
-    console.log(finnesSlettesPermittering, 'slettet permittering');
     switch (permitteringsSituasjon) {
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE: {
             return {

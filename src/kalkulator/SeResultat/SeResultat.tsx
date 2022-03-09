@@ -76,7 +76,11 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             setVisBeskjedLønnspliktPeriode(true);
             setGjeldendeRegelverk(undefined);
         }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+    }, [
+        props.tidslinje,
+        props.allePermitteringerOgFraværesPerioder,
+        resultatVises,
+    ]);
 
     //tidslinja er deaktivert i prod
     const skalViseTidslinje = true;
