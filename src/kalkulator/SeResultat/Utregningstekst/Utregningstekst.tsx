@@ -89,7 +89,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                   props.allePermitteringerOgFraværesPerioder,
                   dagensDato,
                   regelEndring1Juli,
-                  regelEndringsDato1April
+                  regelEndringsDato1April,
+                  !!nyListeHvisPermitteringsdagerErSlettet
               );
 
     return (

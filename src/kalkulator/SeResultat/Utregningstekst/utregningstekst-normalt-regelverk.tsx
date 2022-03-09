@@ -7,9 +7,7 @@ import {
 import { Dayjs } from 'dayjs';
 
 import {
-    finnDato18MndFram,
     finnDato18MndTilbake,
-    finnPotensiellLøpendePermittering,
     formaterDato,
     formaterDatoIntervall,
 } from '../../utils/dato-utils';
@@ -31,12 +29,22 @@ interface ResultatTekst {
     beskrivelse: ReactElement | null;
 }
 
+const tekstOmPermitteringFør1JuliErSletter = () => {
+    return (
+        <Element className={'utregningstekst__beskrivelse'}>
+            Merk at permitteringsdager før 1. juli 2021 er slettet som følge av
+            nye permitteringsregler.
+        </Element>
+    );
+};
+
 export const lagResultatTekstNormaltRegelverk = (
     tidslinjeUtenPermitteringFor1Juli: DatoMedKategori[],
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
     dagensDato: Dayjs,
     innføringsdatoRegelEndring: Dayjs,
-    innføringsdatoRegelEndring2: Dayjs
+    innføringsdatoRegelEndring2: Dayjs,
+    finnesSlettesPermittering: Boolean
 ): ResultatTekst => {
     const permitteringsSituasjon = finnPermitteringssituasjonNormalRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
@@ -46,6 +54,7 @@ export const lagResultatTekstNormaltRegelverk = (
     const tidligstePermitteringEtter1Juli = finnFørsteDatoMedPermitteringUtenFravær(
         tidslinjeUtenPermitteringFor1Juli
     );
+    console.log(finnesSlettesPermittering, 'slettet permittering');
     switch (permitteringsSituasjon) {
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE: {
             return {
@@ -65,6 +74,8 @@ export const lagResultatTekstNormaltRegelverk = (
                             permitteringer som overskrider 26 uker i løpet av 18
                             måneder.
                         </Normaltekst>
+                        {finnesSlettesPermittering &&
+                            tekstOmPermitteringFør1JuliErSletter()}
                     </>
                 ),
             };
@@ -88,6 +99,8 @@ export const lagResultatTekstNormaltRegelverk = (
                             måneder. Siden den ansatte ikke er permittert på
                             denne datoen, vil ikke lønnsplikten inntreffe.
                         </Normaltekst>
+                        {finnesSlettesPermittering &&
+                            tekstOmPermitteringFør1JuliErSletter()}
                     </>
                 ),
             };
@@ -120,6 +133,8 @@ export const lagResultatTekstNormaltRegelverk = (
                             Du kan ikke permittere en ansatt mer enn 26 uker i
                             løpet av 18 måneder.
                         </Normaltekst>
+                        {finnesSlettesPermittering &&
+                            tekstOmPermitteringFør1JuliErSletter()}
                     </>
                 ),
             };
@@ -162,6 +177,8 @@ export const lagResultatTekstNormaltRegelverk = (
                             )}{' '}
                             vil du måtte avslutte permitteringen.
                         </Normaltekst>
+                        {finnesSlettesPermittering &&
+                            tekstOmPermitteringFør1JuliErSletter()}
                     </>
                 ),
             };
