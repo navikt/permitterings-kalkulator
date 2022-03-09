@@ -215,46 +215,7 @@ export const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     return `${restIDager} dager`;
 };
 
-const alertOmForskyvingAvMaksgrenseNåddHvisHelg = (dato: Dayjs) => {
-    if (erHelg(dato)) {
-        return (
-            <AlertStripe
-                type={'info'}
-                form={'inline'}
-                className="utregningstekst__alertstripe"
-            >
-                <Element>
-                    NB! Lørdager og søndager forskyver dagen lønnsplikten
-                    inntreffer.
-                </Element>
-                <Normaltekst>
-                    Hvis første dag du har lønnsplikt havner på en helgedag,
-                    betaler du lønn fra med førstkommende mandag.
-                </Normaltekst>
-            </AlertStripe>
-        );
-    }
-};
-
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
 
 const skrivDager = (dager: number) =>
     dager === 1 ? '1 dag' : dager + ' dager';
-
-const advarselOmForbeholdAvRegelEndringVedSeinDato = (
-    dato: Dayjs,
-    senesteDato: Dayjs
-) => {
-    if (dato.isSameOrAfter(senesteDato)) {
-        return (
-            <AlertStripe
-                type={'advarsel'}
-                form={'inline'}
-                className={'utregningstekst__alertstripe'}
-            >
-                Vi tar forbehold om at endringer i regelverket kan påvirke denne
-                beregningen.
-            </AlertStripe>
-        );
-    }
-};

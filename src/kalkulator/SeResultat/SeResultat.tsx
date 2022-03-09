@@ -183,26 +183,20 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                             id="tidslinje-wrapper"
                         >
                             {skalViseTidslinje && (
-                                <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
-                                    <Tidslinje
-                                        gjeldendeRegelverk={
-                                            gjeldeneRegelverk
-                                                ? gjeldeneRegelverk
-                                                : Permitteringssregelverk.NORMALT_REGELVERK
-                                        }
-                                        set18mndsPeriode={
-                                            props.set18mndsPeriode
-                                        }
-                                        sisteDagIPeriode={
-                                            props.sisteDagIPeriode
-                                        }
-                                        breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                            'tidslinje-wrapper',
-                                            props.tidslinje.length
-                                        )}
-                                        tidslinje={props.tidslinje}
-                                    />
-                                </Ekspanderbartpanel>
+                                <Tidslinje
+                                    gjeldendeRegelverk={
+                                        gjeldeneRegelverk
+                                            ? gjeldeneRegelverk
+                                            : Permitteringssregelverk.NORMALT_REGELVERK
+                                    }
+                                    set18mndsPeriode={props.set18mndsPeriode}
+                                    sisteDagIPeriode={props.sisteDagIPeriode}
+                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                        'tidslinje-wrapper',
+                                        props.tidslinje.length
+                                    )}
+                                    tidslinje={props.tidslinje}
+                                />
                             )}
                         </div>
                     </div>
