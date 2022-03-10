@@ -124,6 +124,38 @@ export const finnPotensiellLøpendePermittering = (
     return datoIntervall.find((permittering) => permittering.erLøpende);
 };
 
+export const permitteringErForTettAndrePermitteringer = (
+    datoIntervall: Partial<DatoIntervall>[],
+    enkeltDatoIntervall: Partial<DatoIntervall>
+): Boolean => {
+    let overlapper = false;
+    datoIntervall.forEach((intervall) => {
+        if (intervall !== enkeltDatoIntervall) {
+            if (
+                intervall.datoTil &&
+                Math.abs(
+                    antallDagerGått(
+                        enkeltDatoIntervall.datoFra,
+                        intervall.datoTil
+                    )
+                ) < 20
+            ) {
+                console.log(
+                    enkeltDatoIntervall.datoTil,
+                    Math.abs(
+                        antallDagerGått(
+                            enkeltDatoIntervall.datoFra,
+                            intervall.datoTil
+                        )
+                    )
+                );
+                overlapper = true;
+            }
+        }
+    });
+    return overlapper;
+};
+
 export const datoIntervallOverlapperMedPerioder = (
     perioder: Partial<DatoIntervall>[],
     fraværsintervall: Partial<DatoIntervall>
