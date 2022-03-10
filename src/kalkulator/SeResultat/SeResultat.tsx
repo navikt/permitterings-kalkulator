@@ -61,6 +61,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         );
         if (skalVærePåKoronaRegelverk) {
             setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+        } else {
+            setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
         }
         //potensiale for at arbeidsgiver hadde lønsplikt før 1. juli og dermed permitterer på koronaordning
         const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');

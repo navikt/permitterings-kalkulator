@@ -22,7 +22,7 @@ import {
     regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
 import { PermitteringContext } from '../../ContextProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
     finnDato18MndFram,
@@ -94,7 +94,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
 
     useEffect(() => {
         if (datoMaksPermitteringNås) {
-            props.set18mndsPeriode(datoMaksPermitteringNås);
+            const nyDatoTrigger = dayjs(datoMaksPermitteringNås);
+            props.set18mndsPeriode(nyDatoTrigger);
         } else {
             const intervallDerMaksKanNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
                 tidslinjeSomSkalVises,
@@ -104,7 +105,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             );
             props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
         }
-    }, [tidslinjeSomSkalVises]);
+    }, [tidslinjeSomSkalVises, props.gjeldendeRegelverk]);
 
     useEffect(() => {
         const nyTidslinje: DatoMedKategori[] = konstruerTidslinjeSomSletterPermitteringFørDato(
