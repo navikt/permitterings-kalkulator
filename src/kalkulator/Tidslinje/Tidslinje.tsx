@@ -93,11 +93,24 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     );
 
     useEffect(() => {
+        if (datoMaksPermitteringNås) {
+            props.set18mndsPeriode(datoMaksPermitteringNås);
+        } else {
+            const intervallDerMaksKanNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
+                tidslinjeSomSkalVises,
+                regelEndringsDato1April,
+                dagensDato,
+                26 * 7
+            );
+            props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
+        }
+    }, [tidslinjeSomSkalVises]);
+
+    useEffect(() => {
         const nyTidslinje: DatoMedKategori[] = konstruerTidslinjeSomSletterPermitteringFørDato(
             props.tidslinje,
             regelEndring1Juli,
-            props.gjeldendeRegelverk,
-            datoMaksPermitteringNås
+            props.gjeldendeRegelverk
         );
         setTidslinjeSomSkalVises(nyTidslinje);
     }, [props.tidslinje, props.gjeldendeRegelverk]);
@@ -115,41 +128,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             props.breddeAvDatoObjektIProsent
         );
         setHtmlFargeobjekt(htmlFargeObjekt);
-    }, [tidslinjeSomSkalVises]);
-
-    useEffect(() => {
-        const maksAntallPermitteringsdagerNådd =
-            props.gjeldendeRegelverk ===
-            Permitteringssregelverk.NORMALT_REGELVERK
-                ? finnDatoForMaksPermitteringNormaltRegelverk(
-                      tidslinjeSomSkalVises,
-                      regelEndringsDato1April,
-                      26 * 7
-                  )
-                : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
-                      tidslinjeSomSkalVises,
-                      regelEndringsDato1April,
-                      49 * 7,
-                      dagensDato
-                  );
-        if (maksAntallPermitteringsdagerNådd) {
-            const forstePermitteringI18mndsIntervall = finnFørsteDatoMedPermitteringUtenFravær(
-                tidslinjeSomSkalVises,
-                finnDato18MndTilbake(maksAntallPermitteringsdagerNådd)
-            );
-            props.set18mndsPeriode(
-                finnDato18MndFram(forstePermitteringI18mndsIntervall!!.dato)
-            );
-        } else {
-            const intervallDerMaksKanNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinjeSomSkalVises,
-                regelEndringsDato1April,
-                dagensDato,
-                26 * 7
-            );
-            props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
-        }
-    }, []);
+    }, [tidslinjeSomSkalVises, props.sisteDagIPeriode]);
 
     const OnTidslinjeDrag = () => {
         setAnimasjonSkalVises(false);

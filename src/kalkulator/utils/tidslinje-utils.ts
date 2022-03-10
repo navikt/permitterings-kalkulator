@@ -158,23 +158,11 @@ export const finnFørstePermitteringsdatoFraDato = (
 export const konstruerTidslinjeSomSletterPermitteringFørDato = (
     tidslinje: DatoMedKategori[],
     datoSlettesEtter: Dayjs,
-    gjeldendeRegelverk: Permitteringssregelverk,
-    datoMaksPermitteringNås?: Dayjs
+    gjeldendeRegelverk: Permitteringssregelverk
 ) => {
     const nyTidslinje: DatoMedKategori[] = [];
     tidslinje.forEach((datoMedKategori, index) => {
         if (
-            datoMaksPermitteringNås &&
-            datoMedKategori.kategori !==
-                DatointervallKategori.IKKE_PERMITTERT &&
-            datoMedKategori.dato.isAfter(datoMaksPermitteringNås)
-        ) {
-            const nyDatoMedKategori: DatoMedKategori = {
-                dato: datoMedKategori.dato,
-                kategori: DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
-            };
-            nyTidslinje.push(nyDatoMedKategori);
-        } else if (
             gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK &&
             datoMedKategori.kategori !==
                 DatointervallKategori.IKKE_PERMITTERT &&
