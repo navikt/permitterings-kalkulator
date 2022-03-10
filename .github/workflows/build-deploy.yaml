@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-labs-gcp:
     name: Deploy to labs-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/begrense-tidslinjedatoer-rundt-til-dagens-datoer'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fikser-bugs'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:
