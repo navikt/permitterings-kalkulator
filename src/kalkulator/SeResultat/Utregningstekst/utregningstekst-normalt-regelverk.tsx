@@ -147,7 +147,7 @@ export const lagResultatTekstNormaltRegelverk = (
             );
             return {
                 konklusjon: `Du har ikke nådd maks antall permitteringsdager enda.`,
-                beskrivelse: (
+                beskrivelse: !!aktuell18mndsperiode ? (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
                             Den ansatte har i perioden{' '}
@@ -179,6 +179,8 @@ export const lagResultatTekstNormaltRegelverk = (
                         {finnesSlettesPermittering &&
                             tekstOmPermitteringFør1JuliErSletter()}
                     </>
+                ) : (
+                    tekstOmPermitteringFør1JuliErSletter()
                 ),
             };
         }

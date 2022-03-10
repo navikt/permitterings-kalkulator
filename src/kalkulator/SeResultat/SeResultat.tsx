@@ -22,6 +22,7 @@ import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { Checkbox, Alert } from '@navikt/ds-react';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -78,14 +79,15 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
             setVisBeskjedLønnspliktPeriode(true);
             setGjeldendeRegelverk(undefined);
         }
-    }, [
-        props.tidslinje,
-        props.allePermitteringerOgFraværesPerioder,
-        resultatVises,
-    ]);
+    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
     //tidslinja er deaktivert i prod
-    const skalViseTidslinje = true;
+    const skalViseTidslinje =
+        gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING ||
+        finnFørsteDatoMedPermitteringUtenFravær(
+            props.tidslinje,
+            regelEndring1Juli.subtract(1, 'day')
+        );
 
     const endreRegelverk = (regelverk: Permitteringssregelverk) => {
         if (gjeldeneRegelverk === regelverk) {
