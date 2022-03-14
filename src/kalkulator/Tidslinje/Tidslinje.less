@@ -1,5 +1,12 @@
 @import 'node_modules/nav-frontend-core/less/_variabler';
 
+.tidslinje {
+    display: initial;
+    @media (max-width: @screen-sm-min) {
+        display: none;
+    }
+}
+
 .kalkulator {
     &__draggable-periode {
         position: relative;
