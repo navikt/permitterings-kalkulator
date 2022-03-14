@@ -6,11 +6,7 @@ import {
 } from '../../typer';
 import { Dayjs } from 'dayjs';
 
-import {
-    finnDato18MndTilbake,
-    formaterDato,
-    formaterDatoIntervall,
-} from '../../utils/dato-utils';
+import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
@@ -167,7 +163,13 @@ export const lagResultatTekstNormaltRegelverk = (
                             tekstOmPermitteringFør1JuliErSletter()}
                     </>
                 ) : (
-                    tekstOmPermitteringFør1JuliErSletter()
+                    <>
+                        <Normaltekst className={'utregningstekst__beskrivelse'}>
+                            Du har ingen permitteringsperioder som vil påvirke
+                            beregningen.
+                        </Normaltekst>
+                        {tekstOmPermitteringFør1JuliErSletter()}
+                    </>
                 ),
             };
         }
