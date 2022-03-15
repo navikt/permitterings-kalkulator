@@ -88,6 +88,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
+                type={'permitteringsperiode'}
                 kanVæreLøpende={true}
                 datoIntervall={
                     props.allePermitteringerOgFraværesPerioder.permitteringer[
