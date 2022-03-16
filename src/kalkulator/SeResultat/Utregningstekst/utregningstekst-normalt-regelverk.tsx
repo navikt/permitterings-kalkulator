@@ -237,7 +237,7 @@ export const tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering = (
             : 0;
     const tekstOmDagpengeforlengelse =
         antallDagerBrukt > maksAntallDager
-            ? 'På grunn av forlengelsen av dagpengeordningen kan du permittere fram til 1. april 2022.'
+            ? 'På grunn av forlengelsen av dagpengeordningen kan du permittere fram til 31. mars 2022.'
             : '';
     return (
         <Element className={'utregningstekst__beskrivelse'}>
