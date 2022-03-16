@@ -1,9 +1,4 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useContext, useEffect } from 'react';
 import './Utregningstekst.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
@@ -11,13 +6,8 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
-import lampeikon from './lampeikon.svg';
 import { PermitteringContext } from '../../../ContextProvider';
-import {
-    finnDato18MndFram,
-    finnPotensiellLøpendePermittering,
-    formaterDato,
-} from '../../utils/dato-utils';
+import { finnPotensiellLøpendePermittering } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import dayjs from 'dayjs';
@@ -30,53 +20,23 @@ import {
     loggKnappTrykketPå,
     loggPermitteringsSituasjon,
 } from '../../../utils/amplitudeEvents';
-import {
-    finnDenAktuelle18mndsperiodenSomSkalBeskrives,
-    finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli,
-    harLøpendePermitteringMedOppstartFørRegelendring,
-} from '../../utils/beregningerForRegelverksendring1Jan';
+import { Permitteringssregelverk } from '../SeResultat';
+import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 
 interface Props {
     tidslinje: DatoMedKategori[];
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-}
-
-export enum Permitteringssregelverk {
-    KORONA_ORDNING = 'KORONA_ORDNING',
-    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
+    gjeldendeRegelverk: Permitteringssregelverk;
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
     const {
         dagensDato,
         regelEndring1Juli,
-        regelEndringsDato1Januar,
+        regelEndringsDato1April,
     } = useContext(PermitteringContext);
 
-    const [
-        harNåddMaksKoronaRegelverk,
-        setHarNåddMaksKoronaRegelverk,
-    ] = useState(false);
-
-    useEffect(() => {
-        const oppstartFørRegelendring = harLøpendePermitteringMedOppstartFørRegelendring(
-            props.allePermitteringerOgFraværesPerioder.permitteringer,
-            regelEndring1Juli
-        );
-        const harNåddMaksPåKoronaRegelverkAvsluttetPermittering = !!finnMaksAntallDagerNåddHvisAvsluttetPermitteringFraFør1Juli(
-            props.tidslinje,
-            regelEndringsDato1Januar,
-            regelEndring1Juli
-        );
-        setHarNåddMaksKoronaRegelverk(
-            oppstartFørRegelendring ||
-                harNåddMaksPåKoronaRegelverkAvsluttetPermittering
-        );
-    }, [
-        props.allePermitteringerOgFraværesPerioder.permitteringer,
-        regelEndring1Juli,
-    ]);
-
+    //useEffect kun for å logge permitteringssituasjoner
     useEffect(() => {
         const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(
             props.tidslinje
@@ -87,95 +47,54 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
                 'Har permittering iverksatt før 1. april 2020'
             );
         }
-        if (!harNåddMaksKoronaRegelverk) {
-            const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
-                props.tidslinje
+        const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
+            props.tidslinje
+        );
+        const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
+            props.allePermitteringerOgFraværesPerioder.permitteringer
+        );
+        if (
+            !løpendePermitteringEtter1Juli &&
+            sistePermitteringsDato.isAfter(dagensDato)
+        ) {
+            loggPermitteringsSituasjon(
+                'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
             );
-            const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            );
-            if (
-                !løpendePermitteringEtter1Juli &&
-                sistePermitteringsDato.isAfter(dagensDato)
-            ) {
-                loggPermitteringsSituasjon(
-                    'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
-                );
-            }
         }
     }, [props.tidslinje]);
 
-    const gjeldendeRegelverk = harNåddMaksKoronaRegelverk
-        ? Permitteringssregelverk.KORONA_ORDNING
-        : Permitteringssregelverk.NORMALT_REGELVERK;
-    const nyListeHvisPermitteringsdagerErSlettet = harNåddMaksKoronaRegelverk
-        ? undefined
-        : lagNyListeHvisPermitteringFør1Juli(
-              props.tidslinje,
-              regelEndring1Juli
-          );
+    const nyListeHvisPermitteringsdagerErSlettet =
+        props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
+            ? undefined
+            : lagNyListeHvisPermitteringFør1Juli(
+                  props.tidslinje,
+                  regelEndring1Juli
+              );
 
     const gjeldendeTidslinje = nyListeHvisPermitteringsdagerErSlettet
         ? nyListeHvisPermitteringsdagerErSlettet
         : props.tidslinje;
 
-    const resultatTekst = harNåddMaksKoronaRegelverk
-        ? lagResultatTekstForPermitteringsStartFør1Juli(
-              gjeldendeTidslinje,
-              props.allePermitteringerOgFraværesPerioder,
-              dagensDato,
-              regelEndringsDato1Januar,
-              regelEndring1Juli
-          )
-        : lagResultatTekstNormaltRegelverk(
-              gjeldendeTidslinje,
-              props.allePermitteringerOgFraværesPerioder,
-              dagensDato,
-              regelEndring1Juli
-          );
-
-    const maksDagerUtenLønnsplikt = harNåddMaksKoronaRegelverk
-        ? 49 * 7
-        : 26 * 7;
-    const datoRegelEndring = harNåddMaksKoronaRegelverk
-        ? regelEndringsDato1Januar
-        : regelEndring1Juli;
-    const aktuell18mndsperiode = finnDenAktuelle18mndsperiodenSomSkalBeskrives(
-        gjeldendeRegelverk,
-        gjeldendeTidslinje,
-        dagensDato,
-        regelEndringsDato1Januar,
-        regelEndring1Juli,
-        maksDagerUtenLønnsplikt,
-        harLøpendePermitteringMedOppstartFørRegelendring(
-            props.allePermitteringerOgFraværesPerioder.permitteringer,
-            regelEndring1Juli
-        )
-    );
-
-    /*
-    {aktuell18mndsperiode && (
-                <DetaljertUtregning
-                    permitteringsDagerFør1JuliSlettet={
-                        !!nyListeHvisPermitteringsdagerErSlettet
-                    }
-                    tidslinje={gjeldendeTidslinje}
-                    permitteringsperioder={filtrerBortUdefinerteDatoIntervaller(
-                        props.allePermitteringerOgFraværesPerioder
-                            .permitteringer
-                    )}
-                    aktuell18mndsperiode={aktuell18mndsperiode}
-                />
-            )}
-     */
+    const resultatTekst =
+        props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
+            ? lagResultatTekstForPermitteringsStartFør1Juli(
+                  gjeldendeTidslinje,
+                  props.allePermitteringerOgFraværesPerioder,
+                  dagensDato,
+                  regelEndringsDato1April,
+                  regelEndring1Juli
+              )
+            : lagResultatTekstNormaltRegelverk(
+                  gjeldendeTidslinje,
+                  props.allePermitteringerOgFraværesPerioder,
+                  dagensDato,
+                  regelEndring1Juli,
+                  regelEndringsDato1April,
+                  !!nyListeHvisPermitteringsdagerErSlettet
+              );
 
     return (
-        <div className="utregningstekst">
-            <img
-                className="utregningstekst__lampeikon"
-                src={lampeikon}
-                alt=""
-            />
+        <div className="utregningstekst__tekst">
             <Element>{resultatTekst.konklusjon}</Element>
             {resultatTekst.beskrivelse}
             <Normaltekst className="utregningstekst__informasjonslenker">

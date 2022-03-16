@@ -8,7 +8,12 @@ import {
 } from '../../typer';
 
 import DatoIntervallInput from '../../DatointervallInput/DatointervallInput';
-import { finnDato18MndTilbake, getTidligsteDato } from '../../utils/dato-utils';
+import {
+    finnDato18MndFram,
+    finnDato18MndTilbake,
+    getSenesteDato,
+    getTidligsteDato,
+} from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
 
 interface Props {
@@ -25,12 +30,20 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
         advarselPermitteringForeldet,
         setAdvarselPermitteringForeldet,
     ] = useState('');
+    const [
+        advarselPermitteringForLangIFramtiden,
+        setAdvarselPermitteringForLangtIFramtiden,
+    ] = useState('');
 
     const oppdaterDatoIntervall = (datoIntervall: Partial<DatoIntervall>) => {
         const datoErForGammel = getTidligsteDato([
             datoIntervall.datoFra,
             datoIntervall.datoTil,
         ])?.isBefore(finnDato18MndTilbake(dagensDato));
+        const datoErForLangtIFramtiden = getSenesteDato([
+            datoIntervall.datoFra,
+            datoIntervall.datoTil,
+        ])?.isAfter(finnDato18MndFram(dagensDato));
 
         if (datoErForGammel) {
             setAdvarselPermitteringForeldet(
@@ -38,6 +51,13 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
             );
         } else {
             setAdvarselPermitteringForeldet('');
+        }
+        if (datoErForLangtIFramtiden) {
+            setAdvarselPermitteringForLangtIFramtiden(
+                'Du kan ikke planlegge permitteringer langt fram i tid'
+            );
+        } else {
+            setAdvarselPermitteringForLangtIFramtiden('');
         }
         const kopiAvPermitteringsperioder = [
             ...props.allePermitteringerOgFraværesPerioder.permitteringer,
@@ -68,6 +88,7 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
     return (
         <div className={'permitteringsperiode'}>
             <DatoIntervallInput
+                type={'permitteringsperiode'}
                 kanVæreLøpende={true}
                 datoIntervall={
                     props.allePermitteringerOgFraværesPerioder.permitteringer[
@@ -76,7 +97,10 @@ const Permitteringsperiode: FunctionComponent<Props> = (props) => {
                 }
                 setDatoIntervall={oppdaterDatoIntervall}
                 slettPeriode={slettPeriode}
-                advarsel={advarselPermitteringForeldet}
+                advarsel={
+                    advarselPermitteringForeldet +
+                    advarselPermitteringForLangIFramtiden
+                }
             />
         </div>
     );

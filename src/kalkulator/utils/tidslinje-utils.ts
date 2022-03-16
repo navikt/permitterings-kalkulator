@@ -12,12 +12,13 @@ import {
     finnesIIntervaller,
     getSenesteDato,
 } from './dato-utils';
+import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
+import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 
 export const finnInitialgrenserForTidslinjedatoer = (
     dagensDato: Dayjs
 ): DatoIntervall & { erLøpende: false } => {
-    const bakover18mnd = finnDato18MndTilbake(dagensDato);
-    const maksGrenseIBakoverITid = bakover18mnd.subtract(56, 'days');
+    const maksGrenseIBakoverITid = finnDato18MndTilbake(dagensDato);
     const maksGrenseFramoverITid = dagensDato.add(112, 'days');
 
     return {
@@ -57,55 +58,20 @@ const finneKategori = (
     };
 };
 
-export const regnUtHvaSisteDatoPåTidslinjenSkalVære = (
-    allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs
-): Dayjs => {
-    let senesteDatoPåTidslinje = finnInitialgrenserForTidslinjedatoer(
-        dagensDato
-    ).datoTil;
-    const sistePermitteringsstart = getSenesteDato(
-        allePermitteringerOgFravær.permitteringer.map(
-            (permittering) => permittering.datoFra
-        )
-    );
-    const sisteEndtFraværsperiode = getSenesteDato(
-        allePermitteringerOgFravær.andreFraværsperioder.map(
-            (fravær) => fravær.datoTil
-        )
-    );
-    const forstePermitteringsDagEtterFravær = sisteEndtFraværsperiode?.add(
-        1,
-        'day'
-    );
-    const forstePermitteringsDagEtterFraværDato18mndFram = forstePermitteringsDagEtterFravær
-        ? finnDato18MndFram(forstePermitteringsDagEtterFravær)
-        : undefined;
-    const sisteDatoIsisteMulige18mndsPeriode = sistePermitteringsstart
-        ? finnDato18MndFram(sistePermitteringsstart)
-        : undefined;
-
-    return getSenesteDato([
-        senesteDatoPåTidslinje,
-        sisteDatoIsisteMulige18mndsPeriode,
-        forstePermitteringsDagEtterFraværDato18mndFram,
-    ])?.add(3, 'months')!;
-};
-
 export const konstruerTidslinje = (
     allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder,
-    dagensDato: Dayjs,
-    sisteDatoVistPåTidslinjen: Dayjs
+    dagensDato: Dayjs
 ): DatoMedKategori[] => {
     const listeMedTidslinjeObjekter: DatoMedKategori[] = [];
-
     const antallObjektITidslinje = antallDagerGått(
-        finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra,
-        sisteDatoVistPåTidslinjen
+        finnDato18MndTilbake(dagensDato),
+        finnDato18MndFram(dagensDato)
     );
-    const startDato = finnInitialgrenserForTidslinjedatoer(dagensDato).datoFra;
     listeMedTidslinjeObjekter.push(
-        finneKategori(startDato, allePermitteringerOgFravær)
+        finneKategori(
+            finnDato18MndTilbake(dagensDato),
+            allePermitteringerOgFravær
+        )
     );
     for (let dag = 1; dag < antallObjektITidslinje; dag++) {
         const nesteDag = listeMedTidslinjeObjekter[dag - 1].dato.add(1, 'day');
@@ -173,4 +139,43 @@ export const getSistePermitteringsdato = (
         }
     }
     return undefined;
+};
+
+export const finnFørstePermitteringsdatoFraDato = (
+    tidslinje: DatoMedKategori[],
+    dato: Dayjs
+) => {
+    const indeksDato = finnIndeksForDato(dato, tidslinje);
+    let iterator = indeksDato;
+    while (
+        tidslinje[iterator].kategori === DatointervallKategori.IKKE_PERMITTERT
+    ) {
+        iterator++;
+    }
+    return tidslinje[iterator].dato;
+};
+
+export const konstruerTidslinjeSomSletterPermitteringFørDato = (
+    tidslinje: DatoMedKategori[],
+    datoSlettesEtter: Dayjs,
+    gjeldendeRegelverk: Permitteringssregelverk
+) => {
+    const nyTidslinje: DatoMedKategori[] = [];
+    tidslinje.forEach((datoMedKategori, index) => {
+        if (
+            gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK &&
+            datoMedKategori.kategori !==
+                DatointervallKategori.IKKE_PERMITTERT &&
+            datoMedKategori.dato.isBefore(datoSlettesEtter)
+        ) {
+            const nyDatoMedKategori: DatoMedKategori = {
+                dato: datoMedKategori.dato,
+                kategori: DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI,
+            };
+            nyTidslinje.push(nyDatoMedKategori);
+        } else {
+            nyTidslinje.push({ ...datoMedKategori });
+        }
+    });
+    return nyTidslinje;
 };

@@ -13,6 +13,7 @@ interface Props {
     slettPeriode: () => void;
     advarsel: string;
     kanVæreLøpende: boolean;
+    type: 'permitteringsperiode' | 'fraværsperiode';
 }
 
 const DatoIntervallInput: FunctionComponent<Props> = (props) => {
@@ -57,6 +58,15 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
         }
     };
 
+    const labelDatovelgerFra =
+        props.type === 'permitteringsperiode'
+            ? 'Første dag etter lønnsplikt'
+            : 'Fra';
+    const labelDatovelgerTil =
+        props.type === 'permitteringsperiode'
+            ? 'Siste dag av permitteringen'
+            : 'Fra';
+
     return (
         <div className="datointervall-input">
             <div className="datointervall-input__dato-wrapper">
@@ -65,14 +75,14 @@ const DatoIntervallInput: FunctionComponent<Props> = (props) => {
                     value={datoIntervall.datoFra}
                     onChange={onFraDatoChange}
                     skalVareFoer={datoIntervall.datoTil}
-                    overtekst="Første dag"
+                    overtekst={labelDatovelgerFra}
                 />
                 <Datovelger
                     className="datointervall-input__datoinput"
                     value={datoIntervall.datoTil}
                     onChange={(event) => setTilDato(event.currentTarget.value)}
                     disabled={erLøpende}
-                    overtekst="Siste dag"
+                    overtekst={labelDatovelgerTil}
                     skalVareEtter={datoIntervall.datoFra}
                 />
             </div>
