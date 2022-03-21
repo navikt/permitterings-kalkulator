@@ -3,12 +3,9 @@ import { DatoMedKategori } from '../../../typer';
 import { Dayjs } from 'dayjs';
 import './Tekstforklaring.less';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
-import { getPermitteringsoversiktFor18Måneder } from '../../../utils/beregningerForRegelverksendring1Jan';
-import {
-    finnDato18MndTilbake,
-    formaterDatoIntervall,
-} from '../../../utils/dato-utils';
 import { skrivDagerIHeleUkerPlussDager } from '../../../SeResultat/Utregningstekst/utregningstekst-avvikling-av-koronaregler-utils';
+import { getPermitteringsoversiktFor18Måneder } from '../../../utils/beregningerForSluttPåDagpengeforlengelse';
+import { Ingress, Heading } from '@navikt/ds-react';
 
 interface Props {
     sisteDagIPeriode: Dayjs;
@@ -24,33 +21,29 @@ const Tekstforklaring: FunctionComponent<Props> = (props) => {
 
     return (
         <div className="tidslinje__tekstforklaring">
-            <Element className={'tidslinje__tekstforklaring-element'}>
+            <Heading
+                spacing
+                size="small"
+                level="4"
+                className={'tidslinje__tekstforklaring-element'}
+            >
                 Illustrasjonen viser permitteringsperiodene du har plottet inn
                 og plasserer de i en tidslinje.
-            </Element>
-            <Normaltekst>
-                Perioden din ansatte når eller potensielt når maks antall
-                permitteringsdager er:
-            </Normaltekst>
-            <Element className="tidslinje__tekstforklaring-periode">
-                {formaterDatoIntervall({
-                    datoFra: finnDato18MndTilbake(props.sisteDagIPeriode),
-                    datoTil: props.sisteDagIPeriode,
-                })}
-            </Element>
-            <Normaltekst>
-                Du kan dra det blå drag-elementet for å se hvor mange
-                permitteringsdager som er innenfor en bestemt 18-månedsperiode.
-            </Normaltekst>
-            <Element
+            </Heading>
+            <Ingress
                 className={'kalkulator__tidslinje-drag-element-forklaring'}
             >
-                Permittering i den markerte 18-månedsperioder:{' '}
+                Permittering i den markerte 18-månedersperioden:{' '}
                 {skrivDagerIHeleUkerPlussDager(
                     oversiktOverPermitteringi18mndsperiode
                 )}{' '}
                 ({oversiktOverPermitteringi18mndsperiode} dager).
-            </Element>
+            </Ingress>
+            <Normaltekst className={'tidslinje__drag-element-instruks'}>
+                <b>Tips:</b> Du kan dra det blå drag-elementet for å se hvor
+                mange permitteringsdager som er innenfor en bestemt
+                18-månedersperiode.
+            </Normaltekst>
         </div>
     );
 };

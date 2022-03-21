@@ -1,49 +1,102 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
+import React, {
+    FunctionComponent,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
 } from '../typer';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { ReactComponent as PekIkon } from './cursor-touch-2.svg';
 import Tidslinje from '../Tidslinje/Tidslinje';
 import Utregningstekst from './Utregningstekst/Utregningstekst';
-import { Undertittel } from 'nav-frontend-typografi';
+import { Undertittel, Element } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
-import { perioderOverlapper } from '../utils/dato-utils';
 import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
+import { PermitteringContext } from '../../ContextProvider';
+import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import lampeikon from './lampeikon.svg';
+import { Checkbox, Alert } from '@navikt/ds-react';
+import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
     set18mndsPeriode: (dato: Dayjs) => void;
     sisteDagIPeriode: Dayjs;
-    endringAv: 'datovelger' | 'tidslinje' | 'ingen';
-    setEndringAv: (endringAv: 'datovelger' | 'tidslinje') => void;
     tidslinje: DatoMedKategori[];
+}
+
+export enum Permitteringssregelverk {
+    KORONA_ORDNING = 'KORONA_ORDNING',
+    NORMALT_REGELVERK = 'NORMALT_REGELVERK',
 }
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
+    const { regelEndring1Juli, dagensDato } = useContext(PermitteringContext);
+    const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
+        Permitteringssregelverk | undefined
+    >(Permitteringssregelverk.NORMALT_REGELVERK);
+    const [
+        visBeskjedLønnspliktPeriode,
+        setVisBeskjedLønnspliktPeriode,
+    ] = useState(false);
 
+    //clean-up useEffect for å nullstille parametere når input endres
     useEffect(() => {
         setResultatVises(false);
+        setVisBeskjedLønnspliktPeriode(false);
+        setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+    }, [props.allePermitteringerOgFraværesPerioder]);
 
+    useEffect(() => {
+        const skalVærePåKoronaRegelverk = finnUtOmKoronaregelverkSkalBrukes(
+            props.tidslinje,
+            dagensDato,
+            regelEndring1Juli
+        );
+        if (skalVærePåKoronaRegelverk) {
+            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+        } else {
+            setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
+        }
+        //potensiale for at arbeidsgiver hadde lønsplikt før 1. juli og dermed permitterer på koronaordning
+        const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
         if (
-            props.tidslinje.length > 0 &&
-            !perioderOverlapper(
-                props.allePermitteringerOgFraværesPerioder.permitteringer
-            )
+            finnUtOmKoronaregelverkSkalBrukes(
+                props.tidslinje,
+                dagensDato,
+                grenseDatoForPotensiellLønnspliktFør1Juli
+            ) &&
+            !visBeskjedLønnspliktPeriode &&
+            !skalVærePåKoronaRegelverk
         ) {
-            props.setEndringAv('datovelger');
+            setVisBeskjedLønnspliktPeriode(true);
+            setGjeldendeRegelverk(undefined);
         }
     }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
 
+    //tidslinja er deaktivert i prod
     const skalViseTidslinje =
-        (window.location.href.includes('labs') ||
-            process.env.NODE_ENV === 'development') &&
-        props.tidslinje.length;
+        gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING ||
+        finnFørsteDatoMedPermitteringUtenFravær(
+            props.tidslinje,
+            regelEndring1Juli.subtract(1, 'day')
+        );
+
+    const endreRegelverk = (regelverk: Permitteringssregelverk) => {
+        if (gjeldeneRegelverk === regelverk) {
+            setGjeldendeRegelverk(undefined);
+        } else {
+            setGjeldendeRegelverk(regelverk);
+        }
+        setResultatVises(true);
+    };
 
     return (
         <>
@@ -51,52 +104,110 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                 3. Se resultatet av beregningen
             </Undertittel>
             <div className="se-resultat__innhold">
-                <Hovedknapp
-                    className="se-resultat__knapp"
-                    onClick={() => {
-                        setResultatVises(true);
-                        loggKnappTrykketPå('Se beregningen');
-                    }}
-                >
-                    <PekIkon className="se-resultat__knapp-ikon" />
-                    Se beregningen
-                </Hovedknapp>
+                {!!props.allePermitteringerOgFraværesPerioder.permitteringer[0]
+                    .datoFra && (
+                    <Hovedknapp
+                        className="se-resultat__knapp"
+                        onClick={() => {
+                            setResultatVises(true);
+                            loggKnappTrykketPå('Se beregningen');
+                        }}
+                    >
+                        <PekIkon className="se-resultat__knapp-ikon" />
+                        Se beregningen
+                    </Hovedknapp>
+                )}
+
                 {resultatVises && (
-                    <>
-                        <Utregningstekst
-                            tidslinje={props.tidslinje}
-                            allePermitteringerOgFraværesPerioder={
-                                props.allePermitteringerOgFraværesPerioder
-                            }
+                    <div className="utregningstekst">
+                        <img
+                            className="utregningstekst__lampeikon"
+                            src={lampeikon}
+                            alt=""
                         />
+                        {visBeskjedLønnspliktPeriode && (
+                            <>
+                                <Element>
+                                    Begynte lønnspliktperioden før 1. juli for
+                                    den aktive permitteringen?
+                                </Element>
+                                <Alert variant="info" size="small">
+                                    Husk at du skal fylle inn
+                                    permitteringsperiodene etter lønnsplikt.
+                                </Alert>
+                                <div
+                                    className={
+                                        'utregningstekst__checkbokscontainer'
+                                    }
+                                >
+                                    <Checkbox
+                                        className={'utregningstekst__checkboks'}
+                                        value="Ja"
+                                        checked={
+                                            gjeldeneRegelverk ===
+                                            Permitteringssregelverk.KORONA_ORDNING
+                                        }
+                                        onChange={() => {
+                                            endreRegelverk(
+                                                Permitteringssregelverk.KORONA_ORDNING
+                                            );
+                                        }}
+                                    >
+                                        Ja
+                                    </Checkbox>
+                                    <Checkbox
+                                        className={'utregningstekst__checkboks'}
+                                        value="Nei"
+                                        checked={
+                                            gjeldeneRegelverk ===
+                                            Permitteringssregelverk.NORMALT_REGELVERK
+                                        }
+                                        onChange={() => {
+                                            endreRegelverk(
+                                                Permitteringssregelverk.NORMALT_REGELVERK
+                                            );
+                                        }}
+                                    >
+                                        Nei
+                                    </Checkbox>
+                                </div>
+                            </>
+                        )}
+                        {gjeldeneRegelverk && (
+                            <Utregningstekst
+                                tidslinje={props.tidslinje}
+                                allePermitteringerOgFraværesPerioder={
+                                    props.allePermitteringerOgFraværesPerioder
+                                }
+                                gjeldendeRegelverk={
+                                    gjeldeneRegelverk
+                                        ? gjeldeneRegelverk
+                                        : Permitteringssregelverk.NORMALT_REGELVERK
+                                }
+                            />
+                        )}
                         <div
                             className={'se-resultat__tidslinje-wrapper'}
                             id="tidslinje-wrapper"
                         >
                             {skalViseTidslinje && (
-                                <Ekspanderbartpanel tittel={'Vis illustrasjon'}>
-                                    <Tidslinje
-                                        allePermitteringerOgFraværesPerioder={
-                                            props.allePermitteringerOgFraværesPerioder
-                                        }
-                                        set18mndsPeriode={
-                                            props.set18mndsPeriode
-                                        }
-                                        sisteDagIPeriode={
-                                            props.sisteDagIPeriode
-                                        }
-                                        breddeAvDatoObjektIProsent={fraPixelTilProsent(
-                                            'tidslinje-wrapper',
-                                            props.tidslinje.length
-                                        )}
-                                        endringAv={props.endringAv}
-                                        setEndringAv={props.setEndringAv}
-                                        tidslinje={props.tidslinje}
-                                    />
-                                </Ekspanderbartpanel>
+                                <Tidslinje
+                                    gjeldendeRegelverk={
+                                        gjeldeneRegelverk
+                                            ? gjeldeneRegelverk
+                                            : Permitteringssregelverk.NORMALT_REGELVERK
+                                    }
+                                    set18mndsPeriode={props.set18mndsPeriode}
+                                    sisteDagIPeriode={props.sisteDagIPeriode}
+                                    breddeAvDatoObjektIProsent={fraPixelTilProsent(
+                                        'tidslinje-wrapper',
+                                        props.tidslinje.length
+                                    )}
+                                    tidslinje={props.tidslinje}
+                                />
                             )}
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
         </>

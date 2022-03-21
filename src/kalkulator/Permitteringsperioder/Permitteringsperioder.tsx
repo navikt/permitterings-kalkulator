@@ -1,11 +1,13 @@
-import React, { FunctionComponent } from 'react';
-import { Normaltekst, Undertittel } from 'nav-frontend-typografi';
+import React, { FunctionComponent, useEffect, useState } from 'react';
+import { Element, Normaltekst, Undertittel } from 'nav-frontend-typografi';
 import { AllePermitteringerOgFraværesPerioder, DatoIntervall } from '../typer';
 import Permitteringsperiode from './Permitteringsperiode/Permitteringsperiode';
 import './permitteringsperioder.less';
-import kalenderSvg from './kalender.svg';
-import { Infotekst } from '../Infotekst/Infotekst';
-import { finnSisteTilDato, perioderOverlapper } from '../utils/dato-utils';
+import {
+    finnSisteTilDato,
+    perioderOverlapper,
+    permitteringErForTettAndrePermitteringer,
+} from '../utils/dato-utils';
 import { Knapp } from 'nav-frontend-knapper';
 import AlertStripe from 'nav-frontend-alertstriper';
 
@@ -20,6 +22,10 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
     allePermitteringerOgFraværesPerioder,
     setAllePermitteringerOgFraværesPerioder,
 }) => {
+    const [
+        feilmeldingPermitteringerErForTett,
+        setFeilmeldingPermitteringerErForTett,
+    ] = useState('');
     const permitteringsobjekter = allePermitteringerOgFraværesPerioder.permitteringer.map(
         (permitteringsperiode, indeks) => (
             <Permitteringsperiode
@@ -40,7 +46,7 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             allePermitteringerOgFraværesPerioder.permitteringer
         );
         const startdatoForNyPeriode = sisteUtfyltePermitteringsdag
-            ? sisteUtfyltePermitteringsdag.add(1, 'day')
+            ? sisteUtfyltePermitteringsdag.add(21, 'day')
             : undefined;
         const nyPeriode: Partial<DatoIntervall> = {
             datoFra: startdatoForNyPeriode,
@@ -54,7 +60,27 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
         setAllePermitteringerOgFraværesPerioder(kopiAvPermitterinsperioder);
     };
 
-    const feilmelding = perioderOverlapper(
+    useEffect(() => {
+        console.log('useEffect');
+        let finnesForTette = false;
+        allePermitteringerOgFraværesPerioder.permitteringer.forEach(
+            (periode, indeks) => {
+                if (
+                    permitteringErForTettAndrePermitteringer(
+                        allePermitteringerOgFraværesPerioder.permitteringer,
+                        periode
+                    )
+                ) {
+                    finnesForTette = true;
+                    setFeilmeldingPermitteringerErForTett(
+                        'Du har fylt inn permitteringsperioder med mindre enn 20 dagers mellomrom. Har du husket å fylle inn fra første dag etter lønnsplikt?'
+                    );
+                }
+            }
+        );
+    }, [allePermitteringerOgFraværesPerioder.permitteringer]);
+
+    const feilmeldingPerioderOverlapper = perioderOverlapper(
         allePermitteringerOgFraværesPerioder.permitteringer
     )
         ? 'Du kan ikke ha overlappende permitteringsperioder'
@@ -65,32 +91,36 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
             <Undertittel tag="h2" className="permitteringsperioder__tittel">
                 1. Legg til periodene den ansatte har vært permittert
             </Undertittel>
-            <Infotekst imgSrc={kalenderSvg} imgAlt="Kalender">
-                <Normaltekst tag="ul" className="permitteringsperioder__liste">
-                    <li>
-                        Fyll inn permitteringsperiodene uavhengig av
-                        permitteringsprosent og stillingsprosent.
-                    </li>
-                    <li>
-                        Hvis den ansatte har fått lønnskompensasjon, skal dette
-                        være med i periodene.
-                    </li>
-                    <li>
-                        Ikke fyll inn dagene du har lønnsplikt eller
-                        permitteringer grunnet streik.
-                    </li>
-                    <li>Ikke fyll inn permitteringer eldre enn 18 måneder.</li>
-                </Normaltekst>
-            </Infotekst>
+            <Element>Du skal fylle inn</Element>
+            <Normaltekst tag="ul" className="topp__liste">
+                <li>
+                    permittering uavhengig av permitteringsprosent og
+                    stillingsprosent
+                </li>
+                <li>
+                    permittering fra første permitteringsdag{' '}
+                    <b>etter lønnsplikt</b>
+                </li>
+            </Normaltekst>
             {permitteringsobjekter}
-            {feilmelding.length > 0 && (
+            {feilmeldingPerioderOverlapper.length > 0 && (
                 <AlertStripe
                     type={'feil'}
                     className="permitteringsperioder__feilmelding"
                     aria-live="polite"
                     aria-label="Feilmelding"
                 >
-                    {feilmelding}
+                    {feilmeldingPerioderOverlapper}
+                </AlertStripe>
+            )}
+            {feilmeldingPermitteringerErForTett.length > 0 && (
+                <AlertStripe
+                    type={'feil'}
+                    className="permitteringsperioder__feilmelding"
+                    aria-live="polite"
+                    aria-label="Feilmelding"
+                >
+                    {feilmeldingPermitteringerErForTett}
                 </AlertStripe>
             )}
             <Knapp

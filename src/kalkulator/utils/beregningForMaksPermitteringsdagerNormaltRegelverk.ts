@@ -17,13 +17,16 @@ import {
     tilGyldigDatoIntervall,
 } from './dato-utils';
 import {
+    erPermittertVedDato,
     finnFørsteDatoMedPermitteringUtenFravær,
     getSistePermitteringsdato,
 } from './tidslinje-utils';
 
 export enum PermitteringssituasjonStandarkRegelverk {
-    MAKS_NÅDD_UTREGNET = 'MAKS_NÅDD',
-    IKKE_NÅDD = 'IKKE_NÅDD',
+    MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
+    MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE',
+    MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE',
+    MAKS_IKKE_NÅDD = 'MAKS_IKKE_NÅDD',
 }
 
 export const lagNyListeHvisPermitteringFør1Juli = (
@@ -61,18 +64,38 @@ export const finnPermitteringssituasjonNormalRegelverk = (
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonStandarkRegelverk => {
-    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermittering(
+    const dagerPermittertVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
+        tidslinjeUtenPermitteringFor1Juli,
+        innføringsdatoRegelendring
+    ).dagerBrukt;
+    const erPermittertPåInnføringsdato = erPermittertVedDato(
+        tidslinjeUtenPermitteringFor1Juli,
+        innføringsdatoRegelendring
+    );
+    if (
+        dagerPermittertVedInnføringsdato >= maksAntallDagerUtenLønnsplikt &&
+        erPermittertPåInnføringsdato
+    ) {
+        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
+    }
+    if (
+        dagerPermittertVedInnføringsdato >= maksAntallDagerUtenLønnsplikt &&
+        !erPermittertPåInnføringsdato
+    ) {
+        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE;
+    }
+    const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelendring,
         maksAntallDagerUtenLønnsplikt
     );
     if (datoForMaksPermitteringOppbrukt) {
-        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_UTREGNET;
+        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
     }
-    return PermitteringssituasjonStandarkRegelverk.IKKE_NÅDD;
+    return PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD;
 };
 
-export const finnDatoForMaksPermittering = (
+export const finnDatoForMaksPermitteringNormaltRegelverk = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
@@ -86,7 +109,7 @@ export const finnDatoForMaksPermittering = (
     const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
 
     while (
-        antallDagerPermittert <= maksAntallDagerUtenLønnsplikt &&
+        antallDagerPermittert < maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isSameOrBefore(
             sistePermitteringsdato || sisteDagITidslinjen
         )
@@ -102,10 +125,10 @@ export const finnDatoForMaksPermittering = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    if (antallDagerPermittert <= maksAntallDagerUtenLønnsplikt) {
+    if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    return potensiellDatoForMaksPeriode;
+    return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
 export const getPermitteringsoversiktFor18Måneder = (

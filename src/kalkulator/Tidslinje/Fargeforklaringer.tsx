@@ -1,25 +1,31 @@
 import React from 'react';
 import { Normaltekst } from 'nav-frontend-typografi';
 
-export const Fargeforklaringer = () => {
+export const Fargeforklaringer = (finnesSlettetPermittering: boolean) => {
     return (
         <div aria-hidden className={'kalkulator__tidslinje-farge-forklaring'}>
             <div className={'kalkulator__tidslinje-farge-forklaring-container'}>
-                <Normaltekst>Permittert</Normaltekst>
+                <Normaltekst>permittert</Normaltekst>
                 <div className={'kalkulator__tidslinje-farge permittert'} />
             </div>
             <div className={'kalkulator__tidslinje-farge-forklaring-container'}>
-                <Normaltekst>Annet fravær</Normaltekst>
+                <Normaltekst>annet fravær</Normaltekst>
                 <div className={'kalkulator__tidslinje-farge annet-fravær'} />
             </div>
-            <div className={'kalkulator__tidslinje-farge-forklaring-container'}>
-                <Normaltekst>Slettet permittering</Normaltekst>
+            {finnesSlettetPermittering && (
                 <div
                     className={
-                        'kalkulator__tidslinje-farge slettet-permittering'
+                        'kalkulator__tidslinje-farge-forklaring-container'
                     }
-                />
-            </div>
+                >
+                    <Normaltekst>slettet</Normaltekst>
+                    <div
+                        className={
+                            'kalkulator__tidslinje-farge slettet-permittering'
+                        }
+                    />
+                </div>
+            )}
         </div>
     );
 };
