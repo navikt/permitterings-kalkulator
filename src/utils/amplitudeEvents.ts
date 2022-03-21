@@ -13,9 +13,13 @@ export const loggKnappTrykketPå = (label: String) => {
     });
 };
 
-export const loggPermitteringsSituasjon = (situasjon: String) => {
+export const loggPermitteringsSituasjon = (
+    situasjon: String,
+    regelverk: string
+) => {
     amplitude.logEvent('sidevisning', {
         url: 'https://arbeidsgiver.nav.no/permittering-kalkulator/',
         situasjon: situasjon,
+        regelverk: regelverk,
     });
 };

@@ -16,6 +16,7 @@ import {
     tekstOmBruktOgGjenværendePermitteringVedAvsluttetPermittering,
     tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering,
 } from './utregningstekst-normalt-regelverk';
+import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -43,6 +44,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 tidslinje,
                 datoSluttPaDagepengeForlengelse
             ).dagerBrukt;
+            loggPermitteringsSituasjon(
+                'Permittert mer enn 27 uker men mindre enn 49',
+                'koronaregelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedAvsluttetPermittering(
                     26 * 7,
@@ -62,6 +67,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 tidslinje,
                 datoSluttPaDagepengeForlengelse
             ).dagerBrukt;
+            loggPermitteringsSituasjon(
+                'Maks permittering nås på slutten av dagpengeforlengelsen',
+                'koronaregelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering(
                     49 * 7,
@@ -87,6 +96,10 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 tidslinje,
                 dagensDato
             ).dagerBrukt;
+            loggPermitteringsSituasjon(
+                'Maks permittering nås i framtiden',
+                'normalt regelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering(
                     49 * 7,

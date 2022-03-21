@@ -52,9 +52,6 @@ export const lagResultatTekstNormaltRegelverk = (
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring2
     ).dagerBrukt;
-    const tidligstePermitteringEtter1Juli = finnFørsteDatoMedPermitteringUtenFravær(
-        tidslinjeUtenPermitteringFor1Juli
-    );
     switch (permitteringsSituasjon) {
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE: {
             return {
@@ -176,29 +173,6 @@ export const lagResultatTekstNormaltRegelverk = (
     }
 };
 
-const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
-    tidslinje: DatoMedKategori[],
-    sluttDato18mndsIntervall: Dayjs
-) => {
-    const startDato18mndsIntervall = finnDato18MndTilbake(
-        sluttDato18mndsIntervall
-    );
-    const finnesPermitteringerFørGittDato = tidslinje.find(
-        (datoMedKategori) =>
-            datoMedKategori.kategori ===
-                DatointervallKategori.PERMITTERT_UTEN_FRAVÆR &&
-            datoMedKategori.dato.isBefore(startDato18mndsIntervall)
-    );
-    if (finnesPermitteringerFørGittDato) {
-        return `Merk at permitteringer før ${formaterDato(
-            startDato18mndsIntervall
-        )} ikke teller med i beregningen siden dette faller utenfor det gjeldene 18-månedersintervallet (${formaterDato(
-            startDato18mndsIntervall
-        )}-${formaterDato(sluttDato18mndsIntervall)}).`;
-    }
-    return false;
-};
-
 const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     const heleUkerPermittert = Math.floor(dager / 7);
     const restIDager = dager % 7;
@@ -209,17 +183,6 @@ const skrivDagerIHeleUkerPlussDager = (dager: number) => {
         return skrivUker(heleUkerPermittert) + dagerITekst;
     }
     return `${restIDager} dager`;
-};
-
-const tekstOmPermitteringFør1Juli = () => {
-    return (
-        <Normaltekst className={'utregningstekst__beskrivelse'}>
-            For nye permitteringstilfeller fra 1. juli 2021 skal du ikke telle
-            med eventuelle permitteringsperioder før 1. juli 2021 i
-            18-månedersperioden. Permitteringsdager før 1. juli blir derfor
-            utelatt og påvirker ikke utregningen for denne permitteringen.
-        </Normaltekst>
-    );
 };
 
 const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');

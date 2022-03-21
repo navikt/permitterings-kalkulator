@@ -26,6 +26,7 @@ import {
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
+import { loggPermitteringsSituasjon } from '../../utils/amplitudeEvents';
 
 export enum PermitteringssituasjonVedSluttPaForlengelse {
     MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
