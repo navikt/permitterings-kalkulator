@@ -21,7 +21,6 @@ import {
     loggPermitteringsSituasjon,
 } from '../../../utils/amplitudeEvents';
 import { Permitteringssregelverk } from '../SeResultat';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -44,7 +43,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         const forsteApril2020 = dayjs('2020-04-01');
         if (tidligstePermitteringsDato?.dato.isBefore(forsteApril2020)) {
             loggPermitteringsSituasjon(
-                'Har permittering iverksatt før 1. april 2020'
+                'Har permittering iverksatt før 1. april 2020',
+                ' '
             );
         }
         const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
@@ -58,7 +58,8 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
             sistePermitteringsDato.isAfter(dagensDato)
         ) {
             loggPermitteringsSituasjon(
-                'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
+                'Arbeidsgiver planlegger ikke-løpende permittering i framtiden',
+                ' '
             );
         }
     }, [props.tidslinje]);

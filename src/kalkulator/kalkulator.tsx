@@ -7,14 +7,17 @@ import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
     konstruerTidslinje,
 } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
-import { loggSidevinsing } from '../utils/amplitudeEvents';
+import {
+    loggSidevinsing,
+    logSekunderBruktFørBrukerFyllerInn,
+} from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
     const { dagensDato, regelEndringsDato1April } = useContext(
@@ -28,6 +31,10 @@ const Kalkulator = () => {
         permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
+    const [
+        sekunderFørPermitteringFyllesInn,
+        setSekunderFørPermitteringFyllesInn,
+    ] = useState<undefined | number>(undefined);
 
     const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
         regelEndringsDato1April
@@ -35,14 +42,43 @@ const Kalkulator = () => {
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
 
     useEffect(() => {
+        setSekunderFørPermitteringFyllesInn(dayjs().valueOf());
         loggSidevinsing();
     }, []);
 
     useEffect(() => {
+        const navigererBortFraSidenEvent = () => {
+            logSekunderBruktFørBrukerFyllerInn(undefined);
+        };
+        window.addEventListener('beforeunload', navigererBortFraSidenEvent);
+        return () =>
+            window.removeEventListener(
+                'beforeunload',
+                navigererBortFraSidenEvent
+            );
+    }, []);
+
+    useEffect(() => {
+        if (
+            allePermitteringerOgFraværesPerioder.permitteringer[0].datoFra &&
+            sekunderFørPermitteringFyllesInn
+        ) {
+            const tidNå = dayjs().valueOf();
+            console.log(
+                tidNå,
+                'tidsbrukt i sekund',
+                (tidNå - sekunderFørPermitteringFyllesInn) / 1000
+            );
+            logSekunderBruktFørBrukerFyllerInn(
+                (tidNå - sekunderFørPermitteringFyllesInn) / 1000
+            );
+            //settes til undefined så logging ikke skal skje ved hver datoendring
+            setSekunderFørPermitteringFyllesInn(undefined);
+        }
         setTidslinje(
             konstruerTidslinje(allePermitteringerOgFraværesPerioder, dagensDato)
         );
-    }, [allePermitteringerOgFraværesPerioder]);
+    }, [allePermitteringerOgFraværesPerioder.permitteringer[0]]);
 
     return (
         <div className={'kalkulator__bakgrunn'}>
