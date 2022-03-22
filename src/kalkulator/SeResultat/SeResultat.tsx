@@ -16,7 +16,10 @@ import Utregningstekst from './Utregningstekst/Utregningstekst';
 import { Undertittel, Element } from 'nav-frontend-typografi';
 import { fraPixelTilProsent } from '../Tidslinje/tidslinjefunksjoner';
 import './SeResultat.less';
-import { loggKnappTrykketPå } from '../../utils/amplitudeEvents';
+import {
+    loggAntallPermitteringsperioder,
+    loggKnappTrykketPå,
+} from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
@@ -111,6 +114,10 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                         onClick={() => {
                             setResultatVises(true);
                             loggKnappTrykketPå('Se beregningen');
+                            loggAntallPermitteringsperioder(
+                                props.allePermitteringerOgFraværesPerioder
+                                    .permitteringer.length
+                            );
                         }}
                     >
                         <PekIkon className="se-resultat__knapp-ikon" />

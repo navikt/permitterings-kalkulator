@@ -7,19 +7,26 @@ import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
     konstruerTidslinje,
 } from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
-import { loggSidevinsing } from '../utils/amplitudeEvents';
+import {
+    loggSidevinsing,
+    logSekunderBruktFørBrukerFyllerInn,
+} from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
     const { dagensDato, regelEndringsDato1April } = useContext(
         PermitteringContext
     );
+    const [
+        sekunderFørPermitteringFyllesInn,
+        setSekunderFørPermitteringFyllesInn,
+    ] = useState<undefined | number>(undefined);
 
     const [
         allePermitteringerOgFraværesPerioder,
@@ -36,9 +43,33 @@ const Kalkulator = () => {
 
     useEffect(() => {
         loggSidevinsing();
+        setSekunderFørPermitteringFyllesInn(dayjs().valueOf());
     }, []);
 
     useEffect(() => {
+        const navigererBortFraSidenEvent = () => {
+            logSekunderBruktFørBrukerFyllerInn(undefined);
+        };
+        window.addEventListener('beforeunload', navigererBortFraSidenEvent);
+        return () =>
+            window.removeEventListener(
+                'beforeunload',
+                navigererBortFraSidenEvent
+            );
+    }, []);
+
+    useEffect(() => {
+        if (
+            allePermitteringerOgFraværesPerioder.permitteringer[0].datoFra &&
+            sekunderFørPermitteringFyllesInn
+        ) {
+            const tidNå = dayjs().valueOf();
+            logSekunderBruktFørBrukerFyllerInn(
+                (tidNå - sekunderFørPermitteringFyllesInn) / 1000
+            );
+            //settes til undefined så logging ikke skal skje ved hver datoendring
+            setSekunderFørPermitteringFyllesInn(undefined);
+        }
         setTidslinje(
             konstruerTidslinje(allePermitteringerOgFraværesPerioder, dagensDato)
         );

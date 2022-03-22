@@ -20,6 +20,7 @@ import {
     finnFørstePermitteringsdatoFraDato,
     finnSisteDatoMedPermitteringUtenFravær,
 } from '../../utils/tidslinje-utils';
+import { loggPermitteringsSituasjon } from '../../../utils/amplitudeEvents';
 
 interface ResultatTekst {
     konklusjon: ReactElement | string;
@@ -52,11 +53,12 @@ export const lagResultatTekstNormaltRegelverk = (
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring2
     ).dagerBrukt;
-    const tidligstePermitteringEtter1Juli = finnFørsteDatoMedPermitteringUtenFravær(
-        tidslinjeUtenPermitteringFor1Juli
-    );
     switch (permitteringsSituasjon) {
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE: {
+            loggPermitteringsSituasjon(
+                'Maks permittering nås på slutten av dagpengeforlengelsen',
+                'normalt regelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering(
                     26 * 7,
@@ -83,6 +85,10 @@ export const lagResultatTekstNormaltRegelverk = (
                 tidslinjeUtenPermitteringFor1Juli,
                 sistePermitteringsdato
             ).dagerBrukt;
+            loggPermitteringsSituasjon(
+                'Maks permittering nådd. Ikke permittert på slutten av dagpengeforlengelsen',
+                'normalt regelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedAvsluttetPermittering(
                     26 * 7,
@@ -120,6 +126,10 @@ export const lagResultatTekstNormaltRegelverk = (
                 datoMaksPermitteringNås
             );
             //// OBS SJEKK DENNE I PRAKSIS
+            loggPermitteringsSituasjon(
+                'Maks permittering nås i framtiden',
+                'normalt regelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering(
                     26 * 7,
@@ -148,6 +158,10 @@ export const lagResultatTekstNormaltRegelverk = (
                 tidslinjeUtenPermitteringFor1Juli,
                 dagensDato
             ).dagerBrukt;
+            loggPermitteringsSituasjon(
+                'Maks permittering ikke nådd',
+                'normalt regelverk'
+            );
             return {
                 konklusjon: tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering(
                     26 * 7,

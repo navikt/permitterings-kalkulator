@@ -61,7 +61,6 @@ export const Permitteringsperioder: FunctionComponent<Props> = ({
     };
 
     useEffect(() => {
-        console.log('useEffect');
         let finnesForTette = false;
         allePermitteringerOgFraværesPerioder.permitteringer.forEach(
             (periode, indeks) => {
