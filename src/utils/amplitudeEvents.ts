@@ -24,6 +24,15 @@ export const loggPermitteringsSituasjon = (
     });
 };
 
+export const loggAntallPermitteringsperioder = (
+    antallPermitteringer: number
+) => {
+    amplitude.logEvent('sidevisning', {
+        url: 'https://arbeidsgiver.nav.no/permittering-kalkulator/',
+        antallPermitteringer: antallPermitteringer,
+    });
+};
+
 export const logSekunderBruktFørBrukerFyllerInn = (
     antallSekunder: number | undefined
 ) => {
@@ -43,8 +52,10 @@ export const logSekunderBruktFørBrukerFyllerInn = (
         antallSekunderBolkString = 'mindre enn 4 minutter';
     } else if (antallSekunder <= 480) {
         antallSekunderBolkString = 'mindre enn 8 minutter';
+    } else if (antallSekunder <= 600) {
+        antallSekunderBolkString = 'mindre enn 10 minutter';
     } else {
-        antallSekunderBolkString = 'mer enn 8 minutter';
+        antallSekunderBolkString = 'mer enn 10 minutter';
     }
     amplitude.logEvent('knapp trykket på', {
         url: 'https://arbeidsgiver.nav.no/permittering-kalkulator/',
