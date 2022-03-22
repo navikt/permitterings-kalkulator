@@ -36,33 +36,6 @@ const Utregningstekst: FunctionComponent<Props> = (props) => {
         regelEndringsDato1April,
     } = useContext(PermitteringContext);
 
-    //useEffect kun for å logge permitteringssituasjoner
-    useEffect(() => {
-        const tidligstePermitteringsDato = finnFørsteDatoMedPermitteringUtenFravær(
-            props.tidslinje
-        );
-        const forsteApril2020 = dayjs('2020-04-01');
-        if (tidligstePermitteringsDato?.dato.isBefore(forsteApril2020)) {
-            loggPermitteringsSituasjon(
-                'Har permittering iverksatt før 1. april 2020'
-            );
-        }
-        const sistePermitteringsDato = finnSisteDatoMedPermitteringUtenFravær(
-            props.tidslinje
-        );
-        const løpendePermitteringEtter1Juli = finnPotensiellLøpendePermittering(
-            props.allePermitteringerOgFraværesPerioder.permitteringer
-        );
-        if (
-            !løpendePermitteringEtter1Juli &&
-            sistePermitteringsDato.isAfter(dagensDato)
-        ) {
-            loggPermitteringsSituasjon(
-                'Arbeidsgiver planlegger ikke-løpende permittering i framtiden'
-            );
-        }
-    }, [props.tidslinje]);
-
     const nyListeHvisPermitteringsdagerErSlettet =
         props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
             ? undefined
