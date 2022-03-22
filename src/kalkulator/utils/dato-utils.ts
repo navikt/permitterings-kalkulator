@@ -140,15 +140,6 @@ export const permitteringErForTettAndrePermitteringer = (
                     )
                 ) < 20
             ) {
-                console.log(
-                    enkeltDatoIntervall.datoTil,
-                    Math.abs(
-                        antallDagerGått(
-                            enkeltDatoIntervall.datoFra,
-                            intervall.datoTil
-                        )
-                    )
-                );
                 overlapper = true;
             }
         }
