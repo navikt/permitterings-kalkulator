@@ -86,7 +86,7 @@ export const lagResultatTekstNormaltRegelverk = (
                 sistePermitteringsdato
             ).dagerBrukt;
             loggPermitteringsSituasjon(
-                'Maks permittering nådd. Ikke permittert på slutten av dagpengeforlengelse',
+                'Maks permittering nådd. Ikke permittert på slutten av dagpengeforlengelsen',
                 'normalt regelverk'
             );
             return {

@@ -45,7 +45,7 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 datoSluttPaDagepengeForlengelse
             ).dagerBrukt;
             loggPermitteringsSituasjon(
-                'Permittert mer enn 27 uker men mindre enn 49',
+                'Permittert mer enn 26 uker men mindre enn 49',
                 'koronaregelverk'
             );
             return {

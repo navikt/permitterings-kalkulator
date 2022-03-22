@@ -64,11 +64,6 @@ const Kalkulator = () => {
             sekunderFørPermitteringFyllesInn
         ) {
             const tidNå = dayjs().valueOf();
-            console.log(
-                tidNå,
-                'tidsbrukt i sekund',
-                (tidNå - sekunderFørPermitteringFyllesInn) / 1000
-            );
             logSekunderBruktFørBrukerFyllerInn(
                 (tidNå - sekunderFørPermitteringFyllesInn) / 1000
             );
