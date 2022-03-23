@@ -48,7 +48,10 @@ const Kalkulator = () => {
 
     useEffect(() => {
         const navigererBortFraSidenEvent = () => {
-            logSekunderBruktFørBrukerFyllerInn(undefined);
+            //logger at bruker ikke har fyllt inn noe
+            if (sekunderFørPermitteringFyllesInn) {
+                logSekunderBruktFørBrukerFyllerInn(undefined);
+            }
         };
         window.addEventListener('beforeunload', navigererBortFraSidenEvent);
         return () =>
