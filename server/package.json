@@ -9,6 +9,7 @@
         "classnames": "^2.2.6",
         "console-stamp": "3.0.2",
         "dotenv": "8.2.0",
+        "follow-redirects": "1.14.9",
         "fs-extra": "8.1.0",
         "helmet": "^4.4.1",
         "html-react-parser": "^1.2.4",
@@ -17,10 +18,12 @@
         "nav-frontend-spinner": "^2.0.16",
         "nav-frontend-spinner-style": "^1.0.2",
         "node-cache": "^5.1.2",
-        "node-fetch": "^2.6.1",
+        "node-fetch": "2.6.7",
         "path": "^0.12.7",
         "prop-types": "^15.7.2",
-        "react": "^17.0.1"
+        "react": "^17.0.1",
+        "url-parse": "1.5.10",
+        "ws": "7.5.7"
     },
     "scripts": {
         "server": "node server.js"
