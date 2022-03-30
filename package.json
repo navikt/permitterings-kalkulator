@@ -15,8 +15,12 @@
         "classnames": "^2.2.6",
         "craco-less": "^1.16.0",
         "dayjs": "^1.10.4",
+        "dns-packet": "^5.3.1",
         "eslint": "^7.20.0",
+        "follow-redirects": "^1.14.9",
         "lodash.throttle": "^4.1.1",
+        "minimist": "^1.2.6",
+        "nanoid": "^3.3.2",
         "nav-frontend-alertstriper": "^3.0.50",
         "nav-frontend-alertstriper-style": "^2.0.37",
         "nav-frontend-chevron": "^1.0.28",
@@ -64,7 +68,12 @@
         "react-router": "^5.1.2",
         "react-router-dom": "^5.1.2",
         "react-scripts": "^4.0.3",
-        "typescript": "^4.2.2"
+        "semver-regex": "^4.0.2",
+        "tar": "^6.1.11",
+        "tmpl": "^1.0.5",
+        "typescript": "^4.2.2",
+        "url-parse": "^1.5.10",
+        "ws": "^8.5.0"
     },
     "scripts": {
         "start": "craco start",
