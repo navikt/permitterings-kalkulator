@@ -56,7 +56,7 @@ jobs:
 
   deploy-to-dev-gcp:
     name: Deploy to dev-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/endre-deploy'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/oppdater'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:
