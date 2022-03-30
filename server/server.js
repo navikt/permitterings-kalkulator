@@ -1,5 +1,3 @@
-require('console-stamp')(console, '[HH:MM:ss.l]');
-
 const express = require('express');
 const { getHtmlWithDecorator } = require('./decorator-utils');
 const path = require('path');
