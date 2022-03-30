@@ -1601,10 +1601,12 @@
   resolved "https://registry.yarnpkg.com/@navikt/fnrvalidator/-/fnrvalidator-1.1.4.tgz#22a776ba05a90c1ba5316a4f7567f9a45abcda04"
   integrity sha512-IroYFqa8PpzVxtIk6ifeEQBFzsI2QJX/FSIQyBtJvpp2D8Cb5Z9+hGNFppCILWR+QYbY8Dkk48la7K5fPGXeWQ==
 
-"@navikt/nav-dekoratoren-moduler@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@navikt/nav-dekoratoren-moduler/-/nav-dekoratoren-moduler-1.1.2.tgz#20edd36128572648fdbdb336424c54961a2918d7"
-  integrity sha512-hw8tAcPpQ8b0u6/Xhq6mzwWD+Uc2PX1Hdd5EXIgRsM+41rhhhIkEcVQuIkasUXl63defbRSz3lvGhdNt9EeuCA==
+"@navikt/nav-dekoratoren-moduler@1.2.2":
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/@navikt/nav-dekoratoren-moduler/-/nav-dekoratoren-moduler-1.2.2.tgz#b42f2e42620c4d3e71342549bdaa039c3d9eb498"
+  integrity sha512-xM4rwdwIftY9E458pof1QG1ywNrQgornrSerGxkOpNhKXzZuQg2Jnp4yzoGBxM+sWnhx0OQljuw1N+lDR3tHsA==
+  dependencies:
+    nav-frontend-ikoner-assets "^2.0.10"
 
 "@navikt/textparser@^2.0.0":
   version "2.1.0"
@@ -8419,7 +8421,7 @@ nav-frontend-hjelpetekst@^2.0.26:
   resolved "https://registry.yarnpkg.com/nav-frontend-hjelpetekst/-/nav-frontend-hjelpetekst-2.1.2.tgz#9dec0d22d7f8bbf2122e91f5faac4c9fb0afeedd"
   integrity sha512-FKAZmi47GFqmNEKJLJ5nybI7sfnjLtFOtdhwiLBw8CjjAEjA1XLIs0S7cz9+l66KoL4yL7YoEmyfvIeXX0AMhg==
 
-nav-frontend-ikoner-assets@^2.0.1:
+nav-frontend-ikoner-assets@^2.0.1, nav-frontend-ikoner-assets@^2.0.10:
   version "2.0.10"
   resolved "https://registry.yarnpkg.com/nav-frontend-ikoner-assets/-/nav-frontend-ikoner-assets-2.0.10.tgz#8525d171ce81c9444f904374057cd77d98bae82d"
   integrity sha512-n/2qIk29rRkR8OZwZBnSIWRKdC25t/8lAhZXEvFZrqmjAC+U4xHHj5+VlCoN5O5VIzq4xtck1Flwj7mJehAj7g==
