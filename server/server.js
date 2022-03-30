@@ -11,7 +11,7 @@ const buildPath = path.join(__dirname, '../build');
 const BASE_PATH = '/permittering-kalkulator';
 
 const startServer = () => {
-    server.use(
+    server.apply(
         helmet({
             contentSecurityPolicy: {
                 directives: {

@@ -10,7 +10,6 @@
         "console-stamp": "3.0.2",
         "dotenv": "8.2.0",
         "fs-extra": "8.1.0",
-        "helmet": "^4.4.1",
         "html-react-parser": "^1.2.4",
         "jsdom": "^16.4.0",
         "nav-frontend-ikoner-assets": "^2.0.10",
