@@ -15,7 +15,13 @@ export const Brødsmulesti: FunctionComponent<Props> = ({ brødsmuler }) => {
 
     useEffect(() => {
         setBreadcrumbs(brødsmuler);
-        onBreadcrumbClick((breadcrumb) => history.push(breadcrumb.url));
+        onBreadcrumbClick((breadcrumb) => {
+            if(breadcrumb.handleInApp) {
+                history.push(breadcrumb.url)
+            } else {
+                window.location.href = breadcrumb.url
+            }
+        } );
     }, [brødsmuler]);
 
     return null;

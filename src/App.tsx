@@ -6,7 +6,8 @@ import { Brødsmulesti } from './Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
 
 const HOVEDSIDE_PATH = '/permittering-kalkulator';
-const PERMITTERINGSSIDE_PATH = '/arbeidsgiver-permittering';
+const PERMITTERINGSSIDE_PATH =
+    'https://arbeidsgiver.nav.no/permittering-og-omstilling';
 
 export const KALKULATOR_BRØDSMULE: Breadcrumb = {
     url: HOVEDSIDE_PATH,
@@ -15,8 +16,8 @@ export const KALKULATOR_BRØDSMULE: Breadcrumb = {
 };
 export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
     url: PERMITTERINGSSIDE_PATH,
-    title: 'Arbeidsgiver permittering',
-    handleInApp: true,
+    title: 'Permittering og omstilling',
+    handleInApp: false,
 };
 
 export const App = () => {
