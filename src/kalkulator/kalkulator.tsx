@@ -4,23 +4,18 @@ import './kalkulator.less';
 import Banner from '../banner/Banner';
 import { Innholdstittel } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
-import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
+import { AllePermitteringerOgFraværesPerioder } from './typer';
 import Topp from './Topp/Topp';
-import { PermitteringContext } from '../ContextProvider';
 import dayjs from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
-import {
-    finnFørsteDatoMedPermitteringUtenFravær,
-    konstruerTidslinje,
-} from './utils/tidslinje-utils';
 import { SeResultat } from './SeResultat/SeResultat';
 import {
     loggSidevinsing,
     logSekunderBruktFørBrukerFyllerInn,
 } from '../utils/amplitudeEvents';
+import { datoIntervallErGyldig } from './utils/dato-utils';
 
 const Kalkulator = () => {
-    const { dagensDato } = useContext(PermitteringContext);
     const [
         sekunderFørPermitteringFyllesInn,
         setSekunderFørPermitteringFyllesInn,
@@ -33,8 +28,6 @@ const Kalkulator = () => {
         permitteringer: [{ datoFra: undefined, datoTil: undefined }],
         andreFraværsperioder: [],
     });
-
-    const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
 
     useEffect(() => {
         loggSidevinsing();
@@ -65,12 +58,8 @@ const Kalkulator = () => {
             logSekunderBruktFørBrukerFyllerInn(
                 (tidNå - sekunderFørPermitteringFyllesInn) / 1000
             );
-            //settes til undefined så logging ikke skal skje ved hver datoendring
             setSekunderFørPermitteringFyllesInn(undefined);
         }
-        setTidslinje(
-            konstruerTidslinje(allePermitteringerOgFraværesPerioder, dagensDato)
-        );
     }, [allePermitteringerOgFraværesPerioder]);
 
     return (
@@ -101,9 +90,10 @@ const Kalkulator = () => {
                         allePermitteringerOgFraværesPerioder
                     }
                 />
-                {!!finnFørsteDatoMedPermitteringUtenFravær(tidslinje) && (
+                {datoIntervallErGyldig(
+                    allePermitteringerOgFraværesPerioder.permitteringer[0]
+                ) && (
                     <SeResultat
-                        tidslinje={tidslinje}
                         allePermitteringerOgFraværesPerioder={
                             allePermitteringerOgFraværesPerioder
                         }

@@ -36,11 +36,11 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
-import {
-    finnFørsteDatoMedPermitteringUtenFravær,
-    konstruerTidslinjeSomSletterPermitteringFørDato,
-} from '../utils/tidslinje-utils';
+import { konstruerTidslinjeSomSletterPermitteringFørDato } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+
+//propertiene set18mndsPeriode og sisteDagIPeriode brukes kun her og ikke i parentkomponenten "Se resultat"
+//den sendes allikevel med som property siden Tidslinje rendres avhengig av parentkomponenten med propertien "breddeAvDatoObjekIProsent" bare ut riktig dersom
 
 interface Props {
     set18mndsPeriode: (dato: Dayjs) => void;
@@ -61,6 +61,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
+
+    const [htmlElementerForHverDato, setHtmlElementerForHverDato] = useState<
+        any[]
+    >([]);
+    const [htmlFargeObjekt, setHtmlFargeobjekt] = useState<any[]>([]);
+
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
             ? finnDatoForMaksPermitteringNormaltRegelverk(
@@ -74,24 +80,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                   49 * 7,
                   dagensDato
               );
-    const [htmlElementerForHverDato, setHtmlElementerForHverDato] = useState<
-        any[]
-    >(
-        lagHTMLObjektForAlleDatoer(
-            tidslinjeSomSkalVises,
-            props.breddeAvDatoObjektIProsent,
-            dagensDato,
-            datoMaksPermitteringNås
-        )
-    );
 
-    const [htmlFargeObjekt, setHtmlFargeobjekt] = useState<any[]>(
-        lagHTMLObjektForPeriodeMedFarge(
-            lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
-            props.breddeAvDatoObjektIProsent
-        )
-    );
-
+    //dette må til for at tidslinja rendres rett. Dette har med utregningene av størelsene å gjøre, som må gjøres i parentkomponenten
+    //verdien er gitt i breddeAvDatoObjektIProsent
     useEffect(() => {
         if (datoMaksPermitteringNås) {
             const nyDatoTrigger = dayjs(datoMaksPermitteringNås);
