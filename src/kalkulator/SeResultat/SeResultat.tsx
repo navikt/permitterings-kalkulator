@@ -20,7 +20,6 @@ import {
     loggAntallPermitteringsperioder,
     loggKnappTrykketPå,
 } from '../../utils/amplitudeEvents';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
@@ -29,8 +28,6 @@ import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-ut
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    set18mndsPeriode: (dato: Dayjs) => void;
-    sisteDagIPeriode: Dayjs;
     tidslinje: DatoMedKategori[];
 }
 
@@ -41,7 +38,11 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const { regelEndring1Juli, dagensDato } = useContext(PermitteringContext);
+    const {
+        regelEndring1Juli,
+        dagensDato,
+        regelEndringsDato1April,
+    } = useContext(PermitteringContext);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
     >(Permitteringssregelverk.NORMALT_REGELVERK);
@@ -49,6 +50,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         visBeskjedLønnspliktPeriode,
         setVisBeskjedLønnspliktPeriode,
     ] = useState(false);
+    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
+        regelEndringsDato1April
+    );
 
     //clean-up useEffect for å nullstille parametere når input endres
     useEffect(() => {
@@ -204,8 +208,8 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                             ? gjeldeneRegelverk
                                             : Permitteringssregelverk.NORMALT_REGELVERK
                                     }
-                                    set18mndsPeriode={props.set18mndsPeriode}
-                                    sisteDagIPeriode={props.sisteDagIPeriode}
+                                    set18mndsPeriode={setSisteDagI18mndsPeriode}
+                                    sisteDagIPeriode={sisteDagI18mndsPeriode}
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'tidslinje-wrapper',
                                         props.tidslinje.length

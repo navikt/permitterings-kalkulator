@@ -2,12 +2,12 @@ import React, { useContext, useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
-import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
+import { Innholdstittel } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
 import { PermitteringContext } from '../ContextProvider';
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 import {
     finnFørsteDatoMedPermitteringUtenFravær,
@@ -20,9 +20,7 @@ import {
 } from '../utils/amplitudeEvents';
 
 const Kalkulator = () => {
-    const { dagensDato, regelEndringsDato1April } = useContext(
-        PermitteringContext
-    );
+    const { dagensDato } = useContext(PermitteringContext);
     const [
         sekunderFørPermitteringFyllesInn,
         setSekunderFørPermitteringFyllesInn,
@@ -36,9 +34,6 @@ const Kalkulator = () => {
         andreFraværsperioder: [],
     });
 
-    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
-        regelEndringsDato1April
-    );
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
 
     useEffect(() => {
@@ -109,8 +104,6 @@ const Kalkulator = () => {
                 {!!finnFørsteDatoMedPermitteringUtenFravær(tidslinje) && (
                     <SeResultat
                         tidslinje={tidslinje}
-                        sisteDagIPeriode={sisteDagI18mndsPeriode}
-                        set18mndsPeriode={setSisteDagI18mndsPeriode}
                         allePermitteringerOgFraværesPerioder={
                             allePermitteringerOgFraværesPerioder
                         }
