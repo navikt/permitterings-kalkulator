@@ -41,7 +41,7 @@ jobs:
 
   deploy-to-labs-gcp:
     name: Deploy to labs-gcp
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/nye-tekster-for-resultat'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/fiks-margin'
     needs: compile-test-and-build
     runs-on: ubuntu-latest
     steps:
