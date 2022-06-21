@@ -56,8 +56,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 ),
                 beskrivelse: (
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        01.04.2022 vil lønnsplikten gjeninntre for
-                        permitteringer som overskrider 26 uker i løpet av 18
+                        01.04.2022 ble lønnsplikten gjeninnført for
+                        permitteringer som overskred 26 uker i løpet av 18
                         måneder.
                     </Normaltekst>
                 ),
