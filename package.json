@@ -11,7 +11,7 @@
         "@navikt/nav-dekoratoren-moduler": "^1.2.9",
         "@sentry/react": "^6.2.1",
         "@types/classnames": "^2.2.11",
-        "@types/react-collapse": "^5.0.1",
+        "@types/react-collapse": "^5.1.1",
         "amplitude-js": "^8.1.0",
         "babel-core": "^6.26.3",
         "classnames": "^2.2.6",
