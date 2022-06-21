@@ -92,14 +92,6 @@ export const finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli = (
             potensiellDatoForMaksPeriode
         ).dagerBrukt;
     }
-    /*if (
-        potensiellDatoForMaksPeriode.isBefore(datoSluttPaDagepengeForlengelse)
-    ) {
-        console.log('maks nås ', formaterDato(datoSluttPaDagepengeForlengelse));
-        return datoSluttPaDagepengeForlengelse;
-    }
-
-     */
     return potensiellDatoForMaksPeriode.subtract(1, 'day');
 };
 
@@ -371,7 +363,7 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
     }
 };
 
-export const finnUtOmKoronaregelverkSkalBrukes = (
+export const finnUtOmKoronaregelverkPtensieltSkalBrukes = (
     tidslinje: DatoMedKategori[],
     dagensDato: Dayjs,
     regelEndring1Juli: Dayjs

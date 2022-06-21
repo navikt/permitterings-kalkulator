@@ -115,7 +115,7 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
         )
     ) {
         const antallDagerTilNesteGjett =
-            maksAntallDagerUtenLønnsplikt - antallDagerPermittert + 1;
+            maksAntallDagerUtenLønnsplikt - antallDagerPermittert;
         potensiellDatoForMaksPeriode = potensiellDatoForMaksPeriode.add(
             antallDagerTilNesteGjett,
             'days'
@@ -128,7 +128,7 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
     if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
         return undefined;
     }
-    return potensiellDatoForMaksPeriode.subtract(1, 'day');
+    return potensiellDatoForMaksPeriode;
 };
 
 export const getPermitteringsoversiktFor18Måneder = (

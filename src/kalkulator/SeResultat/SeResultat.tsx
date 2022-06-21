@@ -22,10 +22,13 @@ import {
 } from '../../utils/amplitudeEvents';
 import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { PermitteringContext } from '../../ContextProvider';
-import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import { finnUtOmKoronaregelverkPtensieltSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { Checkbox, Alert } from '@navikt/ds-react';
-import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
+import {
+    finnFørsteDatoMedPermitteringUtenFravær,
+    konstruerTidslinje,
+} from '../utils/tidslinje-utils';
 import {
     dagensDato,
     regelEndring1Juli,
@@ -33,9 +36,6 @@ import {
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
-    set18mndsPeriode: (dato: Dayjs) => void;
-    sisteDagIPeriode: Dayjs;
-    tidslinje: DatoMedKategori[];
 }
 
 export enum Permitteringssregelverk {
@@ -44,6 +44,7 @@ export enum Permitteringssregelverk {
 }
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
+    const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [resultatVises, setResultatVises] = useState(false);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
@@ -52,6 +53,9 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         visBeskjedLønnspliktPeriode,
         setVisBeskjedLønnspliktPeriode,
     ] = useState(false);
+    const [sisteDagI18mndsPeriode, setSisteDagI18mndsPeriode] = useState<Dayjs>(
+        dagensDato
+    );
 
     //clean-up useEffect for å nullstille parametere når input endres
     useEffect(() => {
@@ -61,37 +65,56 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
     }, [props.allePermitteringerOgFraværesPerioder]);
 
     useEffect(() => {
-        const skalVærePåKoronaRegelverk = finnUtOmKoronaregelverkSkalBrukes(
-            props.tidslinje,
-            dagensDato,
-            regelEndring1Juli
+        setTidslinje(
+            konstruerTidslinje(
+                props.allePermitteringerOgFraværesPerioder,
+                dagensDato
+            )
         );
-        if (skalVærePåKoronaRegelverk) {
-            setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
-        } else {
-            setGjeldendeRegelverk(Permitteringssregelverk.NORMALT_REGELVERK);
-        }
-        //potensiale for at arbeidsgiver hadde lønsplikt før 1. juli og dermed permitterer på koronaordning
-        const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs('2021-09-01');
-        if (
-            finnUtOmKoronaregelverkSkalBrukes(
-                props.tidslinje,
-                dagensDato,
-                grenseDatoForPotensiellLønnspliktFør1Juli
-            ) &&
-            !visBeskjedLønnspliktPeriode &&
-            !skalVærePåKoronaRegelverk
-        ) {
-            setVisBeskjedLønnspliktPeriode(true);
-            setGjeldendeRegelverk(undefined);
-        }
-    }, [props.tidslinje, props.allePermitteringerOgFraværesPerioder]);
+    }, [props.allePermitteringerOgFraværesPerioder]);
 
-    //tidslinja er deaktivert i prod
+    // useEffect for å finne hvilket regelverk permitteringen løper på.
+    // Dette kan fjernes på et tidspunkt det ikke er mulig/er liten sjanse for at arbeidsgiverne løper på koronaregelverk. Da vil alt være på normalt regelverk, og koden kan forenkles.
+    useEffect(() => {
+        if (tidslinje.length) {
+            //Her regnes det ut om permitteringen løper på koronaregelverket. Det gjør den dersom permitteringen er iverksatt før 1. juli og enten er løpende eller har sluttdato på dagens dato eller senere.
+            const skalVærePåKoronaRegelverk = finnUtOmKoronaregelverkPtensieltSkalBrukes(
+                tidslinje,
+                dagensDato,
+                regelEndring1Juli
+            );
+            if (skalVærePåKoronaRegelverk) {
+                setGjeldendeRegelverk(Permitteringssregelverk.KORONA_ORDNING);
+            } else {
+                setGjeldendeRegelverk(
+                    Permitteringssregelverk.NORMALT_REGELVERK
+                );
+            }
+            const grenseDatoForPotensiellLønnspliktFør1Juli = dayjs(
+                '2021-09-01'
+            );
+            //I denne if-setningen sjekker vi om permittering uten lønn begynte før 1. september 2021.
+            //Hvis permittering uten lønn begynte før 1. september er det en sannsynlighet for at permitteringen ble iverksatt før 1. juli 2021, slik at den løper på koronaregelverket
+            //Dersom if-setningen er sann får arbeidsgiveren spørsmål om lønnsplitperioden begyne før 1. juli 2021 i toppen av resultatboksen når hen trykker på "Vis resultat"
+            if (
+                finnUtOmKoronaregelverkPtensieltSkalBrukes(
+                    tidslinje,
+                    dagensDato,
+                    grenseDatoForPotensiellLønnspliktFør1Juli
+                ) &&
+                !visBeskjedLønnspliktPeriode &&
+                !skalVærePåKoronaRegelverk
+            ) {
+                setVisBeskjedLønnspliktPeriode(true);
+                setGjeldendeRegelverk(undefined);
+            }
+        }
+    }, [tidslinje]);
+
     const skalViseTidslinje =
         gjeldeneRegelverk === Permitteringssregelverk.KORONA_ORDNING ||
         finnFørsteDatoMedPermitteringUtenFravær(
-            props.tidslinje,
+            tidslinje,
             regelEndring1Juli.subtract(1, 'day')
         );
 
@@ -185,7 +208,7 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                         )}
                         {gjeldeneRegelverk && (
                             <Utregningstekst
-                                tidslinje={props.tidslinje}
+                                tidslinje={tidslinje}
                                 allePermitteringerOgFraværesPerioder={
                                     props.allePermitteringerOgFraværesPerioder
                                 }
@@ -207,13 +230,16 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
                                             ? gjeldeneRegelverk
                                             : Permitteringssregelverk.NORMALT_REGELVERK
                                     }
-                                    set18mndsPeriode={props.set18mndsPeriode}
-                                    sisteDagIPeriode={props.sisteDagIPeriode}
+                                    set18mndsPeriode={setSisteDagI18mndsPeriode}
+                                    sisteDagIPeriode={sisteDagI18mndsPeriode}
+                                    //breddeAvDatoObjektIProsent er nødvendig for at tidslinjeillustrasjonen har rett og responsiv størrelse
+                                    //størrelsen må regnes ut i parentkomponenten for å vite størrelsen før illustrasjonen rendres.
+                                    // hvis illustrasjonen rendres før størrelsen er utregnet vil alt ligge over hverandre i illustrasjonen
                                     breddeAvDatoObjektIProsent={fraPixelTilProsent(
                                         'tidslinje-wrapper',
-                                        props.tidslinje.length
+                                        tidslinje.length
                                     )}
-                                    tidslinje={props.tidslinje}
+                                    tidslinje={tidslinje}
                                 />
                             )}
                         </div>

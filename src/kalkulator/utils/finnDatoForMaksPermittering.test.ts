@@ -9,11 +9,7 @@ import {
     finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
     getPermitteringsoversikt,
 } from './beregningerForSluttPåDagpengeforlengelse';
-import {
-    finnDatoForMaksPermitteringNormaltRegelverk,
-    getPermitteringsoversiktFor18Måneder,
-} from './beregningForMaksPermitteringsdagerNormaltRegelverk';
-import { finnDato18MndFram, formaterDato } from './dato-utils';
+import { finnDatoForMaksPermitteringNormaltRegelverk } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 
 const dagensDato = dayjs().startOf('date');
 const datoSluttPåDagepengeforlengelse = dayjs('2022-04-01');

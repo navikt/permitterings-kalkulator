@@ -37,16 +37,16 @@ import {
     finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
-import {
-    finnFørsteDatoMedPermitteringUtenFravær,
-    konstruerTidslinjeSomSletterPermitteringFørDato,
-} from '../utils/tidslinje-utils';
+import { konstruerTidslinjeSomSletterPermitteringFørDato } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
     dagensDato,
     regelEndring1Juli,
     regelEndringsDato1April,
 } from '../../konstanterKnyttetTilRegelverk';
+
+//propertiene set18mndsPeriode og sisteDagIPeriode brukes kun her og ikke i parentkomponenten "Se resultat"
+//den sendes allikevel med som property siden Tidslinje rendres avhengig av parentkomponenten med propertien "breddeAvDatoObjekIProsent" bare ut riktig dersom
 
 interface Props {
     set18mndsPeriode: (dato: Dayjs) => void;
@@ -62,6 +62,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     >(props.tidslinje);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
+
+    const [htmlElementerForHverDato, setHtmlElementerForHverDato] = useState<
+        any[]
+    >([]);
+    const [htmlFargeObjekt, setHtmlFargeobjekt] = useState<any[]>([]);
+
     const datoMaksPermitteringNås =
         props.gjeldendeRegelverk === Permitteringssregelverk.NORMALT_REGELVERK
             ? finnDatoForMaksPermitteringNormaltRegelverk(
@@ -75,24 +81,9 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                   49 * 7,
                   dagensDato
               );
-    const [htmlElementerForHverDato, setHtmlElementerForHverDato] = useState<
-        any[]
-    >(
-        lagHTMLObjektForAlleDatoer(
-            tidslinjeSomSkalVises,
-            props.breddeAvDatoObjektIProsent,
-            dagensDato,
-            datoMaksPermitteringNås
-        )
-    );
 
-    const [htmlFargeObjekt, setHtmlFargeobjekt] = useState<any[]>(
-        lagHTMLObjektForPeriodeMedFarge(
-            lagObjektForRepresentasjonAvPerioderMedFarge(tidslinjeSomSkalVises),
-            props.breddeAvDatoObjektIProsent
-        )
-    );
-
+    //dette må til for at tidslinja rendres rett. Dette har med utregningene av størelsene å gjøre, som må gjøres i parentkomponenten
+    //verdien er gitt i breddeAvDatoObjektIProsent
     useEffect(() => {
         if (datoMaksPermitteringNås) {
             const nyDatoTrigger = dayjs(datoMaksPermitteringNås);
@@ -198,48 +189,39 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     //
     return (
         <div className={'tidslinje'}>
-            {
-                <>
-                    <Tekstforklaring
-                        tidslinje={tidslinjeSomSkalVises}
-                        sisteDagIPeriode={props.sisteDagIPeriode}
-                        datoVisesPaDragElement={datoOnDrag}
-                    />
+            <Tekstforklaring
+                tidslinje={tidslinjeSomSkalVises}
+                datoVisesPaDragElement={datoOnDrag}
+            />
 
-                    <div
-                        role="img"
-                        aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
+            <div
+                role="img"
+                aria-label="Visualisering av en tidslinje som inneholder permitterings- og fraværsperiodene, og den aktuelle 18-månedersperioden"
+            >
+                <div
+                    aria-hidden
+                    className={'kalkulator__tidslinje-container start'}
+                    id={'kalkulator-tidslinje-container'}
+                >
+                    <Draggable
+                        axis={'x'}
+                        bounds={'parent'}
+                        onDrag={() => OnTidslinjeDrag()}
                     >
-                        <div
-                            aria-hidden
-                            className={'kalkulator__tidslinje-container start'}
-                            id={'kalkulator-tidslinje-container'}
-                        >
-                            <Draggable
-                                axis={'x'}
-                                bounds={'parent'}
-                                onDrag={() => OnTidslinjeDrag()}
-                            >
-                                {get18mndsperiode()}
-                            </Draggable>
-                            <div
-                                className={'kalkulator__tidslinje-underlag'}
-                                id={'kalkulator__tidslinje'}
-                            >
-                                <div
-                                    className={
-                                        'kalkulator__tidslinje-fargeperioder'
-                                    }
-                                >
-                                    {htmlFargeObjekt}
-                                </div>
-                                {htmlElementerForHverDato}
-                            </div>
+                        {get18mndsperiode()}
+                    </Draggable>
+                    <div
+                        className={'kalkulator__tidslinje-underlag'}
+                        id={'kalkulator__tidslinje'}
+                    >
+                        <div className={'kalkulator__tidslinje-fargeperioder'}>
+                            {htmlFargeObjekt}
                         </div>
-                        {Fargeforklaringer(finnesSlettetPermittering)}
+                        {htmlElementerForHverDato}
                     </div>
-                </>
-            }
+                </div>
+                {Fargeforklaringer(finnesSlettetPermittering)}
+            </div>
         </div>
     );
 };
