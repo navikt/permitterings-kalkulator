@@ -15,6 +15,7 @@ import {
     getTidligsteDato,
 } from '../../utils/dato-utils';
 import { PermitteringContext } from '../../../ContextProvider';
+import { dagensDato } from '../../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     indeks: number;
@@ -25,7 +26,6 @@ interface Props {
 }
 
 const Permitteringsperiode: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
     const [
         advarselPermitteringForeldet,
         setAdvarselPermitteringForeldet,

@@ -14,7 +14,9 @@ export interface Context {
 export const PermitteringContext = React.createContext({} as Context);
 
 const ContextProvider = (props: Props) => {
+    console.log('rendrer kontekst');
     const [dagensDato] = useState<Dayjs>(dayjs().startOf('date'));
+    console.log(dagensDato, 'dagens dato');
 
     const contextData: Context = {
         dagensDato: dagensDato,

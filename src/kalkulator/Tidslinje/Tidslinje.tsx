@@ -1,4 +1,5 @@
 import React, {
+    Component,
     FunctionComponent,
     useContext,
     useEffect,
@@ -38,6 +39,11 @@ import {
 } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import { konstruerTidslinjeSomSletterPermitteringFørDato } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import {
+    dagensDato,
+    regelEndring1Juli,
+    regelEndringsDato1April,
+} from '../../konstanterKnyttetTilRegelverk';
 
 //propertiene set18mndsPeriode og sisteDagIPeriode brukes kun her og ikke i parentkomponenten "Se resultat"
 //den sendes allikevel med som property siden Tidslinje rendres avhengig av parentkomponenten med propertien "breddeAvDatoObjekIProsent" bare ut riktig dersom
@@ -54,11 +60,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const [tidslinjeSomSkalVises, setTidslinjeSomSkalVises] = useState<
         DatoMedKategori[]
     >(props.tidslinje);
-    const {
-        dagensDato,
-        regelEndringsDato1April,
-        regelEndring1Juli,
-    } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
 
@@ -157,9 +158,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     ).toString() + '%',
             }}
             id={'draggable-periode'}
-            className={
-                'kalkulator__draggable-periode ' + skalVæreAnimasjonPåTidslinje
-            }
+            className={'kalkulator__draggable-periode '}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
             <div className={'kalkulator__draggable-tekst-container'}>
@@ -187,6 +186,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI
         );
 
+    //
     return (
         <div className={'tidslinje'}>
             <Tekstforklaring

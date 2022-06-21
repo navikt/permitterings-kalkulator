@@ -22,6 +22,11 @@ import {
 } from '../../../utils/amplitudeEvents';
 import { Permitteringssregelverk } from '../SeResultat';
 import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
+import {
+    dagensDato,
+    regelEndring1Juli,
+    regelEndringsDato1April,
+} from '../../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     tidslinje: DatoMedKategori[];
@@ -30,12 +35,6 @@ interface Props {
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
-    const {
-        dagensDato,
-        regelEndring1Juli,
-        regelEndringsDato1April,
-    } = useContext(PermitteringContext);
-
     const nyListeHvisPermitteringsdagerErSlettet =
         props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
             ? undefined

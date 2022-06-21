@@ -1,9 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ContextProvider from './ContextProvider';
 import Kalkulator from './kalkulator/kalkulator';
 import { Brødsmulesti } from './Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const HOVEDSIDE_PATH = '/permittering-kalkulator';
 const PERMITTERINGSSIDE_PATH =
@@ -14,6 +13,7 @@ export const KALKULATOR_BRØDSMULE: Breadcrumb = {
     title: 'Kalkulator',
     handleInApp: true,
 };
+
 export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
     url: PERMITTERINGSSIDE_PATH,
     title: 'Permittering og omstilling',
@@ -23,19 +23,22 @@ export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
 export const App = () => {
     return (
         <BrowserRouter>
-            <Switch>
-                <ContextProvider>
-                    <Route path={HOVEDSIDE_PATH} exact={true}>
-                        <Brødsmulesti
-                            brødsmuler={[
-                                HOVEDSIDE_BRØDSMULE,
-                                KALKULATOR_BRØDSMULE,
-                            ]}
-                        />
-                        <Kalkulator />
-                    </Route>
-                </ContextProvider>
-            </Switch>
+            <Routes>
+                <Route
+                    path={HOVEDSIDE_PATH}
+                    element={
+                        <>
+                            <Brødsmulesti
+                                brødsmuler={[
+                                    HOVEDSIDE_BRØDSMULE,
+                                    KALKULATOR_BRØDSMULE,
+                                ]}
+                            />
+                            <Kalkulator />
+                        </>
+                    }
+                />
+            </Routes>
         </BrowserRouter>
     );
 };

@@ -4,20 +4,20 @@ import {
     onBreadcrumbClick,
     setBreadcrumbs,
 } from '@navikt/nav-dekoratoren-moduler';
-import { useHistory } from 'react-router';
+import { useNavigate } from 'react-router';
 
 interface Props {
     brødsmuler: Breadcrumb[];
 }
 
 export const Brødsmulesti: FunctionComponent<Props> = ({ brødsmuler }) => {
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setBreadcrumbs(brødsmuler);
         onBreadcrumbClick((breadcrumb) => {
             if(breadcrumb.handleInApp) {
-                history.push(breadcrumb.url)
+                navigate(breadcrumb.url)
             } else {
                 window.location.href = breadcrumb.url
             }

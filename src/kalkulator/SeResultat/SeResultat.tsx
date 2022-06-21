@@ -20,6 +20,7 @@ import {
     loggAntallPermitteringsperioder,
     loggKnappTrykketPå,
 } from '../../utils/amplitudeEvents';
+import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
 import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkPtensieltSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
@@ -28,6 +29,10 @@ import {
     finnFørsteDatoMedPermitteringUtenFravær,
     konstruerTidslinje,
 } from '../utils/tidslinje-utils';
+import {
+    dagensDato,
+    regelEndring1Juli,
+} from '../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -41,11 +46,6 @@ export enum Permitteringssregelverk {
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [tidslinje, setTidslinje] = useState<DatoMedKategori[]>([]);
     const [resultatVises, setResultatVises] = useState(false);
-    const {
-        regelEndring1Juli,
-        dagensDato,
-        regelEndringsDato1April,
-    } = useContext(PermitteringContext);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
     >(Permitteringssregelverk.NORMALT_REGELVERK);
@@ -126,8 +126,6 @@ export const SeResultat: FunctionComponent<Props> = (props) => {
         }
         setResultatVises(true);
     };
-
-    console.log('rendrer se resultat');
 
     return (
         <>

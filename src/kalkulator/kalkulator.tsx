@@ -1,7 +1,8 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './kalkulator.less';
 
 import Banner from '../banner/Banner';
+import { datoIntervallErGyldig } from './utils/dato-utils';
 import { Innholdstittel } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder } from './typer';
@@ -13,7 +14,10 @@ import {
     loggSidevinsing,
     logSekunderBruktFørBrukerFyllerInn,
 } from '../utils/amplitudeEvents';
-import { datoIntervallErGyldig } from './utils/dato-utils';
+import {
+    dagensDato,
+    regelEndringsDato1April,
+} from '../konstanterKnyttetTilRegelverk';
 
 const Kalkulator = () => {
     const [
@@ -64,11 +68,7 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator__bakgrunn'}>
-            <Banner>
-                <span aria-label="Permitteringskalkulator">
-                    Permitterings&shy;kalkulator
-                </span>
-            </Banner>
+            <Banner />
             <div className={'kalkulator'}>
                 <Innholdstittel tag="h2">
                     Hvor lenge kan du ha ansatte permittert?
