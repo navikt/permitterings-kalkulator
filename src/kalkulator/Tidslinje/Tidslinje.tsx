@@ -1,4 +1,5 @@
 import React, {
+    Component,
     FunctionComponent,
     useContext,
     useEffect,
@@ -196,6 +197,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI
         );
 
+    //
+    const Draggable = Component as any;
     return (
         <div className={'tidslinje'}>
             {

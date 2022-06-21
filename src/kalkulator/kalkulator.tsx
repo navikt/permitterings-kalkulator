@@ -80,11 +80,7 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator__bakgrunn'}>
-            <Banner>
-                <span aria-label="Permitteringskalkulator">
-                    Permitterings&shy;kalkulator
-                </span>
-            </Banner>
+            <Banner />
             <div className={'kalkulator'}>
                 <Innholdstittel tag="h2">
                     Hvor lenge kan du ha ansatte permittert?

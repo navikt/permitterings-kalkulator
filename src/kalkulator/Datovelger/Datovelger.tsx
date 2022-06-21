@@ -1,11 +1,11 @@
 import React, {
+    Component,
     FunctionComponent,
     useContext,
     useEffect,
     useRef,
     useState,
 } from 'react';
-import { UnmountClosed } from 'react-collapse';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { Input, Label } from 'nav-frontend-skjema';
@@ -22,6 +22,7 @@ import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
 import { PermitteringContext } from '../../ContextProvider';
 import { formaterDato } from '../utils/dato-utils';
+import { UnmountClosed } from 'react-collapse';
 
 interface Props {
     overtekst: string;
@@ -42,6 +43,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
     const selectedDate: Dayjs = props.value || dagensDato;
+    console.log(dagensDato);
     const [tempDate, setTempDate] = useState(formaterDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
 
@@ -129,6 +131,7 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         };
     }, [erApen, setErApen]);
 
+    const UnmountClosed = Component as any;
     return (
         <div ref={datepickernode} className={'datofelt ' + props.className}>
             <Label htmlFor={datovelgerId}>{props.overtekst}</Label>

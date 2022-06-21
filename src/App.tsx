@@ -1,6 +1,4 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import ContextProvider from './ContextProvider';
 import Kalkulator from './kalkulator/kalkulator';
 import { Brødsmulesti } from './Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
@@ -22,21 +20,12 @@ export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
 
 export const App = () => {
     return (
-        <BrowserRouter>
-            <Switch>
-                <ContextProvider>
-                    <Route path={HOVEDSIDE_PATH} exact={true}>
-                        <Brødsmulesti
-                            brødsmuler={[
-                                HOVEDSIDE_BRØDSMULE,
-                                KALKULATOR_BRØDSMULE,
-                            ]}
-                        />
-                        <Kalkulator />
-                    </Route>
-                </ContextProvider>
-            </Switch>
-        </BrowserRouter>
+        <div>
+            <Brødsmulesti
+                brødsmuler={[HOVEDSIDE_BRØDSMULE, KALKULATOR_BRØDSMULE]}
+            />
+            <Kalkulator />
+        </div>
     );
 };
 

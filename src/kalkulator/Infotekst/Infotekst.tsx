@@ -6,6 +6,7 @@ interface Props {
     imgSrc: string;
     imgAlt: string;
     className?: string;
+    children: any;
 }
 
 export const Infotekst: FunctionComponent<Props> = (props) => {
