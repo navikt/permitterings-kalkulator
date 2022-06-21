@@ -66,7 +66,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? finnDatoForMaksPermitteringNormaltRegelverk(
                   tidslinjeSomSkalVises,
                   regelEndringsDato1April,
-                  26 * 7
+                  26 * 7,
+                  dagensDato
               )
             : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                   tidslinjeSomSkalVises,

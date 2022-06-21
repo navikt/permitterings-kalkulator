@@ -9,7 +9,6 @@ import { Dayjs } from 'dayjs';
 import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermitteringNormaltRegelverk,
     finnPermitteringssituasjonNormalRegelverk,
     getPermitteringsoversiktFor18Måneder,
@@ -47,6 +46,7 @@ export const lagResultatTekstNormaltRegelverk = (
     const permitteringsSituasjon = finnPermitteringssituasjonNormalRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring2,
+        dagensDato,
         26 * 7
     );
     const dagerBruktVedSluttPåDagpengeforlengelse = getPermitteringsoversiktFor18Måneder(
@@ -84,7 +84,8 @@ export const lagResultatTekstNormaltRegelverk = (
             const datoMaksPermitteringNås = finnDatoForMaksPermitteringNormaltRegelverk(
                 tidslinjeUtenPermitteringFor1Juli,
                 innføringsdatoRegelEndring2,
-                26 * 7
+                26 * 7,
+                dagensDato
             )!!;
             const dagerBruktDagensDato = getPermitteringsoversiktFor18Måneder(
                 tidslinjeUtenPermitteringFor1Juli,

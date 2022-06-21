@@ -61,46 +61,49 @@ export const lagNyListeHvisPermitteringFør1Juli = (
 export const finnPermitteringssituasjonNormalRegelverk = (
     tidslinjeUtenPermitteringFor1Juli: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
+    dagensDato: Dayjs,
     maksAntallDagerUtenLønnsplikt: number
 ): PermitteringssituasjonStandarkRegelverk => {
-    const dagerPermittertVedInnføringsdato = getPermitteringsoversiktFor18Måneder(
-        tidslinjeUtenPermitteringFor1Juli,
-        innføringsdatoRegelendring
-    ).dagerBrukt;
-    const erPermittertPåInnføringsdato = erPermittertVedDato(
-        tidslinjeUtenPermitteringFor1Juli,
-        innføringsdatoRegelendring
-    );
-    if (
-        dagerPermittertVedInnføringsdato >= maksAntallDagerUtenLønnsplikt &&
-        erPermittertPåInnføringsdato
-    ) {
-        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
-    }
     const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelendring,
-        maksAntallDagerUtenLønnsplikt
+        maksAntallDagerUtenLønnsplikt,
+        dagensDato
     );
-    if (datoForMaksPermitteringOppbrukt) {
-        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
+    if (!datoForMaksPermitteringOppbrukt) {
+        return PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD;
     }
-    return PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD;
+
+    if (
+        datoForMaksPermitteringOppbrukt.isSame(
+            innføringsdatoRegelendring,
+            'day'
+        )
+    ) {
+        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
+    }
+    return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE;
 };
 
+//18 måneder etter innføringsdatoRegelendring kan potensiellDatoForMaksPeriode vare 18 mnd tilbake fra dagensDato da regelinnforing 1. april 2022 blir irrelevant
 export const finnDatoForMaksPermitteringNormaltRegelverk = (
     tidslinje: DatoMedKategori[],
     innføringsdatoRegelendring: Dayjs,
-    maksAntallDagerUtenLønnsplikt: number
+    maksAntallDagerUtenLønnsplikt: number,
+    dagensDato: Dayjs
 ): Dayjs | undefined => {
-    let potensiellDatoForMaksPeriode: Dayjs = dayjs(innføringsdatoRegelendring);
+    const tilbake18mndFraDagensDato = finnDato18MndTilbake(dagensDato);
+    let potensiellDatoForMaksPeriode: Dayjs = innføringsdatoRegelendring.isBefore(
+        tilbake18mndFraDagensDato
+    )
+        ? innføringsdatoRegelendring
+        : tilbake18mndFraDagensDato;
     let antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         potensiellDatoForMaksPeriode
     ).dagerBrukt;
     const sisteDagITidslinjen = tidslinje[tidslinje.length - 1].dato;
     const sistePermitteringsdato = getSistePermitteringsdato(tidslinje);
-
     while (
         antallDagerPermittert < maksAntallDagerUtenLønnsplikt &&
         potensiellDatoForMaksPeriode.isSameOrBefore(

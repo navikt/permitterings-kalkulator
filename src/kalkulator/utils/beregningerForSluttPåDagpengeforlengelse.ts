@@ -152,59 +152,6 @@ export const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
     return false;
 };
 
-export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
-    regelverk: Permitteringssregelverk,
-    tidslinje: DatoMedKategori[],
-    dagensDato: Dayjs,
-    datoRegelendring1Nov: Dayjs
-): DatoIntervall | undefined => {
-    const maksAntallDagerUtenLønnsplikt =
-        regelverk === Permitteringssregelverk.KORONA_ORDNING ? 49 * 7 : 26 * 7;
-
-    const situasjon =
-        regelverk === Permitteringssregelverk.KORONA_ORDNING
-            ? finnPermitteringssituasjonVedSluttPåForlengelse(
-                  tidslinje,
-                  datoRegelendring1Nov,
-                  49 * 7
-              )
-            : finnPermitteringssituasjonNormalRegelverk(
-                  tidslinje,
-                  datoRegelendring1Nov,
-                  26 * 7
-              );
-
-    switch (situasjon) {
-        case PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE:
-            return til18mndsperiode(datoRegelendring1Nov);
-        case PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE:
-            const periode18mndsPeriodeNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                datoRegelendring1Nov,
-                dagensDato,
-                maksAntallDagerUtenLønnsplikt
-            )!;
-            return periode18mndsPeriodeNås;
-        case PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD:
-            return finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                datoRegelendring1Nov,
-                dagensDato,
-                maksAntallDagerUtenLønnsplikt
-            );
-        case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE:
-            const maksDatoNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
-                tidslinje,
-                datoRegelendring1Nov,
-                maksAntallDagerUtenLønnsplikt,
-                dagensDato
-            );
-            if (maksDatoNådd) {
-                return til18mndsperiode(maksDatoNådd?.subtract(1, 'day'));
-            }
-            return undefined;
-    }
-};
 
 //sjekk om man får feil ved overlappende perioder dersom siste start overlapper med en tidligere permittering som ikker er løpende
 export const harLøpendePermitteringFørDatoSluttPaDagepengeForlengelse = (

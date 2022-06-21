@@ -254,7 +254,8 @@ test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir fordi
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinje,
         datoSluttPåDagpengeforlengelse,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(
         startDatoLøpendePermittering.add(
