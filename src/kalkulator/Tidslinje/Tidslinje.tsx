@@ -167,9 +167,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     ).toString() + '%',
             }}
             id={'draggable-periode'}
-            className={
-                'kalkulator__draggable-periode ' + skalVæreAnimasjonPåTidslinje
-            }
+            className={'kalkulator__draggable-periode '}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
             <div className={'kalkulator__draggable-tekst-container'}>
