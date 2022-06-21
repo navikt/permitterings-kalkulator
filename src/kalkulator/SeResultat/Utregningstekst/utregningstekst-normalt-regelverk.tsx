@@ -148,12 +148,6 @@ export const lagResultatTekstNormaltRegelverk = (
             };
         }
         case PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD: {
-            const aktuell18mndsperiode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinjeUtenPermitteringFor1Juli,
-                innføringsdatoRegelEndring,
-                dagensDato,
-                26 * 7
-            );
             const dagerBruktDagensDato = getPermitteringsoversiktFor18Måneder(
                 tidslinjeUtenPermitteringFor1Juli,
                 dagensDato
@@ -167,24 +161,29 @@ export const lagResultatTekstNormaltRegelverk = (
                     26 * 7,
                     dagerBruktDagensDato
                 ),
-                beskrivelse: !!aktuell18mndsperiode ? (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Du kan maksimalt ha en ansatt permittert i 26 uker i
-                            løpet av 18 måneder.
-                        </Normaltekst>
-                        {finnesSlettesPermittering &&
-                            tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ) : (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Du har ingen permitteringsperioder som vil påvirke
-                            beregningen.
-                        </Normaltekst>
-                        {tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ),
+                beskrivelse:
+                    dagerBruktDagensDato > 0 ? (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Du kan maksimalt ha en ansatt permittert i 26
+                                uker i løpet av 18 måneder.
+                            </Normaltekst>
+                            {finnesSlettesPermittering &&
+                                tekstOmPermitteringFør1JuliErSletter()}
+                        </>
+                    ) : (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Du har ingen permitteringsperioder som vil
+                                påvirke beregningen.
+                            </Normaltekst>
+                            {tekstOmPermitteringFør1JuliErSletter()}
+                        </>
+                    ),
             };
         }
     }
