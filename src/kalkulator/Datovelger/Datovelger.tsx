@@ -1,10 +1,4 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useRef,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useRef, useState } from 'react';
 import { UnmountClosed } from 'react-collapse';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
@@ -20,8 +14,8 @@ import {
 import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
-import { PermitteringContext } from '../../ContextProvider';
 import { formaterDato } from '../utils/dato-utils';
+import { dagensDato } from '../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     overtekst: string;
@@ -35,8 +29,6 @@ interface Props {
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
-
     const datepickernode = useRef<HTMLDivElement>(null);
     const knappRef = useRef<HTMLButtonElement>(null);
     const [erApen, setErApen] = useState(false);
@@ -46,6 +38,8 @@ const Datovelger: FunctionComponent<Props> = (props) => {
     const [feilmelding, setFeilMelding] = useState('');
 
     const datovelgerId = guid();
+
+    console.log(dagensDato);
 
     const tekstIInputfeltet = () => {
         if (!editing && !props.value) {

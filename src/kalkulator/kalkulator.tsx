@@ -6,7 +6,6 @@ import { Element, Innholdstittel, Normaltekst } from 'nav-frontend-typografi';
 import Fraværsperioder from './Fraværsperioder/Fraværsperioder';
 import { AllePermitteringerOgFraværesPerioder, DatoMedKategori } from './typer';
 import Topp from './Topp/Topp';
-import { PermitteringContext } from '../ContextProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import { Permitteringsperioder } from './Permitteringsperioder/Permitteringsperioder';
 import {
@@ -18,11 +17,12 @@ import {
     loggSidevinsing,
     logSekunderBruktFørBrukerFyllerInn,
 } from '../utils/amplitudeEvents';
+import {
+    dagensDato,
+    regelEndringsDato1April,
+} from '../konstanterKnyttetTilRegelverk';
 
 const Kalkulator = () => {
-    const { dagensDato, regelEndringsDato1April } = useContext(
-        PermitteringContext
-    );
     const [
         sekunderFørPermitteringFyllesInn,
         setSekunderFørPermitteringFyllesInn,
@@ -80,11 +80,7 @@ const Kalkulator = () => {
 
     return (
         <div className={'kalkulator__bakgrunn'}>
-            <Banner>
-                <span aria-label="Permitteringskalkulator">
-                    Permitterings&shy;kalkulator
-                </span>
-            </Banner>
+            <Banner />
             <div className={'kalkulator'}>
                 <Innholdstittel tag="h2">
                     Hvor lenge kan du ha ansatte permittert?

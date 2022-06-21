@@ -1,4 +1,5 @@
 import React, {
+    Component,
     FunctionComponent,
     useContext,
     useEffect,
@@ -41,6 +42,11 @@ import {
     konstruerTidslinjeSomSletterPermitteringFørDato,
 } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+import {
+    dagensDato,
+    regelEndring1Juli,
+    regelEndringsDato1April,
+} from '../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     set18mndsPeriode: (dato: Dayjs) => void;
@@ -54,11 +60,6 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
     const [tidslinjeSomSkalVises, setTidslinjeSomSkalVises] = useState<
         DatoMedKategori[]
     >(props.tidslinje);
-    const {
-        dagensDato,
-        regelEndringsDato1April,
-        regelEndring1Juli,
-    } = useContext(PermitteringContext);
     const [datoOnDrag, setDatoOnDrag] = useState(dagensDato);
     const [animasjonSkalVises, setAnimasjonSkalVises] = useState(true);
     const datoMaksPermitteringNås =
@@ -166,9 +167,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                     ).toString() + '%',
             }}
             id={'draggable-periode'}
-            className={
-                'kalkulator__draggable-periode ' + skalVæreAnimasjonPåTidslinje
-            }
+            className={'kalkulator__draggable-periode '}
         >
             <div className={'kalkulator__draggable-kant venstre'} />
             <div className={'kalkulator__draggable-tekst-container'}>
@@ -196,6 +195,7 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
                 DatointervallKategori.SLETTET_PERMITTERING_FØR_1_JULI
         );
 
+    //
     return (
         <div className={'tidslinje'}>
             {
