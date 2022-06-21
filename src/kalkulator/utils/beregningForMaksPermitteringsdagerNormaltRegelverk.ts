@@ -24,7 +24,6 @@ import {
 
 export enum PermitteringssituasjonStandarkRegelverk {
     MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
-    MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE',
     MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE',
     MAKS_IKKE_NÅDD = 'MAKS_IKKE_NÅDD',
 }
@@ -77,12 +76,6 @@ export const finnPermitteringssituasjonNormalRegelverk = (
         erPermittertPåInnføringsdato
     ) {
         return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE;
-    }
-    if (
-        dagerPermittertVedInnføringsdato >= maksAntallDagerUtenLønnsplikt &&
-        !erPermittertPåInnføringsdato
-    ) {
-        return PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE;
     }
     const datoForMaksPermitteringOppbrukt = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinjeUtenPermitteringFor1Juli,

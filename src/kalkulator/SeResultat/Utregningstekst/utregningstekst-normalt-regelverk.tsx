@@ -77,37 +77,6 @@ export const lagResultatTekstNormaltRegelverk = (
                 ),
             };
         }
-        case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE: {
-            const sistePermitteringsdato = finnSisteDatoMedPermitteringUtenFravær(
-                tidslinjeUtenPermitteringFor1Juli
-            );
-            const antallDagerBrukt = getPermitteringsoversiktFor18Måneder(
-                tidslinjeUtenPermitteringFor1Juli,
-                sistePermitteringsdato
-            ).dagerBrukt;
-            loggPermitteringsSituasjon(
-                'Maks permittering nådd. Ikke permittert på slutten av dagpengeforlengelsen',
-                'normalt regelverk'
-            );
-            return {
-                konklusjon: tekstOmBruktOgGjenværendePermitteringVedAvsluttetPermittering(
-                    26 * 7,
-                    antallDagerBrukt,
-                    sistePermitteringsdato
-                ),
-                beskrivelse: (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            01.04.2022 vil lønnsplikten gjeninntre for
-                            permitteringer som overskrider 26 uker i løpet av 18
-                            måneder.
-                        </Normaltekst>
-                        {finnesSlettesPermittering &&
-                            tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ),
-            };
-        }
 
         case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE: {
             //er definert siden casen gir oss at det finnes en maksdato
@@ -254,7 +223,7 @@ export const tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering = (
             : '';
     return (
         <Element className={'utregningstekst__beskrivelse'}>
-            Du har permittert i{' '}
+            Du har per i dag permittert i{' '}
             {skrivDagerIHeleUkerPlussDager(antallDagerBrukt)} og har{' '}
             {skrivDagerIHeleUkerPlussDager(gjenståendeDager)} gjenstående.{' '}
             {tekstOmDagpengeforlengelse}
