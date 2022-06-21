@@ -2,6 +2,7 @@ import React from 'react';
 import Kalkulator from './kalkulator/kalkulator';
 import { Brødsmulesti } from './Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
+import ContextProvider from './ContextProvider';
 
 const HOVEDSIDE_PATH = '/permittering-kalkulator';
 const PERMITTERINGSSIDE_PATH =
@@ -12,6 +13,7 @@ export const KALKULATOR_BRØDSMULE: Breadcrumb = {
     title: 'Kalkulator',
     handleInApp: true,
 };
+
 export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
     url: PERMITTERINGSSIDE_PATH,
     title: 'Permittering og omstilling',
@@ -21,10 +23,12 @@ export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
 export const App = () => {
     return (
         <div>
-            <Brødsmulesti
-                brødsmuler={[HOVEDSIDE_BRØDSMULE, KALKULATOR_BRØDSMULE]}
-            />
-            <Kalkulator />
+            <ContextProvider>
+                <Brødsmulesti
+                    brødsmuler={[HOVEDSIDE_BRØDSMULE, KALKULATOR_BRØDSMULE]}
+                />
+                <Kalkulator />
+            </ContextProvider>
         </div>
     );
 };
