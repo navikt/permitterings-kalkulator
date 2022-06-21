@@ -5,22 +5,15 @@ import {
     DatoMedKategori,
     Permitteringsoversikt,
 } from '../typer';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import {
-    antallDagerGått,
-    finnDato18MndFram,
     finnDato18MndTilbake,
     finnesIIntervall,
     finnPermitteringsIntervallMedsisteFraDato,
-    formaterDato,
     til18mndsperiode,
     tilGyldigDatoIntervall,
 } from './dato-utils';
-import {
-    erPermittertVedDato,
-    finnFørsteDatoMedPermitteringUtenFravær,
-    getSistePermitteringsdato,
-} from './tidslinje-utils';
+import { getSistePermitteringsdato } from './tidslinje-utils';
 
 export enum PermitteringssituasjonStandarkRegelverk {
     MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
@@ -93,11 +86,7 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
     dagensDato: Dayjs
 ): Dayjs | undefined => {
     const tilbake18mndFraDagensDato = finnDato18MndTilbake(dagensDato);
-    let potensiellDatoForMaksPeriode: Dayjs = innføringsdatoRegelendring.isBefore(
-        tilbake18mndFraDagensDato
-    )
-        ? innføringsdatoRegelendring
-        : tilbake18mndFraDagensDato;
+    let potensiellDatoForMaksPeriode: Dayjs = tilbake18mndFraDagensDato;
     let antallDagerPermittert = getPermitteringsoversiktFor18Måneder(
         tidslinje,
         potensiellDatoForMaksPeriode
@@ -123,6 +112,9 @@ export const finnDatoForMaksPermitteringNormaltRegelverk = (
     }
     if (antallDagerPermittert < maksAntallDagerUtenLønnsplikt) {
         return undefined;
+    }
+    if (potensiellDatoForMaksPeriode.isBefore(innføringsdatoRegelendring)) {
+        return innføringsdatoRegelendring;
     }
     return potensiellDatoForMaksPeriode;
 };
@@ -165,41 +157,4 @@ export const getPermitteringsoversikt = (
         dagerAnnetFravær: antallDagerFravær,
         dagerBrukt: permittert - antallDagerFravær,
     };
-};
-
-const returnerIndeksAvDatoHvisIkkePermitteringsdato = (
-    dato: Dayjs,
-    tidslinje: DatoMedKategori[]
-) => {
-    const indeksITidslinje = tidslinje.findIndex((datoMedKategori) =>
-        datoMedKategori.dato.isSame(dato, 'date')
-    );
-    if (
-        indeksITidslinje > 0 &&
-        tidslinje[indeksITidslinje].kategori !==
-            DatointervallKategori.PERMITTERT_UTEN_FRAVÆR
-    ) {
-        return indeksITidslinje;
-    }
-};
-
-export const harLøpendePermitteringMedOppstartFørRegelendring = (
-    allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder,
-    datoRegelEndring: Dayjs
-) => {
-    const sistePermitteringsPeriode = finnPermitteringsIntervallMedsisteFraDato(
-        allePermitteringerOgFraværesPerioder.permitteringer
-    );
-    const gyldigPermitteringsIntervall = sistePermitteringsPeriode
-        ? tilGyldigDatoIntervall(sistePermitteringsPeriode)
-        : undefined;
-    if (!gyldigPermitteringsIntervall) {
-        return false;
-    }
-    if (gyldigPermitteringsIntervall.datoFra?.isBefore(datoRegelEndring)) {
-        if (gyldigPermitteringsIntervall.erLøpende) {
-            return true;
-        }
-    }
-    return false;
 };

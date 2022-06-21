@@ -11,12 +11,7 @@ import {
 } from './tidslinje-utils';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
 import { getPermitteringsoversiktFor18Måneder } from './beregningerForSluttPåDagpengeforlengelse';
-import {
-    antallDagerGått,
-    finnDato18MndFram,
-    finnDato18MndTilbake,
-    formaterDato,
-} from './dato-utils';
+import { antallDagerGått, finnDato18MndFram } from './dato-utils';
 import {
     finnDatoForMaksPermitteringNormaltRegelverk,
     getPermitteringsoversikt,
