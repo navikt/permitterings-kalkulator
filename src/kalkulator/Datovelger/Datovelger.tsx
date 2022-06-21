@@ -1,11 +1,11 @@
 import React, {
-    Component,
     FunctionComponent,
     useContext,
     useEffect,
     useRef,
     useState,
 } from 'react';
+import { UnmountClosed } from 'react-collapse';
 import DayPicker from 'react-day-picker';
 import 'react-day-picker/lib/style.css';
 import { Input, Label } from 'nav-frontend-skjema';
@@ -20,9 +20,8 @@ import {
 import kalender from './kalender.svg';
 import './Datovelger.less';
 import dayjs, { Dayjs } from 'dayjs';
-import { PermitteringContext } from '../../ContextProvider';
 import { formaterDato } from '../utils/dato-utils';
-import { UnmountClosed } from 'react-collapse';
+import { dagensDato } from '../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     overtekst: string;
@@ -36,18 +35,17 @@ interface Props {
 }
 
 const Datovelger: FunctionComponent<Props> = (props) => {
-    const { dagensDato } = useContext(PermitteringContext);
-
     const datepickernode = useRef<HTMLDivElement>(null);
     const knappRef = useRef<HTMLButtonElement>(null);
     const [erApen, setErApen] = useState(false);
     const [editing, setEditing] = useState(false);
     const selectedDate: Dayjs = props.value || dagensDato;
-    console.log(dagensDato);
     const [tempDate, setTempDate] = useState(formaterDato(selectedDate));
     const [feilmelding, setFeilMelding] = useState('');
 
     const datovelgerId = guid();
+
+    console.log(dagensDato);
 
     const tekstIInputfeltet = () => {
         if (!editing && !props.value) {
@@ -131,7 +129,6 @@ const Datovelger: FunctionComponent<Props> = (props) => {
         };
     }, [erApen, setErApen]);
 
-    const UnmountClosed = Component as any;
     return (
         <div ref={datepickernode} className={'datofelt ' + props.className}>
             <Label htmlFor={datovelgerId}>{props.overtekst}</Label>
@@ -161,29 +158,27 @@ const Datovelger: FunctionComponent<Props> = (props) => {
                     <img alt={''} src={kalender} />
                 </button>
             </div>
-            <UnmountClosed isOpened={erApen}>
-                <DayPicker
-                    onKeyDown={(e) => {
-                        if (e.key === 'Escape') {
-                            setErApen(false);
-                        }
-                    }}
-                    className={'datofelt__collapse'}
-                    selectedDays={selectedDate.toDate()}
-                    month={selectedDate.toDate()}
-                    firstDayOfWeek={1}
-                    onDayKeyDown={(date, modifiers, e) => {
-                        if (e.key === 'Tab') {
-                            setErApen(!erApen);
-                        }
-                    }}
-                    onDayClick={(day: Date) => velgDato(dayjs(day))}
-                    months={MONTHS['no']}
-                    weekdaysLong={WEEKDAYS_LONG['no']}
-                    weekdaysShort={WEEKDAYS_SHORT['no']}
-                    labels={LABELS['no']}
-                />
-            </UnmountClosed>
+            <DayPicker
+                onKeyDown={(e) => {
+                    if (e.key === 'Escape') {
+                        setErApen(false);
+                    }
+                }}
+                className={'datofelt__collapse'}
+                selectedDays={selectedDate.toDate()}
+                month={selectedDate.toDate()}
+                firstDayOfWeek={1}
+                onDayKeyDown={(date, modifiers, e) => {
+                    if (e.key === 'Tab') {
+                        setErApen(!erApen);
+                    }
+                }}
+                onDayClick={(day: Date) => velgDato(dayjs(day))}
+                months={MONTHS['no']}
+                weekdaysLong={WEEKDAYS_LONG['no']}
+                weekdaysShort={WEEKDAYS_SHORT['no']}
+                labels={LABELS['no']}
+            />
         </div>
     );
 };

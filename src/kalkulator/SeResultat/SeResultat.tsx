@@ -26,6 +26,10 @@ import { finnUtOmKoronaregelverkSkalBrukes } from '../utils/beregningerForSluttP
 import lampeikon from './lampeikon.svg';
 import { Checkbox, Alert } from '@navikt/ds-react';
 import { finnFørsteDatoMedPermitteringUtenFravær } from '../utils/tidslinje-utils';
+import {
+    dagensDato,
+    regelEndring1Juli,
+} from '../../konstanterKnyttetTilRegelverk';
 
 interface Props {
     allePermitteringerOgFraværesPerioder: AllePermitteringerOgFraværesPerioder;
@@ -41,7 +45,6 @@ export enum Permitteringssregelverk {
 
 export const SeResultat: FunctionComponent<Props> = (props) => {
     const [resultatVises, setResultatVises] = useState(false);
-    const { regelEndring1Juli, dagensDato } = useContext(PermitteringContext);
     const [gjeldeneRegelverk, setGjeldendeRegelverk] = useState<
         Permitteringssregelverk | undefined
     >(Permitteringssregelverk.NORMALT_REGELVERK);

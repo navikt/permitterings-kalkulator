@@ -2,7 +2,7 @@ import React from 'react';
 import Kalkulator from './kalkulator/kalkulator';
 import { Brødsmulesti } from './Brødsmulesti';
 import { Breadcrumb } from '@navikt/nav-dekoratoren-moduler';
-import ContextProvider from './ContextProvider';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 const HOVEDSIDE_PATH = '/permittering-kalkulator';
 const PERMITTERINGSSIDE_PATH =
@@ -22,14 +22,24 @@ export const HOVEDSIDE_BRØDSMULE: Breadcrumb = {
 
 export const App = () => {
     return (
-        <div>
-            <ContextProvider>
-                <Brødsmulesti
-                    brødsmuler={[HOVEDSIDE_BRØDSMULE, KALKULATOR_BRØDSMULE]}
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    path={HOVEDSIDE_PATH}
+                    element={
+                        <>
+                            <Brødsmulesti
+                                brødsmuler={[
+                                    HOVEDSIDE_BRØDSMULE,
+                                    KALKULATOR_BRØDSMULE,
+                                ]}
+                            />
+                            <Kalkulator />
+                        </>
+                    }
                 />
-                <Kalkulator />
-            </ContextProvider>
-        </div>
+            </Routes>
+        </BrowserRouter>
     );
 };
 
