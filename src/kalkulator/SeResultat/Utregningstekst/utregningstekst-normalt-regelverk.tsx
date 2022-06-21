@@ -212,7 +212,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     return false;
 };
 
-const skrivDagerIHeleUkerPlussDager = (dager: number) => {
+export const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     const heleUkerPermittert = Math.floor(dager / 7);
     const restIDager = dager % 7;
 

@@ -3,7 +3,7 @@ import { DatoMedKategori } from '../../../typer';
 import { Dayjs } from 'dayjs';
 import './Tekstforklaring.less';
 import { Normaltekst } from 'nav-frontend-typografi';
-import { skrivDagerIHeleUkerPlussDager } from '../../../SeResultat/Utregningstekst/utregningstekst-avvikling-av-koronaregler-utils';
+import { skrivDagerIHeleUkerPlussDager } from '../../../SeResultat/Utregningstekst/utregningstekst-normalt-regelverk';
 import { getPermitteringsoversiktFor18Måneder } from '../../../utils/beregningerForSluttPåDagpengeforlengelse';
 import { Ingress, Heading } from '@navikt/ds-react';
 
