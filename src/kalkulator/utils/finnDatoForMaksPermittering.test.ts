@@ -145,7 +145,8 @@ test('Skal håndtere løpende permittering etter slutt på dagpengeforlengelse, 
     const datoForMaksAntallDagerNådd = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinje,
         datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     const dagerPermittertIPeriode = getPermitteringsoversikt(tidslinje, {
         datoFra: forstePermitteringsdato,
