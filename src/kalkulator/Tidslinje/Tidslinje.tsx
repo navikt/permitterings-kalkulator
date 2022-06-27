@@ -20,23 +20,16 @@ import {
     lagHTMLObjektForPeriodeMedFarge,
     lagObjektForRepresentasjonAvPerioderMedFarge,
     regnUtHorisontalAvstandMellomToElement,
-    regnUtPosisjonFraVenstreGittSluttdato,
 } from './tidslinjefunksjoner';
-import { PermitteringContext } from '../../ContextProvider';
 import dayjs, { Dayjs } from 'dayjs';
 import {
     antallDagerGått,
-    finnDato18MndFram,
     finnDato18MndTilbake,
-    formaterDato,
     formaterDatoIntervall,
 } from '../utils/dato-utils';
 import Tekstforklaring from './Årsmarkør/Tekstforklaring/Tekstforklaring';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli,
-} from '../utils/beregningerForSluttPåDagpengeforlengelse';
+import { finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import { konstruerTidslinjeSomSletterPermitteringFørDato } from '../utils/tidslinje-utils';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
@@ -73,7 +66,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? finnDatoForMaksPermitteringNormaltRegelverk(
                   tidslinjeSomSkalVises,
                   regelEndringsDato1April,
-                  26 * 7
+                  26 * 7,
+                  dagensDato
               )
             : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                   tidslinjeSomSkalVises,
@@ -89,13 +83,8 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             const nyDatoTrigger = dayjs(datoMaksPermitteringNås);
             props.set18mndsPeriode(nyDatoTrigger);
         } else {
-            const intervallDerMaksKanNås = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinjeSomSkalVises,
-                regelEndringsDato1April,
-                dagensDato,
-                26 * 7
-            );
-            props.set18mndsPeriode(intervallDerMaksKanNås!!.datoTil);
+            const nyDatoTrigger = dayjs(dagensDato);
+            props.set18mndsPeriode(nyDatoTrigger);
         }
     }, [tidslinjeSomSkalVises, props.gjeldendeRegelverk]);
 

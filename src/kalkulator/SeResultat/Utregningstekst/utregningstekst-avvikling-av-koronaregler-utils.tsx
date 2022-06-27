@@ -56,8 +56,8 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
                 ),
                 beskrivelse: (
                     <Normaltekst className={'utregningstekst__beskrivelse'}>
-                        01.04.2022 vil lønnsplikten gjeninntre for
-                        permitteringer som overskrider 26 uker i løpet av 18
+                        01.04.2022 ble lønnsplikten gjeninnført for
+                        permitteringer som overskred 26 uker i løpet av 18
                         måneder.
                     </Normaltekst>
                 ),
@@ -122,20 +122,3 @@ export const lagResultatTekstForPermitteringsStartFør1Juli = (
         }
     }
 };
-
-export const skrivDagerIHeleUkerPlussDager = (dager: number) => {
-    const heleUkerPermittert = Math.floor(dager / 7);
-    const restIDager = dager % 7;
-
-    if (heleUkerPermittert > 0) {
-        const dagerITekst =
-            restIDager === 0 ? '' : ` og ${skrivDager(restIDager)}`;
-        return skrivUker(heleUkerPermittert) + dagerITekst;
-    }
-    return `${restIDager} dager`;
-};
-
-const skrivUker = (uker: number) => (uker === 1 ? '1 uke' : uker + ' uker');
-
-const skrivDager = (dager: number) =>
-    dager === 1 ? '1 dag' : dager + ' dager';

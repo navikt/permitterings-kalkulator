@@ -6,22 +6,11 @@ import {
     DatoMedKategori,
 } from '../../typer';
 import Lenke from 'nav-frontend-lenker';
-import { PermitteringContext } from '../../../ContextProvider';
-import { finnPotensiellLøpendePermittering } from '../../utils/dato-utils';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
-import dayjs from 'dayjs';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
-import {
-    finnFørsteDatoMedPermitteringUtenFravær,
-    finnSisteDatoMedPermitteringUtenFravær,
-} from '../../utils/tidslinje-utils';
-import {
-    loggKnappTrykketPå,
-    loggPermitteringsSituasjon,
-} from '../../../utils/amplitudeEvents';
+import { loggKnappTrykketPå } from '../../../utils/amplitudeEvents';
 import { Permitteringssregelverk } from '../SeResultat';
-import { finnDenAktuelle18mndsperiodenSomSkalBeskrives } from '../../utils/beregningerForSluttPåDagpengeforlengelse';
 import {
     dagensDato,
     regelEndring1Juli,
@@ -35,6 +24,7 @@ interface Props {
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
+    //Denne funksjonen kan slettes 18 måneder etter 1. juli 2021 (30.12.2022), da vil den ikke lenger vil være relevant. props.tidslinje kan alltid brukes etter dette.
     const nyListeHvisPermitteringsdagerErSlettet =
         props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
             ? undefined

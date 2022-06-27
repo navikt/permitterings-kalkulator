@@ -9,7 +9,6 @@ import { Dayjs } from 'dayjs';
 import { finnDato18MndTilbake, formaterDato } from '../../utils/dato-utils';
 import { Element, Normaltekst } from 'nav-frontend-typografi';
 import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
     finnDatoForMaksPermitteringNormaltRegelverk,
     finnPermitteringssituasjonNormalRegelverk,
     getPermitteringsoversiktFor18Måneder,
@@ -47,6 +46,7 @@ export const lagResultatTekstNormaltRegelverk = (
     const permitteringsSituasjon = finnPermitteringssituasjonNormalRegelverk(
         tidslinjeUtenPermitteringFor1Juli,
         innføringsdatoRegelEndring2,
+        dagensDato,
         26 * 7
     );
     const dagerBruktVedSluttPåDagpengeforlengelse = getPermitteringsoversiktFor18Måneder(
@@ -67,39 +67,8 @@ export const lagResultatTekstNormaltRegelverk = (
                 beskrivelse: (
                     <>
                         <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            01.04.2022 vil lønnsplikten gjeninntre for
-                            permitteringer som overskrider 26 uker i løpet av 18
-                            måneder.
-                        </Normaltekst>
-                        {finnesSlettesPermittering &&
-                            tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ),
-            };
-        }
-        case PermitteringssituasjonStandarkRegelverk.MAKS_NÅDD_IKKE_PERMITTERT_VED_SLUTTDATO_AV_FORLENGELSE: {
-            const sistePermitteringsdato = finnSisteDatoMedPermitteringUtenFravær(
-                tidslinjeUtenPermitteringFor1Juli
-            );
-            const antallDagerBrukt = getPermitteringsoversiktFor18Måneder(
-                tidslinjeUtenPermitteringFor1Juli,
-                sistePermitteringsdato
-            ).dagerBrukt;
-            loggPermitteringsSituasjon(
-                'Maks permittering nådd. Ikke permittert på slutten av dagpengeforlengelsen',
-                'normalt regelverk'
-            );
-            return {
-                konklusjon: tekstOmBruktOgGjenværendePermitteringVedAvsluttetPermittering(
-                    26 * 7,
-                    antallDagerBrukt,
-                    sistePermitteringsdato
-                ),
-                beskrivelse: (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            01.04.2022 vil lønnsplikten gjeninntre for
-                            permitteringer som overskrider 26 uker i løpet av 18
+                            01.04.2022 ble lønnsplikten gjeninnført for
+                            permitteringer som overskred 26 uker i løpet av 18
                             måneder.
                         </Normaltekst>
                         {finnesSlettesPermittering &&
@@ -115,7 +84,8 @@ export const lagResultatTekstNormaltRegelverk = (
             const datoMaksPermitteringNås = finnDatoForMaksPermitteringNormaltRegelverk(
                 tidslinjeUtenPermitteringFor1Juli,
                 innføringsdatoRegelEndring2,
-                26 * 7
+                26 * 7,
+                dagensDato
             )!!;
             const dagerBruktDagensDato = getPermitteringsoversiktFor18Måneder(
                 tidslinjeUtenPermitteringFor1Juli,
@@ -148,12 +118,6 @@ export const lagResultatTekstNormaltRegelverk = (
             };
         }
         case PermitteringssituasjonStandarkRegelverk.MAKS_IKKE_NÅDD: {
-            const aktuell18mndsperiode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinjeUtenPermitteringFor1Juli,
-                innføringsdatoRegelEndring,
-                dagensDato,
-                26 * 7
-            );
             const dagerBruktDagensDato = getPermitteringsoversiktFor18Måneder(
                 tidslinjeUtenPermitteringFor1Juli,
                 dagensDato
@@ -167,24 +131,29 @@ export const lagResultatTekstNormaltRegelverk = (
                     26 * 7,
                     dagerBruktDagensDato
                 ),
-                beskrivelse: !!aktuell18mndsperiode ? (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Du kan maksimalt ha en ansatt permittert i 26 uker i
-                            løpet av 18 måneder.
-                        </Normaltekst>
-                        {finnesSlettesPermittering &&
-                            tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ) : (
-                    <>
-                        <Normaltekst className={'utregningstekst__beskrivelse'}>
-                            Du har ingen permitteringsperioder som vil påvirke
-                            beregningen.
-                        </Normaltekst>
-                        {tekstOmPermitteringFør1JuliErSletter()}
-                    </>
-                ),
+                beskrivelse:
+                    dagerBruktDagensDato > 0 ? (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Du kan maksimalt ha en ansatt permittert i 26
+                                uker i løpet av 18 måneder.
+                            </Normaltekst>
+                            {finnesSlettesPermittering &&
+                                tekstOmPermitteringFør1JuliErSletter()}
+                        </>
+                    ) : (
+                        <>
+                            <Normaltekst
+                                className={'utregningstekst__beskrivelse'}
+                            >
+                                Du har ingen permitteringsperioder som vil
+                                påvirke beregningen.
+                            </Normaltekst>
+                            {tekstOmPermitteringFør1JuliErSletter()}
+                        </>
+                    ),
             };
         }
     }
@@ -213,7 +182,7 @@ const lagTekstOmDatoerSomFallerUtenforRelevant18mndsPeriode = (
     return false;
 };
 
-const skrivDagerIHeleUkerPlussDager = (dager: number) => {
+export const skrivDagerIHeleUkerPlussDager = (dager: number) => {
     const heleUkerPermittert = Math.floor(dager / 7);
     const restIDager = dager % 7;
 
@@ -255,7 +224,7 @@ export const tekstOmBruktOgGjenværendePermitteringVedLøpendePermittering = (
             : '';
     return (
         <Element className={'utregningstekst__beskrivelse'}>
-            Du har permittert i{' '}
+            Du har per i dag permittert i{' '}
             {skrivDagerIHeleUkerPlussDager(antallDagerBrukt)} og har{' '}
             {skrivDagerIHeleUkerPlussDager(gjenståendeDager)} gjenstående.{' '}
             {tekstOmDagpengeforlengelse}
