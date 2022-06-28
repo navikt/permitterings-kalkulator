@@ -1,9 +1,4 @@
-import React, {
-    FunctionComponent,
-    useContext,
-    useEffect,
-    useState,
-} from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import {
     AllePermitteringerOgFraværesPerioder,
     DatoMedKategori,
@@ -20,8 +15,6 @@ import {
     loggAntallPermitteringsperioder,
     loggKnappTrykketPå,
 } from '../../utils/amplitudeEvents';
-import Ekspanderbartpanel from 'nav-frontend-ekspanderbartpanel';
-import { PermitteringContext } from '../../ContextProvider';
 import { finnUtOmKoronaregelverkPtensieltSkalBrukes } from '../utils/beregningerForSluttPåDagpengeforlengelse';
 import lampeikon from './lampeikon.svg';
 import { Checkbox, Alert } from '@navikt/ds-react';
