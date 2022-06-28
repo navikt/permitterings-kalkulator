@@ -10,16 +10,8 @@ import {
     konstruerTidslinjeSomSletterPermitteringFørDato,
 } from './tidslinje-utils';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
-import {
-    finn18mndsperiodeForMaksimeringAvPermitteringsdager,
-    getPermitteringsoversiktFor18Måneder,
-} from './beregningerForSluttPåDagpengeforlengelse';
-import {
-    antallDagerGått,
-    finnDato18MndFram,
-    finnDato18MndTilbake,
-    formaterDato,
-} from './dato-utils';
+import { getPermitteringsoversiktFor18Måneder } from './beregningerForSluttPåDagpengeforlengelse';
+import { antallDagerGått, finnDato18MndFram } from './dato-utils';
 import {
     finnDatoForMaksPermitteringNormaltRegelverk,
     getPermitteringsoversikt,
@@ -98,48 +90,6 @@ describe('Tester for beregning av permitteringssituasjon ved avsluttede permitte
         expect(førstePermitteringsdag?.dato).toStrictEqual(
             datoPermitteringSlettesFør
         );
-    });
-
-    describe('Tester for finn18mndsperiodeForMaksimeringAvPermitteringsdager', () => {
-        test('relevant 18-mnds periode begynner ved andre permitteringsperiode', () => {
-            const maksAntallPermitteringsdager = 26 * 7;
-            const datoTreUkerEtterDagensDato = dagensDato.add(
-                3 * 7 - 1,
-                'days'
-            );
-            const startDatoFørstePermittering = finnDato18MndTilbake(
-                datoTreUkerEtterDagensDato
-            );
-            const sluttDatoFørstePermittering = startDatoFørstePermittering.add(
-                maksAntallPermitteringsdager - (4 * 7 - 1)
-            );
-            //første permitteringsperiode vil vare maksAntallDager - 4 uker, slik at det vil være mulig å permittere i 4 uker til i løpet av inneværende 18mndsperiode
-            //dette vil ikke være mulig i praksis, siden det kun er 3 uker mellom dagens dato og slutten på begynnende 18mnds periode. Siden mak ikke kan permittere fire uker i løpet av tre uker, hopper algoritmen til neste potensielle 18mndsperiode
-            const allePermitteringerOgFravær: AllePermitteringerOgFraværesPerioder = {
-                permitteringer: [
-                    {
-                        datoFra: startDatoFørstePermittering,
-                        datoTil: sluttDatoFørstePermittering,
-                    },
-                    {
-                        datoFra: dagensDato,
-                        datoTil: dagensDato.add(20, 'days'),
-                    },
-                ],
-                andreFraværsperioder: [],
-            };
-            const tidslinje = konstruerTidslinje(
-                allePermitteringerOgFravær,
-                dagensDato
-            );
-            const aktuellPeriode = finn18mndsperiodeForMaksimeringAvPermitteringsdager(
-                tidslinje,
-                datoSluttPåDagpengeforlengelse,
-                dagensDato,
-                maksAntallPermitteringsdager
-            );
-            //expect(aktuellPeriode?.datoFra).toEqual(dagensDato);
-        });
     });
 
     describe('Tester for getPermitteringsoversikt', () => {
@@ -299,7 +249,8 @@ test('Skal ignorere permittering i begynnelsen av 18 mndsperiode som sklir fordi
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringNormaltRegelverk(
         tidslinje,
         datoSluttPåDagpengeforlengelse,
-        maksAntallPermitteringsdager
+        maksAntallPermitteringsdager,
+        dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(
         startDatoLøpendePermittering.add(

@@ -25,6 +25,7 @@ interface Props {
 }
 
 const Utregningstekst: FunctionComponent<Props> = (props) => {
+    //Denne funksjonen kan slettes 18 måneder etter 1. juli 2021 (30.12.2022), da vil den ikke lenger vil være relevant. props.tidslinje kan alltid brukes etter dette.
     const nyListeHvisPermitteringsdagerErSlettet =
         props.gjeldendeRegelverk === Permitteringssregelverk.KORONA_ORDNING
             ? undefined
