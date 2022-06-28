@@ -15,7 +15,7 @@ Vi har valgt å bruke dayjs i stedet for javascript innebygde Date-bibliotek. De
 Dagens dato er global for forenkling, og er spesifisert til å være i starten av dagens dato, da vi så det skapte problemer, siden denne også bruker milisekund i dataobjektet som gjorde at beregningene oppførte seg uventet.
 På et tidspunkt vil både 1. juli 2021 og 1. april være utdatert og kun dagens dato vil være aktuell for utregningen. For å regne ut permitteringsdager blir alle datointervall fyllt inn av brukerern omgjort til en tidslinje, der som håndterer datoer utenfor tidslinja og overlappende perioder håndteres.
 
-Hvilket case brukeren havner i, og som bestemmer hvilken tekst brukerer for opp i resultatboksen vil da blir forenklet til å gi ut to forskjellige tekster. èn dersom de har nådd 26 uker i løpet av 18 måneder og en for hvis de ikke har gjort det. 
+Hvilket case brukeren havner i, og som bestemmer hvilken tekst brukerer får opp i resultatboksen vil da blir forenklet til å gi ut to forskjellige tekster. En dersom de har nådd 26 uker i løpet av 18 måneder og en for hvis de ikke har gjort det. 
 
 De mest omfattende funksjonene er knyttet til å lage illustrasjonen (tidslinja). Den baserer seg kun på standard HTML og css, og den trenger ikke oppdateres med tanke på ekstrene biblioteker. Det eneste er et bibliotek som gjør at man kan dra i ddet blå elementet. 
 Tidslinjen er bygd opp dagene som løper dynamisk 18 måneder framover og 18 måneder tilbake i tid. Hver dato har en kategori, permittert uten fravær, permittert med fravær, ikke permittert og slettet permittering (i casene der permitteringen er fyllt i før 1. juli 2021 da permitteringene ble nullstilt). 
@@ -30,7 +30,7 @@ Datomarkørene for år, dagens dato og datoen der maks nås er plassert i forhol
 Det er en del logikk knyttet til utseendet til tidslinja i tidslinjefunksjoner.ts, og også finnDatoForMaksPermittering er knyttet til denne. Dersom tidslinja på et tidspunkt slutter å fungere er den ikke kritisk for å gi arbeidsgivere informasjon på spørsmålet om de kan permittere lenger eller ikke.
 Den er allikevel viktig fordi arbeidsgivere har vanskelig for å forstå 18-månedsperioden som glidende og illustrasjonen gjør det enklere for Arbeidsgivertelefonen å forklare/dobbelsjekke utregningen.
 
-DetaljertUtregningskomponenten er ikke i bruk i dag, men den viser utfylt permittering fyllt inn av brukeren i en tabell (liste på mobil)
+DetaljertUtregningskomponenten er ikke i bruk i dag, men den viser utfylt permittering fyllt inn av brukeren i en tabell (liste på mobil), om dette er ønskelig seinere.
 
 
 

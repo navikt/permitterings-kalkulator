@@ -26,6 +26,10 @@ import {
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
+import {
+    maksAntallDagerPermittertKoronaordning,
+    maksAntallDagerPermittertNormaltRegelverk,
+} from '../../konstanterKnyttetTilRegelverk';
 
 export enum PermitteringssituasjonVedSluttPaForlengelse {
     MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
@@ -247,14 +251,14 @@ export const finnDenAktuelle18mndsperiodenSomSkalBeskrives = (
     datoRegelendring1Nov: Dayjs
 ): DatoIntervall | undefined => {
     const maksAntallDagerUtenLønnsplikt =
-        regelverk === Permitteringssregelverk.KORONA_ORDNING ? 49 * 7 : 26 * 7;
+        regelverk === Permitteringssregelverk.KORONA_ORDNING ? maksAntallDagerPermittertKoronaordning : maksAntallDagerPermittertNormaltRegelverk;
 
     const situasjon =
         regelverk === Permitteringssregelverk.KORONA_ORDNING
             ? finnPermitteringssituasjonVedSluttPåForlengelse(
                   tidslinje,
                   datoRegelendring1Nov,
-                  49 * 7
+                  maksAntallDagerPermittertKoronaordning
               )
             : finnPermitteringssituasjonNormalRegelverk(
                   tidslinje,
@@ -343,7 +347,7 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
             const potensiellDatoForMaksPermittering = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoSluttPaDagepengeForlengelse,
-                49 * 7,
+                maksAntallDagerPermittertKoronaordning,
                 dagensDato
             );
             if (potensiellDatoForMaksPermittering) {

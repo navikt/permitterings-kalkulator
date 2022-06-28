@@ -11,6 +11,7 @@ import {
     getPermitteringsoversiktFor18Måneder,
     PermitteringssituasjonVedSluttPaForlengelse,
 } from './beregningerForSluttPåDagpengeforlengelse';
+import { maksAntallDagerPermittertKoronaordning } from '../../konstanterKnyttetTilRegelverk';
 
 const datoSluttPåDagpengeforlengelse = dayjs('2022-04-01');
 const dagensDato = dayjs().startOf('date');
@@ -24,7 +25,7 @@ const getTidslinje = (
 describe('Tester for beregning av permitteringssituasjon ved dato der dagpengefoelngelsen avsluttes og permitteringen løper på koronaregelverk', () => {
     describe('Tester for finnPermitteringssituasjon1November', () => {
         test('Skal returnere MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE', () => {
-            const maksAntallPermitteringsdager = 49 * 7;
+            const maksAntallPermitteringsdager = maksAntallDagerPermittertKoronaordning;
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
@@ -48,7 +49,7 @@ describe('Tester for beregning av permitteringssituasjon ved dato der dagpengefo
         });
 
         test('Skal returnere at maks antall dager er nådd etter sluttdato av forlengelse løpende permittering iverksatt før 1. juli', () => {
-            const maksAntallPermitteringsdager = 49 * 7;
+            const maksAntallPermitteringsdager = maksAntallDagerPermittertKoronaordning;
             const tidslinje = getTidslinje({
                 permitteringer: [
                     {
@@ -70,14 +71,14 @@ describe('Tester for beregning av permitteringssituasjon ved dato der dagpengefo
                 tidslinje,
                 datoSluttPåDagpengeforlengelse
             ).dagerBrukt;
-            expect(dagerBruktI18mndsperiode).toEqual(49 * 7);
+            expect(dagerBruktI18mndsperiode).toEqual(maksAntallPermitteringsdager);
             expect(situasjon).toEqual(
                 PermitteringssituasjonVedSluttPaForlengelse.MAKS_NÅDD_ETTER_SLUTTDATO_AV_FORLENGELSE
             );
         });
 
         test('Skal gi samme dato for maks permittering nådd når en permittering er løpende som når en permittering er aktiv etter dagens dato', () => {
-            const maksAntallPermitteringsuker = 49;
+            const maksAntallPermitteringsuker = maksAntallDagerPermittertKoronaordning/7;
             const tidslinje1 = getTidslinje({
                 permitteringer: [
                     {

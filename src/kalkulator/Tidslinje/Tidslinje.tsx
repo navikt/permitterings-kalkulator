@@ -41,6 +41,8 @@ import { konstruerTidslinjeSomSletterPermitteringFørDato } from '../utils/tidsl
 import { finnDatoForMaksPermitteringNormaltRegelverk } from '../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
 import {
     dagensDato,
+    maksAntallDagerPermittertKoronaordning,
+    maksAntallDagerPermittertNormaltRegelverk,
     regelEndring1Juli,
     regelEndringsDato1April,
 } from '../../konstanterKnyttetTilRegelverk';
@@ -73,12 +75,12 @@ const Tidslinje: FunctionComponent<Props> = (props) => {
             ? finnDatoForMaksPermitteringNormaltRegelverk(
                   tidslinjeSomSkalVises,
                   regelEndringsDato1April,
-                  26 * 7
+                  maksAntallDagerPermittertNormaltRegelverk
               )
             : finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                   tidslinjeSomSkalVises,
                   regelEndringsDato1April,
-                  49 * 7,
+                  maksAntallDagerPermittertKoronaordning,
                   dagensDato
               );
 

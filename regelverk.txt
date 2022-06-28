@@ -4,19 +4,16 @@ Nye regler for permitteringsperioden fra 1. juli 2021
 
 Dette gjelder for permitteringer som startet
 
-1.  1. juli 2021 eller senere:
-    For nye permitteringer iverksatt fra og med 1. juli 2021 kan du permittere inntil 26 uker innenfor en periode på 18 måneder uten at lønnsplikten gjeninntrer.
+1.    1. juli 2021 eller senere: For nye permitteringer iverksatt fra og med 1. juli 2021 kan du permittere inntil 26 uker innenfor en periode på 18 måneder før lønnsplikten gjeninntrer.
 
-2.    For nye permitteringstilfeller fra 1. juli 2021 skal du ikke telle med eventuelle permitteringsperioder før 1. juli 2021 i 18-månedersperioden.
-    før 1. juli 2021:
+2.    For nye permitteringstilfeller fra 1. juli 2021 skal du ikke telle med eventuelle permitteringsperioder før 1. juli 2021 i 18-månedsperioden. Dette vil si at dersom arbeidstakeren hadde en permitteringsperiode mellom f. eks 1. mars 2021 og 1. februar 2021, og en ny permitteringsperiode påbegynt etter 1. juli 2021, vil den første perioden blir slettet og ikke ha innvirkning å telling ved framtidige permitteringer.
 
-3.    For løpende permitteringer som startet før 1. juli var det frem til 1. april 2022 ingen begrensning for hvor lenge du kan permittere uten at lønnsplikten gjentatt.
+3.    Før 1. april 2022 var det ingen begrensning for hvor lenge du kan permittere før lønnsplikten gjeninntrådde. Dette betyr at arbeidsgivere tidligst kan ha nådd maksgrensa for permittering 1. april 2022.
 
-4.    1. november 2021 vil lønnsplikten gjeninntre for løpende permitteringer som startet før 1. juli der du til sammen har permittert i 49 uker eller mer de siste 18 måneder. Har du permittert i mindre enn 49 uker den 1. oktober, vil lønnsplikten gjeninntre når du på et senere tidspunkt har permittert i til sammen 49 uker innenfor en periode på 18 måneder.
 
-5.    Ansatte som blir tatt tilbake i arbeid, vil kunne permitteres på nytt etter 1. juli. Da vil også de omfattes av regelen om maksimalt 26 uker permittering innenfor en 18-månedersperiode, med telling bare tilbake til juli 2021.
+unntak i maks antall dager arbeidstakere kunne bli permittert under koronaepidemien .
 
-Hentet fra https://arbeidsgiver.nav.no/arbeidsgiver-permittering/#narSkalJegUtbetale (15. september 2021)
+https://arbeidsgiver.nav.no/permittering-og-omstilling/permittering#lonnsplikt (28. juli 2022)
 
 Merk at kalkulatoren regner ut for maks antall dager en ansatt kan være permittert der arbeidsgiveren ikke har lønnsplikt. Det vil si at perioden arbeidsgiveren har lønnsplikt, i arbeidsgiverperiode 1, ikke teller med i beregningen.
 

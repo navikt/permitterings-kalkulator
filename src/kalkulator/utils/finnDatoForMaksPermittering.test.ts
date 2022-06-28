@@ -10,6 +10,7 @@ import {
     getPermitteringsoversikt,
 } from './beregningerForSluttPåDagpengeforlengelse';
 import { finnDatoForMaksPermitteringNormaltRegelverk } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
+import { maksAntallDagerPermittertKoronaordning } from '../../konstanterKnyttetTilRegelverk';
 
 const dagensDato = dayjs().startOf('date');
 const datoSluttPåDagepengeforlengelse = dayjs('2022-04-01');
@@ -22,7 +23,7 @@ const getTidslinje = (
 
 describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt før 1. juli ', () => {
     test('Maks antall dager permittering skal komme på slutt på forlengelse av dagpengeordning innfør i forbindelse med korona hvis permittert i 49 uker og 1 dag ved 1 november og permitteringen er iverksatt før 1. juli', () => {
-        const maksAntallPermitteringsdager = 49 * 7;
+        const maksAntallPermitteringsdager = maksAntallDagerPermittertKoronaordning;
         const tidslinje = getTidslinje({
             permitteringer: [
                 {
@@ -47,7 +48,7 @@ describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt f�
     });
 
     test('Maks antall dager permittering være datoen da slutt på forlengelse av dagpengeordning innfør i forbindelse med korona, dersom permittert i nøyaktig 49 uker. ', () => {
-        const maksAntallPermitteringsdager = 49 * 7;
+        const maksAntallPermitteringsdager = maksAntallDagerPermittertKoronaordning;
         const tidslinje = getTidslinje({
             permitteringer: [
                 {
@@ -73,12 +74,12 @@ describe('Tester for finnDatoForMaksPermittering for permitteringer iverksatt f�
 });
 
 test('Maks antall dager permittering skal komme på regelverksending (datoen dagpengeforlengelsen som var innført under koronapandemien er slutt)', () => {
-    const maksAntallPermitteringsdager = 49 * 7;
+    const maksAntallPermitteringsdager = maksAntallDagerPermittertKoronaordning;
     const tidslinje = getTidslinje({
         permitteringer: [
             {
                 datoFra: datoSluttPåDagepengeforlengelse.subtract(
-                    49 + 15,
+                    maksAntallPermitteringsdager / 7 + 15,
                     'weeks'
                 ),
                 erLøpende: true,
@@ -96,8 +97,6 @@ test('Maks antall dager permittering skal komme på regelverksending (datoen dag
 });
 
 test('Skal finne dato for maks antall dager ved løpende permittering med oppstart før 1. juli (regelendring 1. juli)', () => {
-    const maksAntallPermitteringsuker = 49;
-
     const tidslinje = getTidslinje({
         permitteringer: [
             {
@@ -113,7 +112,7 @@ test('Skal finne dato for maks antall dager ved løpende permittering med oppsta
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsuker * 7,
+        maksAntallDagerPermittertKoronaordning,
         dagensDato
     );
     const permitteringPåHeleTidslinja = getPermitteringsoversikt(tidslinje, {
@@ -185,12 +184,11 @@ test('Skal håndtere lang permitteringsperiode etter innføringsdato for regelen
 });
 
 test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendring, selv om det er et fravær på den datoen', () => {
-    const maksAntallPermitteringsdager = 49 * 7;
     const tidslinje = getTidslinje({
         permitteringer: [
             {
                 datoFra: datoSluttPåDagepengeforlengelse.subtract(
-                    maksAntallPermitteringsdager + 20,
+                    maksAntallDagerPermittertKoronaordning + 20,
                     'days'
                 ),
                 erLøpende: true,
@@ -206,7 +204,7 @@ test('Maks antall permitteringsdager er nådd ved innføringsdato av regelendrin
     const datoMaksAntallDagerNådd = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
         tidslinje,
         datoSluttPåDagepengeforlengelse,
-        maksAntallPermitteringsdager,
+        maksAntallDagerPermittertKoronaordning,
         dagensDato
     );
     expect(datoMaksAntallDagerNådd).toEqual(datoSluttPåDagepengeforlengelse);
