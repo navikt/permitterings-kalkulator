@@ -9,6 +9,7 @@
         "classnames": "^2.2.6",
         "console-stamp": "3.0.2",
         "dotenv": "8.2.0",
+        "eventsource": "^2.0.2",
         "follow-redirects": "1.14.9",
         "fs-extra": "8.1.0",
         "helmet": "^4.4.1",
