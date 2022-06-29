@@ -1,5 +1,6 @@
 import { Dayjs } from 'dayjs';
 import { DatoIntervall } from '../typer';
+import { antallMånederMaksPermitteringBeregnesUtFra } from '../../konstanterKnyttetTilRegelverk';
 
 export const formaterDato = (dato: Dayjs): string => dato.format('DD.MM.YYYY');
 
@@ -25,10 +26,6 @@ export const antallDagerGått = (fra?: Dayjs, til?: Dayjs): number => {
     } else {
         return 0;
     }
-};
-
-export const antallUkerRundetOpp = (antallDager: number): number => {
-    return Math.ceil(antallDager / 7);
 };
 
 export const getOverlappendePeriode = (
@@ -189,10 +186,14 @@ const toPerioderOverlapper = (
 };
 
 export const finnDato18MndTilbake = (dato: Dayjs): Dayjs =>
-    dato.subtract(18, 'months').add(1, 'day');
+    dato
+        .subtract(antallMånederMaksPermitteringBeregnesUtFra, 'months')
+        .add(1, 'day');
 
 export const finnDato18MndFram = (dato: Dayjs): Dayjs =>
-    dato.subtract(1, 'day').add(18, 'months');
+    dato
+        .subtract(1, 'day')
+        .add(antallMånederMaksPermitteringBeregnesUtFra, 'months');
 
 export const finnTidligsteFraDato = (
     datointervaller: Partial<DatoIntervall>[]
@@ -237,10 +238,6 @@ export const getSenesteDato = (
     return sorterteDatoer.length > 0
         ? sorterteDatoer[sorterteDatoer.length - 1]
         : undefined;
-};
-
-export const getSenesteDatoAvTo = (dato1: Dayjs, dato2: Dayjs): Dayjs => {
-    return dato1.isAfter(dato2) ? dato1 : dato2;
 };
 
 const sorterDatoerTidligstFørst = (datoer: (Dayjs | undefined)[]): Dayjs[] => {

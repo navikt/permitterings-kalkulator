@@ -14,10 +14,6 @@ import {
     loggSidevinsing,
     logSekunderBruktFørBrukerFyllerInn,
 } from '../utils/amplitudeEvents';
-import {
-    dagensDato,
-    regelEndringsDato1April,
-} from '../konstanterKnyttetTilRegelverk';
 
 const Kalkulator = () => {
     const [

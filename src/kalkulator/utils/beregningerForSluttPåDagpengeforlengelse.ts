@@ -26,6 +26,10 @@ import {
 } from './beregningForMaksPermitteringsdagerNormaltRegelverk';
 import { finnIndeksForDato } from '../Tidslinje/tidslinjefunksjoner';
 import { Permitteringssregelverk } from '../SeResultat/SeResultat';
+import {
+    maksAntallDagerPermittertKoronaordning,
+    maksAntallDagerPermittertNormaltRegelverk,
+} from '../../konstanterKnyttetTilRegelverk';
 
 export enum PermitteringssituasjonVedSluttPaForlengelse {
     MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE = 'MAKS_NÅDD_VED_SLUTTDATO_AV_FORLENGELSE',
@@ -202,7 +206,7 @@ export const nåddMaksAntallDagerKoronaordningIkkeLøpendePermittering = (
             const potensiellDatoForMaksPermittering = finnDatoForMaksPermitteringVedAktivPermitteringFør1Juli(
                 tidslinje,
                 datoSluttPaDagepengeForlengelse,
-                49 * 7,
+                maksAntallDagerPermittertKoronaordning,
                 dagensDato
             );
             if (potensiellDatoForMaksPermittering) {

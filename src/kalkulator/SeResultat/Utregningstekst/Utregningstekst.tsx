@@ -9,6 +9,7 @@ import Lenke from 'nav-frontend-lenker';
 import { lagResultatTekstForPermitteringsStartFør1Juli } from './utregningstekst-avvikling-av-koronaregler-utils';
 import { lagResultatTekstNormaltRegelverk } from './utregningstekst-normalt-regelverk';
 import { lagNyListeHvisPermitteringFør1Juli } from '../../utils/beregningForMaksPermitteringsdagerNormaltRegelverk';
+
 import { loggKnappTrykketPå } from '../../../utils/amplitudeEvents';
 import { Permitteringssregelverk } from '../SeResultat';
 import {
