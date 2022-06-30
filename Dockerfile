@@ -4,11 +4,11 @@ FROM navikt/node-express:16
 ENV NODE_ENV=production
 
 
-WORKDIR /app
+WORKDIR /var
 COPY server ./server
 COPY build/ ./build
 
-WORKDIR /app/server
+WORKDIR /var/server
 RUN yarn install --frozen-lockfile
 
 EXPOSE 3000
