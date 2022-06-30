@@ -1,5 +1,5 @@
 # Skal oppdateres til v.14
-FROM navikt/node-express:16.0.0-alpine
+FROM navikt/node-express:14.0.0-alpine
 
 ENV NODE_ENV=production
 
