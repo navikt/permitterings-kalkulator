@@ -4,7 +4,7 @@
     "private": true,
     "homepage": "/permittering-kalkulator",
     "dependencies": {
-        "@craco/craco": "^6.1.1",
+        "@craco/craco": "^6.4.3",
         "@navikt/ds-css": "^0.15.10",
         "@navikt/ds-react": "^0.16.15",
         "@navikt/fnrvalidator": "^1.1.3",
