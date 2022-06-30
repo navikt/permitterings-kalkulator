@@ -4,10 +4,10 @@
     "main": "index.js",
     "license": "MIT",
     "dependencies": {
-        "@navikt/nav-dekoratoren-moduler": "^1.2.2",
-        "@sanity/client": "1.149.7",
+        "@navikt/nav-dekoratoren-moduler": "^1.6.9",
         "classnames": "^2.2.6",
         "console-stamp": "3.0.2",
+        "craco-less": "^2.0.0",
         "dotenv": "8.2.0",
         "eventsource": "^2.0.2",
         "follow-redirects": "1.14.9",
