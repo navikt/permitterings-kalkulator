@@ -1,20 +1,25 @@
 import { FunctionComponent, useEffect } from 'react';
 import {
-    Breadcrumb,
     onBreadcrumbClick,
     setBreadcrumbs,
 } from '@navikt/nav-dekoratoren-moduler';
 import { useNavigate } from 'react-router';
 
-interface Props {
-    brødsmuler: Breadcrumb[];
+export interface Brodsmule {
+    url: string;
+    title: string;
+    handleInApp: boolean;
 }
 
-export const Brødsmulesti: FunctionComponent<Props> = ({ brødsmuler }) => {
+interface BrodsmuleProps {
+    brodsmuler: Brodsmule[];
+}
+
+export const Brodsmulesti = ({ brodsmuler }: BrodsmuleProps) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        setBreadcrumbs(brødsmuler);
+        setBreadcrumbs(brodsmuler);
         onBreadcrumbClick((breadcrumb) => {
             if(breadcrumb.handleInApp) {
                 navigate(breadcrumb.url)
@@ -22,7 +27,7 @@ export const Brødsmulesti: FunctionComponent<Props> = ({ brødsmuler }) => {
                 window.location.href = breadcrumb.url
             }
         } );
-    }, [brødsmuler]);
+    }, [brodsmuler]);
 
     return null;
 };
