@@ -18,9 +18,6 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
-      - name: Enhetstesting av applikasjon
-        run: yarn test-ci
-
       - name: Bygg (yarn run build)
         run: yarn run build
 
