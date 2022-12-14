@@ -66,6 +66,10 @@ const startServer = () => {
         res.sendStatus(200)
     );
 
+    server.get(BASE_PATH + '/*', (req, res) =>
+        res.redirect('https://www.nav.no/no/bedrift')
+    );
+
     server.get(BASE_PATH + '/*', async (req, res) => {
         try {
             res.send(await getHtmlWithDecorator(buildPath + '/index.html'));
